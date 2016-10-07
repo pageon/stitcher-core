@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "brendt\\stitcher": "brendt/stitcher/src"
+            "brendt\\stitcher\\": "brendt/stitcher/src"
         }
     }
 }
