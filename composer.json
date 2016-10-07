@@ -1,0 +1,24 @@
+{
+    "name": "brendt/stitcher",
+    "authors": [
+        {
+            "name": "Brent",
+            "email": "brent@pageon.be"
+        }
+    ],
+    "require": {
+        "PHP": "^5.6",
+        "symfony/yaml": "^3.1",
+        "michelf/php-markdown": "^1.6",
+        "symfony/finder": "^3.1",
+        "smarty/smarty": "^3.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "brendt\\stitcher": "brendt/stitcher/src"
+        }
+    }
+}
