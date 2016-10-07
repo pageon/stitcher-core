@@ -19,7 +19,7 @@
         "phpunit/phpunit": "^5.6"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "brendt\\stitcher\\": "brendt/stitcher/src"
         }
     }
