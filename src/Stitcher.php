@@ -10,11 +10,6 @@ use Symfony\Component\Yaml\Yaml;
 class Stitcher {
 
     /**
-     * @var array
-     */
-    protected $site;
-
-    /**
      * @var SplFileInfo[]
      */
     protected $templates;
@@ -25,6 +20,11 @@ class Stitcher {
     private $root;
 
     /**
+     * @var string
+     */
+    private $compileDir;
+
+    /**
      * Stitcher constructor.
      *
      * @param string $root
@@ -32,24 +32,64 @@ class Stitcher {
      */
     public function __construct($root = './src', $compileDir = './.cache') {
         $this->root = $root;
-
-        $this->smarty = new Smarty();
-        $this->smarty->setTemplateDir("{$root}/template");
-        $this->smarty->setCompileDir($compileDir);
-        $this->smarty->caching = false;
-
-        $this->loadSite();
-        $this->loadTemplates();
+        $this->compileDir = $compileDir;
     }
 
+    /**
+     * @return Smarty
+     */
+    protected function getSmarty() {
+        $smarty = new Smarty();
+        $finder = new Finder();
+        $templateFolders = $finder->directories()->in("{$this->root}")->name('template');
+
+        foreach ($templateFolders as $templateDir) {
+            $smarty->addTemplateDir($templateDir);
+        }
+
+        $smarty->setCompileDir($this->compileDir);
+        $smarty->caching = false;
+
+        return $smarty;
+    }
+
+    /**
+     * @return array
+     * @throws \SmartyException
+     */
     public function stitch() {
         $blanket = [];
+        $smarty = $this->getSmarty();
+        $site = $this->loadSite();
+        $templates = $this->loadTemplates();
+
+        foreach ($site as $route => $page) {
+            if (!isset($templates[$page['template']])) {
+                continue;
+            }
+
+            $data = [];
+
+            foreach ($data as $name => $value) {
+                $smarty->assign($name, $value);
+            }
+
+            try {
+                $template = $templates[$page['template']];
+                $html = $smarty->fetch($template->getRealPath());
+                $blanket[$route] = $html;
+            } catch (\SmartyException $e) {
+                throw $e;
+            }
+
+            $smarty->clearAllAssign();
+        }
 
         return $blanket;
     }
 
     /**
-     * @return $this
+     * @return array
      */
     public function loadSite() {
         $finder = new Finder();
@@ -60,13 +100,11 @@ class Stitcher {
             $site += Yaml::parse($file->getContents());
         }
 
-        $this->site = $site;
-
-        return $this;
+        return $site;
     }
 
     /**
-     * @return $this
+     * @return SplFileInfo[]
      */
     public function loadTemplates() {
         $finder = new Finder();
@@ -74,13 +112,11 @@ class Stitcher {
         $templates = [];
 
         foreach ($files as $file) {
-            $id = str_replace('.tpl', '', $file->getPathname());
+            $id = str_replace('.tpl', '', $file->getRelativePathname());
             $templates[$id] = $file;
         }
 
-        $this->templates = $templates;
-
-        return $this;
+        return $templates;
     }
 
 }

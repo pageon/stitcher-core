@@ -1,0 +1,17 @@
+/:
+    template: home
+    data:
+        - home.md
+
+/churches:
+    template: churches/overview
+    data:
+        churches: churches.json
+
+/churches/{slug}:
+    template: churches/detail
+    data:
+        church:
+#            folder: churches
+            file: churches.json
+            id: slug
