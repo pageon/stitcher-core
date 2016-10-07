@@ -1,5 +1,7 @@
 {
     "name": "brendt/stitcher",
+    "description": "A static site generator with PHP and Smarty.",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Brent",
@@ -18,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "brendt\\stitcher\\": "brendt/stitcher/src"
+            "brendt\\stitcher\\": "src/"
         }
     }
 }
