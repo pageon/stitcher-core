@@ -8,10 +8,8 @@
     data:
         churches: churches.json
 
-/churches/{slug}:
+/churches/{id}:
     template: churches/detail
     data:
-        church:
-#            folder: churches
-            file: churches.json
-            id: slug
+        church: churches.json
+#        church: churches/

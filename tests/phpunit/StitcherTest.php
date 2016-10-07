@@ -8,7 +8,17 @@ class StitcherTest extends AbstractStitcherTest  {
 
         $this->assertArrayHasKey('/', $site);
         $this->assertArrayHasKey('/churches', $site);
-        $this->assertArrayHasKey('/churches/{slug}', $site);
+        $this->assertArrayHasKey('/churches/{id}', $site);
+    }
+
+    public function test_template_loading() {
+        $stitcher = $this->createStitcher();
+        $site = $stitcher->loadTemplates();
+
+        $this->assertArrayHasKey('index', $site);
+        $this->assertArrayHasKey('home', $site);
+        $this->assertArrayHasKey('churches/detail', $site);
+        $this->assertArrayHasKey('churches/overview', $site);
     }
 
     public function test_stitch() {
@@ -17,7 +27,7 @@ class StitcherTest extends AbstractStitcherTest  {
 
         $this->assertArrayHasKey('/', $blanket);
         $this->assertArrayHasKey('/churches', $blanket);
-        $this->assertArrayHasKey('/churches/{slug}', $blanket);
+        $this->assertArrayHasKey('/churches/{id}', $blanket);
 
         foreach ($blanket as $page) {
             $this->assertContains("<html>", $page);
