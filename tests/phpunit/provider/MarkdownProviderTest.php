@@ -2,7 +2,7 @@
 
 use brendt\stitcher\dataProvider\MarkdownProvider;
 
-class YamlProviderTest extends PHPUnit_Framework_TestCase {
+class MarkdownProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createMarkdownProvider() {
         return new MarkdownProvider('./tests/src');
