@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\dataProvider;
+namespace brendt\stitcher\provider;
 
 interface Provider {
 

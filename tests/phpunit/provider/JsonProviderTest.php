@@ -1,6 +1,6 @@
 <?php
 
-use brendt\stitcher\dataProvider\JsonProvider;
+use brendt\stitcher\provider\JsonProvider;
 
 class JsonProviderTest extends PHPUnit_Framework_TestCase {
 

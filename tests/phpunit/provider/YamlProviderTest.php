@@ -1,6 +1,6 @@
 <?php
 
-use brendt\stitcher\dataProvider\YamlProvider;
+use brendt\stitcher\provider\YamlProvider;
 
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 

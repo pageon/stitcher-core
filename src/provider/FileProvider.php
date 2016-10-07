@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\dataProvider;
+namespace brendt\stitcher\provider;
 
 use Symfony\Component\Finder\Finder;
 

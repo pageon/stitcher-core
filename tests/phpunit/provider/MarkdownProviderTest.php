@@ -1,6 +1,6 @@
 <?php
 
-use brendt\stitcher\dataProvider\MarkdownProvider;
+use brendt\stitcher\provider\MarkdownProvider;
 
 class MarkdownProviderTest extends PHPUnit_Framework_TestCase {
 
