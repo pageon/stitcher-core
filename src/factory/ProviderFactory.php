@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\provider\factory;
+namespace brendt\stitcher\factory;
 
 use brendt\stitcher\provider\FolderProvider;
 use brendt\stitcher\provider\JsonProvider;

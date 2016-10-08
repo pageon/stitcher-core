@@ -5,7 +5,7 @@ use brendt\stitcher\provider\MarkdownProvider;
 class MarkdownProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createMarkdownProvider() {
-        return new MarkdownProvider('./tests/src');
+        return new MarkdownProvider('./tests/src/data');
     }
 
     public function test_markdown_provider_creates_html() {

@@ -5,7 +5,7 @@ use brendt\stitcher\provider\YamlProvider;
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createYamlProvider() {
-        return new YamlProvider('./tests/src');
+        return new YamlProvider('./tests/src/data');
     }
 
     public function test_yaml_provider_parse_without_extension() {
@@ -32,4 +32,12 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('id', reset($data));
     }
 
+    public function test_json_provider_parses_single() {
+        $provider = $this->createYamlProvider();
+
+        $data = $provider->parse('churches/church-e', true);
+
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('name', $data);
+    }
 }
