@@ -78,7 +78,7 @@ class Stitcher {
 
         $htaccessExists = $fs->exists("{$this->publicDir}/.htaccess");
         if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', $this->publicDir . '/.htaccess');
+            $fs->copy(__DIR__ . '/.htaccess', "{$this->publicDir}/.htaccess");
         }
 
         foreach ($blanket as $path => $page) {
@@ -86,7 +86,7 @@ class Stitcher {
                 $path = 'index';
             }
 
-            $fs->
+            $fs->dumpFile("{$this->publicDir}/{$path}.html", $page);
         }
     }
 
