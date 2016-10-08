@@ -37,13 +37,13 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches');
 
-        $this->assertArrayNotHasKey('churches-c', $data);
+        $this->assertArrayNotHasKey('churches-a', $data);
     }
 
     public function test_json_provider_parses_single() {
         $provider = $this->createJsonProvider();
 
-        $data = $provider->parse('churches/church-c', true);
+        $data = $provider->parse('churches/church-a', true);
 
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);

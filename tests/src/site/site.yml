@@ -12,4 +12,13 @@
     template: churches/detail
     data:
         church: churches.yml
+
+#/churches:
+#    template: churches/overview
+#    data:
+#        churches: churches/
+#
+#/churches/{id}:
+#    template: churches/detail
+#    data:
 #        church: churches/

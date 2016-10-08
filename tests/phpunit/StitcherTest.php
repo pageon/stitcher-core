@@ -1,6 +1,7 @@
 <?php
 
 use brendt\stitcher\Stitcher;
+use Symfony\Component\Finder\Finder;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
 
@@ -15,14 +16,14 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     public function __construct() {
         parent::__construct();
 
-        $this->root = './tests/src';
+        $this->root = './tests';
     }
 
     /**
      * @return Stitcher
      */
     protected function createStitcher() {
-        return new Stitcher($this->root);
+        return new Stitcher($this->root . '/src', $this->root . '/public');
     }
 
     public function test_site_loading() {
@@ -89,6 +90,12 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $this->assertArrayHasKey('/churches/church-b', $blanket);
         $this->assertContains('Church A', $blanket['/churches/church-a']);
         $this->assertContains('Church B', $blanket['/churches/church-b']);
+    }
+
+    public function test_save() {
+        $stitcher = $this->createStitcher();
+        $blanket = $stitcher->stitch();
+        $stitcher->save($blanket);
     }
 
 }

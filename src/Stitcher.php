@@ -4,6 +4,7 @@ namespace brendt\stitcher;
 
 use brendt\stitcher\factory\ProviderFactory;
 use Smarty;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -28,18 +29,25 @@ class Stitcher {
     /**
      * @var string
      */
+    private $publicDir;
+
+    /**
+     * @var string
+     */
     private $compileDir;
 
     /**
      * Stitcher constructor.
      *
      * @param string $root
+     * @param string $publicDir
      * @param string $compileDir
      */
-    public function __construct($root = './src', $compileDir = './.cache') {
+    public function __construct($root = './src', $publicDir = './public', $compileDir = './.cache') {
         $this->root = $root;
+        $this->publicDir = $publicDir;
         $this->compileDir = $compileDir;
-        $this->factory = new ProviderFactory($this->root);
+        $this->factory = new ProviderFactory("{$this->root}/data");
     }
 
     /**
@@ -58,6 +66,43 @@ class Stitcher {
         $smarty->caching = false;
 
         return $smarty;
+    }
+
+    public function save($blanket) {
+        $fs = new Filesystem();
+
+        $publicDirExists = $fs->exists("{$this->publicDir}");
+        if (!$publicDirExists) {
+            $fs->mkdir($this->publicDir);
+        }
+
+        $htaccessExists = $fs->exists("{$this->publicDir}/.htaccess");
+        if (!$htaccessExists) {
+            $fs->copy(__DIR__ . '/.htaccess', "{$this->publicDir}/.htaccess");
+        }
+
+        foreach ($blanket as $path => $page) {
+            if ($path === '/') {
+                $path = 'index';
+            }
+
+            $fs->dumpFile("{$this->publicDir}/{$path}.html", $page);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function loadSite() {
+        $finder = new Finder();
+        $files = $finder->files()->in("{$this->root}/site")->name('*.yml');
+        $site = [];
+
+        foreach ($files as $file) {
+            $site += Yaml::parse($file->getContents());
+        }
+
+        return $site;
     }
 
     /**
@@ -135,21 +180,6 @@ class Stitcher {
     }
 
     /**
-     * @return array
-     */
-    public function loadSite() {
-        $finder = new Finder();
-        $files = $finder->files()->in("{$this->root}/site")->name('*.yml');
-        $site = [];
-
-        foreach ($files as $file) {
-            $site += Yaml::parse($file->getContents());
-        }
-
-        return $site;
-    }
-
-    /**
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
@@ -176,6 +206,7 @@ class Stitcher {
         if (!isset($page['data'])) {
             return $data;
         }
+
         foreach ($page['data'] as $name => $entry) {
             $provider = $this->factory->getProvider($entry);
 
