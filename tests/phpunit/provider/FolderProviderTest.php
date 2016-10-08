@@ -13,9 +13,9 @@ class FolderProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches/');
 
+        $this->assertArrayHasKey('church-a', $data);
+        $this->assertArrayHasKey('church-b', $data);
         $this->assertArrayHasKey('church-c', $data);
-        $this->assertArrayHasKey('church-d', $data);
-        $this->assertArrayHasKey('church-e', $data);
     }
 
 }

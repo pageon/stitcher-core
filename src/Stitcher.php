@@ -39,7 +39,7 @@ class Stitcher {
     public function __construct($root = './src', $compileDir = './.cache') {
         $this->root = $root;
         $this->compileDir = $compileDir;
-        $this->factory = new ProviderFactory($this->root);
+        $this->factory = new ProviderFactory("{$this->root}/data");
     }
 
     /**

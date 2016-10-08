@@ -35,7 +35,7 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
     public function test_json_provider_parses_single() {
         $provider = $this->createYamlProvider();
 
-        $data = $provider->parse('churches/church-e', true);
+        $data = $provider->parse('churches/church-c', true);
 
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);
