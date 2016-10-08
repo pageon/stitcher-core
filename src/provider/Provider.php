@@ -4,6 +4,6 @@ namespace brendt\stitcher\provider;
 
 interface Provider {
 
-    public function parse($path);
+    public function parse($path, $parseSingle = false);
 
 }

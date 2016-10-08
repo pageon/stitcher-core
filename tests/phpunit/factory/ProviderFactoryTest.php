@@ -9,7 +9,7 @@ use brendt\stitcher\provider\YamlProvider;
 class ProviderFactoryTest extends PHPUnit_Framework_TestCase {
 
     protected function createProviderFactory() {
-        return new ProviderFactory('./tests/src');
+        return new ProviderFactory('./tests/src/data');
     }
 
     public function test_provider_factory_folder() {
