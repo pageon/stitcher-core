@@ -1,6 +1,6 @@
 {
     "name": "brendt/stitcher",
-    "description": "A static site generator with PHP and Smarty.",
+    "description": "A static site generator with PHP and Smarty, with a focus on high performance.",
     "license": "proprietary",
     "authors": [
         {
