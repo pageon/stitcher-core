@@ -1,6 +1,6 @@
 # Stitcher
 
-A static site generator with PHP and Smarty, with a focus on high performance.
+A static site generator for PHP and Smarty, with a focus on high performance.
 
 ## What is it?
 
