@@ -3,22 +3,22 @@
     data:
         content: home.md
 
-#/churches:
-#    template: churches/overview
-#    data:
-#        churches: churches.yml
-#
-#/churches/{id}:
-#    template: churches/detail
-#    data:
-#        church: churches.yml
-
 /churches:
     template: churches/overview
     data:
-        churches: churches/
+        churches: churches.yml
 
 /churches/{id}:
     template: churches/detail
     data:
-        church: churches/
+        church: churches.yml
+
+#/churches:
+#    template: churches/overview
+#    data:
+#        churches: churches/
+#
+#/churches/{id}:
+#    template: churches/detail
+#    data:
+#        church: churches/
