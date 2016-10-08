@@ -1,6 +1,6 @@
 <?php
 
-use brendt\stitcher\provider\factory\ProviderFactory;
+use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\provider\FolderProvider;
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
