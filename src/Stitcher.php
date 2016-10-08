@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\factory\ProviderFactory;
 use Smarty;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -13,6 +14,11 @@ class Stitcher {
      * @var SplFileInfo[]
      */
     protected $templates;
+
+    /**
+     * @var ProviderFactory
+     */
+    protected $factory;
 
     /**
      * @var string
@@ -33,6 +39,7 @@ class Stitcher {
     public function __construct($root = './src', $compileDir = './.cache') {
         $this->root = $root;
         $this->compileDir = $compileDir;
+        $this->factory = new ProviderFactory($this->root);
     }
 
     /**
@@ -54,32 +61,71 @@ class Stitcher {
     }
 
     /**
+     * @param string|array $routes
+     *
      * @return array
      * @throws \SmartyException
      */
-    public function stitch() {
+    public function stitch($routes = []) {
         $blanket = [];
         $smarty = $this->getSmarty();
         $site = $this->loadSite();
         $templates = $this->loadTemplates();
 
+        if (is_string($routes)) {
+            $routes = [$routes];
+        }
+
         foreach ($site as $route => $page) {
-            if (!isset($templates[$page['template']])) {
+            $skipRoute = count($routes) && !in_array($route, $routes);
+            $templateIsset = isset($templates[$page['template']]);
+
+            if ($skipRoute || !$templateIsset) {
                 continue;
             }
 
-            $data = [];
+            $data = $this->getDataForPage($page);
 
-            foreach ($data as $name => $value) {
-                $smarty->assign($name, $value);
-            }
+            $routeVariables = [];
+            preg_match('/{[\w]+}/', $route, $routeVariables);
+            $routeVariables = array_map(function($variable) {
+                return trim(trim($variable, '{'), '}');
+            }, $routeVariables);
 
-            try {
-                $template = $templates[$page['template']];
-                $html = $smarty->fetch($template->getRealPath());
-                $blanket[$route] = $html;
-            } catch (\SmartyException $e) {
-                throw $e;
+            if (count($routeVariables)) {
+                $routeVariable = reset($routeVariables);
+
+                foreach ($data as $name => $entries) {
+                    foreach ($entries as $entry) {
+                        if (!isset($entry[$routeVariable])) {
+                            continue;
+                        }
+
+                        $var = $entry[$routeVariable];
+                        $routeName = str_replace('{' .$routeVariable. '}', $var, $route);
+                        $smarty->assign($name, $entry);
+
+                        try {
+                            $template = $templates[$page['template']];
+                            $html = $smarty->fetch($template->getRealPath());
+                            $blanket[$routeName] = $html;
+                        } catch (\SmartyException $e) {
+                            throw $e;
+                        }
+                    }
+                }
+            } else {
+                foreach ($data as $name => $value) {
+                    $smarty->assign($name, $value);
+                }
+
+                try {
+                    $template = $templates[$page['template']];
+                    $html = $smarty->fetch($template->getRealPath());
+                    $blanket[$route] = $html;
+                } catch (\SmartyException $e) {
+                    throw $e;
+                }
             }
 
             $smarty->clearAllAssign();
@@ -117,6 +163,30 @@ class Stitcher {
         }
 
         return $templates;
+    }
+
+    /**
+     * @param $page
+     *
+     * @return array
+     */
+    private function getDataForPage($page) {
+        $data = [];
+
+        if (!isset($page['data'])) {
+            return $data;
+        }
+        foreach ($page['data'] as $name => $entry) {
+            $provider = $this->factory->getProvider($entry);
+
+            if (!$provider) {
+                continue;
+            }
+
+            $data[$name] = $provider->parse($entry);
+        }
+
+        return $data;
     }
 
 }
