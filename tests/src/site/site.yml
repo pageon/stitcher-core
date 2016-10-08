@@ -1,15 +1,15 @@
 /:
     template: home
     data:
-        - home.md
+        content: home.md
 
 /churches:
     template: churches/overview
     data:
-        churches: churches.json
+        churches: churches.yml
 
 /churches/{id}:
     template: churches/detail
     data:
-        church: churches.json
+        church: churches.yml
 #        church: churches/
