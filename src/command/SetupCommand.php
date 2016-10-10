@@ -36,7 +36,7 @@ class SetupCommand extends Command {
 
         $fs = new Filesystem();
         $finder = new Finder();
-        
+
         if ($fs->exists("{$root}/src")) {
             $questionHelper = $this->getHelper('question');
             $question = new Question('The src/ directory already exists, are you sure you want to continue? (Some files might be overwritten) [y/N] ', false);
@@ -62,7 +62,7 @@ class SetupCommand extends Command {
                 $fs->touch("{$root}/src/{$path}");
             }
 
-            $fs->copy("{$setupPath}/{$path}", "{$root}/src/{$path}");
+            $fs->dumpFile("{$root}/src/{$path}", $file->getContents());
         }
 
 
