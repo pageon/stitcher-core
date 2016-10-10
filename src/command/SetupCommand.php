@@ -45,6 +45,8 @@ class SetupCommand extends Command {
 
             if (!$overwrite) {
                 $output->writeln('Cancelling the setup, run <fg=green>stitcher site:setup</> again if you want to setup the site anyways.');
+
+                return;
             }
         }
 
