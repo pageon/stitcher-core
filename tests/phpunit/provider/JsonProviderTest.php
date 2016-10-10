@@ -5,7 +5,7 @@ use brendt\stitcher\provider\JsonProvider;
 class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createJsonProvider() {
-        return new JsonProvider('./tests/src/data');
+        return new JsonProvider('./setup/data');
     }
 
     public function test_json_provider_parse_without_extension() {

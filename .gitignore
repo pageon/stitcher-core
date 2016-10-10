@@ -2,3 +2,4 @@
 .idea
 .cache
 /tests/public
+/setupDir

@@ -5,7 +5,7 @@ use brendt\stitcher\provider\YamlProvider;
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createYamlProvider() {
-        return new YamlProvider('./tests/src/data');
+        return new YamlProvider('./setup/data');
     }
 
     public function test_yaml_provider_parse_without_extension() {

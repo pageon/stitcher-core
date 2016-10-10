@@ -5,7 +5,7 @@ use brendt\stitcher\provider\FolderProvider;
 class FolderProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createFolderProvider() {
-        return new FolderProvider('./tests/src/data');
+        return new FolderProvider('./setup/data');
     }
 
     public function test_folder_provider_parse() {

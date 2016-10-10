@@ -23,7 +23,7 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
      * @return Stitcher
      */
     protected function createStitcher() {
-        return new Stitcher($this->root . '/src', $this->root . '/public', $this->root .'/.cache');
+        return new Stitcher('./setup', $this->root . '/public', $this->root .'/.cache');
     }
 
     public function test_site_loading() {
