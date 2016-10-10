@@ -65,6 +65,9 @@ class SetupCommand extends Command {
             $fs->dumpFile("{$root}/src/{$path}", $file->getContents());
         }
 
+        if (!$fs->exists("{$root}/stitcher")) {
+            $fs->copy(__DIR__ . '/../../stitcher', './stitcher');
+        }
 
         $output->writeln("Example setup copied to {$root}.");
         $output->writeln('Run <fg=green>stitcher site:generate</> to generate the site.');

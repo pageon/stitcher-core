@@ -27,6 +27,8 @@ class GenerateCommand extends Command {
         $blanket = $stitcher->stitch();
         $stitcher->save($blanket);
 
+        $output->writeln('Site successfully generated in <fg=green>public/</>.');
+
         return;
     }
 

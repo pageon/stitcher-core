@@ -6,23 +6,13 @@ use brendt\stitcher\command\GenerateCommand;
 use brendt\stitcher\command\SetupCommand;
 use Symfony\Component\Console\Application;
 
-class Console {
-
-    protected $application;
+class Console extends Application {
 
     public function __construct() {
-        $application = new Application();
-        $application->setName('Stitcher Console');
+        parent::__construct('Stitcher Console');
 
-        $application->add(new SetupCommand());
-        $application->add(new GenerateCommand());
-
-
-        $this->application = $application;
-    }
-
-    public function run() {
-        $this->application->run();
+        $this->add(new SetupCommand());
+        $this->add(new GenerateCommand());
     }
 
 }
