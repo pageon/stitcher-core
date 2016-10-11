@@ -4,9 +4,9 @@ namespace brendt\stitcher\provider;
 
 use Symfony\Component\Finder\Finder;
 
-class JsonProvider extends AbstractProvider {
+class JsonProvider extends AbstractArrayProvider {
 
-    public function parse($path = '*.json', $parseSingle = false) {
+    public function parse($path = '*.json') {
         $finder = new Finder();
         $data = [];
         if (!strpos($path, '.json')) {
@@ -19,7 +19,7 @@ class JsonProvider extends AbstractProvider {
             $data += json_decode($file->getContents(), true);
         }
 
-        $data = $this->parseArrayData($data, $path, '.json', $parseSingle);
+        $data = $this->parseArrayData($data);
 
         return $data;
     }

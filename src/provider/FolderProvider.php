@@ -7,7 +7,7 @@ use Symfony\Component\Finder\Finder;
 
 class FolderProvider extends AbstractProvider  {
     
-    public function parse($path, $parseSingle = false) {
+    public function parse($path) {
         $data = [];
         $path = trim($path, '/');
         $finder = new Finder();
@@ -19,7 +19,7 @@ class FolderProvider extends AbstractProvider  {
 
             $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
 
-            $data[$id] = $provider->parse($file->getRelativePathname(), true);
+            $data[$id] = $provider->parse($file->getRelativePathname());
         }
 
         return $data;

@@ -4,8 +4,11 @@ A static site generator for PHP and Smarty, with a focus on high performance.
 
 ## TODO
 
-- Exception handling
 - Better provider logic
+- Exception handling
+- Image provider support
+- Smarty provider support
+- DI support for facotries
 - Dev controller
 
 ## What is it?

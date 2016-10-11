@@ -1,5 +1,7 @@
 {
-    "church-b" : {
-        "name": "Church B"
+    "entries" : {
+        "church-b" : {
+            "name": "Church B"
+        }
     }
 }

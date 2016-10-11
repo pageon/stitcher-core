@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 
 class ImageProvider extends AbstractProvider {
 
-    public function parse($path, $parseSingle = false) {
+    public function parse($path) {
         return 'IMG';
     }
 
