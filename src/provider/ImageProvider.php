@@ -35,12 +35,9 @@ class ImageProvider extends AbstractProvider {
      * AbstractProvider constructor.
      *
      * @param        $root
-     * @param string $target
      */
-    public function __construct($root, $target = './public') {
+    public function __construct($root) {
         parent::__construct($root);
-
-        $this->target = $target;
     }
 
     /**
@@ -58,7 +55,7 @@ class ImageProvider extends AbstractProvider {
 
         foreach ($files as $file) {
             $imageName = str_replace(".{$file->getExtension()}", '', $file->getRelativePathname());
-            $srcPath = "{$this->target}/{$file->getRelativePathname()}";
+            $srcPath = "{$this->root}/{$file->getRelativePathname()}";
             $srcName = "/{$file->getRelativePathname()}";
             $fs->copy($file->getPathname(), $srcPath);
 
@@ -70,7 +67,7 @@ class ImageProvider extends AbstractProvider {
                     continue;
                 }
 
-                $targetPath = "{$this->target}/{$imageName}-{$dimensionName}.{$file->getExtension()}";
+                $targetPath = "{$this->root}/{$imageName}-{$dimensionName}.{$file->getExtension()}";
                 $targetName = "{$imageName}-{$dimensionName}.{$file->getExtension()}";
                 $targetSource = null;
 

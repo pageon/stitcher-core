@@ -17,8 +17,8 @@ class ImageSource {
 
         $dimensions = getimagesize($path);
 
-        $this->height = $dimensions[0];
-        $this->width = $dimensions[1];
+        $this->width = $dimensions[0];
+        $this->height = $dimensions[1];
     }
 
     public function getSource() {
