@@ -26,8 +26,4 @@
             "brendt\\stitcher\\": "src/"
         }
     }
-//,
-//    "scripts": {
-//        "post-install": "php vendor/brendt/stitcher/stitcher site:setup"
-//    }
 }
