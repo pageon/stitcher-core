@@ -4,7 +4,7 @@ entries:
         description: This is a church with the name A
         image:
             type: img
-            path: img/churches/church-a.jpg
+            path: img/green.jpg
         body:
             type: md
             path: churches/church-a.md
@@ -13,7 +13,7 @@ entries:
         description: This is a church with the name B
         image:
             type: image
-            path: img/churches/church-b.jpg
+            path: img/green.jpg
         body:
             type: md
             path: churches/church-b.md

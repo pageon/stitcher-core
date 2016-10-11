@@ -95,6 +95,8 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     public function test_save() {
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch();
+
+        dd($blanket);
         $stitcher->save($blanket);
     }
 
