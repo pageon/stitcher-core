@@ -1,5 +1,10 @@
 {extends 'index.tpl'}
 
 {block 'content'}
-    {$church.name}
+    <h1>
+        {$church.name}
+    </h1>
+    <p>
+        {$church.description}
+    </p>
 {/block}

@@ -1,2 +1,8 @@
 name: MD Church C
 description: A description
+body:
+    type: md
+    path: churches/church-c.md
+body-test:
+    type: md
+    path: churches/church-c

@@ -49,4 +49,13 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('name', $data);
     }
 
+    public function test_json_provider_parses_recursive() {
+        $provider = $this->createJsonProvider();
+
+        $data = $provider->parse('churches/church-b', true);
+
+        $this->assertArrayHasKey('body', $data);
+        $this->assertContains('<h2>', $data['body']);
+    }
+
 }

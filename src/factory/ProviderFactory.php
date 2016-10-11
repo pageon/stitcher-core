@@ -7,6 +7,7 @@ use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
 use brendt\stitcher\provider\Provider;
 use brendt\stitcher\provider\YamlProvider;
+use brendt\stitcher\provider\ImageProvider;
 
 class ProviderFactory {
 
@@ -14,6 +15,7 @@ class ProviderFactory {
     const MARKDOWN_PROVIDER = 'md';
     const FOLDER_PROVIDER = '/';
     const YAML_PROVIDER = 'yml';
+    const IMAGE_PROVIDER = 'img';
 
     private $providers =  [];
 
@@ -42,6 +44,10 @@ class ProviderFactory {
             return $this->getByType(self::MARKDOWN_PROVIDER);
         } else if (strpos($file, '.yml') !== false) {
             return $this->getByType(self::YAML_PROVIDER);
+        } else if (strpos($file, '.jpg') !== false) {
+            return $this->getByType(self::IMAGE_PROVIDER);
+        } else if (strpos($file, '.png') !== false) {
+            return $this->getByType(self::IMAGE_PROVIDER);
         }
 
         return null;
@@ -60,6 +66,9 @@ class ProviderFactory {
         $provider = null;
 
         switch ($type) {
+            case self::IMAGE_PROVIDER:
+                $provider = new ImageProvider($this->root);
+                break;
             case self::FOLDER_PROVIDER:
                 $provider = new FolderProvider($this->root);
                 break;

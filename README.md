@@ -2,6 +2,12 @@
 
 A static site generator for PHP and Smarty, with a focus on high performance.
 
+## TODO
+
+- Exception handling
+- Better provider logic
+- Dev controller
+
 ## What is it?
 
 - A static site generator,

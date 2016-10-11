@@ -1,3 +1,7 @@
 {
-    "name": "JSON Church B"
+    "name": "JSON Church B",
+    "body": {
+        "type": "md",
+        "path": "churches/church-b"
+    }
 }

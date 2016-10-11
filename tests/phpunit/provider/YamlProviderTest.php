@@ -32,12 +32,23 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('id', reset($data));
     }
 
-    public function test_json_provider_parses_single() {
+    public function test_yaml_provider_parses_single() {
         $provider = $this->createYamlProvider();
 
         $data = $provider->parse('churches/church-c', true);
 
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);
+    }
+
+    public function test_yaml_provider_parses_recursive() {
+        $provider = $this->createYamlProvider();
+
+        $data = $provider->parse('churches/church-c', true);
+
+        $this->assertArrayHasKey('body', $data);
+        $this->assertArrayHasKey('body-test', $data);
+        $this->assertContains('<h2>', $data['body']);
+        $this->assertContains('<h2>', $data['body-test']);
     }
 }
