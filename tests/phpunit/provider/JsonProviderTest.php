@@ -1,6 +1,7 @@
 <?php
 
 use brendt\stitcher\provider\JsonProvider;
+use brendt\stitcher\exception\ProviderException;
 
 class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -43,7 +44,7 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
     public function test_json_provider_parses_single() {
         $provider = $this->createJsonProvider();
 
-        $data = $provider->parse('churches/church-a', true);
+        $data = $provider->parse('churches/church-a');
 
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);
@@ -52,10 +53,17 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
     public function test_json_provider_parses_recursive() {
         $provider = $this->createJsonProvider();
 
-        $data = $provider->parse('churches/church-b', true);
+        $data = $provider->parse('churches/church-b');
 
         $this->assertArrayHasKey('body', $data);
         $this->assertContains('<h2>', $data['body']);
+    }
+
+    public function test_json_provider_exception_handling() {
+        $provider = $this->createJsonProvider();
+        $this->expectException(ProviderException::class);
+
+        $provider->parse('error/churches-error');
     }
 
 }

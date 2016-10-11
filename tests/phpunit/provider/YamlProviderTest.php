@@ -1,6 +1,7 @@
 <?php
 
 use brendt\stitcher\provider\YamlProvider;
+use brendt\stitcher\exception\ProviderException;
 
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -35,7 +36,7 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
     public function test_yaml_provider_parses_single() {
         $provider = $this->createYamlProvider();
 
-        $data = $provider->parse('churches/church-c', true);
+        $data = $provider->parse('churches/church-c');
 
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);
@@ -44,11 +45,18 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
     public function test_yaml_provider_parses_recursive() {
         $provider = $this->createYamlProvider();
 
-        $data = $provider->parse('churches/church-c', true);
+        $data = $provider->parse('churches/church-c');
 
         $this->assertArrayHasKey('body', $data);
         $this->assertArrayHasKey('body-test', $data);
         $this->assertContains('<h2>', $data['body']);
         $this->assertContains('<h2>', $data['body-test']);
+    }
+
+    public function test_yaml_provider_exception_handling() {
+        $provider = $this->createYamlProvider();
+        $this->expectException(ProviderException::class);
+
+        $provider->parse('error/churches-error');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\stitcher\exception\ProviderException;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 class YamlProvider extends AbstractArrayProvider {
@@ -17,7 +19,11 @@ class YamlProvider extends AbstractArrayProvider {
         $files = $finder->files()->in("{$this->root}")->path($path);
 
         foreach ($files as $file) {
-            $data += Yaml::parse($file->getContents());
+            try {
+                $data += Yaml::parse($file->getContents());
+            } catch (ParseException $e) {
+                throw new ProviderException("{$file->getRelativePathname()}: {$e->getMessage()}");
+            }
         }
 
         $data = $this->parseArrayData($data);
