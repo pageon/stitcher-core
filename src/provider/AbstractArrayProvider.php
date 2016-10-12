@@ -40,14 +40,14 @@ abstract class AbstractArrayProvider extends AbstractProvider {
         }
 
         foreach ($data as $field => $value) {
-            if (is_array($value) && isset($value['type']) && isset($value['path'])) {
-                $provider = $this->providerFactory->getByType($value['type']);
+            if (is_string($value) && preg_match('/^\/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
+                $provider = $this->providerFactory->getProvider($value);
 
                 if (!$provider) {
                     continue;
                 }
 
-                $result[$field] = $provider->parse($value['path']);
+                $result[$field] = $provider->parse(trim($value, '/'));
             } else {
                 $result[$field] = $value;
             }

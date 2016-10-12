@@ -2,18 +2,10 @@ entries:
     church-a:
         name: Church A
         description: This is a church with the name A
-        image:
-            type: img
-            path: img/green.jpg
-        body:
-            type: md
-            path: churches/church-a.md
+        image: /img/green.jpg
+        body: /churches/church-a.md
     church-b:
         name: Church B
         description: This is a church with the name B
-        image:
-            type: image
-            path: img/green.jpg
-        body:
-            type: md
-            path: churches/church-b.md
+        image: /img/green.jpg
+        body: /churches/church-b.md

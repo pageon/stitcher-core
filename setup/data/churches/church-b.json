@@ -1,7 +1,4 @@
 {
     "name": "JSON Church B",
-    "body": {
-        "type": "md",
-        "path": "churches/church-b"
-    }
+    "body": "/churches/church-b.md"
 }

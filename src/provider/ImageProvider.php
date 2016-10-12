@@ -10,8 +10,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class ImageProvider extends AbstractProvider {
 
-    protected $target;
-
     private static $dimensions = [
         '960x640' => [
             'width'  => 960,
