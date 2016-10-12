@@ -14,11 +14,9 @@ abstract class AbstractArrayProvider extends AbstractProvider {
 
     /**
      * AbstractProvider constructor.
-     *
-     * @param $root
      */
-    public function __construct($root) {
-        parent::__construct($root);
+    public function __construct() {
+        parent::__construct();
 
         $this->providerFactory = Stitcher::$providerFactory;
     }

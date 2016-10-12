@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use brendt\stitcher\element\ImageSource;
@@ -10,25 +11,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class ImageProvider extends AbstractProvider {
 
-    private static $dimensions = [
-        '960x640' => [
-            'width'  => 960,
-            'height' => 640,
-        ],
-        '1024x768' => [
-            'width'  => 1024,
-            'height' => 768,
-        ],
-        '1920x1080' => [
-            'width'  => 1920,
-            'height' => 1080,
-        ],
-        '1600x1200' => [
-            'width'  => 1600,
-            'height' => 1200,
-        ],
-    ];
-
     /**
      * @var string
      */
@@ -36,14 +18,11 @@ class ImageProvider extends AbstractProvider {
 
     /**
      * AbstractProvider constructor.
-     *
-     * @param        $root
-     * @param string $publicDir
      */
-    public function __construct($root, $publicDir = './public') {
-        parent::__construct($root);
+    public function __construct() {
+        parent::__construct();
 
-        $this->publicDir = $publicDir;
+        $this->publicDir = Config::get('directories.public');
     }
 
     /**
@@ -78,9 +57,9 @@ class ImageProvider extends AbstractProvider {
         $files = $finder->files()->in($this->root)->path($path);
 
         foreach ($files as $file) {
-            $image = new Image($file->getPathname(), $file->getRelativePathname(), $this->publicDir);
+            $image = new Image($file->getPathname(), $file->getRelativePathname());
 
-            foreach (self::$dimensions as $dimensionName => $dimension) {
+            foreach (Config::get('image.dimensions') as $dimensionName => $dimension) {
                 $width = $dimension['width'];
                 if ($width > $image->getWidth()) {
                     continue;

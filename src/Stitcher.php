@@ -35,7 +35,7 @@ class Stitcher {
     /**
      * @var string
      */
-    public static $publicDir = './public';
+    public $publicDir;
 
     // TODO: Implement Service Container
     /**
@@ -45,16 +45,12 @@ class Stitcher {
 
     /**
      * Stitcher constructor.
-     *
-     * @param string $root
-     * @param string $publicDir
-     * @param string $compileDir
      */
-    public function __construct($root = './src', $publicDir = './public', $compileDir = './.cache') {
-        $this->root = $root;
-        $this->compileDir = $compileDir;
-        self::$publicDir = $publicDir;
-        self::$providerFactory = new ProviderFactory("{$this->root}/data", $publicDir);
+    public function __construct() {
+        $this->root = Config::get('directories.src');
+        $this->publicDir = Config::get('directories.public');
+        $this->compileDir = Config::get('directories.cache');
+        self::$providerFactory = new ProviderFactory();
     }
 
     /**
@@ -78,14 +74,14 @@ class Stitcher {
     public function save($blanket) {
         $fs = new Filesystem();
 
-        $publicDirExists = $fs->exists(self::$publicDir);
+        $publicDirExists = $fs->exists($this->publicDir);
         if (!$publicDirExists) {
-            $fs->mkdir(self::$publicDir);
+            $fs->mkdir($this->publicDir);
         }
 
-        $htaccessExists = $fs->exists(self::$publicDir . '/.htaccess');
+        $htaccessExists = $fs->exists($this->publicDir . '/.htaccess');
         if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', self::$publicDir . '.htaccess');
+            $fs->copy(__DIR__ . '/.htaccess', $this->publicDir . '.htaccess');
         }
 
         foreach ($blanket as $path => $page) {
@@ -93,7 +89,7 @@ class Stitcher {
                 $path = 'index';
             }
 
-            $fs->dumpFile(self::$publicDir . "/{$path}.html", $page);
+            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
     }
 

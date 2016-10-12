@@ -46,6 +46,7 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
         $imageProvider->parse('img/green');
 
         $this->assertTrue($fs->exists($file));
+        // TODO: config with 1x1
     }
 
 }

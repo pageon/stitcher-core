@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\factory;
 
+use brendt\stitcher\Config;
 use brendt\stitcher\provider\FolderProvider;
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
@@ -25,13 +26,10 @@ class ProviderFactory {
 
     /**
      * ProviderFactory constructor.
-     *
-     * @param $root
-     * @param $publicDir
      */
-    public function __construct($root, $publicDir) {
-        $this->root = $root;
-        $this->publicDir = $publicDir;
+    public function __construct() {
+        $this->root = Config::get('directories.src');
+        $this->publicDir = Config::get('directories.public');
     }
 
     /**

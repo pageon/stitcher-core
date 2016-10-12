@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\stitcher\Config;
 use brendt\stitcher\factory\ProviderFactory;
 
 abstract class AbstractProvider implements Provider {
@@ -13,11 +14,9 @@ abstract class AbstractProvider implements Provider {
 
     /**
      * AbstractProvider constructor.
-     *
-     * @param $root
      */
-    public function __construct($root) {
-        $this->root = $root;
+    public function __construct() {
+        $this->root = Config::get('directories.data');
     }
 
 }

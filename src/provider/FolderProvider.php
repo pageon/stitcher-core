@@ -13,7 +13,7 @@ class FolderProvider extends AbstractProvider  {
         $path = trim($path, '/');
         $finder = new Finder();
         $files = $finder->files()->in("{$this->root}/{$path}")->name('*.*');
-        $factory = new ProviderFactory("{$this->root}/{$path}", Stitcher::$publicDir);
+        $factory = new ProviderFactory();
 
         foreach ($files as $file) {
             $provider = $factory->getProvider($file->getFilename());

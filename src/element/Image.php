@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\element;
 
+use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Image {
@@ -20,10 +21,11 @@ class Image {
 
     protected $publicDir;
 
-    public function __construct($pathname, $relativePathname, $publicDir) {
+    public function __construct($pathname, $relativePathname) {
         $this->filesystem = new Filesystem();
+        $this->publicDir = Config::get('directories.public');
 
-        $publicPath = "{$publicDir}/{$relativePathname}";
+        $publicPath = "{$this->publicDir}/{$relativePathname}";
         if (!$this->filesystem->exists($publicPath)) {
             $this->filesystem->copy($pathname, $publicPath);
         }
@@ -33,7 +35,6 @@ class Image {
         $this->extension = array_pop($pathParts);
         $this->name = implode('', $pathParts);
         $this->source = new ImageSource($pathname, $relativePathname);
-        $this->publicDir = $publicDir;
 
         $this->addSource($this->source);
     }
