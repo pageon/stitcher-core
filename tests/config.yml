@@ -1,8 +1,8 @@
 directories:
+    src: ./install
     public: ./tests/public
+    data: ./install/data
     cache: ./tests/.cache
-    src: ./setup
-    data: ./setup/data
 
 image:
     dimensions:

@@ -31,7 +31,6 @@ class Stitcher {
      */
     private $compileDir;
 
-    // TODO: Implement config
     /**
      * @var string
      */

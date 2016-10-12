@@ -15,10 +15,10 @@ class SetupCommand extends Command {
     const DIRECTORY = 'dir';
 
     protected function configure() {
-        $this->setName('site:setup')
+        $this->setName('site:install')
             ->setDescription('Setup the src/ folder of your new website')
-            ->setHelp("This command generated a new src/ folder with a basic setup.")
-            ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to setup the src/ folder', './');
+            ->setHelp("This command generated a new src/ folder with a basic install.")
+            ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to install the src/ folder', './');
     }
 
     /**
@@ -44,13 +44,13 @@ class SetupCommand extends Command {
             $overwrite = $questionHelper->ask($input, $output, $question);
 
             if (!$overwrite) {
-                $output->writeln('Cancelling the setup, run <fg=green>stitcher site:setup</> again if you want to setup the site anyways.');
+                $output->writeln('Cancelling the install, run <fg=green>stitcher site:install</> again if you want to install the site anyways.');
 
                 return;
             }
         }
 
-        $setupPath = __DIR__ . '/../../setup';
+        $setupPath = __DIR__ . '/../../install';
         $files = $finder->files()->in($setupPath);
 
         $fs->mkdir("{$root}/src");
@@ -71,7 +71,7 @@ class SetupCommand extends Command {
             $fs->copy(__DIR__ . '/../../stitcher', './stitcher');
         }
 
-        $output->writeln("Example setup copied to {$root}.");
+        $output->writeln("Example install copied to {$root}.");
         $output->writeln('Run <fg=green>stitcher site:generate</> to generate the site.');
 
         return;

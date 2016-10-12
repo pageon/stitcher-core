@@ -7,7 +7,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class ImageProviderTest extends PHPUnit_Framework_TestCase {
 
     protected function createImageProvider() {
-        return new ImageProvider('./setup/data', './tests/public');
+        return new ImageProvider('./install/data', './tests/public');
     }
 
     public function test_image_create() {
