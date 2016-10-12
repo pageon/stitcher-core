@@ -58,7 +58,7 @@ class Stitcher {
     protected function getSmarty() {
         $smarty = new Smarty();
         $finder = new Finder();
-        $templateFolders = $finder->directories()->in("{$this->root}")->name('template');
+        $templateFolders = $finder->directories()->in($this->root)->name('template');
 
         foreach ($templateFolders as $templateDir) {
             $smarty->addTemplateDir($templateDir);
@@ -80,7 +80,7 @@ class Stitcher {
 
         $htaccessExists = $fs->exists($this->publicDir . '/.htaccess');
         if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', $this->publicDir . '.htaccess');
+            $fs->copy(__DIR__ . '/.htaccess', $this->publicDir . '/.htaccess');
         }
 
         foreach ($blanket as $path => $page) {
