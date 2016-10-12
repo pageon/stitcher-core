@@ -23,6 +23,25 @@ class Config {
         }
     }
 
+    public static function get($key) {
+        $keys = explode('.', $key);
+        $config = self::$config;
+
+        reset($keys);
+
+        while (($key = current($keys)) && isset($config[$key])) {
+            $hasNext = next($keys);
+
+            if (!$hasNext) {
+                return $config[$key];
+            }
+
+            $config = $config[$key];
+        }
+
+        return null;
+    }
+
     public static function set($key, $value) {
         $keys = explode('.', $key);
         $configEntry = self::createConfigEntry($keys, $value);
@@ -41,25 +60,6 @@ class Config {
         }
 
         return $configEntry;
-    }
-
-    public static function get($key) {
-        $keys = explode('.', $key);
-        $config = self::$config;
-
-        reset($keys);
-
-        while (($key = current($keys)) && isset($config[$key])) {
-            $hasNext = next($keys);
-
-            if (!$hasNext) {
-                return $config[$key];
-            }
-
-            $config = $config[$key];
-        }
-
-        return null;
     }
 
 }
