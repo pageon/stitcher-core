@@ -21,13 +21,17 @@ class ProviderFactory {
 
     private $root;
 
+    private $publicDir;
+
     /**
      * ProviderFactory constructor.
      *
      * @param $root
+     * @param $publicDir
      */
-    public function __construct($root) {
+    public function __construct($root, $publicDir) {
         $this->root = $root;
+        $this->publicDir = $publicDir;
     }
 
     /**

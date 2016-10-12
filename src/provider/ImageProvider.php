@@ -27,15 +27,27 @@ class ImageProvider extends AbstractProvider {
             'width'  => 1600,
             'height' => 1200,
         ],
+        '1x1' => [
+            'width'  => 1,
+            'height' => 1,
+        ],
     ];
+
+    /**
+     * @var string
+     */
+    private $publicDir;
 
     /**
      * AbstractProvider constructor.
      *
      * @param        $root
+     * @param string $publicDir
      */
-    public function __construct($root) {
+    public function __construct($root, $publicDir = './public') {
         parent::__construct($root);
+
+        $this->publicDir = $publicDir;
     }
 
     /**
@@ -52,50 +64,21 @@ class ImageProvider extends AbstractProvider {
         $files = $finder->files()->in($this->root)->path($path);
 
         foreach ($files as $file) {
-            $imageName = str_replace(".{$file->getExtension()}", '', $file->getRelativePathname());
-            $srcPath = "{$this->root}/{$file->getRelativePathname()}";
-            $srcName = "/{$file->getRelativePathname()}";
-            $fs->copy($file->getPathname(), $srcPath);
-
-            $image = new Image($srcPath, $srcName);
+            $image = new Image($file->getPathname(), $file->getRelativePathname(), $this->publicDir);
 
             foreach (self::$dimensions as $dimensionName => $dimension) {
                 $width = $dimension['width'];
                 if ($width > $image->getWidth()) {
                     continue;
                 }
+                $height = $dimension['height'];
 
-                $targetPath = "{$this->root}/{$imageName}-{$dimensionName}.{$file->getExtension()}";
-                $targetName = "{$imageName}-{$dimensionName}.{$file->getExtension()}";
-                $targetSource = null;
-
-                if (strpos($targetPath, '.jpg') !== false) {
-                    $targetSource = imagecreatefromjpeg($srcPath);
-                } elseif (strpos($targetPath, '.png') !== false) {
-                    $targetSource = imagecreatefrompng($srcPath);
-                }
-
-                $target = imagescale($targetSource, $width);
-
-                if ($target) {
-                    if ($fs->exists($targetPath)) {
-                        $fs->remove($targetPath);
-                        $fs->touch($targetPath);
-                    }
-
-                    if (strpos($targetPath, '.jpg') !== false) {
-                        imagejpeg($target, $targetPath, 100);
-                    } elseif (strpos($targetPath, '.png') !== false) {
-                        imagepng($target, $targetPath);
-                    }
-
-                    $image->addSource(new ImageSource($targetPath, "/{$targetName}"));
-                }
+                $image->scale($width, $height);
             }
 
             $data[] = [
-                'src' => $image->src,
-                'srcset' => $image->srcset,
+                'src' => $image->renderSrc(),
+                'srcset' => $image->renderSrcset(),
             ];
         }
 

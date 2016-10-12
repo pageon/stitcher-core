@@ -3,6 +3,7 @@
 namespace brendt\stitcher\provider;
 
 use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\Stitcher;
 
 abstract class AbstractArrayProvider extends AbstractProvider {
 
@@ -19,7 +20,7 @@ abstract class AbstractArrayProvider extends AbstractProvider {
     public function __construct($root) {
         parent::__construct($root);
 
-        $this->providerFactory = new ProviderFactory($root);
+        $this->providerFactory = Stitcher::$providerFactory;
     }
 
     /**

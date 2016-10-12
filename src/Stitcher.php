@@ -29,12 +29,17 @@ class Stitcher {
     /**
      * @var string
      */
-    private $publicDir;
+    private $compileDir;
 
     /**
      * @var string
      */
-    private $compileDir;
+    public static $publicDir = './public';
+
+    /**
+     * @var ProviderFactory|null
+     */
+    public static $providerFactory = null;
 
     /**
      * Stitcher constructor.
@@ -45,9 +50,9 @@ class Stitcher {
      */
     public function __construct($root = './src', $publicDir = './public', $compileDir = './.cache') {
         $this->root = $root;
-        $this->publicDir = $publicDir;
         $this->compileDir = $compileDir;
-        $this->factory = new ProviderFactory("{$this->root}/data");
+        self::$publicDir = $publicDir;
+        self::$providerFactory = new ProviderFactory("{$this->root}/data", $publicDir);
     }
 
     /**
@@ -71,14 +76,14 @@ class Stitcher {
     public function save($blanket) {
         $fs = new Filesystem();
 
-        $publicDirExists = $fs->exists("{$this->publicDir}");
+        $publicDirExists = $fs->exists(self::$publicDir);
         if (!$publicDirExists) {
-            $fs->mkdir($this->publicDir);
+            $fs->mkdir(self::$publicDir);
         }
 
-        $htaccessExists = $fs->exists("{$this->publicDir}/.htaccess");
+        $htaccessExists = $fs->exists(self::$publicDir . '/.htaccess');
         if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', "{$this->publicDir}/.htaccess");
+            $fs->copy(__DIR__ . '/.htaccess', self::$publicDir . '.htaccess');
         }
 
         foreach ($blanket as $path => $page) {
@@ -86,7 +91,7 @@ class Stitcher {
                 $path = 'index';
             }
 
-            $fs->dumpFile("{$this->publicDir}/{$path}.html", $page);
+            $fs->dumpFile(self::$publicDir . "/{$path}.html", $page);
         }
     }
 
@@ -208,7 +213,7 @@ class Stitcher {
         }
 
         foreach ($page['data'] as $name => $entry) {
-            $provider = $this->factory->getProvider($entry);
+            $provider = self::$providerFactory->getProvider($entry);
 
             if (!$provider) {
                 continue;
