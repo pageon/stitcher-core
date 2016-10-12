@@ -25,7 +25,6 @@ class Config {
 
     public static function set($key, $value) {
         $keys = explode('.', $key);
-        $i = reset($keys);
         $configEntry = self::createConfigEntry($keys, $value);
 
         self::$config += $configEntry;
