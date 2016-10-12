@@ -49,6 +49,15 @@ abstract class AbstractArrayProvider extends AbstractProvider {
                 }
 
                 $result[$field] = $provider->parse(trim($value, '/'));
+            } elseif (is_array($value) && array_key_exists('src', $value)) {
+                $src = $value['src'];
+                $provider = $this->providerFactory->getProvider($src);
+
+                if (!$provider) {
+                    continue;
+                }
+
+                $result[$field] = $provider->parse($value);
             } else {
                 $result[$field] = $value;
             }

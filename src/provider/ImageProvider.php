@@ -27,10 +27,6 @@ class ImageProvider extends AbstractProvider {
             'width'  => 1600,
             'height' => 1200,
         ],
-        '1x1' => [
-            'width'  => 1,
-            'height' => 1,
-        ],
     ];
 
     /**
@@ -51,14 +47,32 @@ class ImageProvider extends AbstractProvider {
     }
 
     /**
-     * @param $path
+     * @param $entry
      *
      * @return array|mixed
      */
-    public function parse($path) {
-        $fs = new Filesystem();
-        $finder = new Finder();
+    public function parse($entry) {
         $data = [];
+        $defaults = [];
+        $finder = new Finder();
+        $path = null;
+
+        if (is_array($entry)) {
+            if (array_key_exists('src', $entry)) {
+                $path = $entry['src'];
+                unset($entry['src']);
+            }
+
+            foreach ($entry as $field => $value) {
+                $defaults[$field] = $value;
+            }
+        } else {
+            $path = $entry;
+        }
+
+        if (!$path) {
+            return $data;
+        }
 
         /** @var SplFileInfo[] $files */
         $files = $finder->files()->in($this->root)->path($path);
@@ -79,7 +93,7 @@ class ImageProvider extends AbstractProvider {
             $data[] = [
                 'src' => $image->renderSrc(),
                 'srcset' => $image->renderSrcset(),
-            ];
+            ] + $defaults;
         }
 
         return count($data) > 1 ? $data : reset($data);

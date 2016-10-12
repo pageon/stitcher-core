@@ -4,9 +4,10 @@ A static site generator for PHP and Smarty, with a focus on high performance.
 
 ## TODO
 
-- Smarty provider support
 - Image provider support
+- Config
 - DI support for factories
+- Smarty provider support
 - Dev controller
 
 ## What is it?
@@ -18,7 +19,6 @@ It's meant to be a prototyping tool in the first place, but who knows the possib
 ## Roadmap
 
 - [ ] Static generator
-- [ ] Basic data providers
 - [ ] Critical functions
 - [ ] Console support
 - [ ] Base installation

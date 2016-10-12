@@ -5,7 +5,7 @@
         <li>
             {$church.name}
             {if isset($church.image)}
-                <img src="{$church.image.src}" srcset="{$church.image.srcset}" alt="">
+                <img src="{$church.image.src}" srcset="{$church.image.srcset}">
             {/if}
         </li>
     {/foreach}

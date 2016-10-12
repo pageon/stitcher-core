@@ -31,11 +31,13 @@ class Stitcher {
      */
     private $compileDir;
 
+    // TODO: Implement config
     /**
      * @var string
      */
     public static $publicDir = './public';
 
+    // TODO: Implement Service Container
     /**
      * @var ProviderFactory|null
      */

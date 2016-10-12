@@ -2,7 +2,9 @@ entries:
     church-a:
         name: Church A
         description: This is a church with the name A
-        image: /img/green.jpg
+        image:
+            src: /img/green.jpg
+            alt: A green image
         body: /churches/church-a.md
     church-b:
         name: Church B
