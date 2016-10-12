@@ -18,13 +18,30 @@ class Config {
             $config += Yaml::parse($configFile->getContents());
         }
 
-        Config::set($config);
-    }
-
-    public static function set(array $config) {
         foreach ($config as $key => $value) {
             self::$config[$key] = $value;
         }
+    }
+
+    public static function set($key, $value) {
+        $keys = explode('.', $key);
+        $i = reset($keys);
+        $configEntry = self::createConfigEntry($keys, $value);
+
+        self::$config += $configEntry;
+    }
+
+    private static function createConfigEntry($keys, $value) {
+        $configEntry = [];
+        $key = array_shift($keys);
+
+        if (count($keys)) {
+            $configEntry[$key] = self::createConfigEntry($keys, $value);
+        } else {
+            $configEntry[$key] = $value;
+        }
+
+        return $configEntry;
     }
 
     public static function get($key) {
