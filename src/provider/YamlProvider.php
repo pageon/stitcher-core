@@ -20,7 +20,14 @@ class YamlProvider extends AbstractArrayProvider {
 
         foreach ($files as $file) {
             try {
-                $data += Yaml::parse($file->getContents());
+                $parsed = Yaml::parse($file->getContents());
+
+                if (isset($parsed['entries'])) {
+                    $data += $parsed['entries'];
+                } else {
+                    $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
+                    $data[$id] = $parsed;
+                }
             } catch (ParseException $e) {
                 throw new ProviderException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }

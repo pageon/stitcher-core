@@ -23,22 +23,21 @@ abstract class AbstractArrayProvider extends AbstractProvider {
 
     /**
      * @param array $data
-     * @param null  $id
      *
      * @return mixed
      */
-    protected function parseArrayData(array $data, $id = null) {
+    protected function parseArrayData(array $data) {
         $result = [];
 
-        if (isset($data['entries'])) {
-            foreach ($data['entries'] as $id => $entry) {
-                $result[$id] = $this->parseArrayData($entry, $id);
-            }
-
-            return $result;
+        foreach ($data as $id => $entry) {
+            $result[$id] = $this->parseEntryData($id, $entry);
         }
 
-        foreach ($data as $field => $value) {
+        return $result;
+    }
+
+    protected function parseEntryData($id, $entry) {
+        foreach ($entry as $field => $value) {
             if (is_string($value) && preg_match('/^\/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
                 $provider = $this->providerFactory->getProvider($value);
 
@@ -46,7 +45,7 @@ abstract class AbstractArrayProvider extends AbstractProvider {
                     continue;
                 }
 
-                $result[$field] = $provider->parse(trim($value, '/'));
+                $entry[$field] = $provider->parse(trim($value, '/'));
             } elseif (is_array($value) && array_key_exists('src', $value)) {
                 $src = $value['src'];
                 $provider = $this->providerFactory->getProvider($src);
@@ -55,17 +54,15 @@ abstract class AbstractArrayProvider extends AbstractProvider {
                     continue;
                 }
 
-                $result[$field] = $provider->parse($value);
-            } else {
-                $result[$field] = $value;
+                $entry[$field] = $provider->parse($value);
+            }
+
+            if (!isset($entry['id'])) {
+                $entry['id'] = $id;
             }
         }
 
-        if (!isset($result['id'])) {
-            $result['id'] = $id;
-        }
-
-        return $result;
+        return $entry;
     }
 
 }

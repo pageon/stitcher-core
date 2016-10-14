@@ -2,8 +2,21 @@
 
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\exception\ProviderException;
+use brendt\stitcher\Config;
 
 class JsonProviderTest extends PHPUnit_Framework_TestCase {
+
+    /**
+     * JsonProviderTest constructor.
+     */
+    public function __construct() {
+        parent::__construct();
+
+        Config::load('./tests');
+
+        // TODO: Refactor providerFactory with DI
+        $stitcher = new \brendt\stitcher\Stitcher();
+    }
 
     protected function createJsonProvider() {
         return new JsonProvider('./setup/data');
@@ -30,7 +43,9 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches');
 
-        $this->assertArrayHasKey('id', reset($data));
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('id', $entry);
+        }
     }
 
     public function test_json_provider_doenst_parse_subfolders() {
@@ -46,8 +61,10 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches/church-a');
 
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('name', $data);
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('id', $entry);
+            $this->assertArrayHasKey('name', $entry);
+        }
     }
 
     public function test_json_provider_parses_recursive() {
@@ -55,8 +72,10 @@ class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches/church-b');
 
-        $this->assertArrayHasKey('body', $data);
-        $this->assertContains('<h2>', $data['body']);
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('body', $entry);
+            $this->assertContains('<h2>', $entry['body']);
+        }
     }
 
     public function test_json_provider_exception_handling() {

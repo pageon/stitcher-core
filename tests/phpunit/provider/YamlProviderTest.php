@@ -2,11 +2,24 @@
 
 use brendt\stitcher\provider\YamlProvider;
 use brendt\stitcher\exception\ProviderException;
+use brendt\stitcher\Config;
 
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
+    /**
+     * YamlProviderTest constructor.
+     */
+    public function __construct() {
+        parent::__construct();
+
+        Config::load('./tests');
+
+        // TODO: Refactor providerFactory with DI
+        $stitcher = new \brendt\stitcher\Stitcher();
+    }
+
     protected function createYamlProvider() {
-        return new YamlProvider('./setup/data');
+        return new YamlProvider();
     }
 
     public function test_yaml_provider_parse_without_extension() {
@@ -30,7 +43,9 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches.yml');
 
-        $this->assertArrayHasKey('id', reset($data));
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('id', $entry);
+        }
     }
 
     public function test_yaml_provider_parses_single() {
@@ -38,8 +53,10 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches/church-c');
 
-        $this->assertArrayHasKey('id', $data);
-        $this->assertArrayHasKey('name', $data);
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('name', $entry);
+            $this->assertArrayHasKey('id', $entry);
+        }
     }
 
     public function test_yaml_provider_parses_recursive() {
@@ -47,8 +64,10 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
         $data = $provider->parse('churches/church-c');
 
-        $this->assertArrayHasKey('body', $data);
-        $this->assertContains('<h2>', $data['body']);
+        foreach ($data as $entry) {
+            $this->assertArrayHasKey('body', $entry);
+            $this->assertContains('<h2>', $entry['body']);
+        }
     }
 
     public function test_yaml_provider_exception_handling() {

@@ -15,7 +15,7 @@ class SetupCommand extends Command {
     const DIRECTORY = 'dir';
 
     protected function configure() {
-        $this->setName('site:install')
+        $this->setName('install')
             ->setDescription('Setup the src/ folder of your new website')
             ->setHelp("This command generated a new src/ folder with a basic install.")
             ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to install the src/ folder', './');

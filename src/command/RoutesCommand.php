@@ -11,12 +11,13 @@ use brendt\stitcher\Stitcher;
 
 class RoutesCommand extends Command {
 
-    const ROUTE = 'route';
+    const FILTER = 'filter';
 
     protected function configure() {
-        $this->setName('site:routes')
+        $this->setName('routes')
             ->setDescription('Show the available routes')
-            ->setHelp("This command shows the available routes.");
+            ->setHelp("This command shows the available routes.")
+            ->addArgument(self::FILTER, InputArgument::OPTIONAL, 'Specify a filter');
     }
 
     /**
@@ -28,12 +29,20 @@ class RoutesCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         Config::load();
         $stitcher = new Stitcher();
-
         $site = $stitcher->loadSite();
+        $filter = $input->getArgument(self::FILTER);
 
-        $output->writeln('Available routes:');
+        if ($filter) {
+            $output->writeln("Available routes (filtered by <fg=green>{$filter}</>):\n");
+        } else {
+            $output->writeln("Available routes:\n");
+        }
 
         foreach ($site as $route => $page) {
+            if ($filter && strpos($route, $filter) === false) {
+                continue;
+            }
+
             $data = [];
 
             if (isset($page['data'])) {

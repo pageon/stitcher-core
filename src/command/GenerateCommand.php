@@ -14,7 +14,7 @@ class GenerateCommand extends Command {
     const ROUTE = 'route';
 
     protected function configure() {
-        $this->setName('site:generate')
+        $this->setName('generate')
             ->setDescription('Generate the website')
             ->setHelp("This command generates the website based on the data in the src/ folder.")
             ->addArgument(self::ROUTE, null, 'Specify a route to render');

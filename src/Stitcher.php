@@ -139,43 +139,45 @@ class Stitcher {
                 return trim(trim($variable, '{'), '}');
             }, $routeVariables);
 
-            if (count($routeVariables)) {
-                $routeVariable = reset($routeVariables);
 
-                foreach ($data as $name => $entries) {
-                    foreach ($entries as $entry) {
-                        if (!isset($entry[$routeVariable])) {
-                            continue;
+            if (count($routeVariables)) {
+                foreach ($data as $variable => $entries) {
+                    foreach ($entries as $id => $entry) {
+                        $routeName = $route;
+
+                        foreach ($routeVariables as $routeVariable) {
+                            $var = $entry[$routeVariable];
+                            $routeName = str_replace('{' . $routeVariable . '}', $var, $route);
                         }
 
-                        $var = $entry[$routeVariable];
-                        $routeName = str_replace('{' .$routeVariable. '}', $var, $route);
-                        $smarty->assign($name, $entry);
+                        $smarty->assign($variable, $entry);
 
                         try {
                             $template = $templates[$page['template']];
                             $html = $smarty->fetch($template->getRealPath());
                             $blanket[$routeName] = $html;
+
+                            $smarty->clearAllAssign();
                         } catch (\SmartyException $e) {
                             throw $e;
                         }
                     }
                 }
             } else {
-                foreach ($data as $name => $value) {
-                    $smarty->assign($name, $value);
+                foreach ($data as $variable => $entries) {
+                    $smarty->assign($variable, $entries);
                 }
 
                 try {
                     $template = $templates[$page['template']];
                     $html = $smarty->fetch($template->getRealPath());
                     $blanket[$route] = $html;
+
+                    $smarty->clearAllAssign();
                 } catch (\SmartyException $e) {
                     throw $e;
                 }
             }
-
-            $smarty->clearAllAssign();
         }
 
         return $blanket;

@@ -2,6 +2,7 @@
     template: home
     data:
         content: home.md
+        churches: churches.yml
 
 /churches:
     template: churches/overview
@@ -11,7 +12,10 @@
 /churches/{id}:
     template: churches/detail
     data:
+#        intro: intro.md
         church: churches.yml
+
+
 
 #/churches:
 #    template: churches/overview
