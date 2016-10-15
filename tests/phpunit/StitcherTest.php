@@ -118,12 +118,15 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $blanket = $stitcher->stitch('/churches/{id}');
 
         foreach ($blanket as $page => $html) {
+            $this->assertContains('Church', $html);
+            $this->assertContains('Intro', $html);
         }
     }
 
     public function test_stitch_route_multiple() {
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch('/');
+
         $html = $blanket['/'];
 
         $this->assertContains('Church A', $html);

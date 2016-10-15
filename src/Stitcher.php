@@ -131,52 +131,49 @@ class Stitcher {
                 continue;
             }
 
-            $data = $this->getDataForPage($page);
+            $template = $templates[$page['template']];
+            $detailVariable = null;
+            $globalVariables = [];
 
-            $routeVariables = [];
-            preg_match('/{[\w]+}/', $route, $routeVariables);
-            $routeVariables = array_map(function($variable) {
-                return trim(trim($variable, '{'), '}');
-            }, $routeVariables);
+            foreach ($page['data'] as $name => $variable) {
+                if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
+                    $detailVariable = [
+                        'name' => $name,
+                        'src' => $variable['src'],
+                        'id' => $variable['id'],
+                    ];
+                } else if (is_string($variable)) {
+                    $globalVariables[$name] = $this->getData($variable);
+                }
+            }
 
+            if ($detailVariable) {
+                $idField = $detailVariable['id'];
+                $entries = $this->getData($detailVariable['src']);
+                $entryName = $detailVariable['name'];
 
-            if (count($routeVariables)) {
-                foreach ($data as $variable => $entries) {
-                    foreach ($entries as $id => $entry) {
-                        $routeName = $route;
-
-                        foreach ($routeVariables as $routeVariable) {
-                            $var = $entry[$routeVariable];
-                            $routeName = str_replace('{' . $routeVariable . '}', $var, $route);
-                        }
-
-                        $smarty->assign($variable, $entry);
-
-                        try {
-                            $template = $templates[$page['template']];
-                            $html = $smarty->fetch($template->getRealPath());
-                            $blanket[$routeName] = $html;
-
-                            $smarty->clearAllAssign();
-                        } catch (\SmartyException $e) {
-                            throw $e;
-                        }
+                foreach ($entries as $entry) {
+                    if (!isset($entry[$idField])) {
+                        continue;
                     }
+
+                    $routeName = str_replace('{' . $idField . '}', $entry[$idField], $route);
+                    $smarty->assign($entryName, $entry);
+
+                    foreach ($globalVariables as $name => $variable) {
+                        $smarty->assign($name, $variable);
+                    }
+
+                    $blanket[$routeName] = $smarty->fetch($template->getRealPath());
+                    $smarty->clearAllAssign();
                 }
             } else {
-                foreach ($data as $variable => $entries) {
-                    $smarty->assign($variable, $entries);
+                foreach ($globalVariables as $name => $variable) {
+                    $smarty->assign($name, $variable);
                 }
 
-                try {
-                    $template = $templates[$page['template']];
-                    $html = $smarty->fetch($template->getRealPath());
-                    $blanket[$route] = $html;
-
-                    $smarty->clearAllAssign();
-                } catch (\SmartyException $e) {
-                    throw $e;
-                }
+                $blanket[$route] = $smarty->fetch($template->getRealPath());
+                $smarty->clearAllAssign();
             }
         }
 
@@ -199,29 +196,14 @@ class Stitcher {
         return $templates;
     }
 
-    /**
-     * @param $page
-     *
-     * @return array
-     */
-    private function getDataForPage($page) {
-        $data = [];
+    private function getData($src) {
+        $provider = self::$providerFactory->getProvider($src);
 
-        if (!isset($page['data'])) {
-            return $data;
+        if (!$provider) {
+            return $src;
         }
 
-        foreach ($page['data'] as $name => $entry) {
-            $provider = self::$providerFactory->getProvider($entry);
-
-            if (!$provider) {
-                continue;
-            }
-
-            $data[$name] = $provider->parse($entry);
-        }
-
-        return $data;
+        return $provider->parse($src);
     }
 
 }

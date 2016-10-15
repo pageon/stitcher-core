@@ -1,6 +1,8 @@
 {extends 'index.tpl'}
 
 {block 'content'}
+    {$intro}
+
     <h1>
         {$church.name}
     </h1>
