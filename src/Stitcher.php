@@ -147,6 +147,10 @@ class Stitcher {
                 }
             }
 
+            foreach ($globalVariables as $name => $variable) {
+                $smarty->assign($name, $variable);
+            }
+
             if ($detailVariable) {
                 $idField = $detailVariable['id'];
                 $entries = $this->getData($detailVariable['src']);
@@ -158,22 +162,13 @@ class Stitcher {
                     }
 
                     $routeName = str_replace('{' . $idField . '}', $entry[$idField], $route);
+
                     $smarty->assign($entryName, $entry);
-
-                    foreach ($globalVariables as $name => $variable) {
-                        $smarty->assign($name, $variable);
-                    }
-
                     $blanket[$routeName] = $smarty->fetch($template->getRealPath());
-                    $smarty->clearAllAssign();
+                    $smarty->clearAssign($entryName);
                 }
             } else {
-                foreach ($globalVariables as $name => $variable) {
-                    $smarty->assign($name, $variable);
-                }
-
                 $blanket[$route] = $smarty->fetch($template->getRealPath());
-                $smarty->clearAllAssign();
             }
         }
 
