@@ -10,7 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
 
-class SetupCommand extends Command {
+class InstallCommand extends Command {
 
     const DIRECTORY = 'dir';
 
@@ -50,8 +50,9 @@ class SetupCommand extends Command {
             }
         }
 
-        $setupPath = __DIR__ . '/../../install';
-        $files = $finder->files()->in($setupPath);
+        $installPath = __DIR__ . '/../../install';
+        $srcPath = __DIR__ . '/../../install/src';
+        $files = $finder->files()->in($srcPath);
 
         $fs->mkdir("{$root}/src");
         foreach ($files as $file) {
@@ -68,7 +69,11 @@ class SetupCommand extends Command {
         }
 
         if (!$fs->exists("{$root}/stitcher")) {
-            $fs->copy(__DIR__ . '/../../stitcher', './stitcher');
+            $fs->copy(__DIR__ . '/../../stitcher', "{$root}/stitcher");
+        }
+
+        if (!$fs->exists("{$root}/config.yml")) {
+            $fs->copy("{$installPath}/config.yml", "{$root}/config.yml");
         }
 
         $output->writeln("Example install copied to {$root}.");
