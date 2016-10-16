@@ -14,6 +14,19 @@ class InstallCommand extends Command {
 
     const DIRECTORY = 'dir';
 
+    protected $fs;
+
+    /**
+     * InstallCommand constructor.
+     *
+     * @param string $name
+     */
+    public function __construct($name = null) {
+        parent::__construct($name);
+
+        $this->fs = new Filesystem();
+    }
+
     protected function configure() {
         $this->setName('install')
             ->setDescription('Setup the src/ folder of your new website')
@@ -30,14 +43,91 @@ class InstallCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $root = $input->getOption(self::DIRECTORY);
 
-        if (!strpos('./', $root)) {
-            $root = "./{$root}";
+        $log = [];
+
+        $srcDir = './src';
+        $devDir = './dev';
+        $publicDir = './public';
+        $stitcherPath = './stitcher';
+        $configPath = './config.yml';
+
+        $installDir = __DIR__ . '/../../install';
+        $installSrcDir = "{$installDir}/src";
+        $installDevDir = "{$installDir}/dev";
+        $installPublicDir = "{$installDir}/public";
+        $installStitcherPath = "{$installDir}/stitcher";
+        $installConfigPath = "{$installDir}/config.yml";
+
+        if (!$this->fs->exists($configPath)) {
+            $this->fs->copy($installConfigPath, $configPath);
+
+            $log[] = "Copied a sample config.yml to {$configPath}";
         }
 
-        $fs = new Filesystem();
-        $finder = new Finder();
+        if (!$this->fs->exists($stitcherPath)) {
+            $this->fs->copy($installStitcherPath, $stitcherPath);
 
-        if ($fs->exists("{$root}/src")) {
+            $log[] = "Copied the Stitcher Console to {$stitcherPath}";
+        }
+
+        if (!$this->fs->exists($srcDir)) {
+            $this->copyFolder($installSrcDir, $srcDir);
+
+            $log[] = "Copied a sample src/ to {$srcDir}";
+        }
+
+        if (!$this->fs->exists($publicDir)) {
+            $this->copyFolder($installPublicDir, $publicDir);
+
+            $log[] = "Copied the public/ dir to {$publicDir}";
+        }
+
+        if (!$this->fs->exists($devDir)) {
+            $this->copyFolder($installDevDir, $devDir);
+
+            $log[] = "Copied the dev/ dir to {$devDir}";
+        }
+
+        if (count($log)) {
+            $output->writeln("Stitcher was successfully installed!\n");
+            foreach ($log as $line) {
+                $output->writeln("- {$line}");
+            }
+        } else {
+            $output->writeln("Stitcher has already been installed.");
+        }
+
+        return;
+    }
+
+    protected function copyFolder($src, $dst) {
+        $finder = new Finder();
+        $srcFiles = $finder->files()->in($src)->ignoreDotFiles(false);
+
+        if (!$this->fs->exists($dst)) {
+            $this->fs->mkdir($dst);
+        }
+
+        foreach ($srcFiles as $srcFile) {
+            echo "{$srcFile->getFilename()}\n";
+
+            if (!$this->fs->exists("{$dst}/{$srcFile->getRelativePath()}")) {
+                $this->fs->mkdir("{$dst}/{$srcFile->getRelativePath()}");
+            }
+
+            $path = $srcFile->getRelativePathname();
+            if (!$this->fs->exists("{$dst}/{$path}")) {
+                $this->fs->touch("{$dst}/{$path}");
+            }
+
+            $this->fs->dumpFile("{$dst}/{$path}", $srcFile->getContents());
+        }
+    }
+
+    protected function checkContinue(InputInterface $input, OutputInterface $output) {
+        $srcDir = Config::get('directory.src');
+
+        if ($this->fs->exists($srcDir)) {
             $questionHelper = $this->getHelper('question');
             $question = new Question('The src/ directory already exists, are you sure you want to continue? (Some files might be overwritten) [y/N] ', false);
 
@@ -46,40 +136,11 @@ class InstallCommand extends Command {
             if (!$overwrite) {
                 $output->writeln('Cancelling the install, run <fg=green>stitcher site:install</> again if you want to install the site anyways.');
 
-                return;
+                return false;
             }
         }
 
-        $installPath = __DIR__ . '/../../install';
-        $srcPath = __DIR__ . '/../../install/src';
-        $files = $finder->files()->in($srcPath);
-
-        $fs->mkdir("{$root}/src");
-        foreach ($files as $file) {
-            if (!$fs->exists("{$root}/{$file->getRelativePath()}")) {
-                $fs->mkdir("{$root}/src/{$file->getRelativePath()}");
-            }
-
-            $path = $file->getRelativePathname();
-            if (!$fs->exists("{$root}/src/{$path}")) {
-                $fs->touch("{$root}/src/{$path}");
-            }
-
-            $fs->dumpFile("{$root}/src/{$path}", $file->getContents());
-        }
-
-        if (!$fs->exists("{$root}/stitcher")) {
-            $fs->copy(__DIR__ . '/../../stitcher', "{$root}/stitcher");
-        }
-
-        if (!$fs->exists("{$root}/config.yml")) {
-            $fs->copy("{$installPath}/config.yml", "{$root}/config.yml");
-        }
-
-        $output->writeln("Example install copied to {$root}.");
-        $output->writeln('Run <fg=green>stitcher site:generate</> to generate the site.');
-
-        return;
+        return true;
     }
 
 }
