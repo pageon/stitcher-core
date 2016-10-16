@@ -1,7 +1,7 @@
 directories:
-    src: ./install
+    src: ./install/src
     public: ./tests/public
-    data: ./install/data
+    data: ./install/src/data
     cache: ./tests/.cache
 
 image:
