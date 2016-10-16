@@ -77,12 +77,7 @@ class Stitcher {
         if (!$publicDirExists) {
             $fs->mkdir($this->publicDir);
         }
-
-        $htaccessExists = $fs->exists($this->publicDir . '/.htaccess');
-        if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', $this->publicDir . '/.htaccess');
-        }
-
+        
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';

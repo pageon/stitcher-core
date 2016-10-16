@@ -21,7 +21,7 @@ class Config {
 
     public static function load($root = './') {
         $finder = new Finder();
-        $configFiles = $finder->files()->in($root)->name('config.yml')->depth(1);
+        $configFiles = $finder->files()->in($root)->name('config.yml');
         $config = [];
 
         foreach ($configFiles as $configFile) {
