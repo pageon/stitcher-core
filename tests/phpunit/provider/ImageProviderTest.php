@@ -3,6 +3,7 @@
 use brendt\stitcher\provider\ImageProvider;
 use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
+use brendt\stitcher\provider\YamlProvider;
 
 class ImageProviderTest extends PHPUnit_Framework_TestCase {
 
@@ -13,7 +14,11 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
     }
 
     protected function createImageProvider() {
-        return new ImageProvider('./install/data', './tests/public');
+        return new ImageProvider();
+    }
+
+    protected function createYamlProvider() {
+        return new YamlProvider();
     }
 
     public function test_image_create() {
@@ -52,7 +57,17 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
         $imageProvider->parse('img/green');
 
         $this->assertTrue($fs->exists($file));
-        // TODO: config with 1x1
+        $this->assertTrue($fs->exists('./tests/public/img/green-1x1.jpg'));
+    }
+
+    public function test_image_parses_with_extended_fields() {
+        $provider = $this->createYamlProvider();
+
+        $data = $provider->parse('church-image.yml');
+
+        $this->assertTrue(isset($data['church-image']['image']['src']));
+        $this->assertTrue(isset($data['church-image']['image']['srcset']));
+        $this->assertTrue(isset($data['church-image']['image']['alt']));
     }
 
 }

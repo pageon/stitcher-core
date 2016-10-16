@@ -1,3 +1,21 @@
+# The dev config uses a few different paths to load files.
+# There is also only one image dimension specified by default.
+
+# This dev environment should be accessed via a separate virtualhost.
+# An Apache example of such host configuration could be:
+#
+# <VirtualHost *:80>
+#     DocumentRoot "<path_to_project>/dev"
+#     ServerName dev.stitcher.local
+#     ErrorLog "<log_path>/error.log"
+#     CustomLog "<log_path>/access.log" common
+#
+#     <Directory "<path_to_project>/dev">
+#         AllowOverride All
+#         Require all granted
+#     </Directory>
+# </VirtualHost>
+
 directories:
     src: ../src
     public: ../public
