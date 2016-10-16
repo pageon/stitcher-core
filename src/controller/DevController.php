@@ -4,6 +4,11 @@ namespace brendt\stitcher\controller;
 
 use brendt\stitcher\Config;
 use brendt\stitcher\Stitcher;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class DevController {
 
@@ -17,21 +22,35 @@ class DevController {
         $url = $_SERVER['REQUEST_URI'];
 
         $site = $this->stitcher->loadSite();
+        $routes = array_keys($site);
+        $routeCollection = new RouteCollection();
 
-        if (array_key_exists($url, $site)) {
-            $blanket = $this->stitcher->stitch($url);
-        } else {
-            /*
-             * Hoe gaan we dit oplossen?
-             *  - Handmatige mapping bijhouden na het eenmalig stitchen?
-             *  - Loopen over alle routes, en een match berekenen hoeveel de URL lijkt op de route
-             *
-             */
-            $blanket = $this->stitcher->stitch();
+        foreach ($routes as $route) {
+            $routeCollection->add($route, new Route($route));
         }
 
-        if (array_key_exists($url, $blanket)) {
-            echo $blanket[$url];
+        try {
+            $matcher = new UrlMatcher($routeCollection, new RequestContext());
+            $routeResult = $matcher->match($url);
+            $route = $routeResult['_route'];
+
+            $blanket = $this->stitcher->stitch($route);
+
+            if (isset($blanket[$route])) {
+                echo $blanket[$route];
+
+                return;
+            }
+
+            if (isset($blanket[$url])) {
+                echo $blanket[$url];
+
+                return;
+            }
+
+            throw new ResourceNotFoundException();
+        } catch (ResourceNotFoundException $e) {
+            echo "404";
         }
 
         return;

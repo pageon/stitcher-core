@@ -2,12 +2,22 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\factory\ProviderFactory;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Config {
 
+    /**
+     * @var array
+     */
     protected static $config;
+
+    /**
+     * @var ContainerBuilder
+     */
+    protected static $container;
 
     public static function load($root = './') {
         $finder = new Finder();
@@ -21,6 +31,13 @@ class Config {
         foreach ($config as $key => $value) {
             self::$config[$key] = $value;
         }
+
+        self::$container = new ContainerBuilder();
+        self::$container->register('factory.provider', ProviderFactory::class);
+    }
+
+    public static function getDependency($id) {
+        return self::$container->get($id);
     }
 
     public static function get($key) {

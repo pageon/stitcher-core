@@ -1,10 +1,16 @@
 <?php
 
 use brendt\stitcher\provider\ImageProvider;
-
+use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ImageProviderTest extends PHPUnit_Framework_TestCase {
+
+    public function __construct() {
+        parent::__construct();
+
+        Config::load('./tests');
+    }
 
     protected function createImageProvider() {
         return new ImageProvider('./install/data', './tests/public');

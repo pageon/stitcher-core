@@ -13,9 +13,6 @@ class YamlProviderTest extends PHPUnit_Framework_TestCase {
         parent::__construct();
 
         Config::load('./tests');
-
-        // TODO: Refactor providerFactory with DI
-        $stitcher = new \brendt\stitcher\Stitcher();
     }
 
     protected function createYamlProvider() {

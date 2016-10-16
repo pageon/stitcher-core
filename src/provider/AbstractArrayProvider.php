@@ -2,8 +2,8 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\stitcher\Config;
 use brendt\stitcher\factory\ProviderFactory;
-use brendt\stitcher\Stitcher;
 
 abstract class AbstractArrayProvider extends AbstractProvider {
 
@@ -18,7 +18,7 @@ abstract class AbstractArrayProvider extends AbstractProvider {
     public function __construct() {
         parent::__construct();
 
-        $this->providerFactory = Stitcher::$providerFactory;
+        $this->providerFactory = Config::getDependency('factory.provider');
     }
 
     /**

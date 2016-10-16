@@ -2,40 +2,12 @@
 
 A static site generator for PHP and Smarty, with a focus on high performance.
 
-## Overview loader
-
-route:
-    template:
-    data:
-        entries: source.yml
-        intro: source.md
-        
-source.yml > parse > [entries: [idA, idB]]
-intro.md > parse > $md
-- $html = template with $entries = $entries, $intro = $md
-- $blanket[$route] = $html 
-
-
-## Detail loader
-
-route/{id}:
-    template:
-    data:
-        entry: source.yml
-        intro: source.md
-        
-source.yml > parse > [entries: [idA, idB]]
-intro.md > parse > $md
-foreach $entries as $entry
-    - create $routeName route/idA
-    - $html = template with $entry = $entries[$idA], $intro = $md
-    - $blanket[$routeName] = $html 
-
 ## TODO
 
-- Dev controller
-- DI support for factories
+- install:dev
+- Critical CSS support
 - Smarty provider support
+- Base CSS
 
 ## What is it?
 
@@ -45,10 +17,10 @@ It's meant to be a prototyping tool in the first place, but who knows the possib
 
 ## Roadmap
 
-- [ ] Static generator
-- [ ] Critical functions
-- [ ] Console support
 - [ ] Base installation
+- [X] Static generator
+- [X] Console support
+- [ ] Critical functions
 
 ## Future plans
 

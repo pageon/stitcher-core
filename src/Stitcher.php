@@ -34,13 +34,12 @@ class Stitcher {
     /**
      * @var string
      */
-    public $publicDir;
+    private $publicDir;
 
-    // TODO: Implement Service Container
     /**
-     * @var ProviderFactory|null
+     * @var ProviderFactory
      */
-    public static $providerFactory = null;
+    private $providerFactory;
 
     /**
      * Stitcher constructor.
@@ -49,7 +48,8 @@ class Stitcher {
         $this->root = Config::get('directories.src');
         $this->publicDir = Config::get('directories.public');
         $this->compileDir = Config::get('directories.cache');
-        self::$providerFactory = new ProviderFactory();
+
+        $this->providerFactory = Config::getDependency('factory.provider');
     }
 
     /**
@@ -192,7 +192,7 @@ class Stitcher {
     }
 
     private function getData($src) {
-        $provider = self::$providerFactory->getProvider($src);
+        $provider = $this->providerFactory->getProvider($src);
 
         if (!$provider) {
             return $src;

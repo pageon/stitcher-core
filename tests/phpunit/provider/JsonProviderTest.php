@@ -6,16 +6,10 @@ use brendt\stitcher\Config;
 
 class JsonProviderTest extends PHPUnit_Framework_TestCase {
 
-    /**
-     * JsonProviderTest constructor.
-     */
     public function __construct() {
         parent::__construct();
 
         Config::load('./tests');
-
-        // TODO: Refactor providerFactory with DI
-        $stitcher = new \brendt\stitcher\Stitcher();
     }
 
     protected function createJsonProvider() {

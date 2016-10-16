@@ -5,11 +5,18 @@ use brendt\stitcher\provider\FolderProvider;
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
 use brendt\stitcher\provider\YamlProvider;
+use brendt\stitcher\Config;
 
 class ProviderFactoryTest extends PHPUnit_Framework_TestCase {
 
+    public function __construct() {
+        parent::__construct();
+
+        Config::load('./tests');
+    }
+
     protected function createProviderFactory() {
-        return new ProviderFactory('./tests/src/data', './tests/public');
+        return new ProviderFactory();
     }
 
     public function test_provider_factory_folder() {
