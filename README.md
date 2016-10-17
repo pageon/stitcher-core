@@ -4,9 +4,7 @@ A static site generator for PHP and Smarty, with a focus on high performance.
 
 ## TODO
 
-- install:dev
 - Critical CSS support
-- Smarty provider support
 - Base CSS
 
 ## What is it?
@@ -17,11 +15,13 @@ It's meant to be a prototyping tool in the first place, but who knows the possib
 
 ## Roadmap
 
-- [ ] Base installation
 - [X] Static generator
 - [X] Console support
+- [ ] Base installation
 - [ ] Critical functions
 
 ## Future plans
 
+- Pagination and filtering
+- Command line configuration
 - Form support
