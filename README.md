@@ -5,7 +5,7 @@ A static site generator for PHP and Smarty, with a focus on high performance.
 ## What is it?
 
 A static site generator using Smarty templates, and data providers for many formats, like YAML, JSON, MarkDown, SQLite, etc. 
-Also providing helper functions to optimize the critical rendering path. Supporting responsive images, critical CSS loading, etc.
+Also providing helper functions to optimize the critical rendering path, like responsive image support and critical CSS loading.
 It's meant to be a blazing fast prototyping tool in the first place, but who knows the possibilities?
 
 ## Installation
