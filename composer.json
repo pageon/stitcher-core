@@ -29,6 +29,8 @@
         }
     },
     "scripts" : {
-        "post-package-install" : "php vendor/brendt/stitcher/install/stitcher site:install"
+        "post-install-cmd" : [
+            "php vendor/brendt/stitcher/install/stitcher site:install"
+        ]
     }
 }

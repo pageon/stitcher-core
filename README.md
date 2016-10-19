@@ -11,7 +11,7 @@ It's meant to be a prototyping tool in the first place, but who knows the possib
 ## Installation
 
 ```sh
-composer require brendt\stitcher
+composer require brendt/stitcher:1.0.0-alpha
 ```
 
 ## Usage
