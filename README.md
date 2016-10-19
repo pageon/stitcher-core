@@ -78,14 +78,14 @@ Click through the examples in the ``src/`` directory for a thorough understandin
 
 #### TODO in v1
 
-- Refactor inconsistent directories.src usage
+- [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
 
-- Add Twig support
-- Base CSS
-- Pagination and filtering
-- Sass compiler
-- Minifier
-- Command line configuration
-- Form support
+- [ ] Minifier
+- [ ] Base CSS
+- [ ] Sass compiler
+- [ ] Add Twig support
+- [ ] Command line configuration
+- [ ] Pagination and filtering
+- [ ] Form support
