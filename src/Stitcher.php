@@ -29,64 +29,50 @@ class Stitcher {
     /**
      * @var string
      */
-    private $publicDir;
+    private $compileDir;
 
     /**
      * @var string
      */
-    private $compileDir;
+    private $publicDir;
+
+    /**
+     * @var ProviderFactory
+     */
+    private $providerFactory;
 
     /**
      * Stitcher constructor.
-     *
-     * @param string $root
-     * @param string $publicDir
-     * @param string $compileDir
      */
-    public function __construct($root = './src', $publicDir = './public', $compileDir = './.cache') {
-        $this->root = $root;
-        $this->publicDir = $publicDir;
-        $this->compileDir = $compileDir;
-        $this->factory = new ProviderFactory("{$this->root}/data");
+    public function __construct() {
+        $this->root = Config::get('directories.src');
+        $this->publicDir = Config::get('directories.public');
+        $this->compileDir = Config::get('directories.cache');
+
+        $this->providerFactory = Config::getDependency('factory.provider');
     }
 
     /**
      * @return Smarty
      */
     protected function getSmarty() {
-        $smarty = new Smarty();
-        $finder = new Finder();
-        $templateFolders = $finder->directories()->in("{$this->root}")->name('template');
-
-        foreach ($templateFolders as $templateDir) {
-            $smarty->addTemplateDir($templateDir);
-        }
-
-        $smarty->setCompileDir($this->compileDir);
-        $smarty->caching = false;
-
-        return $smarty;
+        return Config::getDependency('engine.smarty');
     }
 
     public function save($blanket) {
         $fs = new Filesystem();
 
-        $publicDirExists = $fs->exists("{$this->publicDir}");
+        $publicDirExists = $fs->exists($this->publicDir);
         if (!$publicDirExists) {
             $fs->mkdir($this->publicDir);
         }
-
-        $htaccessExists = $fs->exists("{$this->publicDir}/.htaccess");
-        if (!$htaccessExists) {
-            $fs->copy(__DIR__ . '/.htaccess', "{$this->publicDir}/.htaccess");
-        }
-
+        
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';
             }
 
-            $fs->dumpFile("{$this->publicDir}/{$path}.html", $page);
+            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
     }
 
@@ -129,51 +115,45 @@ class Stitcher {
                 continue;
             }
 
-            $data = $this->getDataForPage($page);
+            $template = $templates[$page['template']];
+            $detailVariable = null;
+            $globalVariables = [];
 
-            $routeVariables = [];
-            preg_match('/{[\w]+}/', $route, $routeVariables);
-            $routeVariables = array_map(function($variable) {
-                return trim(trim($variable, '{'), '}');
-            }, $routeVariables);
-
-            if (count($routeVariables)) {
-                $routeVariable = reset($routeVariables);
-
-                foreach ($data as $name => $entries) {
-                    foreach ($entries as $entry) {
-                        if (!isset($entry[$routeVariable])) {
-                            continue;
-                        }
-
-                        $var = $entry[$routeVariable];
-                        $routeName = str_replace('{' .$routeVariable. '}', $var, $route);
-                        $smarty->assign($name, $entry);
-
-                        try {
-                            $template = $templates[$page['template']];
-                            $html = $smarty->fetch($template->getRealPath());
-                            $blanket[$routeName] = $html;
-                        } catch (\SmartyException $e) {
-                            throw $e;
-                        }
-                    }
-                }
-            } else {
-                foreach ($data as $name => $value) {
-                    $smarty->assign($name, $value);
-                }
-
-                try {
-                    $template = $templates[$page['template']];
-                    $html = $smarty->fetch($template->getRealPath());
-                    $blanket[$route] = $html;
-                } catch (\SmartyException $e) {
-                    throw $e;
+            foreach ($page['data'] as $name => $variable) {
+                if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
+                    $detailVariable = [
+                        'name' => $name,
+                        'src' => $variable['src'],
+                        'id' => $variable['id'],
+                    ];
+                } else if (is_string($variable)) {
+                    $globalVariables[$name] = $this->getData($variable);
                 }
             }
 
-            $smarty->clearAllAssign();
+            foreach ($globalVariables as $name => $variable) {
+                $smarty->assign($name, $variable);
+            }
+
+            if ($detailVariable) {
+                $idField = $detailVariable['id'];
+                $entries = $this->getData($detailVariable['src']);
+                $entryName = $detailVariable['name'];
+
+                foreach ($entries as $entry) {
+                    if (!isset($entry[$idField])) {
+                        continue;
+                    }
+
+                    $routeName = str_replace('{' . $idField . '}', $entry[$idField], $route);
+
+                    $smarty->assign($entryName, $entry);
+                    $blanket[$routeName] = $smarty->fetch($template->getRealPath());
+                    $smarty->clearAssign($entryName);
+                }
+            } else {
+                $blanket[$route] = $smarty->fetch($template->getRealPath());
+            }
         }
 
         return $blanket;
@@ -195,29 +175,14 @@ class Stitcher {
         return $templates;
     }
 
-    /**
-     * @param $page
-     *
-     * @return array
-     */
-    private function getDataForPage($page) {
-        $data = [];
+    private function getData($src) {
+        $provider = $this->providerFactory->getProvider($src);
 
-        if (!isset($page['data'])) {
-            return $data;
+        if (!$provider) {
+            return $src;
         }
 
-        foreach ($page['data'] as $name => $entry) {
-            $provider = $this->factory->getProvider($entry);
-
-            if (!$provider) {
-                continue;
-            }
-
-            $data[$name] = $provider->parse($entry);
-        }
-
-        return $data;
+        return $provider->parse($src);
     }
 
 }

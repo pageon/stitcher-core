@@ -2,38 +2,21 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\stitcher\Config;
+use brendt\stitcher\factory\ProviderFactory;
+
 abstract class AbstractProvider implements Provider {
 
     /**
-     * @var
+     * @var string
      */
     protected $root;
 
     /**
-     * FileDataProvider constructor.
-     *
-     * @param $root
+     * AbstractProvider constructor.
      */
-    public function __construct($root) {
-        $this->root = $root;
-    }
-
-    protected function parseArrayData($data, $path, $extension, $parseSingle = false){
-        if ($parseSingle) {
-            if (!isset($data['id'])) {
-                $data['id'] = str_replace($extension, '', $path);
-            }
-        } else {
-            foreach ($data as $id => $entry) {
-                if (isset($entry['id'])) {
-                    continue;
-                }
-
-                $data[$id]['id'] = $id;
-            }
-        }
-
-        return $data;
+    public function __construct() {
+        $this->root = Config::get('directories.data');
     }
 
 }

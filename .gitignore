@@ -2,3 +2,5 @@
 .idea
 .cache
 /tests/public
+/setupDir
+.DS_Store

@@ -1,14 +1,11 @@
 <?php
 
 use brendt\stitcher\Stitcher;
+use brendt\stitcher\Config;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
-
-    /**
-     * @var string
-     */
-    protected $root;
 
     /**
      * StitcherTest constructor.
@@ -16,14 +13,14 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     public function __construct() {
         parent::__construct();
 
-        $this->root = './tests';
+        Config::load('./tests');
     }
 
     /**
      * @return Stitcher
      */
     protected function createStitcher() {
-        return new Stitcher($this->root . '/src', $this->root . '/public');
+        return new Stitcher();
     }
 
     public function test_site_loading() {
@@ -93,9 +90,48 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     }
 
     public function test_save() {
+        $public = Config::get('directories.public');
+        $fs = new Filesystem();
+        $fs->remove($public);
+
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch();
         $stitcher->save($blanket);
+
+        $this->assertTrue($fs->exists("{$public}/churches/church-a.html"));
+        $this->assertTrue($fs->exists("{$public}/churches/church-b.html"));
+        $this->assertTrue($fs->exists("{$public}/churches.html"));
+        $this->assertTrue($fs->exists("{$public}/index.html"));
+
+        $finder = new Finder();
+        $files = $finder->in("{$public}/churches")->name('church-a.html');
+
+        foreach ($files as $file) {
+            $html = $file->getContents();
+
+            $this->assertContains('Church A', $html);
+        }
+    }
+
+    public function test_stitch_route_single() {
+        $stitcher = $this->createStitcher();
+        $blanket = $stitcher->stitch('/churches/{id}');
+
+        foreach ($blanket as $page => $html) {
+            $this->assertContains('Church', $html);
+            $this->assertContains('Intro', $html);
+        }
+    }
+
+    public function test_stitch_route_multiple() {
+        $stitcher = $this->createStitcher();
+        $blanket = $stitcher->stitch('/');
+
+        $html = $blanket['/'];
+
+        $this->assertContains('Church A', $html);
+        $this->assertContains('Church B', $html);
+        $this->assertContains('HOOOOME', $html);
     }
 
 }

@@ -9,11 +9,10 @@ class MarkdownProvider extends AbstractProvider {
 
     /**
      * @param string $path
-     * @param bool   $parseSingle
      *
      * @return string
      */
-    public function parse($path = '*.md', $parseSingle = false) {
+    public function parse($path = '*.md') {
         $html = '';
         $finder = new Finder();
         if (!strpos($path, '.md')) {
