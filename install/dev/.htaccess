@@ -1,12 +1,14 @@
+# Stitcher development htaccess
+
 Options +FollowSymLinks
 DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Route to index.php
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^.* - [L]
-
     RewriteRule ^(.*)$ index.php [NE,L,QSA]
 </IfModule>

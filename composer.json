@@ -1,31 +1,34 @@
 {
-    "name": "brendt/stitcher",
-    "description": "A static site generator for PHP and Smarty, with a focus on high performance.",
-    "license": "proprietary",
-    "authors": [
+    "name" : "brendt/stitcher",
+    "description" : "A static site generator for PHP and Smarty, with a focus on high performance.",
+    "license" : "proprietary",
+    "authors" : [
         {
-            "name": "Brent",
-            "email": "brent@pageon.be"
+            "name" : "Brent",
+            "email" : "brent@pageon.be"
         }
     ],
-    "require": {
-        "PHP": ">=5.6",
-        "symfony/yaml": "^3.1",
-        "michelf/php-markdown": "^1.6",
-        "symfony/finder": "^3.1",
-        "smarty/smarty": "^3.1",
-        "larapack/dd": "^1.0",
-        "symfony/filesystem": "^3.1",
-        "symfony/console": "^3.1",
-        "symfony/routing": "^3.1",
-        "symfony/dependency-injection": "^3.1"
+    "require" : {
+        "PHP" : ">=5.6",
+        "symfony/yaml" : "^3.1",
+        "michelf/php-markdown" : "^1.6",
+        "symfony/finder" : "^3.1",
+        "smarty/smarty" : "^3.1",
+        "larapack/dd" : "^1.0",
+        "symfony/filesystem" : "^3.1",
+        "symfony/console" : "^3.1",
+        "symfony/routing" : "^3.1",
+        "symfony/dependency-injection" : "^3.1"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^5.6"
+    "require-dev" : {
+        "phpunit/phpunit" : "^5.6"
     },
-    "autoload": {
-        "psr-4": {
-            "brendt\\stitcher\\": "src/"
+    "autoload" : {
+        "psr-4" : {
+            "brendt\\stitcher\\" : "src/"
         }
+    },
+    "scripts" : {
+        "post-package-install" : "php vendor/brendt/stitcher/install/stitcher site:install"
     }
 }

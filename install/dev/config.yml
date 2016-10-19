@@ -1,4 +1,4 @@
-# The dev config uses a few different paths to load files.
+# The development config uses a few different paths to load files.
 # There is also only one image dimension specified by default.
 
 # This dev environment should be accessed via a separate virtualhost.
@@ -17,8 +17,9 @@
 # </VirtualHost>
 
 directories:
-    src: ../src
     public: ../public
+    src: ../src
+    image: ../public
     data: ../src/data
     cache: ../.cache
 
