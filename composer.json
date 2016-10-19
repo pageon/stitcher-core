@@ -27,10 +27,5 @@
         "psr-4" : {
             "brendt\\stitcher\\" : "src/"
         }
-    },
-    "scripts" : {
-        "post-install-cmd" : [
-            "php vendor/brendt/stitcher/install/stitcher site:install"
-        ]
     }
 }

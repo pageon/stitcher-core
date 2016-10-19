@@ -12,6 +12,7 @@ It's meant to be a prototyping tool in the first place, but who knows the possib
 
 ```sh
 composer require brendt/stitcher:1.0.0-alpha
+php vendor/brendt/stitcher/install/stitcher site:install
 ```
 
 ## Usage
