@@ -28,10 +28,18 @@ class InstallCommand extends Command {
     }
 
     protected function configure() {
-        $this->setName('install')
-            ->setDescription('Setup the src/ folder of your new website')
-            ->setHelp("This command generated a new src/ folder with a basic install.")
-            ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to install the src/ folder', './');
+        $this->setName('site:install')
+            ->setDescription('Setup a new Stitcher installation.')
+            ->setHelp("This command will generate several files as a base installation. (Only if they don't exist yet.)
+            
+    - The src/ directory with some examples
+    - The dev/ directory
+    - The public/ directory
+    - The stitcher console
+    - A sample config.yml
+")
+//            ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to install the src/ folder', './')
+        ;
     }
 
     /**
@@ -41,8 +49,7 @@ class InstallCommand extends Command {
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $root = $input->getOption(self::DIRECTORY);
-
+//        $root = $input->getOption(self::DIRECTORY);
         $log = [];
 
         $srcDir = './src';

@@ -14,7 +14,7 @@ class GenerateCommand extends Command {
     const ROUTE = 'route';
 
     protected function configure() {
-        $this->setName('generate')
+        $this->setName('site:generate')
             ->setDescription('Generate the website')
             ->setHelp("This command generates the website based on the data in the src/ folder.")
             ->addArgument(self::ROUTE, null, 'Specify a route to render');
@@ -36,9 +36,9 @@ class GenerateCommand extends Command {
         $stitcher->save($blanket);
 
         if ($route) {
-            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}/</>.");
+            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
         } else {
-            $output->writeln("Site successfully generated in <fg=green>{$publicDir}/</>.");
+            $output->writeln("Site successfully generated in <fg=green>{$publicDir}</>.");
         }
 
         return;

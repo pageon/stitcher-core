@@ -18,7 +18,7 @@ class RouteCommand extends Command {
     const URL = 'url';
 
     protected function configure() {
-        $this->setName('route')
+        $this->setName('router:dispatch')
             ->setDescription('Simulate routing of an URL')
             ->setHelp("Simulate routing of an URL.")
             ->addArgument(self::URL, InputArgument::REQUIRED);

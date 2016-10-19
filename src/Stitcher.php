@@ -56,18 +56,7 @@ class Stitcher {
      * @return Smarty
      */
     protected function getSmarty() {
-        $smarty = new Smarty();
-        $finder = new Finder();
-        $templateFolders = $finder->directories()->in($this->root)->name('template');
-
-        foreach ($templateFolders as $templateDir) {
-            $smarty->addTemplateDir($templateDir);
-        }
-
-        $smarty->setCompileDir($this->compileDir);
-        $smarty->caching = false;
-
-        return $smarty;
+        return Config::getDependency('engine.smarty');
     }
 
     public function save($blanket) {

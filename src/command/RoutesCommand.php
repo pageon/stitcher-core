@@ -14,7 +14,7 @@ class RoutesCommand extends Command {
     const FILTER = 'filter';
 
     protected function configure() {
-        $this->setName('routes')
+        $this->setName('router:list')
             ->setDescription('Show the available routes')
             ->setHelp("This command shows the available routes.")
             ->addArgument(self::FILTER, InputArgument::OPTIONAL, 'Specify a filter');

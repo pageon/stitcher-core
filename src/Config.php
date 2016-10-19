@@ -2,10 +2,12 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\ProviderFactory;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use brendt\stitcher\engine\smarty\SmartyEngine;
 
 class Config {
 
@@ -34,6 +36,8 @@ class Config {
 
         self::$container = new ContainerBuilder();
         self::$container->register('factory.provider', ProviderFactory::class);
+        self::$container->register('engine.smarty', SmartyEngine::class);
+        self::$container->register('engine.plugin', EnginePlugin::class);
     }
 
     public static function getDependency($id) {
