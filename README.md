@@ -75,14 +75,30 @@ There are several ways to load CSS in a Stitcher template. The ``{css}`` functio
 
 **Loading CSS files**
 
+Stitcher will copy source files to the public directory and generate the correct ``<link>`` element when encoutering a ``{css}`` function.
+
+```html
+{css src='css/main.css'}
+```
+
 **Critical CSS Loading**
+
+Tagging CSS as "critical" will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
+immediately look decent, it's probably a good idea to load some CSS this way.  
+
+```html
+{css src='css/main.css' critical=true}
+```
+
+*Critical CSS loading will automatically add ``<style>`` tags.*
 
 **SCSS and SASS**
 
 Stitcher will automatically compile SASS and SCSS files for you, just specify the source file in the ``{css}`` function.
 
 ```html
-{css src='css/main.scss'}
+{css src='css/main.scss' critical=true}
+{css src='css/extra.scss'}
 ```
 
 I'd recommend handling includes in your SASS files and not from a template file. Imports can be done from the source directory:
