@@ -4,6 +4,7 @@ namespace brendt\stitcher;
 
 use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\ProviderFactory;
+use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,6 +39,8 @@ class Config {
         self::$container->register('factory.provider', ProviderFactory::class);
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
+        self::$container->register('engine.sass', new Compiler())
+            ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);
     }
 
     public static function getDependency($id) {

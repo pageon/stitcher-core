@@ -69,23 +69,62 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 Click through the examples in the ``src/`` directory for a thorough understanding on how to create a site with Stitcher.
 
-## Roadmap
+#### CSS
+
+There are several ways to load CSS in a Stitcher template. The ``{css}`` function is the way to go.
+
+**Loading CSS files**
+
+Stitcher will copy source files to the public directory and generate the correct ``<link>`` element when encoutering a ``{css}`` function.
+
+```html
+{css src='css/main.css'}
+```
+
+**Critical CSS Loading**
+
+Tagging CSS as "critical" will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
+immediately look decent, it's probably a good idea to load some CSS this way.  
+
+```html
+{css src='css/main.css' critical=true}
+```
+
+*Critical CSS loading will automatically add ``<style>`` tags.*
+
+**SCSS and SASS**
+
+Stitcher will automatically compile SASS and SCSS files for you, just specify the source file in the ``{css}`` function.
+
+```html
+{css src='css/main.scss' critical=true}
+{css src='css/extra.scss'}
+```
+
+I'd recommend handling includes in your SASS files and not from a template file. Imports can be done from the source directory:
+
+```css
+/* ./src/css/includes.scss */
+@import "css/includes";
+```
+
+## Features
 
 - [X] Static generator
 - [X] Console support
 - [X] Base installation
 - [X] Performance helper functions
+- [X] SASS support
 
 #### TODO in v1
 
+- [ ] Minifier
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
 
-- [ ] Minifier
 - [ ] Base CSS
-- [ ] Sass compiler
-- [ ] Add Twig support
+- [ ] Twig support
 - [ ] Command line configuration
 - [ ] Pagination and filtering
 - [ ] Form support
