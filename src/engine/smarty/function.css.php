@@ -6,7 +6,7 @@ function smarty_function_css($params, $template) {
     $plugin = Config::getDependency('engine.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
-    $isCritical = isset($params['critical']) ? $params['critical'] : null;
+    $inline = isset($params['inline']);
 
-    return $plugin->css($src, $isCritical);
+    return $plugin->css($src, $inline);
 }

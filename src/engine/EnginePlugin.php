@@ -10,13 +10,13 @@ use Symfony\Component\Finder\Finder;
 
 class EnginePlugin {
 
-    public function css($src, $isCritical = false) {
+    public function css($src, $inline = false) {
         /** @var ProviderFactory $factory */
         $factory = Config::getDependency('factory.provider');
         $provider = $factory->getProvider($src);
         $data = $provider->parse($src);
 
-        if ($isCritical) {
+        if ($inline) {
             $result = "<style>{$data}</style>";
         } else {
             $publicDir = Config::get('directories.public');

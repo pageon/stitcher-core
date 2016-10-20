@@ -1,7 +1,7 @@
 <html>
     <head>
         <title></title>
-        {css src="css/main.css" critical=true}
+        {css src="css/main.css" inline=true}
     </head>
     <body>
         {block 'content'}{/block}

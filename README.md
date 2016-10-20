@@ -81,13 +81,13 @@ Stitcher will copy source files to the public directory and generate the correct
 {css src='css/main.css'}
 ```
 
-**Critical CSS Loading**
+**Inline CSS Loading**
 
-Tagging CSS as "critical" will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
-immediately look decent, it's probably a good idea to load some CSS this way.  
+Tagging CSS as inline will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
+immediately look good without any extra requests, it's probably a good idea to load some CSS inline.  
 
 ```html
-{css src='css/main.css' critical=true}
+{css src='css/main.css' inline=true}
 ```
 
 *Critical CSS loading will automatically add ``<style>`` tags.*
@@ -97,7 +97,7 @@ immediately look decent, it's probably a good idea to load some CSS this way.
 Stitcher will automatically compile SASS and SCSS files for you, just specify the source file in the ``{css}`` function.
 
 ```html
-{css src='css/main.scss' critical=true}
+{css src='css/main.scss' inline=true}
 {css src='css/extra.scss'}
 ```
 
@@ -118,6 +118,10 @@ I'd recommend handling includes in your SASS files and not from a template file.
 
 #### TODO in v1
 
+- [ ] Meta configuration
+    - viewport
+    -
+- [ ] Apache compression
 - [ ] Minifier
 - [ ] Refactor inconsistent directories.src usage
 

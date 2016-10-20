@@ -46,7 +46,7 @@ class EnginePluginTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_css_critical() {
+    public function test_css_inline() {
         $plugin = $this->createEnginePlugin();
 
         $result = $plugin->css('css/main.css', true);
@@ -74,7 +74,7 @@ class EnginePluginTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_sass_critical() {
+    public function test_sass_inline() {
         $plugin = $this->createEnginePlugin();
 
         $result = $plugin->css('css/main.scss', true);
