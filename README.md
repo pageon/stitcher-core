@@ -22,7 +22,7 @@ As a developer, you'll mostly work in the ``src/`` directory, generating the sit
 and debugging with an on-the-fly development controller. By running the install command, you'll create a base installation 
 from which you can start. 
 
-#### Host setup
+### Host setup
 
 Stitcher requires at least one virtual host, two if you'd want to use the developers controller. 
 
@@ -65,11 +65,11 @@ Don't forget to add a local host in ``/ets/hosts``.
 127.0.0.1 dev.stitcher.local
 ```
 
-#### Building a site
+### Building a site
 
 Click through the examples in the ``src/`` directory for a thorough understanding on how to create a site with Stitcher.
 
-#### CSS
+### CSS
 
 There are several ways to load CSS in a Stitcher template. The ``{css}`` function is the way to go.
 
