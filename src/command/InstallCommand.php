@@ -116,8 +116,6 @@ class InstallCommand extends Command {
         }
 
         foreach ($srcFiles as $srcFile) {
-            echo "{$srcFile->getFilename()}\n";
-
             if (!$this->fs->exists("{$dst}/{$srcFile->getRelativePath()}")) {
                 $this->fs->mkdir("{$dst}/{$srcFile->getRelativePath()}");
             }
