@@ -4,12 +4,21 @@ namespace brendt\stitcher\engine;
 
 use brendt\stitcher\Config;
 use brendt\stitcher\factory\ProviderFactory;
-use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 
+/**
+ * Class EnginePlugin
+ * @package brendt\stitcher\engine
+ *
+ * This class provides functionality which can be used by template plugins/functions.
+ */
 class EnginePlugin {
 
+    /**
+     * This function will read meta configuration and output the corresponding meta tags.
+     *
+     * @return string
+     */
     public function meta() {
         $meta = Config::get('meta');
 
@@ -30,11 +39,33 @@ class EnginePlugin {
         return implode("\n", $result);
     }
 
+    /**
+     * This function will take a source path and an optional inline parameter.
+     * The CSS file will be copied from the source path to the public directory.
+     * If the "minify" option is set to true in config.yml, the output will be minified.
+     *
+     * If the inline parameter is set, the output won't be copied to a public file,
+     * but instead be outputted to an HTML string which can be included in a template.
+     *
+     * Files with the .scss and .sass extensions will be compiled to normal CSS files.
+     *
+     * @param string $src
+     * @param bool   $inline
+     *
+     * @return string
+     */
     public function css($src, $inline = false) {
         /** @var ProviderFactory $factory */
         $factory = Config::getDependency('factory.provider');
+
         $provider = $factory->getProvider($src);
         $data = $provider->parse($src);
+
+        if (Config::get('minify')) {
+            /** @var \CSSmin $minifier */
+            $minifier = Config::getDependency('engine.minify.css');
+            $data = $minifier->run($data);
+        }
 
         if ($inline) {
             $result = "<style>{$data}</style>";
@@ -55,11 +86,29 @@ class EnginePlugin {
         return $result;
     }
 
+    /**
+     * This function will take a source path and an optional inline parameter.
+     * The JS file will be copied from the source path to the public directory.
+     * If the "minify" option is set to true in config.yml, the output will be minified.
+     *
+     * If the inline parameter is set, the output won't be copied to a public file,
+     * but instead be outputted to an HTML string which can be included in a template.
+     *
+     * @param string $src
+     * @param bool   $inline
+     *
+     * @return string
+     */
     public function js($src, $inline = false) {
         /** @var ProviderFactory $factory */
         $factory = Config::getDependency('factory.provider');
+
         $provider = $factory->getProvider($src);
         $data = $provider->parse($src);
+
+        if (Config::get('minify')) {
+            $data = \JSMin::minify($data);
+        }
 
         if ($inline) {
             $result = "<script>{$data}</script>";
@@ -78,5 +127,5 @@ class EnginePlugin {
 
         return $result;
     }
-    
+
 }

@@ -140,13 +140,12 @@ JS files can be loaded by calling the ``{js}`` function. This function works lik
 - [X] Console support
 - [X] Base installation
 - [X] Performance helper functions
-- [X] SASS support
+- [X] Meta configuration
+- [X] SASS, CSS and JavaScript support
 
 #### TODO in v1
 
-- [ ] Meta configuration
 - [ ] Minifier
-- [ ] Apache compression
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans

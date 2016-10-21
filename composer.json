@@ -19,7 +19,8 @@
         "symfony/console" : "^3.1",
         "symfony/routing" : "^3.1",
         "symfony/dependency-injection" : "^3.1",
-        "leafo/scssphp": "^0.6.6"
+        "leafo/scssphp": "^0.6.6",
+        "mrclay/minify": "^2.3"
     },
     "require-dev" : {
         "phpunit/phpunit" : "^5.6"
