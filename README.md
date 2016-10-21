@@ -69,6 +69,23 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 Click through the examples in the ``src/`` directory for a thorough understanding on how to create a site with Stitcher.
 
+### Meta
+
+You can configure meta tags in ``config.yml``.
+
+```yml
+meta:
+    viewport: width=device-width, initial-scale=1
+```
+
+Meta tags can be automatically rendered from this config by calling the ``{meta}`` function.
+
+```html
+<head>
+    {meta}
+</head>
+```
+
 ### CSS
 
 There are several ways to load CSS in a Stitcher template. The ``{css}`` function is the way to go.
@@ -108,6 +125,15 @@ I'd recommend handling includes in your SASS files and not from a template file.
 @import "css/includes";
 ```
 
+### JavaScript
+
+JS files can be loaded by calling the ``{js}`` function. This function works like the ``{css}`` function.
+
+```html
+{js src='js/main.js' inline=true}
+{js src='js/extra.js'}
+```
+
 ## Features
 
 - [X] Static generator
@@ -119,10 +145,8 @@ I'd recommend handling includes in your SASS files and not from a template file.
 #### TODO in v1
 
 - [ ] Meta configuration
-    - viewport
-    -
-- [ ] Apache compression
 - [ ] Minifier
+- [ ] Apache compression
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
