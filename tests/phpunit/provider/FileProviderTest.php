@@ -23,7 +23,6 @@ class FileProviderTest extends PHPUnit_Framework_TestCase {
         $this->assertContains('body {', $result);
     }
 
-
     public function test_parse_js() {
         $provider = $this->createCssProvider();
 
