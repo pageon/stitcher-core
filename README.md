@@ -134,6 +134,14 @@ JS files can be loaded by calling the ``{js}`` function. This function works lik
 {js src='js/extra.js'}
 ```
 
+### Minification
+
+CSS (including compiled SASS and SCSS) and JavaScript will be minified when the ``minify`` option is set to true in ``config.yml``.
+
+```yml
+minify: true
+```
+
 ## Features
 
 - [X] Static generator
