@@ -64,7 +64,7 @@ class CleanCommand extends Command {
                 $output->writeln("- {$line}");
             }
 
-            $output->writeln("\nRun <fg=green>site:generate</> to generate these files again.");
+            $output->writeln("\nRun <fg=green>site:install</> and <fg=green>site:generate</> to generate these files again.");
         } else {
             $output->writeln('No files were found');
         }
