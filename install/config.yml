@@ -35,3 +35,6 @@ image:
 # Configure meta tags
 meta:
     viewport: width=device-width, initial-scale=1
+
+# Minify CSS and JavaScript
+minify: true
