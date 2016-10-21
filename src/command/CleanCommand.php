@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Finder\Finder;
 
 class CleanCommand extends Command {
 
@@ -44,11 +45,23 @@ class CleanCommand extends Command {
         }
 
         $fs = new Filesystem();
+        $finder = new Finder();
         $log = [];
 
         if ($fs->exists($publicDir)) {
-            $fs->remove($publicDir);
-            $log[] = "Removed the public directory: {$publicDir}";
+            $publicDirectories = $finder->directories()->in($publicDir);
+            $directoryPaths = [];
+            foreach ($publicDirectories as $directory) {
+                $directoryPaths[] = $directory->getPathname();
+            }
+            $fs->remove($directoryPaths);
+
+            $publicFiles = $finder->files()->in($publicDir)->notName('.htaccess')->ignoreDotFiles(true);
+            foreach ($publicFiles as $file) {
+                $fs->remove($file->getPathname());
+            }
+
+            $log[] = "Cleaned the public directory: {$publicDir}";
         }
 
         if ($fs->exists($cacheDir)) {
@@ -64,7 +77,7 @@ class CleanCommand extends Command {
                 $output->writeln("- {$line}");
             }
 
-            $output->writeln("\nRun <fg=green>site:install</> and <fg=green>site:generate</> to generate these files again.");
+            $output->writeln("\nRun <fg=green>site:generate</> to generate these files again.");
         } else {
             $output->writeln('No files were found');
         }
