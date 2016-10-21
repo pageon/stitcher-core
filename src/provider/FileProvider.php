@@ -5,7 +5,7 @@ namespace brendt\stitcher\provider;
 use brendt\stitcher\Config;
 use Symfony\Component\Finder\Finder;
 
-class CssProvider implements Provider {
+class FileProvider implements Provider {
 
     /**
      * @param $path

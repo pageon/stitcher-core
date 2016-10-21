@@ -22,7 +22,7 @@ As a developer, you'll mostly work in the ``src/`` directory, generating the sit
 and debugging with an on-the-fly development controller. By running the install command, you'll create a base installation 
 from which you can start. 
 
-### Host setup
+## Host setup
 
 Stitcher requires at least one virtual host, two if you'd want to use the developers controller. 
 
@@ -65,9 +65,26 @@ Don't forget to add a local host in ``/ets/hosts``.
 127.0.0.1 dev.stitcher.local
 ```
 
-### Building a site
+## Building a site
 
 Click through the examples in the ``src/`` directory for a thorough understanding on how to create a site with Stitcher.
+
+### Meta
+
+You can configure meta tags in ``config.yml``.
+
+```yml
+meta:
+    viewport: width=device-width, initial-scale=1
+```
+
+Meta tags can be automatically rendered from this config by calling the ``{meta}`` function.
+
+```html
+<head>
+    {meta}
+</head>
+```
 
 ### CSS
 
@@ -81,13 +98,13 @@ Stitcher will copy source files to the public directory and generate the correct
 {css src='css/main.css'}
 ```
 
-**Critical CSS Loading**
+**Inline CSS Loading**
 
-Tagging CSS as "critical" will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
-immediately look decent, it's probably a good idea to load some CSS this way.  
+Tagging CSS as inline will load it directly in the DOM. Not all CSS should be loaded this way, but to make the site 
+immediately look good without any extra requests, it's probably a good idea to load some CSS inline.  
 
 ```html
-{css src='css/main.css' critical=true}
+{css src='css/main.css' inline=true}
 ```
 
 *Critical CSS loading will automatically add ``<style>`` tags.*
@@ -97,7 +114,7 @@ immediately look decent, it's probably a good idea to load some CSS this way.
 Stitcher will automatically compile SASS and SCSS files for you, just specify the source file in the ``{css}`` function.
 
 ```html
-{css src='css/main.scss' critical=true}
+{css src='css/main.scss' inline=true}
 {css src='css/extra.scss'}
 ```
 
@@ -108,13 +125,31 @@ I'd recommend handling includes in your SASS files and not from a template file.
 @import "css/includes";
 ```
 
+### JavaScript
+
+JS files can be loaded by calling the ``{js}`` function. This function works like the ``{css}`` function.
+
+```html
+{js src='js/main.js' inline=true}
+{js src='js/extra.js'}
+```
+
+### Minification
+
+CSS (including compiled SASS and SCSS) and JavaScript will be minified when the ``minify`` option is set to true in ``config.yml``.
+
+```yml
+minify: true
+```
+
 ## Features
 
 - [X] Static generator
 - [X] Console support
 - [X] Base installation
 - [X] Performance helper functions
-- [X] SASS support
+- [X] Meta configuration
+- [X] SASS, CSS and JavaScript support
 
 #### TODO in v1
 

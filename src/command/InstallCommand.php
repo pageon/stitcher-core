@@ -29,7 +29,7 @@ class InstallCommand extends Command {
 
     protected function configure() {
         $this->setName('site:install')
-            ->setDescription('Setup a new Stitcher installation.')
+            ->setDescription('Setup a new Stitcher installation')
             ->setHelp("This command will generate several files as a base installation. (Only if they don't exist yet.)
             
     - The src/ directory with some examples
@@ -116,8 +116,6 @@ class InstallCommand extends Command {
         }
 
         foreach ($srcFiles as $srcFile) {
-            echo "{$srcFile->getFilename()}\n";
-
             if (!$this->fs->exists("{$dst}/{$srcFile->getRelativePath()}")) {
                 $this->fs->mkdir("{$dst}/{$srcFile->getRelativePath()}");
             }

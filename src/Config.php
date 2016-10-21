@@ -10,6 +10,10 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use brendt\stitcher\engine\smarty\SmartyEngine;
 
+/**
+ * Class Config
+ * @package brendt\stitcher
+ */
 class Config {
 
     /**
@@ -22,6 +26,9 @@ class Config {
      */
     protected static $container;
 
+    /**
+     * @param string $root
+     */
     public static function load($root = './') {
         $finder = new Finder();
         $configFiles = $finder->files()->in($root)->name('config.yml');
@@ -41,12 +48,24 @@ class Config {
         self::$container->register('engine.plugin', EnginePlugin::class);
         self::$container->register('engine.sass', new Compiler())
             ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);
+
+        self::$container->register('engine.minify.css', \CSSmin::class);
     }
 
+    /**
+     * @param $id
+     *
+     * @return object
+     */
     public static function getDependency($id) {
         return self::$container->get($id);
     }
 
+    /**
+     * @param $key
+     *
+     * @return mixed|null
+     */
     public static function get($key) {
         $keys = explode('.', $key);
         $config = self::$config;
@@ -66,6 +85,10 @@ class Config {
         return null;
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public static function set($key, $value) {
         $keys = explode('.', $key);
         $configEntry = self::createConfigEntry($keys, $value);
@@ -73,6 +96,12 @@ class Config {
         self::$config += $configEntry;
     }
 
+    /**
+     * @param $keys
+     * @param $value
+     *
+     * @return array
+     */
     private static function createConfigEntry($keys, $value) {
         $configEntry = [];
         $key = array_shift($keys);

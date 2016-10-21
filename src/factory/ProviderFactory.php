@@ -3,7 +3,7 @@
 namespace brendt\stitcher\factory;
 
 use brendt\stitcher\Config;
-use brendt\stitcher\provider\CssProvider;
+use brendt\stitcher\provider\FileProvider;
 use brendt\stitcher\provider\FolderProvider;
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
@@ -20,6 +20,7 @@ class ProviderFactory {
     const YAML_PROVIDER = 'yml';
     const IMAGE_PROVIDER = 'img';
     const CSS_PROVIDER = 'css';
+    const JS_PROVIDER = 'js';
     const SASS_PROVIDER = 'sass';
     const SCSS_PROVIDER = 'scss';
 
@@ -57,6 +58,8 @@ class ProviderFactory {
             return $this->getByType(self::IMAGE_PROVIDER);
         } else if (strpos($file, '.css') !== false) {
             return $this->getByType(self::CSS_PROVIDER);
+        }  else if (strpos($file, '.js') !== false) {
+            return $this->getByType(self::JS_PROVIDER);
         } else if (strpos($file, '.scss') !== false || strpos($file, '.sass') !== false) {
             return $this->getByType(self::SASS_PROVIDER);
         }
@@ -92,8 +95,11 @@ class ProviderFactory {
             case self::YAML_PROVIDER:
                 $provider = new YamlProvider($this->root);
                 break;
+            case self::JS_PROVIDER:
+                $provider = new FileProvider();
+                break;
             case self::CSS_PROVIDER:
-                $provider = new CssProvider();
+                $provider = new FileProvider();
                 break;
             case self::SCSS_PROVIDER:
             case self::SASS_PROVIDER:

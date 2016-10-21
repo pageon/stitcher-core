@@ -31,3 +31,10 @@ image:
         1024x768: { width: 1024, height: 768}
         1920x1080: { width: 1920, height: 1080}
         1600x1200: { width: 1600, height: 1200}
+
+# Configure meta tags
+meta:
+    viewport: width=device-width, initial-scale=1
+
+# Minify CSS and JavaScript
+minify: true

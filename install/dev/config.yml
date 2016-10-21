@@ -26,3 +26,8 @@ directories:
 image:
     dimensions:
         1600x1200: { width: 1600, height: 1200}
+
+meta:
+    viewport: width=device-width, initial-scale=1
+
+minify: false

@@ -1,5 +1,4 @@
 # Stitcher production htaccess
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
     DirectorySlash Off
@@ -8,3 +7,8 @@
     RewriteCond %{DOCUMENT_ROOT}/$1.html -f
     RewriteRule ^(.+?)/?$ /$1.html [L]
 </IfModule>
+
+# Enable GZIP
+<ifmodule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+</ifmodule>
