@@ -11,16 +11,16 @@ entries:
         # An advanced image field: the "src" variable will be parsed an generate multiple image sizes and a srcset.
         # Furthermore, an extra "alt" field is added to this image.
         image:
-            src: /img/green.jpg
+            src: img/green.jpg
             alt: A green image
-        # The value of this field is a path (starting with a "/" and ending in an extension.
+        # The value of this field is a path (ending in an extension).
         # This field will contain the parsed value of the related MarkDown file.
-        body: /churches/church-a.md
+        body: churches/church-a.md
 
     # The second entry with ID "church-b"
     church-b:
         name: Church B
         description: This is a church with the name B
         # A simpliefied image field will be parsed, but won't have any extra properties like "alt".
-        image: /img/green.jpg
-        body: /churches/church-b.md
+        image: img/green.jpg
+        body: churches/church-b.md

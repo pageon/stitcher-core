@@ -38,7 +38,7 @@ abstract class AbstractArrayProvider extends AbstractProvider {
 
     protected function parseEntryData($id, $entry) {
         foreach ($entry as $field => $value) {
-            if (is_string($value) && preg_match('/^\/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
+            if (is_string($value) && preg_match('/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
                 $provider = $this->providerFactory->getProvider($value);
 
                 if (!$provider) {
