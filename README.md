@@ -222,6 +222,7 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 #### TODO in v1
 
+- [ ] Refactor inconsistent path usage (/ vs no /)
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
