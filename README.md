@@ -157,7 +157,7 @@ Remove all the generated files.
 
 List all available URLs from `sites.yml`.
 
-##### router:dispatch <url>
+##### router:dispatch url
 
 Debug a specified URL.
 
