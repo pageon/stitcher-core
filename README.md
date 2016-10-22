@@ -124,10 +124,10 @@ A list of all helpers:
 ##### {meta}
 Render meta tags from `config.yml`.
 
-##### {css src=<src> [inline=true]}
+##### {css src=src [inline=true]}
 Load a (S)CSS file.
 
-##### {js src=<src> [inline=true]}
+##### {js src=src [inline=true]}
 Load a JavaSscript file.
 
 ##### {$image.src} and {$image.srcset}
