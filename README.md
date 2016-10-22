@@ -56,15 +56,15 @@ entries:
         name: Church A
         description: This is a church with the name A
         image:
-            src: /img/green.jpg
+            src: img/green.jpg
             alt: A green image
-        body: /churches/church-a.md
+        body: churches/church-a.md
 
     church-b:
         name: Church B
         description: This is a church with the name B
-        image: /img/green.jpg
-        body: /churches/church-b.md
+        image: img/green.jpg
+        body: churches/church-b.md
 ```
 
 See the `src/data` folder files for a more thorough reference.
@@ -222,7 +222,6 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 #### TODO in v1
 
-- [ ] Refactor inconsistent path usage (/ vs no /)
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
