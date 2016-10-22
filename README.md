@@ -124,10 +124,10 @@ A list of all helpers:
 ##### {meta}
 Render meta tags from `config.yml`.
 
-##### {css src=<src> [inline=true]}
+##### {css src=src [inline=true]}
 Load a (S)CSS file.
 
-##### {js src=<src> [inline=true]}
+##### {js src=src [inline=true]}
 Load a JavaSscript file.
 
 ##### {$image.src} and {$image.srcset}
@@ -157,7 +157,7 @@ Remove all the generated files.
 
 List all available URLs from `sites.yml`.
 
-##### router:dispatch <url>
+##### router:dispatch url
 
 Debug a specified URL.
 
@@ -222,6 +222,7 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 #### TODO in v1
 
+- [ ] Refactor inconsistent path usage (/ vs no /)
 - [ ] Refactor inconsistent directories.src usage
 
 #### Future plans
