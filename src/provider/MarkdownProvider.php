@@ -2,7 +2,7 @@
 
 namespace brendt\stitcher\provider;
 
-use Michelf\Markdown;
+use Parsedown;
 use Symfony\Component\Finder\Finder;
 
 class MarkdownProvider extends AbstractProvider {
@@ -21,7 +21,7 @@ class MarkdownProvider extends AbstractProvider {
         $files = $finder->files()->in("{$this->root}")->path($path);
 
         foreach ($files as $file) {
-            $html = Markdown::defaultTransform($file->getContents());
+            $html = Parsedown::instance()->parse($file->getContents());
 
             break;
         }
