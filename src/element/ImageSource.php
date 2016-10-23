@@ -13,7 +13,7 @@ class ImageSource {
     private $height;
 
     public function __construct($path, $name) {
-        $this->source = $name;
+        $this->source = '/' . trim($name, '/');
 
         $dimensions = getimagesize($path);
 
