@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\ProviderFactory;
 use Smarty;
 use Symfony\Component\Filesystem\Filesystem;
@@ -111,8 +112,16 @@ class Stitcher {
             $skipRoute = count($routes) && !in_array($route, $routes);
             $templateIsset = isset($templates[$page['template']]);
 
-            if ($skipRoute || !$templateIsset) {
+            if ($skipRoute) {
                 continue;
+            }
+
+            if (!$templateIsset) {
+                if (isset($page['template'])) {
+                    throw new TemplateNotFoundException("Template {$page['template']}.tpl not found.");
+                } else {
+                    throw new TemplateNotFoundException('No template was set.');
+                }
             }
 
             $template = $templates[$page['template']];
