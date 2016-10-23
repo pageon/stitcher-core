@@ -66,7 +66,7 @@ class Stitcher {
         if (!$publicDirExists) {
             $fs->mkdir($this->publicDir);
         }
-        
+
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';
@@ -119,15 +119,17 @@ class Stitcher {
             $detailVariable = null;
             $globalVariables = [];
 
-            foreach ($page['data'] as $name => $variable) {
-                if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
-                    $detailVariable = [
-                        'name' => $name,
-                        'src' => $variable['src'],
-                        'id' => $variable['id'],
-                    ];
-                } else if (is_string($variable)) {
-                    $globalVariables[$name] = $this->getData($variable);
+            if (isset($page['data'])) {
+                foreach ($page['data'] as $name => $variable) {
+                    if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
+                        $detailVariable = [
+                            'name' => $name,
+                            'src' => $variable['src'],
+                            'id' => $variable['id'],
+                        ];
+                    } else if (is_string($variable)) {
+                        $globalVariables[$name] = $this->getData($variable);
+                    }
                 }
             }
 
