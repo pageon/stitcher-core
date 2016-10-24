@@ -19,7 +19,7 @@
 directories:
     public: ../public
     src: ../src
-    image: ../public
+    image: ./
     data: ../src/data
     cache: ../.cache
 

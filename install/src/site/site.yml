@@ -1,30 +1,20 @@
 /:
     template: home
-    data:
-        content: home.md
-        churches: churches.yml
 
-/churches:
-    template: churches/overview
+/guide:
+    template: guide
     data:
-        churches: churches.yml
+        guide: guide.md
 
-/churches/{id}:
-    template: churches/detail
+/examples:
+    template: examples/overview
     data:
-        intro: intro.md
-        church:
-            src: churches.yml
+        collection: collection.yml
+        #folderCollection: folder/
+
+/examples/{id}:
+    template: examples/detail
+    data:
+        example:
+            src: collection.yml
             id: id
-
-
-
-#/churches:
-#    template: churches/overview
-#    data:
-#        churches: churches/
-#
-#/churches/{id}:
-#    template: churches/detail
-#    data:
-#        church: churches/
