@@ -25,18 +25,23 @@ The ``site.yml`` file, located in the ``src/site`` directory is used to stitch t
 /:
     template: home
 
-/churches:
-   template: churches/overview
-   data:
-       churches: churches.yml
+/guide:
+    template: guide
+    data:
+        guide: guide.md
 
-/churches/{id}:
-   template: churches/detail
-   data:
-       intro: intro.md
-       church:
-           src: churches.yml
-           id: id
+/examples:
+    template: examples/overview
+    data:
+        collection: collection.yml
+        #folderCollection: folder/
+
+/examples/{id}:
+    template: examples/detail
+    data:
+        example:
+            src: collection.yml
+            id: id
 ```
 
 The ``template`` key is required and provides a path to the required template for this page.
@@ -52,19 +57,19 @@ Data entries can be provided in many formats: JSON, YAML, MarkDown, image, folde
 
 ```yaml
 entries:
-    church-a:
-        name: Church A
-        description: This is a church with the name A
+    entry-a:
+        title: Example Entry A
+        intro: Lorem ipsum dolor sit amet
+        body: entry-a.md
         image:
-            src: img/green.jpg
-            alt: A green image
-        body: churches/church-a.md
+            src: img/blue.jpg
+            alt: A Blue image
+    entry-b:
+        title: Example Entry B
+        intro: This is the second entry
+        body: entry-a.md
+        image: img/orange.jpg
 
-    church-b:
-        name: Church B
-        description: This is a church with the name B
-        image: img/green.jpg
-        body: churches/church-b.md
 ```
 
 See the `src/data` folder files for a more thorough reference.
@@ -78,14 +83,15 @@ At this moment, Stitcher only supports Smarty as a template engine. Support for 
 {extends 'index.tpl'}
 
 {block 'content'}
-    {foreach $churches as $church}
-        <li>
-            {$church.name}
-            {if isset($church.image)}
-                <img src="{$church.image.src}" srcset="{$church.image.srcset}">
-            {/if}
-        </li>
-    {/foreach}
+    <h2>{$example.title}</h2>
+
+    {if isset($example.image)}
+        <img src="{$example.image.src}" srcset="{$example.image.srcset}" {if isset($example.image.alt)}alt="{$example.image.alt}"{/if}>
+    {/if}
+
+    {$example.body}
+
+    <a href="/examples">Back</a>
 {/block}
 ```
 
