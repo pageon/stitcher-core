@@ -121,18 +121,10 @@ Stitcher provides some helper functions in aid of creating fast websites.
 
 A list of all helpers:
 
-##### {meta}
-Render meta tags from `config.yml`.
-
-##### {css src=src [inline=true]}
-Load a (S)CSS file.
-
-##### {js src=src [inline=true]}
-Load a JavaSscript file.
-
-##### {$image.src} and {$image.srcset}
-Use a parsed image's `src` and `srcset` attributes.
-
+- `{meta}`: Render meta tags from `config.yml`.
+- `{css src=src [inline=true]}`: Load a (S)CSS file.
+- `{js src=src [inline=true]}`: Load a JavaSscript file.
+- `{$image.src}` and `{$image.srcset}`: Use a parsed image's `src` and `srcset` attributes.
 
 ### Config
 
@@ -141,25 +133,11 @@ The `config.yml` file provides some configuration options, to set directory path
 
 ### Commands
 
-##### site:install
-
-Copy a base install example.
-
-##### site:generate [url]
-
-Generate the whole site, or a specific URL from `sites.yml`.
-
-##### site:clean [--force]
-
-Remove all the generated files.
-
-##### router:list
-
-List all available URLs from `sites.yml`.
-
-##### router:dispatch url
-
-Debug a specified URL.
+- `site:install`: Copy a base install example.
+- `site:generate [url]`: Generate the whole site, or a specific URL from `sites.yml`.
+- `site:clean [--force]`: Remove all the generated files.
+- `router:list`: List all available URLs from `sites.yml`.
+- `router:dispatch url`: Debug a specified URL.
 
 ### Developer controller
 
