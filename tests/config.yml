@@ -1,7 +1,6 @@
 directories:
     src: ./tests/src
     public: ./tests/public
-    data: ./tests/src/data
     cache: ./tests/.cache
 
 image:

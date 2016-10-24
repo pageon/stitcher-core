@@ -12,7 +12,7 @@ class FolderProvider extends AbstractProvider  {
         $data = [];
         $path = trim($path, '/');
         $finder = new Finder();
-        $files = $finder->files()->in("{$this->root}/{$path}")->name('*.*');
+        $files = $finder->files()->in("{$this->root}/data/{$path}")->name('*.*');
         $factory = new ProviderFactory();
 
         foreach ($files as $file) {
