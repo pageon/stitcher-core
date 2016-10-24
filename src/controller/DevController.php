@@ -3,6 +3,7 @@
 namespace brendt\stitcher\controller;
 
 use brendt\stitcher\Config;
+use brendt\stitcher\exception\StitcherException;
 use brendt\stitcher\Stitcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -49,7 +50,9 @@ class DevController {
             }
 
             throw new ResourceNotFoundException();
-        } catch (ResourceNotFoundException $e) {
+        } catch (StitcherException $e) {
+            echo $e->getMessage();
+        }catch (ResourceNotFoundException $e) {
             echo "404";
         }
 
