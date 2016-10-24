@@ -34,9 +34,10 @@ class DevController {
             $matcher = new UrlMatcher($routeCollection, new RequestContext());
             $routeResult = $matcher->match($url);
             $route = $routeResult['_route'];
+            $id = isset($routeResult['id']) ? $routeResult['id'] : null;
 
-            $blanket = $this->stitcher->stitch($route);
-
+            $blanket = $this->stitcher->stitch($route, $id);
+            
             if (isset($blanket[$route])) {
                 echo $blanket[$route];
 

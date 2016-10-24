@@ -94,11 +94,12 @@ class Stitcher {
 
     /**
      * @param string|array $routes
+     * @param null         $entryId
      *
      * @return array
-     * @throws \SmartyException
+     * @throws TemplateNotFoundException
      */
-    public function stitch($routes = []) {
+    public function stitch($routes = [], $entryId = null) {
         $blanket = [];
         $smarty = $this->getSmarty();
         $site = $this->loadSite();
@@ -152,7 +153,7 @@ class Stitcher {
                 $entryName = $detailVariable['name'];
 
                 foreach ($entries as $entry) {
-                    if (!isset($entry[$idField])) {
+                    if (!isset($entry[$idField]) || ($entryId && $entry[$idField] != $entryId)) {
                         continue;
                     }
 
