@@ -12,6 +12,11 @@ use Symfony\Component\Finder\SplFileInfo;
 class ImageProvider extends AbstractProvider {
 
     /**
+     * @var mixed
+     */
+    protected $imageDir;
+
+    /**
      * @var string
      */
     private $publicDir;
@@ -22,6 +27,7 @@ class ImageProvider extends AbstractProvider {
     public function __construct() {
         parent::__construct();
 
+        $this->imageDir = Config::get('directories.src');
         $this->publicDir = Config::get('directories.public');
     }
 
@@ -54,7 +60,7 @@ class ImageProvider extends AbstractProvider {
         }
 
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->in($this->root)->path(trim($path,'/'));
+        $files = $finder->files()->in($this->imageDir)->path(trim($path,'/'));
 
         foreach ($files as $file) {
             $image = new Image($file->getPathname(), $file->getRelativePathname());

@@ -81,7 +81,7 @@ class ProviderFactory {
 
         switch ($type) {
             case self::IMAGE_PROVIDER:
-                $provider = new ImageProvider($this->root);
+                $provider = new ImageProvider();
                 break;
             case self::FOLDER_PROVIDER:
                 $provider = new FolderProvider($this->root);
