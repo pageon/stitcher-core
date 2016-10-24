@@ -1,9 +1,6 @@
-# Stitcher
-
-A static site generator for PHP and Smarty, with a focus on high performance.
+## Installation
 
 ```sh
-# Installing Stitcher
 composer require brendt/stitcher:1.0.0-alpha
 php vendor/brendt/stitcher/install/stitcher site:install
 ```
@@ -121,17 +118,10 @@ Stitcher provides some helper functions in aid of creating fast websites.
 
 A list of all helpers:
 
-##### {meta}
-Render meta tags from `config.yml`.
-
-##### {css src=src [inline=true]}
-Load a (S)CSS file.
-
-##### {js src=src [inline=true]}
-Load a JavaSscript file.
-
-##### {$image.src} and {$image.srcset}
-Use a parsed image's `src` and `srcset` attributes.
+- `{meta}`: Render meta tags from `config.yml`.
+- `{css src=src [inline=true]}`: Load a (S)CSS file.
+- `{js src=src [inline=true]}`: Load a JavaSscript file.
+- `{$image.src}` and `{$image.srcset}`: Use a parsed image's `src` and `srcset` attributes.
 
 
 ### Config
@@ -141,25 +131,11 @@ The `config.yml` file provides some configuration options, to set directory path
 
 ### Commands
 
-##### site:install
-
-Copy a base install example.
-
-##### site:generate [url]
-
-Generate the whole site, or a specific URL from `sites.yml`.
-
-##### site:clean [--force]
-
-Remove all the generated files.
-
-##### router:list
-
-List all available URLs from `sites.yml`.
-
-##### router:dispatch url
-
-Debug a specified URL.
+- `site:install`: Copy a base install example.
+- `site:generate [url]`: Generate the whole site, or a specific URL from `sites.yml`.
+- `site:clean [--force]`: Remove all the generated files.
+- `router:list`: List all available URLs from `sites.yml`.
+- `router:dispatch url`: Debug a specified URL.
 
 ### Developer controller
 
@@ -209,19 +185,3 @@ Don't forget to add a local host in ``/ets/hosts``.
 127.0.0.1 stitcher.local
 127.0.0.1 dev.stitcher.local
 ```
-
-## Features
-
-- [X] Static generator
-- [X] Console support
-- [X] Base installation
-- [X] Performance helper functions
-- [X] Meta configuration
-- [X] SASS, CSS and JavaScript support (compiling and minifying)
-
-#### Future plans
-
-- [ ] Twig support
-- [ ] Command line configuration
-- [ ] Pagination and filtering
-- [ ] Form support

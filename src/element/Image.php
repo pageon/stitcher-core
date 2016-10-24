@@ -23,7 +23,7 @@ class Image {
 
     public function __construct($pathname, $relativePathname) {
         $this->filesystem = new Filesystem();
-        $this->publicDir = Config::get('directories.image');
+        $this->publicDir = Config::get('directories.public');
 
         $publicPath = "{$this->publicDir}/{$relativePathname}";
         if (!$this->filesystem->exists($publicPath)) {

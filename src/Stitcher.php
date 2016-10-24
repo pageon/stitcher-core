@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\ProviderFactory;
 use Smarty;
 use Symfony\Component\Filesystem\Filesystem;
@@ -66,7 +67,7 @@ class Stitcher {
         if (!$publicDirExists) {
             $fs->mkdir($this->publicDir);
         }
-        
+
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';
@@ -93,11 +94,12 @@ class Stitcher {
 
     /**
      * @param string|array $routes
+     * @param null         $entryId
      *
      * @return array
-     * @throws \SmartyException
+     * @throws TemplateNotFoundException
      */
-    public function stitch($routes = []) {
+    public function stitch($routes = [], $entryId = null) {
         $blanket = [];
         $smarty = $this->getSmarty();
         $site = $this->loadSite();
@@ -111,23 +113,33 @@ class Stitcher {
             $skipRoute = count($routes) && !in_array($route, $routes);
             $templateIsset = isset($templates[$page['template']]);
 
-            if ($skipRoute || !$templateIsset) {
+            if ($skipRoute) {
                 continue;
+            }
+
+            if (!$templateIsset) {
+                if (isset($page['template'])) {
+                    throw new TemplateNotFoundException("Template {$page['template']}.tpl not found.");
+                } else {
+                    throw new TemplateNotFoundException('No template was set.');
+                }
             }
 
             $template = $templates[$page['template']];
             $detailVariable = null;
             $globalVariables = [];
 
-            foreach ($page['data'] as $name => $variable) {
-                if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
-                    $detailVariable = [
-                        'name' => $name,
-                        'src' => $variable['src'],
-                        'id' => $variable['id'],
-                    ];
-                } else if (is_string($variable)) {
-                    $globalVariables[$name] = $this->getData($variable);
+            if (isset($page['data'])) {
+                foreach ($page['data'] as $name => $variable) {
+                    if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
+                        $detailVariable = [
+                            'name' => $name,
+                            'src' => $variable['src'],
+                            'id' => $variable['id'],
+                        ];
+                    } else if (is_string($variable)) {
+                        $globalVariables[$name] = $this->getData($variable);
+                    }
                 }
             }
 
@@ -141,7 +153,7 @@ class Stitcher {
                 $entryName = $detailVariable['name'];
 
                 foreach ($entries as $entry) {
-                    if (!isset($entry[$idField])) {
+                    if (!isset($entry[$idField]) || ($entryId && $entry[$idField] != $entryId)) {
                         continue;
                     }
 

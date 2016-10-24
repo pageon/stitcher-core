@@ -16,7 +16,7 @@ abstract class AbstractProvider implements Provider {
      * AbstractProvider constructor.
      */
     public function __construct() {
-        $this->root = Config::get('directories.data');
+        $this->root = Config::get('directories.src');
     }
 
 }

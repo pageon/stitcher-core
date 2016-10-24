@@ -17,12 +17,17 @@
 # </VirtualHost>
 
 directories:
-    public: ../public
+    # Use the same source directory as production
     src: ../src
-    image: ../public
-    data: ../src/data
+
+    # Set the public directory to the current one.
+    # HTML pages won't be rendered, but images will.
+    public: ./
+
+    #  Use the same cache directory as production
     cache: ../.cache
 
+# Only create one image dimension
 image:
     dimensions:
         1600x1200: { width: 1600, height: 1200}
@@ -30,4 +35,5 @@ image:
 meta:
     viewport: width=device-width, initial-scale=1
 
+# Do not minify CSS or JavaScript
 minify: false
