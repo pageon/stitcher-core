@@ -18,10 +18,13 @@
 
 # Configure the paths of several directories
 directories:
-    public: ./public
+    # The source directory containing
     src: ./src
-    image: ./public
-    data: ./src/data
+
+    # The public directory in which the site is generated
+    public: ./public
+
+    # Cache directory used by smarty
     cache: ./.cache
 
 # Configure which image versions should be created

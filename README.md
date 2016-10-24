@@ -217,16 +217,10 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [X] Base installation
 - [X] Performance helper functions
 - [X] Meta configuration
-- [X] SASS, CSS and JavaScript support
-- [X] Minifier
-
-#### TODO in v1
-
-- [ ] Refactor inconsistent directories.src usage
+- [X] SASS, CSS and JavaScript support (compiling and minifying)
 
 #### Future plans
 
-- [ ] Base CSS
 - [ ] Twig support
 - [ ] Command line configuration
 - [ ] Pagination and filtering
