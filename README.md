@@ -205,6 +205,7 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 #### Future plans
 
+- [ ] JS Async option
 - [ ] Twig support
 - [ ] Command line configuration
 - [ ] Pagination and filtering
