@@ -4,6 +4,7 @@ use brendt\stitcher\Stitcher;
 use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use brendt\stitcher\factory\TemplateEngineFactory;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
 
@@ -132,6 +133,21 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $this->assertContains('Church A', $html);
         $this->assertContains('Church B', $html);
         $this->assertContains('HOOOOME', $html);
+    }
+
+    public function test_stitch_with_twig() {
+        $templateEngineId = Config::get('templates');
+        Config::set('templates', TemplateEngineFactory::TWIG_ENGINE);
+
+        $stitcher = $this->createStitcher();
+        $blanket = $stitcher->stitch('/churches/{id}');
+
+        foreach ($blanket as $page => $html) {
+            $this->assertContains('Church', $html);
+            $this->assertContains('Intro', $html);
+        }
+
+        Config::set('templates', $templateEngineId);
     }
 
 }

@@ -4,11 +4,12 @@ namespace brendt\stitcher;
 
 use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\ProviderFactory;
-use Smarty;
+use brendt\stitcher\factory\TemplateEngineFactory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
+use brendt\stitcher\engine\TemplateEngine;
 
 class Stitcher {
 
@@ -43,6 +44,11 @@ class Stitcher {
     private $providerFactory;
 
     /**
+     * @var TemplateEngine
+     */
+    private $templateEngine;
+
+    /**
      * Stitcher constructor.
      */
     public function __construct() {
@@ -51,13 +57,10 @@ class Stitcher {
         $this->compileDir = Config::get('directories.cache');
 
         $this->providerFactory = Config::getDependency('factory.provider');
-    }
 
-    /**
-     * @return Smarty
-     */
-    protected function getSmarty() {
-        return Config::getDependency('engine.smarty');
+        /** @var TemplateEngineFactory $templateEngineFactory */
+        $templateEngineFactory = Config::getDependency('factory.template.engine');
+        $this->templateEngine = $templateEngineFactory->getByType(Config::get('templates'));
     }
 
     public function save($blanket) {
@@ -101,7 +104,7 @@ class Stitcher {
      */
     public function stitch($routes = [], $entryId = null) {
         $blanket = [];
-        $smarty = $this->getSmarty();
+
         $site = $this->loadSite();
         $templates = $this->loadTemplates();
 
@@ -119,7 +122,7 @@ class Stitcher {
 
             if (!$templateIsset) {
                 if (isset($page['template'])) {
-                    throw new TemplateNotFoundException("Template {$page['template']}.tpl not found.");
+                    throw new TemplateNotFoundException("Template {$page['template']} not found.");
                 } else {
                     throw new TemplateNotFoundException('No template was set.');
                 }
@@ -143,9 +146,7 @@ class Stitcher {
                 }
             }
 
-            foreach ($globalVariables as $name => $variable) {
-                $smarty->assign($name, $variable);
-            }
+            $this->templateEngine->addTemplateVariables($globalVariables);
 
             if ($detailVariable) {
                 $idField = $detailVariable['id'];
@@ -159,12 +160,12 @@ class Stitcher {
 
                     $routeName = str_replace('{' . $idField . '}', $entry[$idField], $route);
 
-                    $smarty->assign($entryName, $entry);
-                    $blanket[$routeName] = $smarty->fetch($template->getRealPath());
-                    $smarty->clearAssign($entryName);
+                    $this->templateEngine->addTemplateVariable($entryName, $entry);
+                    $blanket[$routeName] = $this->templateEngine->renderTemplate($template);
+                    $this->templateEngine->clearTemplateVariable($entryName);
                 }
             } else {
-                $blanket[$route] = $smarty->fetch($template->getRealPath());
+                $blanket[$route] = $this->templateEngine->renderTemplate($template);
             }
         }
 
@@ -176,11 +177,12 @@ class Stitcher {
      */
     public function loadTemplates() {
         $finder = new Finder();
-        $files = $finder->files()->in("{$this->root}/template")->name('*.tpl');
+        $templateExtension = $this->templateEngine->getTemplateExtension();
+        $files = $finder->files()->in(Config::get('directories.src') . '/template')->name("*.{$templateExtension}");
         $templates = [];
 
         foreach ($files as $file) {
-            $id = str_replace('.tpl', '', $file->getRelativePathname());
+            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
             $templates[$id] = $file;
         }
 
