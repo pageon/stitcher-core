@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\engine\twig;
 
+use brendt\stitcher\engine\EnginePlugin;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use brendt\stitcher\Config;
@@ -19,11 +20,27 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
      * TwigEngine constructor.
      */
     public function __construct() {
-        $loader = new Twig_Loader_Filesystem(Config::get('directories.src') . '/template');
+        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $loader = new Twig_Loader_Filesystem($templateFolder);
 
         parent::__construct($loader, [
-            'cache' => false
+            'cache' => false,
         ]);
+
+        $plugin = Config::getDependency('engine.plugin');
+        $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], [
+            'is_safe' => ['html']
+        ]));
+        $this->addFunction(new \Twig_SimpleFunction('css', [$plugin, 'css'], [
+            'is_safe' => ['html']
+        ]));
+        $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], [
+            'is_safe' => ['html']
+        ]));
+    }
+
+    public function thumbnail() {
+        return "<meta>";
     }
 
     /**

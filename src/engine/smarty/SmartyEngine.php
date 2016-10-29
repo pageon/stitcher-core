@@ -20,12 +20,8 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     public function __construct() {
         parent::__construct();
 
-        $finder = new Finder();
-        $templateFolders = $finder->directories()->in(Config::get('directories.src'))->name('template');
-
-        foreach ($templateFolders as $templateDir) {
-            $this->addTemplateDir($templateDir);
-        }
+        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $this->addTemplateDir($templateFolder);
 
         $this->setCompileDir(Config::get('directories.cache'));
         $this->addPluginsDir(__DIR__);

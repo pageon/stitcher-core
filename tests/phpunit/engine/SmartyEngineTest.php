@@ -17,6 +17,7 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_smarty_renders_from_path() {
+        Config::load('./tests', 'config.yml');
         $engine = $this->createEngine();
 
         $finder = new Finder();

@@ -178,7 +178,8 @@ class Stitcher {
     public function loadTemplates() {
         $finder = new Finder();
         $templateExtension = $this->templateEngine->getTemplateExtension();
-        $files = $finder->files()->in(Config::get('directories.src') . '/template')->name("*.{$templateExtension}");
+        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $files = $finder->files()->in($templateFolder)->name("*.{$templateExtension}");
         $templates = [];
 
         foreach ($files as $file) {

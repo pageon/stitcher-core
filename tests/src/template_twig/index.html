@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title></title>
+        {{ meta() }}
+        {{ css('css/main.css', true) }}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+
+        {% block scripts %}
+            {{ js('js/main.js', true) }}
+        {% endblock %}
+    </body>
+</html>

@@ -30,9 +30,9 @@ class Config {
     /**
      * @param string $root
      */
-    public static function load($root = './') {
+    public static function load($root = './', $name = 'config.yml') {
         $finder = new Finder();
-        $configFiles = $finder->files()->in($root)->name('config.yml');
+        $configFiles = $finder->files()->in($root)->name($name);
         $config = [];
 
         foreach ($configFiles as $configFile) {
