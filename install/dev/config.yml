@@ -39,4 +39,4 @@ meta:
 minify: false
 
 # Choose the template engine. Available options: smarty, twig
-templates: smarty
+engine: smarty

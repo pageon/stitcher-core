@@ -1,9 +1,8 @@
 # Stitcher
 
-A static site generator for PHP and Smarty, with a focus on high performance.
+Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.
 
 ```sh
-# Installing Stitcher
 composer require brendt/stitcher:1.0.0-alpha
 php vendor/brendt/stitcher/install/stitcher site:install
 ```
@@ -88,7 +87,13 @@ See the `src/data` folder files for a more thorough reference.
 
 ### Templates
 
-At this moment, Stitcher only supports Smarty as a template engine. Support for more engines will be added in the future.
+At this moment, Stitcher supports Smarty and Twig as template engines.
+
+```yaml
+# config.yaml
+
+```
+
  In a template, all functionality of the engine is available, and all variables provided in `site.yml` are available.
 
 ```html

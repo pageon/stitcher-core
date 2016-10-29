@@ -60,7 +60,7 @@ class Stitcher {
 
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = Config::getDependency('factory.template.engine');
-        $this->templateEngine = $templateEngineFactory->getByType(Config::get('templates'));
+        $this->templateEngine = $templateEngineFactory->getByType(Config::get('engine'));
     }
 
     public function save($blanket) {
