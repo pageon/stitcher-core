@@ -89,9 +89,10 @@ See the `src/data` folder files for a more thorough reference.
 
 At this moment, Stitcher supports Smarty and Twig as template engines.
 
-```yaml
+```yml
 # config.yaml
 
+engine: smarty
 ```
 
  In a template, all functionality of the engine is available, and all variables provided in `site.yml` are available.
