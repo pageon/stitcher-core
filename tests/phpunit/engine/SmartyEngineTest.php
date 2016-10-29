@@ -26,6 +26,9 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
             $this->assertContains('<html>', $html);
+            $this->assertContains('<meta', $html);
+            $this->assertContains('<script>var foo = \'bar\';', $html);
+            $this->assertContains('body {', $html);
         }
     }
 
