@@ -25,7 +25,7 @@ class TemplateEngineFactory {
         if (isset($this->engines[$type])) {
             return $this->engines[$type];
         }
-        
+
         switch ($type) {
             case self::TWIG_ENGINE:
                 $engine = new TwigEngine();

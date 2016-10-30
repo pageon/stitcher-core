@@ -68,7 +68,7 @@ class Image {
     protected function getImageFile($path) {
         $imageFile = null;
 
-        if ($this->extension ==='jpg') {
+        if ($this->extension === 'jpg') {
             $imageFile = imagecreatefromjpeg($path);
         } elseif ($this->extension === 'png') {
             $imageFile = imagecreatefrompng($path);

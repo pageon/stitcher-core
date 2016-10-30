@@ -15,16 +15,24 @@ use brendt\stitcher\provider\SassProvider;
 class ProviderFactory {
 
     const JSON_PROVIDER = 'json';
+
     const MARKDOWN_PROVIDER = 'md';
+
     const FOLDER_PROVIDER = '/';
+
     const YAML_PROVIDER = 'yml';
+
     const IMAGE_PROVIDER = 'img';
+
     const CSS_PROVIDER = 'css';
+
     const JS_PROVIDER = 'js';
+
     const SASS_PROVIDER = 'sass';
+
     const SCSS_PROVIDER = 'scss';
 
-    private $providers =  [];
+    private $providers = [];
 
     private $root;
 
@@ -58,7 +66,7 @@ class ProviderFactory {
             return $this->getByType(self::IMAGE_PROVIDER);
         } else if (strpos($file, '.css') !== false) {
             return $this->getByType(self::CSS_PROVIDER);
-        }  else if (strpos($file, '.js') !== false) {
+        } else if (strpos($file, '.js') !== false) {
             return $this->getByType(self::JS_PROVIDER);
         } else if (strpos($file, '.scss') !== false || strpos($file, '.sass') !== false) {
             return $this->getByType(self::SASS_PROVIDER);

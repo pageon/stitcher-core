@@ -50,7 +50,7 @@ class DevController {
             $id = isset($routeResult['id']) ? $routeResult['id'] : null;
 
             $blanket = $this->stitcher->stitch($route, $id);
-            
+
             if (isset($blanket[$route])) {
                 echo $blanket[$route];
 
@@ -66,7 +66,7 @@ class DevController {
             throw new ResourceNotFoundException();
         } catch (StitcherException $e) {
             echo $e->getMessage();
-        }catch (ResourceNotFoundException $e) {
+        } catch (ResourceNotFoundException $e) {
             echo "404";
         }
 

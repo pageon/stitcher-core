@@ -60,7 +60,7 @@ class ImageProvider extends AbstractProvider {
         }
 
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->in($this->imageDir)->path(trim($path,'/'));
+        $files = $finder->files()->in($this->imageDir)->path(trim($path, '/'));
 
         foreach ($files as $file) {
             $image = new Image($file->getPathname(), $file->getRelativePathname());
