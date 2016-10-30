@@ -48,10 +48,9 @@ class Config {
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
-        self::$container->register('engine.sass', new Compiler())
+        self::$container->register('engine.minify.css', CSSmin::class);
+        self::$container->register('engine.sass', Compiler::class)
             ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);
-
-        self::$container->register('engine.minify.css', \CSSmin::class);
     }
 
     /**

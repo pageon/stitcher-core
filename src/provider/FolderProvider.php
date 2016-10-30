@@ -6,8 +6,13 @@ use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\Stitcher;
 use Symfony\Component\Finder\Finder;
 
-class FolderProvider extends AbstractProvider  {
+class FolderProvider extends AbstractProvider {
 
+    /**
+     * @param $path
+     *
+     * @return array
+     */
     public function parse($path) {
         $data = [];
         $path = trim($path, '/');

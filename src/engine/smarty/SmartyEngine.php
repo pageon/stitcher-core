@@ -24,7 +24,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
         $this->addTemplateDir($templateFolder);
 
         $this->setCompileDir(Config::get('directories.cache'));
-        $this->addPluginsDir(__DIR__);
+        $this->addPluginsDir([__DIR__]);
 
         $this->caching = false;
     }
