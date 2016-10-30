@@ -13,12 +13,25 @@ use Symfony\Component\Routing\RouteCollection;
 
 class DevController {
 
+    /** @var Stitcher */
+    protected $stitcher;
+
+    /**
+     * DevController constructor.
+     *
+     * @param string $configPath
+     */
     public function __construct($configPath = './') {
         Config::load($configPath);
 
         $this->stitcher = new Stitcher();
     }
 
+    /**
+     * Run the developers controller.
+     *
+     * This function will read the request URL and dispatch the according route.
+     */
     public function run() {
         $url = $_SERVER['REQUEST_URI'];
 

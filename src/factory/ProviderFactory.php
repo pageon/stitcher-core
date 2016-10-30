@@ -84,16 +84,16 @@ class ProviderFactory {
                 $provider = new ImageProvider();
                 break;
             case self::FOLDER_PROVIDER:
-                $provider = new FolderProvider($this->root);
+                $provider = new FolderProvider();
                 break;
             case self::MARKDOWN_PROVIDER:
-                $provider = new MarkdownProvider($this->root);
+                $provider = new MarkdownProvider();
                 break;
             case self::JSON_PROVIDER:
-                $provider = new JsonProvider($this->root);
+                $provider = new JsonProvider();
                 break;
             case self::YAML_PROVIDER:
-                $provider = new YamlProvider($this->root);
+                $provider = new YamlProvider();
                 break;
             case self::JS_PROVIDER:
                 $provider = new FileProvider();

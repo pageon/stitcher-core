@@ -2,7 +2,7 @@
 
 use brendt\stitcher\Config;
 
-function smarty_function_js($params, $template) {
+function smarty_function_js($params) {
     $plugin = Config::getDependency('engine.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;

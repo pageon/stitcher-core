@@ -37,9 +37,7 @@ class InstallCommand extends Command {
     - The public/ directory
     - The stitcher console
     - A sample config.yml
-")
-//            ->addOption(self::DIRECTORY, null, InputOption::VALUE_REQUIRED, 'Set the root directory in which to install the src/ folder', './')
-        ;
+");
     }
 
     /**
@@ -49,7 +47,6 @@ class InstallCommand extends Command {
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-//        $root = $input->getOption(self::DIRECTORY);
         $log = [];
 
         $srcDir = './src';
