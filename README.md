@@ -1,3 +1,5 @@
+[![Build Status](https://scrutinizer-ci.com/g/brendt/stitcher/badges/build.png?b=master)](https://scrutinizer-ci.com/g/brendt/stitcher/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/brendt/stitcher/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/brendt/stitcher/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/brendt/stitcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/brendt/stitcher/?branch=master)
+
 # Stitcher
 
 Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.
