@@ -11,22 +11,20 @@ php vendor/brendt/stitcher/install/stitcher site:install
 
 ## Building a site with Stitcher
 
-Stitcher sites can be built by anyone with basic HTML knowledge: **data entries** are mapped onto **templates** which are accessible via **a URL**.
-These two components (entries and templates) are mapped - *stitched* - together via a **config file**. Data entries can be provided in many ways:
+The idea behind Stitcher: map **data entries** onto **templates** and make them accessible via **a URL**.
+These two core components (entries and templates) are mapped - *stitched* - together via a **config file**. Data entries can be provided in many ways:
 JSON or YAML files, MarkDown files, images, SASS or CSS, JavaScript, folders and more.
 
 The goal is simple: create blazing fast websites. Stitcher will parse all your templates into static HTML pages, will parse and minify CSS and JavaScript,
- will optimize images using ``srcset`` and provides useful developer tools to aid you in setting things up smoothly.
+ will optimize images and provides useful developer tools to aid you in setting things up smoothly.
 
 ### Why Stitcher?
 
-- Performance is key. Stitcher is built from the ground up with web performance in mind, not the other way around.
+- Performance is key. Stitcher is built from the ground up with web performance in mind, not any other way around.
 - Built for developers. Stitcher isn't a high level blogging engine. It's a tool for technical people to create websites.
 - Not just Markdown. Also supporting YAML, JSON, SASS and more.
-- Built with PHP for PHP developers. No need to use language you're not a 100% comfortable in, 
+- Built with PHP for PHP developers. No need to work in a language you're not a 100% comfortable in, 
 install extra binaries or learn a new template engine.
-
-See the end product of a stitcher site [here](http://stitcher.pageon.be/).
 
 ### site.yml
 
@@ -60,10 +58,12 @@ The ``template`` key is required and provides a path to the required template fo
  Each variable will need to be loaded. You can either provide a path to a data file (loaded from ``src/data`` by default),
  or you can provide a collection with a `src` and `id` key. This approach will generate detail pages from a collection of data entries.
 
+**Note**: there can be multiple config files located in the `src/site` directory. All YAML files will be loaded and parsed form this directory, not just `site.yml`.
+
 ### Data entries
 
 Data entries can be provided in many formats: JSON, YAML, MarkDown, image, folder, ... Examples can be found after running the `site:install` command.
- A data file can either contain data of a single entry, or contain a collection of multiple entries. In the second case, when using JSON or YAML files,
+ A data file can either contain data of a single entry, or a collection of multiple entries. In the second case, when using JSON or YAML files,
  An extra root key `entries` is required.
 
 ```yaml
@@ -87,15 +87,13 @@ See the `src/data` folder files for a more thorough reference.
 
 ### Templates
 
-At this moment, Stitcher supports Smarty and Twig as template engines.
+At this moment, Stitcher supports Smarty and Twig as template engines. Which engine you want to use is up to you, and configured in `config.yml`.
 
-```yml
-# config.yaml
-
+```yaml
 engine: smarty
 ```
 
- In a template, all functionality of the engine is available, and all variables provided in `site.yml` are available.
+ In a template, all functionality of the engine is available, as are all variables configured in `site.yml`.
 
 ```html
 {extends 'index.tpl'}
@@ -125,7 +123,7 @@ Stitcher provides some helper functions in aid of creating fast websites.
         {* The meta function will render config defined meta tags. *}
         {meta}
 
-        {* Rendering a SCSS file, inline *}
+        {* Rendering a Sass file, inline *}
         {css src='main.scss' inline=true}
 
         {* Loading a CSS file *}
@@ -219,12 +217,12 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [X] Base installation
 - [X] Performance helper functions
 - [X] Meta configuration
-- [X] SASS, CSS and JavaScript support (compiling and minifying)
+- [X] Sass, CSS and JavaScript support (compiling and minifying)
+- [X] Twig and Smarty support
 
 #### Future plans
 
 - [ ] JS Async option
-- [ ] Twig support
 - [ ] Command line configuration
 - [ ] Pagination and filtering
 - [ ] Form support
