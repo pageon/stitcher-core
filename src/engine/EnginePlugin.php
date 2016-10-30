@@ -96,10 +96,11 @@ class EnginePlugin {
      *
      * @param string $src
      * @param bool   $inline
+     * @param bool   $async
      *
      * @return string
      */
-    public function js($src, $inline = false) {
+    public function js($src, $inline = false, $async = false) {
         /** @var ProviderFactory $factory */
         $factory = Config::getDependency('factory.provider');
 
@@ -122,7 +123,13 @@ class EnginePlugin {
             }
 
             $fs->dumpFile($dst, $data);
-            $result = "<script src=\"{$src}\"></script>";
+            $result = "<script src=\"{$src}\"";
+
+            if ($async) {
+                $result .= ' async';
+            }
+
+            $result .= "></script>";
         }
 
         return $result;

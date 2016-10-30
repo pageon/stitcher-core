@@ -9,10 +9,8 @@ use brendt\stitcher\Config;
 
 class ProviderFactoryTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     protected function createProviderFactory() {

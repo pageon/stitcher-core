@@ -5,10 +5,8 @@ use brendt\stitcher\Config;
 
 class SassProviderTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     public function createSassProvider() {

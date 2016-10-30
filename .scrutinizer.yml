@@ -5,4 +5,4 @@ build:
     tests:
         override:
             -
-                command: 'phpunit'
+                command: 'phpunit --coverage-clover=coverage.xml'

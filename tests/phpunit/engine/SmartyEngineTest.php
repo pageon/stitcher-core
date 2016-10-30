@@ -6,29 +6,67 @@ use Symfony\Component\Finder\Finder;
 
 class SmartyEngineTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     private function createEngine() {
         return new SmartyEngine();
     }
 
-    public function test_smarty_renders_from_path() {
-        Config::load('./tests', 'config.yml');
-        $engine = $this->createEngine();
-
+    private function getFiles() {
         $finder = new Finder();
-        $files = $finder->files()->in(Config::get('directories.src') . '/template')->name('index.tpl');
+
+        return $finder->files()->in(Config::get('directories.src') . '/template')->name('index.tpl');
+    }
+
+    public function test_smarty_renders_from_path() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
 
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
             $this->assertContains('<html>', $html);
-            $this->assertContains('<meta', $html);
-            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_smarty_css() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
             $this->assertContains('body {', $html);
+        }
+    }
+
+    public function test_smarty_js() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_smarty_js_async() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script src="js/async.js" async></script>', $html);
+        }
+    }
+
+    public function test_smarty_meta() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<meta', $html);
         }
     }
 

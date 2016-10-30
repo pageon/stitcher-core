@@ -6,29 +6,71 @@ use Symfony\Component\Finder\Finder;
 
 class TwigEngineTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
+    public function setUp() {
+        Config::load('./tests', 'config.twig.yml');
+    }
+
+    public function tearDown() {
+        Config::reset();
     }
 
     private function createEngine() {
         return new TwigEngine();
     }
 
-    public function test_twig_renders_from_path() {
-        Config::load('./tests', 'config.twig.yml');
-
-        $engine = $this->createEngine();
-
+    private function getFiles() {
         $finder = new Finder();
-        $files = $finder->files()->in(Config::get('directories.src') . '/template_twig')->name('home.html');
+
+        return $finder->files()->in(Config::get('directories.template'))->name('index.html');
+    }
+
+    public function test_twig_renders_from_path() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
 
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
-            
             $this->assertContains('<html>', $html);
-            $this->assertContains('<meta', $html);
-            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_twig_css() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
             $this->assertContains('body {', $html);
+        }
+    }
+
+    public function test_twig_js() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_twig_js_async() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script src="js/async.js" async></script>', $html);
+        }
+    }
+
+    public function test_twig_meta() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<meta', $html);
         }
     }
 

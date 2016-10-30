@@ -27,8 +27,13 @@ class Config {
      */
     protected static $container;
 
+    public static function getConfig() {
+        return self::$config;
+    }
+
     /**
      * @param string $root
+     * @param string $name
      */
     public static function load($root = './', $name = 'config.yml') {
         $finder = new Finder();
@@ -95,6 +100,13 @@ class Config {
         $configEntry = self::createConfigEntry($keys, $value);
 
         self::$config = array_merge(self::$config, $configEntry);
+    }
+
+    /**
+     * Reset the config
+     */
+    public static function reset() {
+        self::$config = [];
     }
 
     /**

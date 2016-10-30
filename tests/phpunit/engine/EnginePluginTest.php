@@ -8,10 +8,8 @@ use Symfony\Component\Finder\Finder;
 
 class EnginePluginTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     /**
@@ -121,6 +119,14 @@ class EnginePluginTest extends PHPUnit_Framework_TestCase {
         foreach ($files as $file) {
             $this->assertContains("var foo = 'bar';", $file->getContents());
         }
+    }
+
+    public function test_js_async() {
+        $plugin = $this->createEnginePlugin();
+
+        $result = $plugin->js('js/main.js', false, true);
+
+        $this->assertEquals('<script src="js/main.js" async></script>', $result);
     }
 
     public function test_js_in_template() {

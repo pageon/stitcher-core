@@ -6,13 +6,8 @@ use brendt\stitcher\Config;
 
 class YamlProviderTest extends PHPUnit_Framework_TestCase {
 
-    /**
-     * YamlProviderTest constructor.
-     */
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     protected function createYamlProvider() {
