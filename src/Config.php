@@ -4,6 +4,7 @@ namespace brendt\stitcher;
 
 use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\TemplateEngineFactory;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -29,9 +30,9 @@ class Config {
     /**
      * @param string $root
      */
-    public static function load($root = './') {
+    public static function load($root = './', $name = 'config.yml') {
         $finder = new Finder();
-        $configFiles = $finder->files()->in($root)->name('config.yml');
+        $configFiles = $finder->files()->in($root)->name($name);
         $config = [];
 
         foreach ($configFiles as $configFile) {
@@ -44,6 +45,7 @@ class Config {
 
         self::$container = new ContainerBuilder();
         self::$container->register('factory.provider', ProviderFactory::class);
+        self::$container->register('factory.template.engine', TemplateEngineFactory::class);
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
         self::$container->register('engine.sass', new Compiler())
@@ -93,7 +95,7 @@ class Config {
         $keys = explode('.', $key);
         $configEntry = self::createConfigEntry($keys, $value);
 
-        self::$config += $configEntry;
+        self::$config = array_merge(self::$config, $configEntry);
     }
 
     /**

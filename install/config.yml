@@ -41,3 +41,6 @@ meta:
 
 # Minify CSS and JavaScript
 minify: true
+
+# Choose the template engine. Available options: smarty, twig
+engine: smarty

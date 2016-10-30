@@ -37,3 +37,6 @@ meta:
 
 # Do not minify CSS or JavaScript
 minify: false
+
+# Choose the template engine. Available options: smarty, twig
+engine: smarty

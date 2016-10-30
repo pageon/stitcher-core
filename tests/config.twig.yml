@@ -2,6 +2,7 @@ directories:
     src: ./tests/src
     public: ./tests/public
     cache: ./tests/.cache
+    template: ./tests/src/template_twig
 
 image:
     dimensions:
@@ -10,4 +11,4 @@ image:
 meta:
     viewport: width=device-width, initial-scale=1
 
-engine: smarty
+engine: twig

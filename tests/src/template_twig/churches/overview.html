@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+{{ content }}
+
+{% for church in churches %}
+<li>
+    {{ church.name }}
+    {% if church.image %}
+    <img src="{{ church.image.src }}" srcset="{{ church.image.srcset }}">
+    {% endif %}
+</li>
+{% endfor %}
+{% endblock %}

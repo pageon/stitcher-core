@@ -1,12 +1,13 @@
 # Stitcher
 
-A static site generator for PHP and Smarty, with a focus on high performance.
+Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.
 
 ```sh
-# Installing Stitcher
 composer require brendt/stitcher:1.0.0-alpha
 php vendor/brendt/stitcher/install/stitcher site:install
 ```
+
+[Demo](http://stitcher.pageon.be/)
 
 ## Building a site with Stitcher
 
@@ -17,7 +18,15 @@ JSON or YAML files, MarkDown files, images, SASS or CSS, JavaScript, folders and
 The goal is simple: create blazing fast websites. Stitcher will parse all your templates into static HTML pages, will parse and minify CSS and JavaScript,
  will optimize images using ``srcset`` and provides useful developer tools to aid you in setting things up smoothly.
 
-[Demo](http://stitcher.pageon.be/)
+### Why Stitcher?
+
+- Performance is key. Stitcher is built from the ground up with web performance in mind, not the other way around.
+- Built for developers. Stitcher isn't a high level blogging engine. It's a tool for technical people to create websites.
+- Not just Markdown. Also supporting YAML, JSON, SASS and more.
+- Built with PHP for PHP developers. No need to use language you're not a 100% comfortable in, 
+install extra binaries or learn a new template engine.
+
+See the end product of a stitcher site [here](http://stitcher.pageon.be/).
 
 ### site.yml
 
@@ -78,7 +87,14 @@ See the `src/data` folder files for a more thorough reference.
 
 ### Templates
 
-At this moment, Stitcher only supports Smarty as a template engine. Support for more engines will be added in the future.
+At this moment, Stitcher supports Smarty and Twig as template engines.
+
+```yml
+# config.yaml
+
+engine: smarty
+```
+
  In a template, all functionality of the engine is available, and all variables provided in `site.yml` are available.
 
 ```html
@@ -212,3 +228,4 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [ ] Command line configuration
 - [ ] Pagination and filtering
 - [ ] Form support
+- [ ] Extended Markdown support? (variables and control structures)
