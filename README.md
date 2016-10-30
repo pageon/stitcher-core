@@ -225,7 +225,8 @@ Don't forget to add a local host in ``/ets/hosts``.
 #### Future plans
 
 - [ ] JS Async option
+- [ ] Pagination
 - [ ] Command line configuration
-- [ ] Pagination and filtering
+- [ ] Filtering
 - [ ] Form support
 - [ ] Extended Markdown support? (variables and control structures)

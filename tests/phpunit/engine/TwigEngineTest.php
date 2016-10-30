@@ -14,21 +14,51 @@ class TwigEngineTest extends PHPUnit_Framework_TestCase {
         return new TwigEngine();
     }
 
-    public function test_twig_renders_from_path() {
+    private function getFiles() {
         Config::load('./tests', 'config.twig.yml');
 
-        $engine = $this->createEngine();
-
         $finder = new Finder();
-        $files = $finder->files()->in(Config::get('directories.src') . '/template_twig')->name('home.html');
+
+        return $finder->files()->in(Config::get('directories.src') . '/template')->name('index.html');
+    }
+
+    public function test_twig_renders_from_path() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
 
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
-            
             $this->assertContains('<html>', $html);
-            $this->assertContains('<meta', $html);
-            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_twig_css() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
             $this->assertContains('body {', $html);
+        }
+    }
+
+    public function test_twig_js() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_twig_meta() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<meta', $html);
         }
     }
 
