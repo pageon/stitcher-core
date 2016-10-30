@@ -9,6 +9,7 @@
 
         {block 'scripts'}
             {js src="js/main.js" inline=true}
+            {js src="js/async.js" async=true}
         {/block}
     </body>
 </html>

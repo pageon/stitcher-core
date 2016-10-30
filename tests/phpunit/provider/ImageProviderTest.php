@@ -7,10 +7,8 @@ use brendt\stitcher\provider\YamlProvider;
 
 class ImageProviderTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     protected function createImageProvider() {

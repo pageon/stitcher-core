@@ -6,10 +6,8 @@ use Symfony\Component\Finder\Finder;
 
 class SmartyEngineTest extends PHPUnit_Framework_TestCase {
 
-    public function __construct() {
-        parent::__construct();
-
-        Config::load('./tests');
+    public function setUp() {
+        Config::load('./tests', 'config.yml');
     }
 
     private function createEngine() {
@@ -17,8 +15,6 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
     }
 
     private function getFiles() {
-        Config::load('./tests', 'config.yml');
-
         $finder = new Finder();
 
         return $finder->files()->in(Config::get('directories.src') . '/template')->name('index.tpl');
@@ -51,6 +47,16 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
             $this->assertContains('<script>var foo = \'bar\';', $html);
+        }
+    }
+
+    public function test_smarty_js_async() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<script src="js/async.js" async></script>', $html);
         }
     }
 
