@@ -11,4 +11,5 @@ composer require brendt/stitcher:1.0.0-alpha
 - Base installation
 - Performance helper functions
 - Meta configuration
-- SASS, CSS and JavaScript support (compiling and minifying)
+- Sass, CSS and JavaScript support (compiling and minifying)
+- Twig and Smarty support
