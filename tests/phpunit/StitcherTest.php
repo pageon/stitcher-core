@@ -23,9 +23,9 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $stitcher = $this->createStitcher();
         $site = $stitcher->loadSite();
 
-        $this->assertArrayHasKey('/', $site);
-        $this->assertArrayHasKey('/churches', $site);
-        $this->assertArrayHasKey('/churches/{id}', $site);
+        foreach ($site as $page) {
+            $this->assertNotNull($page->getId());
+        }
     }
 
     public function test_template_loading() {

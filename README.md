@@ -212,6 +212,11 @@ Don't forget to add a local host in ``/ets/hosts``.
 127.0.0.1 dev.stitcher.local
 ```
 
+## Current refactor
+
+- Site and page arrays to objects
+- Adapter support
+
 ## Features
 
 - [X] Static generator

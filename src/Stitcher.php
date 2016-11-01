@@ -2,14 +2,19 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\element\Page;
+use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
+use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use brendt\stitcher\engine\TemplateEngine;
+use brendt\stitcher\element\Site;
 
 class Stitcher {
 
@@ -44,6 +49,11 @@ class Stitcher {
     private $providerFactory;
 
     /**
+     * @var AdapterFactory
+     */
+    private $adapterFactory;
+
+    /**
      * @var TemplateEngine
      */
     private $templateEngine;
@@ -57,6 +67,7 @@ class Stitcher {
         $this->compileDir = Config::get('directories.cache');
 
         $this->providerFactory = Config::getDependency('factory.provider');
+        $this->adapterFactory = Config::getDependency('factory.adapter');
 
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = Config::getDependency('factory.template.engine');
@@ -81,15 +92,26 @@ class Stitcher {
     }
 
     /**
-     * @return array
+     * @return Site
+     * @throws InvalidSiteException
      */
     public function loadSite() {
+        $site = new Site();
         $finder = new Finder();
         $files = $finder->files()->in("{$this->root}/site")->name('*.yml');
-        $site = [];
 
         foreach ($files as $file) {
-            $site += Yaml::parse($file->getContents());
+            try {
+                $fileContents = Yaml::parse($file->getContents());
+            } catch (ParseException $e) {
+                throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
+            }
+
+            foreach ($fileContents as $route => $data) {
+                $page = new Page($route, $data);
+
+                $site->addPage($page);
+            }
         }
 
         return $site;
@@ -112,9 +134,11 @@ class Stitcher {
             $routes = [$routes];
         }
 
-        foreach ($site as $route => $page) {
+        foreach ($site as $page) {
+            $route = $page->getId();
+
             $skipRoute = count($routes) && !in_array($route, $routes);
-            $templateIsset = isset($templates[$page['template']]);
+            $templateIsset = isset($templates[$page->getTemplate()]);
 
             if ($skipRoute) {
                 continue;
@@ -128,48 +152,49 @@ class Stitcher {
                 }
             }
 
-            $template = $templates[$page['template']];
-            $detailVariable = null;
-            $globalVariables = [];
+            $pages = [];
 
-            if (isset($page['data'])) {
-                foreach ($page['data'] as $name => $variable) {
-                    if (is_array($variable) && isset($variable['src']) && isset($variable['id'])) {
-                        $detailVariable = [
-                            'name' => $name,
-                            'src' => $variable['src'],
-                            'id' => $variable['id'],
-                        ];
-                    } else if (is_string($variable)) {
-                        $globalVariables[$name] = $this->getData($variable);
-                    }
-                }
-            }
+            // Run adapters
 
-            $this->templateEngine->addTemplateVariables($globalVariables);
+            if (count($page->getAdapters())) {
+                foreach ($page->getAdapters() as $type => $adapterConfig) {
+                    $adapter = $this->adapterFactory->getByType($type);
 
-            if ($detailVariable) {
-                $idField = $detailVariable['id'];
-                $entries = $this->getData($detailVariable['src']);
-                $entryName = $detailVariable['name'];
-
-                foreach ($entries as $entry) {
-                    if (!isset($entry[$idField]) || ($entryId && $entry[$idField] != $entryId)) {
-                        continue;
-                    }
-
-                    $routeName = str_replace('{' . $idField . '}', $entry[$idField], $route);
-
-                    $this->templateEngine->addTemplateVariable($entryName, $entry);
-                    $blanket[$routeName] = $this->templateEngine->renderTemplate($template);
-                    $this->templateEngine->clearTemplateVariable($entryName);
+                    // TODO: this will bug with multiple adapters
+                    $pages = $adapter->transform($page);
                 }
             } else {
-                $blanket[$route] = $this->templateEngine->renderTemplate($template);
+                $pages = [$page->getId() => $page];
+            }
+
+            // Parse all variables
+            /** @var Page $entryPage */
+            $pageTemplate = $templates[$page->getTemplate()];
+            foreach ($pages as $entryPage) {
+                $entryPage = $this->parseVariables($entryPage);
+
+                // Render each page
+                $this->templateEngine->addTemplateVariables($entryPage->getVariables());
+                $blanket[$entryPage->getId()] = $this->templateEngine->renderTemplate($pageTemplate);
+                $this->templateEngine->clearTemplateVariables();
             }
         }
 
         return $blanket;
+    }
+    
+    public function parseVariables(Page $page) {
+        foreach ($page->getVariables() as $name => $value) {
+            if ($page->isParsedField($name)) {
+                continue;
+            }
+
+            $page
+                ->setVariable($name, $this->getData($value))
+                ->setParsedField($name);
+        }
+
+        return $page;
     }
 
     /**
