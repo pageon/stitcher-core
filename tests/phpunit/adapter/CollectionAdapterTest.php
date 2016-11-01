@@ -54,4 +54,14 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($result['/church-b']->isParsedField('church'));
     }
 
+    public function test_collection_adapter_filtered() {
+        $page = $this->createPage();
+        $adapter = $this->createAdapter();
+
+        $result = $adapter->transform($page, 'church-a');
+
+        $this->assertArrayHasKey('/church-a', $result);
+        $this->assertArrayNotHasKey('/church-b', $result);
+    }
+
 }

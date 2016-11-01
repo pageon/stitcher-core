@@ -74,11 +74,13 @@ class Stitcher {
         $this->templateEngine = $templateEngineFactory->getByType(Config::get('engine'));
     }
 
-    public function save($blanket) {
+    /**
+     * @param array $blanket
+     */
+    public function save(array $blanket) {
         $fs = new Filesystem();
 
-        $publicDirExists = $fs->exists($this->publicDir);
-        if (!$publicDirExists) {
+        if (!$fs->exists($this->publicDir)) {
             $fs->mkdir($this->publicDir);
         }
 
@@ -152,20 +154,8 @@ class Stitcher {
                 }
             }
 
-            $pages = [];
-
             // Run adapters
-
-            if (count($page->getAdapters())) {
-                foreach ($page->getAdapters() as $type => $adapterConfig) {
-                    $adapter = $this->adapterFactory->getByType($type);
-
-                    // TODO: this will bug with multiple adapters
-                    $pages = $adapter->transform($page);
-                }
-            } else {
-                $pages = [$page->getId() => $page];
-            }
+            $pages = $this->parseAdapters($page, $entryId);
 
             // Parse all variables
             /** @var Page $entryPage */
@@ -182,7 +172,39 @@ class Stitcher {
 
         return $blanket;
     }
-    
+
+    /**
+     * @param Page $page
+     * @param null $entryId
+     *
+     * @return Page[]
+     */
+    public function parseAdapters(Page $page, $entryId = null) {
+        $pages = [];
+
+        // TODO: this will bug with multiple adapters
+        if (count($page->getAdapters())) {
+            foreach ($page->getAdapters() as $type => $adapterConfig) {
+                $adapter = $this->adapterFactory->getByType($type);
+
+                if ($entryId) {
+                    $pages = $adapter->transform($page, $entryId);
+                } else {
+                    $pages = $adapter->transform($page);
+                }
+            }
+        } else {
+            $pages = [$page->getId() => $page];
+        }
+
+        return $pages;
+    }
+
+    /**
+     * @param Page $page
+     *
+     * @return Page
+     */
     public function parseVariables(Page $page) {
         foreach ($page->getVariables() as $name => $value) {
             if ($page->isParsedField($name)) {

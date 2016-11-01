@@ -5,6 +5,7 @@ use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use brendt\stitcher\factory\TemplateEngineFactory;
+use brendt\stitcher\element\Page;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
 
@@ -17,6 +18,24 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
      */
     protected function createStitcher() {
         return new Stitcher();
+    }
+
+    private function createPage() {
+        $page = new Page('/{id}', [
+            'template' => 'home',
+            'data' => [
+                'church' => 'churches.yml',
+                'intro' => 'intro.md',
+            ],
+            'adapters' => [
+                'collection' => [
+                    'name' => 'church',
+                    'field' => 'id',
+                ]
+            ]
+        ]);
+
+        return $page;
     }
 
     public function test_site_loading() {
@@ -36,6 +55,29 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $this->assertArrayHasKey('home', $site);
         $this->assertArrayHasKey('churches/detail', $site);
         $this->assertArrayHasKey('churches/overview', $site);
+    }
+
+    public function test_parse_adapters() {
+        $stitcher = $this->createStitcher();
+        $page = $this->createPage();
+
+        $pages = $stitcher->parseAdapters($page);
+
+        foreach ($pages as $page) {
+            $this->assertTrue($page->isParsedField('church'));
+            $this->assertFalse($page->isParsedField('intro'));
+        }
+    }
+
+    public function test_parse_variables() {
+        $stitcher = $this->createStitcher();
+        $page = $this->createPage();
+
+        $pages = $stitcher->parseAdapters($page);
+        $parsedPage = $stitcher->parseVariables($pages['/church-a']);
+
+        $this->assertTrue($parsedPage->isParsedField('church'));
+        $this->assertTrue($parsedPage->isParsedField('intro'));
     }
 
     public function test_stitch() {

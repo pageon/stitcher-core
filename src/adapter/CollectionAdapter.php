@@ -8,11 +8,12 @@ use brendt\stitcher\factory\AdapterFactory;
 class CollectionAdapter extends AbstractAdapter {
 
     /**
-     * @param Page $page
+     * @param Page  $page
+     * @param mixed $filter
      *
      * @return Page[]
      */
-    public function transform(Page $page) {
+    public function transform(Page $page, $filter = null) {
         $config = $page->getAdapter(AdapterFactory::COLLECTION_ADAPTER);
 
         if (!isset($config['field']) || !isset($config['name'])) {
@@ -32,7 +33,7 @@ class CollectionAdapter extends AbstractAdapter {
         $pageId = $page->getId();
 
         foreach ($entries as $entry) {
-            if (!isset($entry[$field])) {
+            if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
                 continue;
             }
 
