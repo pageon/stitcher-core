@@ -75,25 +75,6 @@ class Stitcher {
     }
 
     /**
-     * @param array $blanket
-     */
-    public function save(array $blanket) {
-        $fs = new Filesystem();
-
-        if (!$fs->exists($this->publicDir)) {
-            $fs->mkdir($this->publicDir);
-        }
-
-        foreach ($blanket as $path => $page) {
-            if ($path === '/') {
-                $path = 'index';
-            }
-
-            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
-        }
-    }
-
-    /**
      * @return Site
      * @throws InvalidSiteException
      */
@@ -117,6 +98,24 @@ class Stitcher {
         }
 
         return $site;
+    }
+
+    /**
+     * @return SplFileInfo[]
+     */
+    public function loadTemplates() {
+        $finder = new Finder();
+        $templateExtension = $this->templateEngine->getTemplateExtension();
+        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $files = $finder->files()->in($templateFolder)->name("*.{$templateExtension}");
+        $templates = [];
+
+        foreach ($files as $file) {
+            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
+            $templates[$id] = $file;
+        }
+
+        return $templates;
     }
 
     /**
@@ -154,10 +153,8 @@ class Stitcher {
                 }
             }
 
-            // Run adapters
             $pages = $this->parseAdapters($page, $entryId);
 
-            // Parse all variables
             /** @var Page $entryPage */
             $pageTemplate = $templates[$page->getTemplate()];
             foreach ($pages as $entryPage) {
@@ -220,21 +217,22 @@ class Stitcher {
     }
 
     /**
-     * @return SplFileInfo[]
+     * @param array $blanket
      */
-    public function loadTemplates() {
-        $finder = new Finder();
-        $templateExtension = $this->templateEngine->getTemplateExtension();
-        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
-        $files = $finder->files()->in($templateFolder)->name("*.{$templateExtension}");
-        $templates = [];
+    public function save(array $blanket) {
+        $fs = new Filesystem();
 
-        foreach ($files as $file) {
-            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
-            $templates[$id] = $file;
+        if (!$fs->exists($this->publicDir)) {
+            $fs->mkdir($this->publicDir);
         }
 
-        return $templates;
+        foreach ($blanket as $path => $page) {
+            if ($path === '/') {
+                $path = 'index';
+            }
+
+            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
+        }
     }
 
     private function getData($src) {

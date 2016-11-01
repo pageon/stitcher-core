@@ -64,4 +64,48 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayNotHasKey('/church-b', $result);
     }
 
+    /**
+     * @expectedException brendt\stitcher\exception\VariableNotFoundException
+     */
+    public function test_collection_adapter_throws_variable_not_found_exception() {
+        $page = new Page('/{id}', [
+            'template' => 'home',
+            'data' => [
+                'church' => 'churches.yml',
+            ],
+            'adapters' => [
+                'collection' => [
+                    'name' => 'wrongName',
+                    'field' => 'id',
+                ]
+            ]
+        ]);
+
+        $adapter = $this->createAdapter();
+
+        $adapter->transform($page, 'church-a');
+    }
+
+    /**
+     * @expectedException brendt\stitcher\exception\IdFieldNotFoundException
+     */
+    public function test_collection_adapter_throws_id_field_not_found_exception() {
+        $page = new Page('/{wrongId}', [
+            'template' => 'home',
+            'data' => [
+                'church' => 'churches.yml',
+            ],
+            'adapters' => [
+                'collection' => [
+                    'name' => 'church',
+                    'field' => 'id',
+                ]
+            ]
+        ]);
+
+        $adapter = $this->createAdapter();
+
+        $adapter->transform($page, 'church-a');
+    }
+
 }

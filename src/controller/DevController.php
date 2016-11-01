@@ -35,11 +35,12 @@ class DevController {
     public function run() {
         $url = $_SERVER['REQUEST_URI'];
 
-        $site = $this->stitcher->loadSite();
-        $routes = array_keys($site);
         $routeCollection = new RouteCollection();
+        $site = $this->stitcher->loadSite();
 
-        foreach ($routes as $route) {
+        foreach ($site as $page) {
+            $route = $page->getId();
+
             $routeCollection->add($route, new Route($route));
         }
 

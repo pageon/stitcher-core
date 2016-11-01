@@ -3,6 +3,8 @@
 namespace brendt\stitcher\adapter;
 
 use brendt\stitcher\element\Page;
+use brendt\stitcher\exception\IdFieldNotFoundException;
+use brendt\stitcher\exception\VariableNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
 
 class CollectionAdapter extends AbstractAdapter {
@@ -11,7 +13,9 @@ class CollectionAdapter extends AbstractAdapter {
      * @param Page  $page
      * @param mixed $filter
      *
-     * @return Page[]
+     * @return \brendt\stitcher\element\Page[]
+     * @throws IdFieldNotFoundException
+     * @throws VariableNotFoundException
      */
     public function transform(Page $page, $filter = null) {
         $config = $page->getAdapter(AdapterFactory::COLLECTION_ADAPTER);
@@ -24,7 +28,7 @@ class CollectionAdapter extends AbstractAdapter {
         $name = $config['name'];
 
         if (!$source = $page->getVariable($name)) {
-            return [$page];
+            throw new VariableNotFoundException("Variable \"{$name}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
         $entries = $this->getData($source);
@@ -38,6 +42,11 @@ class CollectionAdapter extends AbstractAdapter {
             }
 
             $fieldValue = $entry[$field];
+
+            if (strpos($pageId, '{' . $field . '}') === false) {
+                throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
+            }
+
             $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
             $entryPage = clone $page;
 
