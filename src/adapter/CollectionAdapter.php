@@ -36,16 +36,16 @@ class CollectionAdapter extends AbstractAdapter {
         $result = [];
         $pageId = $page->getId();
 
+        if (strpos($pageId, '{' . $field . '}') === false) {
+            throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
+        }
+
         foreach ($entries as $entry) {
             if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
                 continue;
             }
 
             $fieldValue = $entry[$field];
-
-            if (strpos($pageId, '{' . $field . '}') === false) {
-                throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
-            }
 
             $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
             $entryPage = clone $page;
