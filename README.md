@@ -154,7 +154,7 @@ A list of all helpers:
 
 - `{meta}`: Render meta tags from `config.yml`.
 - `{css src=src [inline=true]}`: Load a (S)CSS file.
-- `{js src=src [inline=true]}`: Load a JavaSscript file.
+- `{js src=src [inline=true] [async=true]}`: Load a JavaScript file.
 - `{$image.src}` and `{$image.srcset}`: Use a parsed image's `src` and `srcset` attributes.
 
 ### Config
