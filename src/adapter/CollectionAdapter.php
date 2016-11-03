@@ -32,7 +32,6 @@ class CollectionAdapter extends AbstractAdapter {
         }
 
         $entries = $this->getData($source);
-
         $result = [];
         $pageId = $page->getId();
 

@@ -9,6 +9,7 @@ use brendt\stitcher\exception\UnknownAdapterException;
 class AdapterFactory {
 
     const COLLECTION_ADAPTER = 'collection';
+    const PAGINATION_ADAPTER = 'pagination';
 
     private $adapters;
 

@@ -6,12 +6,8 @@ use brendt\stitcher\adapter\CollectionAdapter;
 use brendt\stitcher\Config;
 use brendt\stitcher\element\Page;
 use \PHPUnit_Framework_TestCase;
-use brendt\stitcher\Stitcher;
 
 class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
-
-    /** @var  Stitcher */
-    protected $stitcher;
 
     public function setUp() {
         Config::load('./tests');
