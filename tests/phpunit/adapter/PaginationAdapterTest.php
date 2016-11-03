@@ -25,8 +25,8 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
             ],
             'adapters' => [
                 'pagination' => [
-                    'name'    => 'churches',
-                    'perPage' => 1,
+                    'variable'    => 'churches',
+                    'amount' => 1,
                 ],
             ],
         ]);
@@ -40,8 +40,8 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
 
         $result = $adapter->transform($page);
 
-        $this->assertArrayHasKey('/entries/1', $result);
-        $this->assertArrayHasKey('/entries/2', $result);
+        $this->assertArrayHasKey('/entries/page-1', $result);
+        $this->assertArrayHasKey('/entries/page-2', $result);
         $this->assertArrayHasKey('/entries', $result);
     }
 
@@ -56,8 +56,8 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
             $this->assertCount(1, $page->getVariable('churches'));
         }
 
-        $this->assertArrayHasKey('church-a', $result['/entries/1']->getVariable('churches'));
-        $this->assertArrayHasKey('church-b', $result['/entries/2']->getVariable('churches'));
+        $this->assertArrayHasKey('church-a', $result['/entries/page-1']->getVariable('churches'));
+        $this->assertArrayHasKey('church-b', $result['/entries/page-2']->getVariable('churches'));
         $this->assertArrayHasKey('church-a', $result['/entries']->getVariable('churches'));
     }
 

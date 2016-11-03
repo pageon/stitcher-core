@@ -16,5 +16,5 @@
         church: churches.yml
     adapters:
         collection:
-            name: church
+            variable: church
             field: id

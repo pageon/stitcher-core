@@ -16,27 +16,28 @@ class PaginationAdapter extends AbstractAdapter {
     public function transform(Page $page, $filter = null) {
         $config = $page->getAdapter(AdapterFactory::PAGINATION_ADAPTER);
 
-        if (!isset($config['name'])) {
+        if (!isset($config['variable'])) {
             return [$page];
         }
 
-        $name = $config['name'];
+        $variable = $config['variable'];
 
-        if (!$source = $page->getVariable($name)) {
-            throw new VariableNotFoundException("Variable \"{$name}\" was not set as a data variable for page \"{$page->getId()}\"");
+        if (!$source = $page->getVariable($variable)) {
+            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
-        $entries = $this->getData($source);
-        $perPage = isset($config['perPage']) ? $config['perPage'] : 10;
         $pageId = rtrim($page->getId(), '/');
-        $result = [];
+        $entries = $this->getData($source);
+        $amount = isset($config['amount']) ? $config['amount'] : 10;
+        $pageCount = (int) ceil(count($entries) / $amount);
+
         $i = 0;
-        $pageCount = (int) ceil(count($entries) / $perPage);
+        $result = [];
 
         while ($i < $pageCount) {
-            $pageEntries = array_splice($entries, 0, $perPage);
-            $pageIndex = $i * $perPage + 1;
-            $url = "{$pageId}/{$pageIndex}";
+            $pageEntries = array_splice($entries, 0, $amount);
+            $pageIndex = $i * $amount + 1;
+            $url = "{$pageId}/page-{$pageIndex}";
             $entriesPage = clone $page;
             $pagination = [
                 'current'  => $pageIndex,
@@ -47,8 +48,8 @@ class PaginationAdapter extends AbstractAdapter {
 
             $entriesPage
                 ->clearAdapter(AdapterFactory::PAGINATION_ADAPTER)
-                ->setVariable($name, $pageEntries)
-                ->setParsedField($name)
+                ->setVariable($variable, $pageEntries)
+                ->setParsedField($variable)
                 ->setVariable('pagination', $pagination)
                 ->setParsedField('pagination')
                 ->setId($url);

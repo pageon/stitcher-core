@@ -4,6 +4,7 @@ namespace brendt\stitcher\factory;
 
 use brendt\stitcher\adapter\Adapter;
 use brendt\stitcher\adapter\CollectionAdapter;
+use brendt\stitcher\adapter\PaginationAdapter;
 use brendt\stitcher\exception\UnknownAdapterException;
 
 class AdapterFactory {
@@ -28,6 +29,10 @@ class AdapterFactory {
         switch ($type) {
             case self::COLLECTION_ADAPTER:
                 $adapter = new CollectionAdapter();
+
+                break;
+            case self::PAGINATION_ADAPTER:
+                $adapter = new PaginationAdapter();
 
                 break;
             default:

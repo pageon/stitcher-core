@@ -25,7 +25,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
             ],
             'adapters' => [
                 'collection' => [
-                    'name' => 'church',
+                    'variable' => 'church',
                     'field' => 'id',
                 ]
             ]
@@ -71,7 +71,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
             ],
             'adapters' => [
                 'collection' => [
-                    'name' => 'wrongName',
+                    'variable' => 'wrongName',
                     'field' => 'id',
                 ]
             ]
@@ -93,7 +93,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
             ],
             'adapters' => [
                 'collection' => [
-                    'name' => 'church',
+                    'variable' => 'church',
                     'field' => 'id',
                 ]
             ]

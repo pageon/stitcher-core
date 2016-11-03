@@ -29,7 +29,7 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
             ],
             'adapters' => [
                 'collection' => [
-                    'name' => 'church',
+                    'variable' => 'church',
                     'field' => 'id',
                 ]
             ]

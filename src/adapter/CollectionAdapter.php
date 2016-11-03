@@ -20,24 +20,25 @@ class CollectionAdapter extends AbstractAdapter {
     public function transform(Page $page, $filter = null) {
         $config = $page->getAdapter(AdapterFactory::COLLECTION_ADAPTER);
 
-        if (!isset($config['field']) || !isset($config['name'])) {
+        if (!isset($config['field']) || !isset($config['variable'])) {
             return [$page];
         }
 
-        $field = $config['field'];
-        $name = $config['name'];
+        $variable = $config['variable'];
 
-        if (!$source = $page->getVariable($name)) {
-            throw new VariableNotFoundException("Variable \"{$name}\" was not set as a data variable for page \"{$page->getId()}\"");
+        if (!$source = $page->getVariable($variable)) {
+            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
-        $entries = $this->getData($source);
-        $result = [];
         $pageId = $page->getId();
+        $entries = $this->getData($source);
+        $field = $config['field'];
 
         if (strpos($pageId, '{' . $field . '}') === false) {
             throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
         }
+
+        $result = [];
 
         foreach ($entries as $entry) {
             if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
@@ -51,8 +52,8 @@ class CollectionAdapter extends AbstractAdapter {
 
             $entryPage
                 ->clearAdapter(AdapterFactory::COLLECTION_ADAPTER)
-                ->setVariable($name, $entry)
-                ->setParsedField($name)
+                ->setVariable($variable, $entry)
+                ->setParsedField($variable)
                 ->setId($url);
 
             $result[$url] = $entryPage;
