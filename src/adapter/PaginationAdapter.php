@@ -30,13 +30,11 @@ class PaginationAdapter extends AbstractAdapter {
         $perPage = isset($config['perPage']) ? $config['perPage'] : 10;
         $pageId = rtrim($page->getId(), '/');
         $result = [];
-
         $i = 0;
         $pageCount = (int) ceil(count($entries) / $perPage);
+
         while ($i < $pageCount) {
-
             $pageEntries = array_splice($entries, 0, $perPage);
-
             $pageIndex = $i * $perPage + 1;
             $url = "{$pageId}/{$pageIndex}";
             $entriesPage = clone $page;
