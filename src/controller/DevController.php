@@ -64,7 +64,7 @@ class DevController {
             }
 
             $blanket = $this->stitcher->stitch($route, $id);
-            
+
             if (isset($blanket[$route])) {
                 echo $blanket[$route];
 
