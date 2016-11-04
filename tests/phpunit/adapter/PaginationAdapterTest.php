@@ -61,6 +61,16 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('entry-a', $result['/entries']->getVariable('entries'));
     }
 
+    public function test_pagination_adapter_filtered() {
+        $page = $this->createPage();
+        $adapter = $this->createAdapter();
+
+        $result = $adapter->transform($page, 2);
+
+        $this->assertArrayHasKey('/entries/page-2', $result);
+        $this->assertArrayNotHasKey('/entries/page-1', $result);
+    }
+
     public function test_pagination_adapter_sets_pagination_variable() {
         $page = $this->createPage();
         $adapter = $this->createAdapter();

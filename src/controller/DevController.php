@@ -56,14 +56,15 @@ class DevController {
             $routeResult = $matcher->match($url);
             $route = $routeResult['_route'];
 
-            if (isset($routeResult['page'])) {
-                $route = str_replace('{page}', $routeResult['page'], $route);
-            }
-
             $id = isset($routeResult['id']) ? $routeResult['id'] : null;
 
-            $blanket = $this->stitcher->stitch($route, $id);
+            if (isset($routeResult['page'])) {
+                $route = str_replace('/page-{page}', '', $route);
+                $id = $routeResult['page'];
+            }
 
+            $blanket = $this->stitcher->stitch($route, $id);
+            
             if (isset($blanket[$route])) {
                 echo $blanket[$route];
 

@@ -37,6 +37,12 @@ class PaginationAdapter extends AbstractAdapter {
         while ($i < $pageCount) {
             $pageEntries = array_splice($entries, 0, $amount);
             $pageIndex = $i + 1;
+
+            if ($filter && $pageIndex !== (int) $filter) {
+                $i += 1;
+                continue;
+            }
+
             $url = "{$pageId}/page-{$pageIndex}";
 
             $next = count($entries) ? $pageIndex + 1 : null;

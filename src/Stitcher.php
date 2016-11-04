@@ -120,12 +120,12 @@ class Stitcher {
 
     /**
      * @param string|array $routes
-     * @param null         $entryId
+     * @param null         $filterValue
      *
      * @return array
      * @throws TemplateNotFoundException
      */
-    public function stitch($routes = [], $entryId = null) {
+    public function stitch($routes = [], $filterValue= null) {
         $blanket = [];
 
         $site = $this->loadSite();
@@ -153,9 +153,8 @@ class Stitcher {
                 }
             }
 
-            $pages = $this->parseAdapters($page, $entryId);
+            $pages = $this->parseAdapters($page, $filterValue);
 
-            /** @var Page $entryPage */
             $pageTemplate = $templates[$page->getTemplate()];
             foreach ($pages as $entryPage) {
                 $entryPage = $this->parseVariables($entryPage);
