@@ -11,10 +11,10 @@
     data:
         collection: collection.yml
     adapters:
-        # Enable pagination for the field `collection`, paginate per 10 entries.
+        # Enable pagination for the field `collection`, paginate per 4 entries.
         pagination:
             variable: collection
-            amount: 10
+            amount: 4
 
 /examples/{id}:
     template: examples/detail
