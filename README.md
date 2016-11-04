@@ -60,7 +60,6 @@ The ``site.yml`` file, located in the ``src/site`` directory is used to stitch t
         collection:
             variable: example
             field: id
-
 ```
 
 The ``template`` key is required and provides a path to the required template for this page.
@@ -89,7 +88,6 @@ entries:
         intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
-
 ```
 
 See the `src/data` folder files for a more thorough reference.

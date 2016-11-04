@@ -38,11 +38,23 @@ class PaginationAdapter extends AbstractAdapter {
             $pageEntries = array_splice($entries, 0, $amount);
             $pageIndex = $i * $amount + 1;
             $url = "{$pageId}/page-{$pageIndex}";
+
+            $next = count($entries) ? $pageIndex + 1 : null;
+            $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
+            $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
+            $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
+
             $entriesPage = clone $page;
             $pagination = [
                 'current'  => $pageIndex,
-                'previous' => $pageIndex > 1 ? $pageIndex - 1 : null,
-                'next'     => count($entries) ? $pageIndex + 1 : null,
+                'previous' => $previous ? [
+                    'url'   => $previousUrl,
+                    'index' => $previous,
+                ] : null,
+                'next'     => $next ? [
+                    'url'   => $nextUrl,
+                    'index' => $next,
+                ] : null,
                 'pages'    => $pageCount,
             ];
 

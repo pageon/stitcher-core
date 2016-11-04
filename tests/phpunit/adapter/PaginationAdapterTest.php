@@ -75,6 +75,14 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
             $this->assertArrayHasKey('previous', $pagination);
             $this->assertArrayHasKey('pages', $pagination);
         }
+
+        $this->assertTrue(isset($result['/entries/page-1']->getVariable('pagination')['next']['url']));
+        $this->assertTrue(isset($result['/entries/page-1']->getVariable('pagination')['next']['index']));
+        $this->assertNull($result['/entries/page-1']->getVariable('pagination')['previous']);
+
+        $this->assertTrue(isset($result['/entries/page-2']->getVariable('pagination')['previous']['url']));
+        $this->assertTrue(isset($result['/entries/page-2']->getVariable('pagination')['previous']['index']));
+        $this->assertNull($result['/entries/page-2']->getVariable('pagination')['next']);
     }
 
     public function test_pagination_adapter_sets_parsed_variables() {
