@@ -231,11 +231,11 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [X] Meta configuration
 - [X] Sass, CSS and JavaScript support (compiling and minifying)
 - [X] Twig and Smarty support
+- [X] Pagination
 
 #### Future plans
 
-- [ ] JS Async option
-- [ ] Pagination
+- [ ] Backlink support
 - [ ] Command line configuration
 - [ ] Filtering
 - [ ] Form support
