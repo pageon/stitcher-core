@@ -139,11 +139,11 @@ class Stitcher {
             $route = $page->getId();
 
             $skipRoute = count($routes) && !in_array($route, $routes);
-            $templateIsset = isset($templates[$page->getTemplate()]);
-
             if ($skipRoute) {
                 continue;
             }
+
+            $templateIsset = isset($templates[$page->getTemplate()]);
 
             if (!$templateIsset) {
                 if (isset($page['template'])) {

@@ -21,12 +21,12 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
         $page = new Page('/entries', [
             'template' => 'home',
             'data'     => [
-                'churches' => 'churches.yml',
+                'entries' => 'pagination_entries.yml',
             ],
             'adapters' => [
                 'pagination' => [
-                    'variable'    => 'churches',
-                    'amount' => 1,
+                    'variable' => 'entries',
+                    'amount'   => 5,
                 ],
             ],
         ]);
@@ -53,12 +53,12 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
 
         /** @var Page $page */
         foreach ($result as $page) {
-            $this->assertCount(1, $page->getVariable('churches'));
+            $this->assertNotEquals(0, count($page->getVariable('entries')));
         }
 
-        $this->assertArrayHasKey('church-a', $result['/entries/page-1']->getVariable('churches'));
-        $this->assertArrayHasKey('church-b', $result['/entries/page-2']->getVariable('churches'));
-        $this->assertArrayHasKey('church-a', $result['/entries']->getVariable('churches'));
+        $this->assertArrayHasKey('entry-a', $result['/entries/page-1']->getVariable('entries'));
+        $this->assertArrayHasKey('entry-f', $result['/entries/page-2']->getVariable('entries'));
+        $this->assertArrayHasKey('entry-a', $result['/entries']->getVariable('entries'));
     }
 
     public function test_pagination_adapter_sets_pagination_variable() {
@@ -92,7 +92,7 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
         $result = $adapter->transform($page);
 
         foreach ($result as $page) {
-            $this->assertTrue($page->isParsedField('churches'));
+            $this->assertTrue($page->isParsedField('entries'));
             $this->assertTrue($page->isParsedField('pagination'));
         }
     }
