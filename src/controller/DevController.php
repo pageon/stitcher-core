@@ -4,7 +4,9 @@ namespace brendt\stitcher\controller;
 
 use brendt\stitcher\Config;
 use brendt\stitcher\exception\StitcherException;
+use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\Stitcher;
+use Symfony\Component\DependencyInjection\Tests\ParameterTest;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -35,19 +37,31 @@ class DevController {
     public function run() {
         $url = $_SERVER['REQUEST_URI'];
 
-        $site = $this->stitcher->loadSite();
-        $routes = array_keys($site);
         $routeCollection = new RouteCollection();
+        $site = $this->stitcher->loadSite();
 
-        foreach ($routes as $route) {
+        foreach ($site as $page) {
+            $route = $page->getId();
+
             $routeCollection->add($route, new Route($route));
+
+            if ($page->getAdapter(AdapterFactory::PAGINATION_ADAPTER)) {
+                $paginationRoute = $route . '/page-{page}';
+                $routeCollection->add($paginationRoute, new Route($paginationRoute));
+            }
         }
 
         try {
             $matcher = new UrlMatcher($routeCollection, new RequestContext());
             $routeResult = $matcher->match($url);
             $route = $routeResult['_route'];
+
             $id = isset($routeResult['id']) ? $routeResult['id'] : null;
+
+            if (isset($routeResult['page'])) {
+                $route = str_replace('/page-{page}', '', $route);
+                $id = $routeResult['page'];
+            }
 
             $blanket = $this->stitcher->stitch($route, $id);
 

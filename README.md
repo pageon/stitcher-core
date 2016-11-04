@@ -45,20 +45,26 @@ The ``site.yml`` file, located in the ``src/site`` directory is used to stitch t
     template: examples/overview
     data:
         collection: collection.yml
-        #folderCollection: folder/
+    adapters:
+        # Enable pagination for the field `collection`, paginate per 10 entries.
+        pagination:
+            variable: collection
+            amount: 10
 
 /examples/{id}:
     template: examples/detail
     data:
-        example:
-            src: collection.yml
-            id: id
+        example: collection.yml
+    adapters:
+        # Enable detail pages for the variable `example`, map by the field `id`.
+        collection:
+            variable: example
+            field: id
 ```
 
 The ``template`` key is required and provides a path to the required template for this page.
  The ``data`` key isn't required. It takes a collection of variable names (these will be accessible in the template as variables).
- Each variable will need to be loaded. You can either provide a path to a data file (loaded from ``src/data`` by default),
- or you can provide a collection with a `src` and `id` key. This approach will generate detail pages from a collection of data entries.
+ The `adapters` key also isn't required, but adds the possibility to add functionality like detail pages or pagination to a page. 
 
 **Note**: there can be multiple config files located in the `src/site` directory. All YAML files will be loaded and parsed form this directory, not just `site.yml`.
 
@@ -82,7 +88,6 @@ entries:
         intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
-
 ```
 
 See the `src/data` folder files for a more thorough reference.
@@ -212,6 +217,11 @@ Don't forget to add a local host in ``/ets/hosts``.
 127.0.0.1 dev.stitcher.local
 ```
 
+## Current refactor
+
+- Site and page arrays to objects
+- Adapter support
+
 ## Features
 
 - [X] Static generator
@@ -221,11 +231,11 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [X] Meta configuration
 - [X] Sass, CSS and JavaScript support (compiling and minifying)
 - [X] Twig and Smarty support
+- [X] Pagination
 
 #### Future plans
 
-- [ ] JS Async option
-- [ ] Pagination
+- [ ] Backlink support
 - [ ] Command line configuration
 - [ ] Filtering
 - [ ] Form support

@@ -13,31 +13,31 @@ entries:
         image: img/orange.jpg
 
     entry-c:
-        title: Example Entry C
-        intro: And the third one
+        title: Example Entry B
+        intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
 
     entry-d:
-        title: Example Entry D
-        intro: Fourth
+        title: Example Entry B
+        intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
 
     entry-e:
-        title: Example Entry E
-        intro: Number 5
+        title: Example Entry B
+        intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
 
     entry-f:
-        title: Example Entry F
-        intro: And 6
+        title: Example Entry B
+        intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
 
     entry-g:
-        title: Example Entry G
-        intro: Last one
+        title: Example Entry B
+        intro: This is the second entry
         body: entry-a.md
         image: img/orange.jpg
