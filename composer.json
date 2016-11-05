@@ -1,7 +1,7 @@
 {
     "name" : "brendt/stitcher",
     "description" : "Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.",
-    "license" : "proprietary",
+    "license" : "MIT",
     "authors" : [
         {
             "name" : "Brent",
