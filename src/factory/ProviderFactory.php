@@ -47,32 +47,34 @@ class ProviderFactory {
     }
 
     /**
-     * @param $file
+     * @param $fileName
      *
      * @return Provider|null
      */
-    public function getProvider($file) {
-        if (strpos($file, '/') === strlen($file) - 1) {
-            return $this->getByType(self::FOLDER_PROVIDER);
-        } else if (strpos($file, '.json') !== false) {
-            return $this->getByType(self::JSON_PROVIDER);
-        } else if (strpos($file, '.md') !== false) {
-            return $this->getByType(self::MARKDOWN_PROVIDER);
-        } else if (strpos($file, '.yml') !== false) {
-            return $this->getByType(self::YAML_PROVIDER);
-        } else if (strpos($file, '.jpg') !== false) {
-            return $this->getByType(self::IMAGE_PROVIDER);
-        } else if (strpos($file, '.png') !== false) {
-            return $this->getByType(self::IMAGE_PROVIDER);
-        } else if (strpos($file, '.css') !== false) {
-            return $this->getByType(self::CSS_PROVIDER);
-        } else if (strpos($file, '.js') !== false) {
-            return $this->getByType(self::JS_PROVIDER);
-        } else if (strpos($file, '.scss') !== false || strpos($file, '.sass') !== false) {
-            return $this->getByType(self::SASS_PROVIDER);
+    public function getProvider($fileName) {
+        $provider = null;
+
+        if (strpos($fileName, '/') === strlen($fileName) - 1) {
+            $provider = $this->getByType(self::FOLDER_PROVIDER);
+        } else if (strpos($fileName, '.json') !== false) {
+            $provider = $this->getByType(self::JSON_PROVIDER);
+        } else if (strpos($fileName, '.md') !== false) {
+            $provider = $this->getByType(self::MARKDOWN_PROVIDER);
+        } else if (strpos($fileName, '.yml') !== false) {
+            $provider = $this->getByType(self::YAML_PROVIDER);
+        } else if (strpos($fileName, '.jpg') !== false) {
+            $provider = $this->getByType(self::IMAGE_PROVIDER);
+        } else if (strpos($fileName, '.png') !== false) {
+            $provider = $this->getByType(self::IMAGE_PROVIDER);
+        } else if (strpos($fileName, '.css') !== false) {
+            $provider = $this->getByType(self::CSS_PROVIDER);
+        } else if (strpos($fileName, '.js') !== false) {
+            $provider = $this->getByType(self::JS_PROVIDER);
+        } else if (strpos($fileName, '.scss') !== false || strpos($fileName, '.sass') !== false) {
+            $provider = $this->getByType(self::SASS_PROVIDER);
         }
 
-        return null;
+        return $provider;
     }
 
     /**
