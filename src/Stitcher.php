@@ -90,6 +90,10 @@ class Stitcher {
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
 
+            if (!is_array($fileContents)) {
+                continue;
+            }
+
             foreach ($fileContents as $route => $data) {
                 $page = new Page($route, $data);
 
