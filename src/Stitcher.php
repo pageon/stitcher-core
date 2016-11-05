@@ -90,6 +90,10 @@ class Stitcher {
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
 
+            if (!is_array($fileContents)) {
+                continue;
+            }
+
             foreach ($fileContents as $route => $data) {
                 $page = new Page($route, $data);
 
@@ -125,7 +129,7 @@ class Stitcher {
      * @return array
      * @throws TemplateNotFoundException
      */
-    public function stitch($routes = [], $filterValue= null) {
+    public function stitch($routes = [], $filterValue = null) {
         $blanket = [];
 
         $site = $this->loadSite();

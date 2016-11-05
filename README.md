@@ -142,7 +142,7 @@ Stitcher provides some helper functions in aid of creating fast websites.
             {js src='main.js' inline=true}
 
             {* Load a JS file *}
-            {js src='extra.js' inline=true}
+            {js src='extra.js' async=true}
         {/block}
     </body>
 </html>
@@ -230,7 +230,6 @@ Don't forget to add a local host in ``/ets/hosts``.
 
 #### Future plans
 
-- [ ] Backlink support
 - [ ] Command line configuration
 - [ ] Filtering
 - [ ] Form support
