@@ -3,6 +3,7 @@
 namespace brendt\stitcher;
 
 use brendt\stitcher\engine\EnginePlugin;
+use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
 use Leafo\ScssPhp\Compiler;
@@ -10,6 +11,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use brendt\stitcher\engine\smarty\SmartyEngine;
+use CSSmin;
 
 /**
  * Class Config
@@ -50,6 +52,7 @@ class Config {
 
         self::$container = new ContainerBuilder();
         self::$container->register('factory.provider', ProviderFactory::class);
+        self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);

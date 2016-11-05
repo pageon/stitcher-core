@@ -13,18 +13,8 @@
     template: churches/detail
     data:
         intro: intro.md
-        church:
-            src: churches.yml
-            id: id
-
-
-
-#/churches:
-#    template: churches/overview
-#    data:
-#        churches: churches/
-#
-#/churches/{id}:
-#    template: churches/detail
-#    data:
-#        church: churches/
+        church: churches.yml
+    adapters:
+        collection:
+            variable: church
+            field: id

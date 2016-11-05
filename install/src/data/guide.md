@@ -31,14 +31,21 @@ The ``site.yml`` file, located in the ``src/site`` directory is used to stitch t
     template: examples/overview
     data:
         collection: collection.yml
-        #folderCollection: folder/
+    adapters:
+        # Enable pagination for the field `collection`, paginate per 10 entries.
+        pagination:
+            variable: collection
+            amount: 10
 
 /examples/{id}:
     template: examples/detail
     data:
-        example:
-            src: collection.yml
-            id: id
+        example: collection.yml
+    adapters:
+        # Enable detail pages for the variable `example`, map by the field `id`.
+        collection:
+            variable: example
+            field: id
 ```
 
 The ``template`` key is required and provides a path to the required template for this page.
@@ -126,7 +133,7 @@ A list of all helpers:
 
 - `{meta}`: Render meta tags from `config.yml`.
 - `{css src=src [inline=true]}`: Load a (S)CSS file.
-- `{js src=src [inline=true]}`: Load a JavaSscript file.
+- `{js src=src [inline=true] [async=true]}`: Load a JavaSscript file.
 - `{$image.src}` and `{$image.srcset}`: Use a parsed image's `src` and `srcset` attributes.
 
 
