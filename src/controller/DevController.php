@@ -35,7 +35,8 @@ class DevController {
      * This function will read the request URL and dispatch the according route.
      */
     public function run() {
-        $url = $_SERVER['REQUEST_URI'];
+        $request = explode('?', $_SERVER['REQUEST_URI']);
+        $url = reset($request);
 
         $routeCollection = new RouteCollection();
         $site = $this->stitcher->loadSite();
