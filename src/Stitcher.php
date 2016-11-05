@@ -129,7 +129,7 @@ class Stitcher {
      * @return array
      * @throws TemplateNotFoundException
      */
-    public function stitch($routes = [], $filterValue= null) {
+    public function stitch($routes = [], $filterValue = null) {
         $blanket = [];
 
         $site = $this->loadSite();
