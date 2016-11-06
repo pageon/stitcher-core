@@ -3,6 +3,7 @@
 namespace brendt\stitcher\element;
 
 use brendt\stitcher\Config;
+use Intervention\Image\ImageManager;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Image {
@@ -52,49 +53,13 @@ class Image {
     }
 
     public function scale($width, $height) {
-        $imageFile = $this->getImageFile($this->sourcePath);
-
-        if (!$imageFile) {
-            return;
-        }
-
+        /** @var ImageManager $imageEngine */
+        $imageEngine = Config::getDependency('engine.image');
         $name = "{$this->name}-{$width}x{$height}.{$this->extension}";
 
-        $imageDestinationFile = imagescale($imageFile, $width);
-
-        $this->saveImageFile($name, $imageDestinationFile);
-    }
-
-    protected function getImageFile($path) {
-        $imageFile = null;
-
-        if ($this->extension === 'jpg') {
-            $imageFile = imagecreatefromjpeg($path);
-        } elseif ($this->extension === 'png') {
-            $imageFile = imagecreatefrompng($path);
-        }
-
-        return $imageFile;
-    }
-
-    protected function saveImageFile($name, $imageFile) {
-        $fs = $this->filesystem;
-        $nameTrimmed = trim($name, '/');
-
-        $filePath = "{$this->publicDir}/{$nameTrimmed}";
-
-        if ($fs->exists($filePath)) {
-            $fs->remove($filePath);
-            $fs->touch($filePath);
-        }
-
-        if ($this->extension === 'jpg') {
-            imagejpeg($imageFile, $filePath, 100);
-        } elseif ($this->extension === 'png') {
-            imagepng($imageFile, $filePath);
-        }
-
-        $this->addSource(new ImageSource($filePath, $name));
+        $imageEngine->make($this->sourcePath)
+            ->resize($width, $height)
+            ->save(Config::get('directories.public') . "/$name");
     }
 
     public function renderSrc() {

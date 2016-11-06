@@ -4,6 +4,7 @@ directories:
     cache: ./tests/.cache
 
 image:
+    engine: gd
     dimensions:
         1x1: { width: 1, height: 1}
 

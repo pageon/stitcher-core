@@ -6,6 +6,7 @@ use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
+use Intervention\Image\ImageManager;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -59,6 +60,8 @@ class Config {
         self::$container->register('engine.minify.css', CSSmin::class);
         self::$container->register('engine.sass', Compiler::class)
             ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);
+        self::$container->register('engine.image', ImageManager::class)
+            ->addMethodCall('__construct', ['config' => ['driver' => Config::get('image.engine')]]);
     }
 
     /**

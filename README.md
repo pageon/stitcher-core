@@ -228,6 +228,10 @@ Don't forget to add a local host in ``/ets/hosts``.
 - [X] Twig and Smarty support
 - [X] Pagination
 
+#### Todo
+
+- Better image support
+
 #### Future plans
 
 - [ ] Command line configuration

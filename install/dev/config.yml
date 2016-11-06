@@ -27,8 +27,10 @@ directories:
     #  Use the same cache directory as production
     cache: ../.cache
 
-# Only create one image dimension
 image:
+    # Use gd as image engine. Possible configurations: `gd` or `imagick`.
+    engine: gd
+    # Only create one image dimension
     dimensions:
         1600x1200: { width: 1600, height: 1200}
 
