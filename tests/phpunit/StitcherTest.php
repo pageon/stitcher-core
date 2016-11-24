@@ -5,7 +5,7 @@ use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use brendt\stitcher\factory\TemplateEngineFactory;
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
 

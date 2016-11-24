@@ -4,9 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f87c966b5cc877939954cf3a27c1f878",
-    "content-hash": "b5499e479e801e47ae91d4c3beb0f51c",
+    "hash": "ec0c5e3bee3dd5bda41a578bceeda8e7",
+    "content-hash": "f9eb32cba43e144c6f8693a805020826",
     "packages": [
+        {
+            "name": "brendt/responsive-images",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brendt/responsive-images.git",
+                "reference": "3012fe6c3f3f06da0f2458fbfa7dacea8aadb6b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/3012fe6c3f3f06da0f2458fbfa7dacea8aadb6b6",
+                "reference": "3012fe6c3f3f06da0f2458fbfa7dacea8aadb6b6",
+                "shasum": ""
+            },
+            "require": {
+                "intervention/image": "^2.3",
+                "php": ">=5.6",
+                "symfony/filesystem": "^3.1",
+                "symfony/finder": "^3.1"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.0",
+                "phpunit/phpunit": "^5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "brendt\\image\\": "src/",
+                    "brendt\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent",
+                    "email": "brent@pageon.be"
+                }
+            ],
+            "description": "Create responsive images with PHP, using the srcset and sizes spec.",
+            "time": "2016-11-23 08:28:17"
+        },
         {
             "name": "erusev/parsedown",
             "version": "1.6.0",

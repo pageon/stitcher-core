@@ -2,7 +2,7 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\IdFieldNotFoundException;
 use brendt\stitcher\exception\VariableNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
@@ -13,7 +13,7 @@ class CollectionAdapter extends AbstractAdapter {
      * @param Page  $page
      * @param mixed $filter
      *
-     * @return \brendt\stitcher\element\Page[]
+     * @return Page[]
      * @throws IdFieldNotFoundException
      * @throws VariableNotFoundException
      */

@@ -15,7 +15,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
         Config::reset();
         Config::load('./tests');
 
-        $this->assertNotEmpty(Config::get('image.dimensions'));
+        $this->assertNotEmpty(Config::get('engines.image'));
     }
 
     public function test_recursive_config_set() {

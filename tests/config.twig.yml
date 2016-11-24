@@ -4,12 +4,10 @@ directories:
     cache: ./tests/.cache
     template: ./tests/src/template_twig
 
-image:
-    engine: gd
-    dimensions:
-        1x1: { width: 1, height: 1}
+engines:
+    image: gd
+    template: twig
 
 meta:
     viewport: width=device-width, initial-scale=1
 
-engine: twig

@@ -4,7 +4,7 @@ namespace brendt\stitcher\tests\adapter;
 
 use brendt\stitcher\adapter\CollectionAdapter;
 use brendt\stitcher\Config;
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 use \PHPUnit_Framework_TestCase;
 
 class CollectionAdapterTest extends PHPUnit_Framework_TestCase {

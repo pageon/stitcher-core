@@ -2,7 +2,7 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 use brendt\stitcher\factory\AdapterFactory;
 
 class PaginationAdapter extends AbstractAdapter {

@@ -55,7 +55,6 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
         $imageProvider->parse('img/green');
 
         $this->assertTrue($fs->exists($file));
-        $this->assertTrue($fs->exists('./tests/public/img/green-1x1.jpg'));
     }
 
     public function test_image_parses_with_extended_fields() {

@@ -2,7 +2,7 @@
 
 namespace brendt\stitcher;
 
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
@@ -14,7 +14,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use brendt\stitcher\engine\TemplateEngine;
-use brendt\stitcher\element\Site;
+use brendt\stitcher\site\Site;
 
 class Stitcher {
 
@@ -71,7 +71,7 @@ class Stitcher {
 
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = Config::getDependency('factory.template.engine');
-        $this->templateEngine = $templateEngineFactory->getByType(Config::get('engine'));
+        $this->templateEngine = $templateEngineFactory->getByType(Config::get('engines.template'));
     }
 
     /**
