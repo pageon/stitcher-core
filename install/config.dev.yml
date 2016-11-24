@@ -24,11 +24,11 @@ directories:
     # The public directory in which the site is generated
     public: ./public
 
-    # The public image directory, pointing to the production image directory
-    image: ./public/img
+    # Use the cache directory for images
+    image: ./cache
 
     # Cache directory used by smarty
-    cache: ./.cache
+    cache: ./cache
 
 meta:
     viewport: width=device-width, initial-scale=1
