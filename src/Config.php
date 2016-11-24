@@ -57,7 +57,7 @@ class Config {
         self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
         self::$container->register('factory.image', ResponsiveFactory::class)
-            ->addArgument(Config::get('directories.public') . '/img')
+            ->addArgument(Config::get('directories.image'))
             ->addArgument(Config::get('engines.image'));
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);

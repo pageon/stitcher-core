@@ -1,6 +1,7 @@
 directories:
     src: ./tests/src
     public: ./tests/public
+    image: ./tests/public/img
     cache: ./tests/.cache
     template: ./tests/src/template_twig
 

@@ -24,6 +24,9 @@ directories:
     # The public directory in which the site is generated
     public: ./public
 
+    # The public image directory
+    image: ./img
+
     # Cache directory used by smarty
     cache: ./.cache
 

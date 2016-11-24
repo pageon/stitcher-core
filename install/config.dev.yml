@@ -5,27 +5,30 @@
 # An Apache example of such host configuration could be:
 #
 # <VirtualHost *:80>
-#     DocumentRoot "<path_to_project>/dev"
+#     DocumentRoot "<path_to_project>"
 #     ServerName dev.stitcher.local
 #     ErrorLog "<log_path>/error.log"
 #     CustomLog "<log_path>/access.log" common
 #
-#     <Directory "<path_to_project>/dev">
+#     <Directory "<path_to_project>">
 #         AllowOverride All
 #         Require all granted
 #     </Directory>
 # </VirtualHost>
 
+# Configure the paths of several directories
 directories:
-    # Use the same source directory as production
-    src: ../src
+    # The source directory containing
+    src: ./src
 
-    # Set the public directory to the current one.
-    # HTML pages won't be rendered, but images will.
-    public: ./
+    # The public directory in which the site is generated
+    public: ./public
 
-    #  Use the same cache directory as production
-    cache: ../.cache
+    # The public image directory, pointing to the production image directory
+    image: ./public/img
+
+    # Cache directory used by smarty
+    cache: ./.cache
 
 meta:
     viewport: width=device-width, initial-scale=1
