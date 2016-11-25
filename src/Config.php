@@ -58,7 +58,10 @@ class Config {
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
         self::$container->register('factory.image', ResponsiveFactory::class)
             ->addArgument(Config::get('directories.image'))
-            ->addArgument(Config::get('engines.image'));
+            ->addArgument(Config::get('engines.image'))
+            ->addArgument(0.1)
+            ->addArgument(300)
+            ->addArgument(Config::get('caches.image'));
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
         self::$container->register('engine.minify.css', CSSmin::class);
