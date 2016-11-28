@@ -2,12 +2,12 @@
 
 namespace brendt\stitcher;
 
+use brendt\image\config\DefaultConfigurator;
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
-use Intervention\Image\ImageManager;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -56,12 +56,17 @@ class Config {
         self::$container->register('factory.provider', ProviderFactory::class);
         self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
+
+        $imageConfig = new DefaultConfigurator([
+            'driver'      => Config::get('engines.image'),
+            'publicPath'  => Config::get('directories.public'),
+            'sourcePath'  => Config::get('directories.src'),
+            'enableCache' => Config::get('caches.image'),
+        ]);
+
         self::$container->register('factory.image', ResponsiveFactory::class)
-            ->addArgument(Config::get('directories.image'))
-            ->addArgument(Config::get('engines.image'))
-            ->addArgument(0.1)
-            ->addArgument(300)
-            ->addArgument(Config::get('caches.image'));
+            ->addArgument($imageConfig);
+
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
         self::$container->register('engine.minify.css', CSSmin::class);

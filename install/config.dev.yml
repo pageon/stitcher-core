@@ -21,11 +21,8 @@ directories:
     # The source directory containing
     src: ./src
 
-    # The public directory in which the site is generated
-    public: ./public
-
-    # Use the cache directory for images
-    image: ./cache
+    # The public directory for the dev controller is used to save images
+    public: ./
 
     # Cache directory used by smarty
     cache: ./cache

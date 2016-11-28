@@ -53,9 +53,8 @@ class ImageProvider extends AbstractProvider {
         if (!$path) {
             return $data;
         }
-        $path = ltrim($path, './');
 
-        $image = $this->factory->create("{$this->imageDir}/{$path}");
+        $image = $this->factory->create($path);
 
         $data = [
             'src' => $image->src(),

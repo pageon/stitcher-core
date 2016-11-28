@@ -25,10 +25,10 @@ directories:
     public: ./public
 
     # The public image directory
-    image: ./img
+    image: ./public/img
 
     # Cache directory used by smarty
-    cache: ./.cache
+    cache: ./cache
 
 # Configure meta tags
 meta:
@@ -44,3 +44,7 @@ engines:
 
     # Use gd as image engine. Possible configurations: `gd` or `imagick`.
     image: gd
+
+caches:
+    # Enable image caching while rendering
+    image: true

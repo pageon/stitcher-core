@@ -33,11 +33,12 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
         $altText = 'A green image';
 
         $image = $imageProvider->parse([
-            'src' => 'img/green',
+            'src' => 'img/green.jpg',
             'alt' => $altText,
         ]);
 
         $this->assertNotNull($image['src']);
+        $this->assertEquals($image['src'], '/img/green.jpg');
         $this->assertNotNull($image['srcset']);
         $this->assertArrayHasKey('alt', $image);
         $this->assertEquals($image['alt'], $altText);
@@ -52,7 +53,7 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
         }
 
         $imageProvider = $this->createImageProvider();
-        $imageProvider->parse('img/green');
+        $imageProvider->parse('img/green.jpg');
 
         $this->assertTrue($fs->exists($file));
     }

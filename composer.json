@@ -10,7 +10,7 @@
     ],
     "require" : {
         "PHP" : ">=5.6",
-        "brendt/responsive-images": "^0.1.0",
+        "brendt/responsive-images": "^0.2.0",
         "smarty/smarty" : "^3.1",
         "twig/twig": "~1.0",
         "symfony/yaml" : "^3.1",
