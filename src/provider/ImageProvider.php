@@ -8,11 +8,6 @@ use brendt\stitcher\Config;
 class ImageProvider extends AbstractProvider {
 
     /**
-     * @var mixed
-     */
-    protected $imageDir;
-
-    /**
      * @var ResponsiveFactory
      */
     protected $factory;
@@ -23,7 +18,6 @@ class ImageProvider extends AbstractProvider {
     public function __construct() {
         parent::__construct();
 
-        $this->imageDir = Config::get('directories.src');
         $this->factory = Config::getDependency('factory.image');
     }
 

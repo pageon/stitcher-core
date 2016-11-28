@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher\engine;
 
+use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
 use brendt\stitcher\factory\ProviderFactory;
 use Symfony\Component\Filesystem\Filesystem;
@@ -133,6 +134,29 @@ class EnginePlugin {
         }
 
         return $result;
+    }
+
+    /**
+     * Create a responsive image using brendt\responsive-images.
+     *
+     * @param $src
+     *
+     * @return array
+     */
+    public function image($src) {
+        /** @var ResponsiveFactory $factory */
+        $factory = Config::getDependency('factory.image');
+        $image = $factory->create($src);
+
+        if (!$image) {
+            return ['src' => null, 'srcset' => null, 'sizes' => null];
+        }
+
+        return [
+            'src'    => $image->src(),
+            'srcset' => $image->srcset(),
+            'sizes'  => $image->sizes(),
+        ];
     }
 
 }
