@@ -2,10 +2,14 @@
 
 use brendt\stitcher\Config;
 
-function smarty_function_image($params) {
+/**
+ * @param array $params
+ * @param Smarty_Internal_Template $template
+ */
+function smarty_function_image(array $params, Smarty_Internal_Template $template) {
     $plugin = Config::getDependency('engine.plugin');
-
     $src = isset($params['src']) ? $params['src'] : null;
+    $image = $plugin->image($src);
 
-    return $plugin->image($src);
+    $template->assign($params['var'], $image);
 }
