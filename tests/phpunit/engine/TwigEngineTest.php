@@ -74,4 +74,14 @@ class TwigEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    public function test_twig_image() {
+        $engine = $this->createEngine();
+        $files = Finder::create()->files()->in(Config::get('directories.template'))->name('home.html')->getIterator();
+        $files->rewind();
+        $template = $files->current();
+
+        $html = $engine->renderTemplate($template);
+        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
+    }
+
 }

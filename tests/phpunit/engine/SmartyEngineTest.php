@@ -70,4 +70,20 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
+    public function test_smarty_image() {
+        $engine = $this->createEngine();
+        $files = Finder::create()->files()->in(Config::get('directories.src') . '/template')->name('home.tpl')->getIterator();
+        $files->rewind();
+        $template = $files->current();
+
+        $engine->addTemplateVariables([
+            'content' => 'test',
+            'churches' => [],
+        ]);
+        
+        $html = $engine->renderTemplate($template);
+        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
+    }
+
+
 }

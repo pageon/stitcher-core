@@ -22,7 +22,7 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
     public function test_image_create() {
         $imageProvider = $this->createImageProvider();
 
-        $image = $imageProvider->parse('img/green');
+        $image = $imageProvider->parse('img/green.jpg');
 
         $this->assertNotNull($image['src']);
         $this->assertNotNull($image['srcset']);
