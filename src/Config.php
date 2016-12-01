@@ -2,6 +2,8 @@
 
 namespace brendt\stitcher;
 
+use brendt\image\config\DefaultConfigurator;
+use brendt\image\ResponsiveFactory;
 use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
@@ -54,6 +56,17 @@ class Config {
         self::$container->register('factory.provider', ProviderFactory::class);
         self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
+
+        $imageConfig = new DefaultConfigurator([
+            'driver'      => Config::get('engines.image'),
+            'publicPath'  => Config::get('directories.public'),
+            'sourcePath'  => Config::get('directories.src'),
+            'enableCache' => Config::get('caches.image'),
+        ]);
+
+        self::$container->register('factory.image', ResponsiveFactory::class)
+            ->addArgument($imageConfig);
+
         self::$container->register('engine.smarty', SmartyEngine::class);
         self::$container->register('engine.plugin', EnginePlugin::class);
         self::$container->register('engine.minify.css', CSSmin::class);

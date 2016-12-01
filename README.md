@@ -97,7 +97,8 @@ See the `src/data` folder files for a more thorough reference.
 At this moment, Stitcher supports Smarty and Twig as template engines. Which engine you want to use is up to you, and configured in `config.yml`.
 
 ```yaml
-engine: smarty
+engines:
+    template: smarty
 ```
 
  In a template, all functionality of the engine is available, as are all variables configured in `site.yml`.
@@ -198,12 +199,12 @@ Stitcher requires at least one virtual host, two if you'd want to use the develo
 
 ```xml
 <VirtualHost *:80>
-    DocumentRoot "<path_to_project>/dev"
+    DocumentRoot "<path_to_project>"
     ServerName dev.stitcher.local
     ErrorLog "<log_path>/error.log"
     CustomLog "<log_path>/access.log" common
 
-    <Directory "<path_to_project>/dev">
+    <Directory "<path_to_project>">
         AllowOverride All
         Require all granted
     </Directory>

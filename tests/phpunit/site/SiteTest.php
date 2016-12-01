@@ -4,8 +4,8 @@ namespace brendt\stitcher\tests\element;
 
 use brendt\stitcher\Config;
 use \PHPUnit_Framework_TestCase;
-use brendt\stitcher\element\Site;
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Site;
+use brendt\stitcher\site\Page;
 
 class SiteTest extends PHPUnit_Framework_TestCase {
 

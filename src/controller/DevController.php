@@ -21,10 +21,13 @@ class DevController {
     /**
      * DevController constructor.
      *
-     * @param string $configPath
+     * @param string $path
+     * @param string $name
+     *
+     * @internal param string $configPath
      */
-    public function __construct($configPath = './') {
-        Config::load($configPath);
+    public function __construct($path = './', $name = 'config.dev.yml') {
+        Config::load($path, $name);
 
         $this->stitcher = new Stitcher();
     }

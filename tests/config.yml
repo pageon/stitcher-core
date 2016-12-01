@@ -1,13 +1,12 @@
 directories:
     src: ./tests/src
     public: ./tests/public
+    image: ./tests/public/img
     cache: ./tests/.cache
 
-image:
-    dimensions:
-        1x1: { width: 1, height: 1}
+engines:
+    image: gd
+    template: smarty
 
 meta:
     viewport: width=device-width, initial-scale=1
-
-engine: smarty

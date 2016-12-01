@@ -37,6 +37,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
         $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], [
             'is_safe' => ['html']
         ]));
+        $this->addFunction(new \Twig_SimpleFunction('image', [$plugin, 'image']));
     }
 
     public function thumbnail() {

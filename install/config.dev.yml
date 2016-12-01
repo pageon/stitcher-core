@@ -5,32 +5,27 @@
 # An Apache example of such host configuration could be:
 #
 # <VirtualHost *:80>
-#     DocumentRoot "<path_to_project>/dev"
+#     DocumentRoot "<path_to_project>"
 #     ServerName dev.stitcher.local
 #     ErrorLog "<log_path>/error.log"
 #     CustomLog "<log_path>/access.log" common
 #
-#     <Directory "<path_to_project>/dev">
+#     <Directory "<path_to_project>">
 #         AllowOverride All
 #         Require all granted
 #     </Directory>
 # </VirtualHost>
 
+# Configure the paths of several directories
 directories:
-    # Use the same source directory as production
-    src: ../src
+    # The source directory containing
+    src: ./src
 
-    # Set the public directory to the current one.
-    # HTML pages won't be rendered, but images will.
+    # The public directory for the dev controller is used to save images
     public: ./
 
-    #  Use the same cache directory as production
-    cache: ../.cache
-
-# Only create one image dimension
-image:
-    dimensions:
-        1600x1200: { width: 1600, height: 1200}
+    # Cache directory used by smarty
+    cache: ./cache
 
 meta:
     viewport: width=device-width, initial-scale=1
@@ -38,5 +33,15 @@ meta:
 # Do not minify CSS or JavaScript
 minify: false
 
-# Choose the template engine. Available options: smarty, twig
-engine: smarty
+# Configure engines
+engines:
+    # Choose the template engine. Available options: smarty, twig
+    template: smarty
+
+    # Use gd as image engine. Possible configurations: `gd` or `imagick`.
+    image: gd
+
+caches:
+    # Enable image caching while rendering
+    image: true
+

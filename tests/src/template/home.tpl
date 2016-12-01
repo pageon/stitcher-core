@@ -3,6 +3,9 @@
 {block 'content'}
     {$content}
 
+    {image src='img/blue.jpg' var='image'}
+    <img src="{$image.src}" srcset="{$image.srcset}" alt="">
+
     {foreach $churches as $church}
         <li>
             {$church.name}

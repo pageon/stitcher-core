@@ -1,6 +1,9 @@
 {% extends 'index.html' %}
 
 {% block content %}
+    {% set image = image('img/blue.jpg') %}
+    <img src="{{ image.src }}" srcset="{{ image.srcset }}" alt="">
+
     {{ content }}
 
     {% for church in churches %}

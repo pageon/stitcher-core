@@ -1,9 +1,9 @@
 <?php
 
-namespace brendt\stitcher\element;
+namespace brendt\stitcher\site;
 
 use \Iterator;
-use brendt\stitcher\element\Page;
+use brendt\stitcher\site\Page;
 
 class Site implements Iterator {
 

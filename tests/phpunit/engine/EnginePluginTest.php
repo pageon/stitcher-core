@@ -157,4 +157,14 @@ class EnginePluginTest extends PHPUnit_Framework_TestCase {
         $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $result);
     }
 
+    public function test_image() {
+        $plugin = $this->createEnginePlugin();
+
+        $image= $plugin->image('img/blue.jpg');
+
+        $this->assertTrue(isset($image['src']));
+        $this->assertTrue(isset($image['srcset']));
+        $this->assertTrue(isset($image['sizes']));
+    }
+
 }

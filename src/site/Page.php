@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\element;
+namespace brendt\stitcher\site;
 
 use brendt\stitcher\exception\TemplateNotFoundException;
 

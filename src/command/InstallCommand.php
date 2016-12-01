@@ -33,10 +33,10 @@ class InstallCommand extends Command {
             ->setHelp("This command will generate several files as a base installation. (Only if they don't exist yet.)
             
     - The src/ directory with some examples
-    - The dev/ directory
     - The public/ directory
     - The stitcher console
     - A sample config.yml
+    - Dev setup
 ");
     }
 
@@ -50,17 +50,22 @@ class InstallCommand extends Command {
         $log = [];
 
         $srcDir = './src';
-        $devDir = './dev';
         $publicDir = './public';
         $stitcherPath = './stitcher';
         $configPath = './config.yml';
+        $devDir = ".";
+        $configDevPath = "{$devDir}/config.dev.yml";
+        $htaccessDevPath= "{$devDir}/.htaccess";
+        $indexDevPath= "{$devDir}/index.dev.php";
 
         $installDir = __DIR__ . '/../../install';
         $installSrcDir = "{$installDir}/src";
-        $installDevDir = "{$installDir}/dev";
         $installPublicDir = "{$installDir}/public";
         $installStitcherPath = "{$installDir}/stitcher";
         $installConfigPath = "{$installDir}/config.yml";
+        $installConfigDevPath = "{$installDir}/config.dev.yml";
+        $installHtaccessDevPath= "{$installDir}/.htaccess";
+        $installIndexDevPath= "{$installDir}/index.dev.php";
 
         if (!$this->fs->exists($configPath)) {
             $this->fs->copy($installConfigPath, $configPath);
@@ -86,10 +91,22 @@ class InstallCommand extends Command {
             $log[] = "Copied the public/ dir to {$publicDir}";
         }
 
-        if (!$this->fs->exists($devDir)) {
-            $this->copyFolder($installDevDir, $devDir);
+        if (!$this->fs->exists($configDevPath)) {
+            $this->fs->copy($installConfigDevPath, $configDevPath);
 
-            $log[] = "Copied the dev/ dir to {$devDir}";
+            $log[] = "Copied a sample config.dev.yml to {$configDevPath}";
+        }
+
+        if (!$this->fs->exists($htaccessDevPath)) {
+            $this->fs->copy($installHtaccessDevPath, $htaccessDevPath);
+
+            $log[] = "Copied the development .htaccess to {$htaccessDevPath}";
+        }
+
+        if (!$this->fs->exists($indexDevPath)) {
+            $this->fs->copy($installIndexDevPath, $indexDevPath);
+
+            $log[] = "Copied the development index to {$indexDevPath}";
         }
 
         if (count($log)) {

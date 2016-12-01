@@ -2,24 +2,15 @@
 
 namespace brendt\stitcher\provider;
 
+use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use brendt\stitcher\element\ImageSource;
-use brendt\stitcher\element\Image;
-use Symfony\Component\Finder\SplFileInfo;
 
 class ImageProvider extends AbstractProvider {
 
     /**
-     * @var mixed
+     * @var ResponsiveFactory
      */
-    protected $imageDir;
-
-    /**
-     * @var string
-     */
-    private $publicDir;
+    protected $factory;
 
     /**
      * AbstractProvider constructor.
@@ -27,8 +18,7 @@ class ImageProvider extends AbstractProvider {
     public function __construct() {
         parent::__construct();
 
-        $this->imageDir = Config::get('directories.src');
-        $this->publicDir = Config::get('directories.public');
+        $this->factory = Config::getDependency('factory.image');
     }
 
     /**
@@ -39,7 +29,6 @@ class ImageProvider extends AbstractProvider {
     public function parse($entry) {
         $data = [];
         $defaults = [];
-        $finder = new Finder();
         $path = null;
 
         if (is_array($entry)) {
@@ -59,29 +48,15 @@ class ImageProvider extends AbstractProvider {
             return $data;
         }
 
-        /** @var SplFileInfo[] $files */
-        $files = $finder->files()->in($this->imageDir)->path(trim($path, '/'));
+        $image = $this->factory->create($path);
 
-        foreach ($files as $file) {
-            $image = new Image($file->getPathname(), $file->getRelativePathname());
+        $data = [
+            'src' => $image->src(),
+            'srcset' => $image->srcset(),
+            'sizes' => $image->sizes(),
+        ] + $defaults;
 
-            foreach (Config::get('image.dimensions') as $dimensionName => $dimension) {
-                $width = $dimension['width'];
-                if ($width > $image->getWidth()) {
-                    continue;
-                }
-                $height = $dimension['height'];
-
-                $image->scale($width, $height);
-            }
-
-            $data[] = [
-                'src' => $image->renderSrc(),
-                'srcset' => $image->renderSrcset(),
-            ] + $defaults;
-        }
-
-        return count($data) > 1 ? $data : reset($data);
+        return $data;
     }
 
 }
