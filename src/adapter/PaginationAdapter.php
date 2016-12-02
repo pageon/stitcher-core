@@ -44,26 +44,8 @@ class PaginationAdapter extends AbstractAdapter {
             }
 
             $url = "{$pageId}/page-{$pageIndex}";
-
-            $next = count($entries) ? $pageIndex + 1 : null;
-            $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
-            $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
-            $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
-
+            $pagination = $this->createPagination($pageId, $pageIndex, $pageCount, $entries);
             $entriesPage = clone $page;
-            $pagination = [
-                'current'  => $pageIndex,
-                'previous' => $previous ? [
-                    'url'   => $previousUrl,
-                    'index' => $previous,
-                ] : null,
-                'next'     => $next ? [
-                    'url'   => $nextUrl,
-                    'index' => $next,
-                ] : null,
-                'pages'    => $pageCount,
-            ];
-
             $entriesPage
                 ->clearAdapter(AdapterFactory::PAGINATION_ADAPTER)
                 ->setVariable($variable, $pageEntries)
@@ -83,5 +65,35 @@ class PaginationAdapter extends AbstractAdapter {
         }
 
         return $result;
+    }
+
+    /**
+     * Create a pagination variable
+     *
+     * @param $pageId
+     * @param $pageIndex
+     * @param $pageCount
+     * @param $entries
+     *
+     * @return array
+     */
+    protected function createPagination($pageId, $pageIndex, $pageCount, $entries) {
+        $next = count($entries) ? $pageIndex + 1 : null;
+        $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
+        $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
+        $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
+
+        return [
+            'current'  => $pageIndex,
+            'previous' => $previous ? [
+                'url'   => $previousUrl,
+                'index' => $previous,
+            ] : null,
+            'next'     => $next ? [
+                'url'   => $nextUrl,
+                'index' => $next,
+            ] : null,
+            'pages'    => $pageCount,
+        ];
     }
 }
