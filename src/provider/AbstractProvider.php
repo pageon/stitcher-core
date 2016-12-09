@@ -3,7 +3,6 @@
 namespace brendt\stitcher\provider;
 
 use brendt\stitcher\Config;
-use brendt\stitcher\factory\ProviderFactory;
 
 abstract class AbstractProvider implements Provider {
 

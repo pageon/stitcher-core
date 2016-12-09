@@ -3,7 +3,6 @@
 namespace brendt\stitcher\site;
 
 use \Iterator;
-use brendt\stitcher\site\Page;
 
 class Site implements Iterator {
 

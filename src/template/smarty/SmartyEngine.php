@@ -2,9 +2,9 @@
 
 namespace brendt\stitcher\template\smarty;
 
+use \Smarty;
 use brendt\stitcher\Config;
 use brendt\stitcher\template\TemplateEngine;
-use \Smarty;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**

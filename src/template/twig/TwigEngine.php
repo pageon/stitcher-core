@@ -2,12 +2,12 @@
 
 namespace brendt\stitcher\template\twig;
 
-use brendt\stitcher\template\TemplatePlugin;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
 use brendt\stitcher\Config;
 use brendt\stitcher\template\TemplateEngine;
+use brendt\stitcher\template\TemplatePlugin;
 use Symfony\Component\Finder\SplFileInfo;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 /**
  * The Twig template engine.

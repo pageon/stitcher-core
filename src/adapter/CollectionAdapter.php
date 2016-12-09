@@ -2,10 +2,10 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\IdFieldNotFoundException;
 use brendt\stitcher\exception\VariableNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
+use brendt\stitcher\site\Page;
 
 /**
  * The CollectionAdapter takes a page with a collection of entries, and generates a detail page for each entry in the
