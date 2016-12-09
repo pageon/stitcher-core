@@ -7,7 +7,7 @@ use brendt\stitcher\Config;
  *
  * @return mixed
  *
- * @see \brendt\stitcher\engine\EnginePlugin::js()
+ * @see \brendt\stitcher\template\EnginePlugin::js()
  */
 function smarty_function_js($params) {
     $plugin = Config::getDependency('engine.plugin');
