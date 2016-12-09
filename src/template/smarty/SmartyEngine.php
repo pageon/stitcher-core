@@ -1,10 +1,9 @@
 <?php
 
-namespace brendt\stitcher\engine\smarty;
+namespace brendt\stitcher\template\smarty;
 
 use brendt\stitcher\Config;
-use brendt\stitcher\engine\TemplateEngine;
-use Symfony\Component\Finder\Finder;
+use brendt\stitcher\template\TemplateEngine;
 use \Smarty;
 use Symfony\Component\Finder\SplFileInfo;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace brendt\stitcher\engine\twig;
+namespace brendt\stitcher\template\twig;
 
-use brendt\stitcher\engine\EnginePlugin;
+use brendt\stitcher\template\TemplatePlugin;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use brendt\stitcher\Config;
-use brendt\stitcher\engine\TemplateEngine;
+use brendt\stitcher\template\TemplateEngine;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -34,7 +34,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
             'cache' => false,
         ]);
 
-        /** @var EnginePlugin $plugin */
+        /** @var TemplatePlugin $plugin */
         $plugin = Config::getDependency('engine.plugin');
 
         $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], [

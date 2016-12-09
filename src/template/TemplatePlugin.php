@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\engine;
+namespace brendt\stitcher\template;
 
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
@@ -9,10 +9,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * This class provides functionality which can be used by template plugins/functions.
- *
- * @todo Refactor to brendt\stitcher\template\TemplatePlugin
  */
-class EnginePlugin {
+class TemplatePlugin {
 
     /**
      * This function will read meta configuration from `meta` and output the corresponding meta tags.

@@ -1,26 +1,30 @@
 <?php
 
-use brendt\stitcher\engine\smarty\SmartyEngine;
+use brendt\stitcher\template\twig\TwigEngine;
 use brendt\stitcher\Config;
 use Symfony\Component\Finder\Finder;
 
-class SmartyEngineTest extends PHPUnit_Framework_TestCase {
+class TwigEngineTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Config::load('./tests', 'config.twig.yml');
+    }
+
+    public function tearDown() {
+        Config::reset();
     }
 
     private function createEngine() {
-        return new SmartyEngine();
+        return new TwigEngine();
     }
 
     private function getFiles() {
         $finder = new Finder();
 
-        return $finder->files()->in(Config::get('directories.src') . '/template')->name('index.tpl');
+        return $finder->files()->in(Config::get('directories.template'))->name('index.html');
     }
 
-    public function test_smarty_renders_from_path() {
+    public function test_twig_renders_from_path() {
         $engine = $this->createEngine();
         $files = $this->getFiles();
 
@@ -30,7 +34,7 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_smarty_css() {
+    public function test_twig_css() {
         $engine = $this->createEngine();
         $files = $this->getFiles();
 
@@ -40,7 +44,7 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_smarty_js() {
+    public function test_twig_js() {
         $engine = $this->createEngine();
         $files = $this->getFiles();
 
@@ -50,7 +54,7 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_smarty_js_async() {
+    public function test_twig_js_async() {
         $engine = $this->createEngine();
         $files = $this->getFiles();
 
@@ -60,7 +64,7 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_smarty_meta() {
+    public function test_twig_meta() {
         $engine = $this->createEngine();
         $files = $this->getFiles();
 
@@ -70,20 +74,14 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_smarty_image() {
+    public function test_twig_image() {
         $engine = $this->createEngine();
-        $files = Finder::create()->files()->in(Config::get('directories.src') . '/template')->name('home.tpl')->getIterator();
+        $files = Finder::create()->files()->in(Config::get('directories.template'))->name('home.html')->getIterator();
         $files->rewind();
         $template = $files->current();
 
-        $engine->addTemplateVariables([
-            'content' => 'test',
-            'churches' => [],
-        ]);
-        
         $html = $engine->renderTemplate($template);
         $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
     }
-
 
 }

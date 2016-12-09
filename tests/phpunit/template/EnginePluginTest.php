@@ -1,8 +1,8 @@
 <?php
 
-use brendt\stitcher\engine\EnginePlugin;
+use brendt\stitcher\template\TemplatePlugin;
 use brendt\stitcher\Config;
-use brendt\stitcher\engine\smarty\SmartyEngine;
+use brendt\stitcher\template\smarty\SmartyEngine;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -13,10 +13,10 @@ class EnginePluginTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return EnginePlugin
+     * @return TemplatePlugin
      */
     private function createEnginePlugin() {
-        return new EnginePlugin();
+        return new TemplatePlugin();
     }
 
     /**
