@@ -147,7 +147,7 @@ class Stitcher {
                 continue;
             }
 
-            $templateIsset = isset($templates[$page->getTemplate()]);
+            $templateIsset = isset($templates[$page->getTemplatePath()]);
 
             if (!$templateIsset) {
                 if (isset($page['template'])) {
@@ -159,7 +159,7 @@ class Stitcher {
 
             $pages = $this->parseAdapters($page, $filterValue);
 
-            $pageTemplate = $templates[$page->getTemplate()];
+            $pageTemplate = $templates[$page->getTemplatePath()];
             foreach ($pages as $entryPage) {
                 $entryPage = $this->parseVariables($entryPage);
 
@@ -207,13 +207,13 @@ class Stitcher {
      */
     public function parseVariables(Page $page) {
         foreach ($page->getVariables() as $name => $value) {
-            if ($page->isParsedField($name)) {
+            if ($page->isParsedVariable($name)) {
                 continue;
             }
 
             $page
-                ->setVariable($name, $this->getData($value))
-                ->setParsedField($name);
+                ->setVariableValue($name, $this->getData($value))
+                ->setVariableIsParsed($name);
         }
 
         return $page;

@@ -14,7 +14,7 @@ class PaginationAdapter extends AbstractAdapter {
      * @return Page[]
      */
     public function transform(Page $page, $filter = null) {
-        $config = $page->getAdapter(AdapterFactory::PAGINATION_ADAPTER);
+        $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
 
         if (!isset($config['variable'])) {
             return [$page];
@@ -47,11 +47,11 @@ class PaginationAdapter extends AbstractAdapter {
             $pagination = $this->createPagination($pageId, $pageIndex, $pageCount, $entries);
             $entriesPage = clone $page;
             $entriesPage
-                ->clearAdapter(AdapterFactory::PAGINATION_ADAPTER)
-                ->setVariable($variable, $pageEntries)
-                ->setParsedField($variable)
-                ->setVariable('pagination', $pagination)
-                ->setParsedField('pagination')
+                ->removeAdapter(AdapterFactory::PAGINATION_ADAPTER)
+                ->setVariableValue($variable, $pageEntries)
+                ->setVariableIsParsed($variable)
+                ->setVariableValue('pagination', $pagination)
+                ->setVariableIsParsed('pagination')
                 ->setId($url);
 
             $result[$url] = $entriesPage;

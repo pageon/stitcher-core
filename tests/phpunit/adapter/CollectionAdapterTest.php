@@ -46,8 +46,8 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('/church-a', $result['/church-a']->getId());
         $this->assertEquals('/church-b', $result['/church-b']->getId());
 
-        $this->assertTrue($result['/church-a']->isParsedField('church'));
-        $this->assertTrue($result['/church-b']->isParsedField('church'));
+        $this->assertTrue($result['/church-a']->isParsedVariable('church'));
+        $this->assertTrue($result['/church-b']->isParsedVariable('church'));
     }
 
     public function test_collection_adapter_filtered() {

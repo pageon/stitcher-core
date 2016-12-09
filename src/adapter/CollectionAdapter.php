@@ -18,7 +18,7 @@ class CollectionAdapter extends AbstractAdapter {
      * @throws VariableNotFoundException
      */
     public function transform(Page $page, $filter = null) {
-        $config = $page->getAdapter(AdapterFactory::COLLECTION_ADAPTER);
+        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
         if (!isset($config['field']) || !isset($config['variable'])) {
             return [$page];
@@ -51,9 +51,9 @@ class CollectionAdapter extends AbstractAdapter {
             $entryPage = clone $page;
 
             $entryPage
-                ->clearAdapter(AdapterFactory::COLLECTION_ADAPTER)
-                ->setVariable($variable, $entry)
-                ->setParsedField($variable)
+                ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
+                ->setVariableValue($variable, $entry)
+                ->setVariableIsParsed($variable)
                 ->setId($url);
 
             $result[$url] = $entryPage;
