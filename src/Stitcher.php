@@ -2,6 +2,7 @@
 
 namespace brendt\stitcher;
 
+use brendt\stitcher\provider\Provider;
 use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
@@ -16,42 +17,18 @@ use Symfony\Component\Yaml\Yaml;
 use brendt\stitcher\engine\TemplateEngine;
 use brendt\stitcher\site\Site;
 
+/**
+ * The Stitcher class is the core compiler of every Stitcher application. This class takes care of all routes, pages, templates and data,
+ * and "stitches" everything together.
+ *
+ * The stitching process is done in several steps, with the final result being a fully rendered website in the `directories.public` folder.
+ */
 class Stitcher {
 
     /**
      * @var SplFileInfo[]
      */
     protected $templates;
-
-    /**
-     * @var ProviderFactory
-     */
-    protected $factory;
-
-    /**
-     * @var string
-     */
-    private $root;
-
-    /**
-     * @var string
-     */
-    private $compileDir;
-
-    /**
-     * @var string
-     */
-    private $publicDir;
-
-    /**
-     * @var ProviderFactory
-     */
-    private $providerFactory;
-
-    /**
-     * @var AdapterFactory
-     */
-    private $adapterFactory;
 
     /**
      * @var TemplateEngine
@@ -62,13 +39,6 @@ class Stitcher {
      * Stitcher constructor.
      */
     public function __construct() {
-        $this->root = Config::get('directories.src');
-        $this->publicDir = Config::get('directories.public');
-        $this->compileDir = Config::get('directories.cache');
-
-        $this->providerFactory = Config::getDependency('factory.provider');
-        $this->adapterFactory = Config::getDependency('factory.adapter');
-
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = Config::getDependency('factory.template.engine');
         $this->templateEngine = $templateEngineFactory->getByType(Config::get('engines.template'));
@@ -81,7 +51,8 @@ class Stitcher {
     public function loadSite() {
         $site = new Site();
         $finder = new Finder();
-        $files = $finder->files()->in("{$this->root}/site")->name('*.yml');
+        $src = Config::get('directories.src');
+        $files = $finder->files()->in("{$src}/site")->name('*.yml');
 
         foreach ($files as $file) {
             try {
@@ -180,12 +151,14 @@ class Stitcher {
      * @return Page[]
      */
     public function parseAdapters(Page $page, $entryId = null) {
+        /** @var AdapterFactory $adapterFactory */
+        $adapterFactory = Config::getDependency('factory.adapter');
         $pages = [];
 
         // TODO: this will bug with multiple adapters
         if (count($page->getAdapters())) {
             foreach ($page->getAdapters() as $type => $adapterConfig) {
-                $adapter = $this->adapterFactory->getByType($type);
+                $adapter = $adapterFactory->getByType($type);
 
                 if ($entryId) {
                     $pages = $adapter->transform($page, $entryId);
@@ -224,9 +197,10 @@ class Stitcher {
      */
     public function save(array $blanket) {
         $fs = new Filesystem();
+        $public = Config::get('directories.public');
 
-        if (!$fs->exists($this->publicDir)) {
-            $fs->mkdir($this->publicDir);
+        if (!$fs->exists($public)) {
+            $fs->mkdir($public);
         }
 
         foreach ($blanket as $path => $page) {
@@ -234,12 +208,14 @@ class Stitcher {
                 $path = 'index';
             }
 
-            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
+            $fs->dumpFile($public . "/{$path}.html", $page);
         }
     }
 
     private function getData($src) {
-        $provider = $this->providerFactory->getProvider($src);
+        /** @var ProviderFactory $providerFactory */
+        $providerFactory = Config::getDependency('factory.provider');
+        $provider = $providerFactory->getProvider($src);
 
         if (!$provider) {
             return $src;
