@@ -18,19 +18,24 @@ use brendt\stitcher\engine\TemplateEngine;
 use brendt\stitcher\site\Site;
 
 /**
- * The Stitcher class is the core compiler of every Stitcher application. This class takes care of all routes, pages, templates and data,
- * and "stitches" everything together.
+ * The Stitcher class is the core compiler of every Stitcher application. This class takes care of all routes, pages,
+ * templates and data, and "stitches" everything together.
  *
- * The stitching process is done in several steps, with the final result being a fully rendered website in the `directories.public` folder.
+ * The stitching process is done in several steps, with the final result being a fully rendered website in the
+ * `directories.public` folder.
  */
 class Stitcher {
 
     /**
+     * A collection of all templates available when rendering a Stitcher application.
+     *
      * @var SplFileInfo[]
      */
     protected $templates;
 
     /**
+     * The template engine which is configured via `engines.template`.
+     *
      * @var TemplateEngine
      */
     private $templateEngine;
@@ -41,64 +46,38 @@ class Stitcher {
     public function __construct() {
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = Config::getDependency('factory.template.engine');
+
         $this->templateEngine = $templateEngineFactory->getByType(Config::get('engines.template'));
     }
 
     /**
-     * @return Site
-     * @throws InvalidSiteException
-     */
-    public function loadSite() {
-        $site = new Site();
-        $finder = new Finder();
-        $src = Config::get('directories.src');
-        $files = $finder->files()->in("{$src}/site")->name('*.yml');
-
-        foreach ($files as $file) {
-            try {
-                $fileContents = Yaml::parse($file->getContents());
-            } catch (ParseException $e) {
-                throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
-            }
-
-            if (!is_array($fileContents)) {
-                continue;
-            }
-
-            foreach ($fileContents as $route => $data) {
-                $page = new Page($route, $data);
-
-                $site->addPage($page);
-            }
-        }
-
-        return $site;
-    }
-
-    /**
-     * @return SplFileInfo[]
-     */
-    public function loadTemplates() {
-        $finder = new Finder();
-        $templateExtension = $this->templateEngine->getTemplateExtension();
-        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
-        $files = $finder->files()->in($templateFolder)->name("*.{$templateExtension}");
-        $templates = [];
-
-        foreach ($files as $file) {
-            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
-            $templates[$id] = $file;
-        }
-
-        return $templates;
-    }
-
-    /**
+     * The core stitcher function. This function will compile the configured site and return an array of the parsed
+     * data.
+     *
+     * Compiling a site is done in the following steps.
+     *
+     *      - Load the site configuration @see \brendt\stitcher\Stitcher::loadSite()
+     *      - Load all available templates @see \brendt\stitcher\Stitcher::loadTemplates()
+     *      - Loop over all pages and transform every page with the configured adapters (in any are set) @see
+     *      \brendt\stitcher\Stitcher::parseAdapters()
+     *      - Loop over all transformed pages and parse the variables which weren't parsed by the page's adapters. @see
+     *      \brendt\stitcher\Stitcher::parseVariables()
+     *      - Add all variables to the template engine and render the HTML for each page.
+     *
+     * This function takes two optional parameters which are mainly used to render pages on the fly using the developer
+     * controller. The first one, `routes` will take a string or array of routes which should be rendered, instead of
+     * all available routs. The second one, `filterValue` is used to provide a filter when the CollectionAdapter is
+     * used, and only one entry page should be rendered.
+     *
      * @param string|array $routes
      * @param null         $filterValue
      *
      * @return array
      * @throws TemplateNotFoundException
+     *
+     * @see \brendt\stitcher\Stitcher::save()
+     * @see \brendt\stitcher\controller\DevController::run()
+     * @see \brendt\stitcher\adapter\CollectionAdapter::transform()
      */
     public function stitch($routes = [], $filterValue = null) {
         $blanket = [];
@@ -145,10 +124,79 @@ class Stitcher {
     }
 
     /**
+     * Load a site from YAML configuration files in the `directories.src`/site directory.
+     * All YAML files are loaded and parsed into Page objects and added to a Site collection.
+     *
+     * @return Site
+     * @throws InvalidSiteException
+     *
+     * @see \brendt\stitcher\site\Page
+     * @see \brendt\stitcher\site\Site
+     */
+    public function loadSite() {
+        $src = Config::get('directories.src');
+        $files = Finder::create()->files()->in("{$src}/site")->name('*.yml');
+        $site = new Site();
+
+        foreach ($files as $file) {
+            try {
+                $fileContents = Yaml::parse($file->getContents());
+            } catch (ParseException $e) {
+                throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
+            }
+
+            if (!is_array($fileContents)) {
+                continue;
+            }
+
+            foreach ($fileContents as $route => $data) {
+                $page = new Page($route, $data);
+                $site->addPage($page);
+            }
+        }
+
+        return $site;
+    }
+
+    /**
+     * Loads all templates from either the `directories.template` directory, or the `directories.src`/template
+     * directory. Depending on the configured template engine, set with `engines.template`; .html or .tpl files will be
+     * loaded.
+     *
+     * @return SplFileInfo[]
+     */
+    public function loadTemplates() {
+        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $templateExtension = $this->templateEngine->getTemplateExtension();
+        $files = Finder::create()->files()->in($templateFolder)->name("*.{$templateExtension}");
+        $templates = [];
+
+        foreach ($files as $file) {
+            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
+            $templates[$id] = $file;
+        }
+
+        return $templates;
+    }
+
+    /**
+     * This function takes a page and optional entry id. The page's adapters will be loaded and looped.
+     * An adapter will transform a page's original configuration and variables to one or more pages.
+     * An entry id can be provided as a filter. This filter can be used in an adapter to skip rendering unnecessary
+     * pages. The filter parameter is used to render pages on the fly when using the developer controller.
+     *
      * @param Page $page
      * @param null $entryId
      *
      * @return Page[]
+     *
+     * @see  \brendt\stitcher\adapter\Adapter::transform()
+     * @see  \brendt\stitcher\controller\DevController::run()
+     *
+     * @todo When a page has multiple adapters, this function won't correctly parse more than one. This is considered a
+     *       bug, but not a major one because there are only two adapters at this moment, and they can not be used
+     *       together anyway.
+     *
      */
     public function parseAdapters(Page $page, $entryId = null) {
         /** @var AdapterFactory $adapterFactory */
@@ -174,9 +222,16 @@ class Stitcher {
     }
 
     /**
+     * This function will take a Page object and parse its variables using a Provider.
+     * This function will only parse variables which weren't parsed already by an adapter.
+     *
      * @param Page $page
      *
      * @return Page
+     *
+     * @see \brendt\stitcher\factory\ProviderFactory
+     * @see \brendt\stitcher\provider\Provider
+     * @see \brendt\stitcher\site\Page::isParsedVariable()
      */
     public function parseVariables(Page $page) {
         foreach ($page->getVariables() as $name => $value) {
@@ -193,7 +248,11 @@ class Stitcher {
     }
 
     /**
+     * This function will save a Stitched output to HTML files in the `directories.public` directory.
+     *
      * @param array $blanket
+     *
+     * @see \brendt\stitcher\Stitcher::stitch()
      */
     public function save(array $blanket) {
         $fs = new Filesystem();
@@ -212,16 +271,26 @@ class Stitcher {
         }
     }
 
-    private function getData($src) {
+    /**
+     * This function will get the provider based on the value provided.
+     * This value is parsed by the provider, or returned if no suitable provider was found.
+     *
+     * @param $value
+     *
+     * @return mixed
+     *
+     * @see \brendt\stitcher\factory\ProviderFactory
+     */
+    private function getData($value) {
         /** @var ProviderFactory $providerFactory */
         $providerFactory = Config::getDependency('factory.provider');
-        $provider = $providerFactory->getProvider($src);
+        $provider = $providerFactory->getProvider($value);
 
         if (!$provider) {
-            return $src;
+            return $value;
         }
 
-        return $provider->parse($src);
+        return $provider->parse($value);
     }
 
 }
