@@ -1,6 +1,6 @@
 <?php
 
-namespace brendt\stitcher\engine;
+namespace brendt\stitcher\template;
 
 use Symfony\Component\Finder\SplFileInfo;
 

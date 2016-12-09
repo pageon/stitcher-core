@@ -4,16 +4,16 @@ namespace brendt\stitcher;
 
 use brendt\image\config\DefaultConfigurator;
 use brendt\image\ResponsiveFactory;
-use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
+use brendt\stitcher\template\TemplatePlugin;
+use brendt\stitcher\template\smarty\SmartyEngine;
+use CSSmin;
 use Leafo\ScssPhp\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use brendt\stitcher\engine\smarty\SmartyEngine;
-use CSSmin;
 
 /**
  * Class Config
@@ -68,7 +68,7 @@ class Config {
             ->addArgument($imageConfig);
 
         self::$container->register('engine.smarty', SmartyEngine::class);
-        self::$container->register('engine.plugin', EnginePlugin::class);
+        self::$container->register('engine.plugin', TemplatePlugin::class);
         self::$container->register('engine.minify.css', CSSmin::class);
         self::$container->register('engine.sass', Compiler::class)
             ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);

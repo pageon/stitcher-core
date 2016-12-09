@@ -2,9 +2,9 @@
 
 namespace brendt\stitcher\factory;
 
-use brendt\stitcher\engine\smarty\SmartyEngine;
-use brendt\stitcher\engine\twig\TwigEngine;
-use brendt\stitcher\engine\TemplateEngine;
+use brendt\stitcher\template\smarty\SmartyEngine;
+use brendt\stitcher\template\twig\TwigEngine;
+use brendt\stitcher\template\TemplateEngine;
 use brendt\stitcher\exception\UnknownEngineException;
 
 class TemplateEngineFactory {
