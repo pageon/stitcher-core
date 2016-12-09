@@ -2,19 +2,19 @@
 
 namespace brendt\stitcher;
 
-use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\factory\ProviderFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
+use brendt\stitcher\site\Page;
+use brendt\stitcher\site\Site;
+use brendt\stitcher\template\TemplateEngine;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use brendt\stitcher\engine\TemplateEngine;
-use brendt\stitcher\site\Site;
 
 /**
  * The Stitcher class is the core compiler of every Stitcher application. This class takes care of all routes, pages,
