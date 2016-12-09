@@ -49,7 +49,7 @@ class DevController {
 
             $routeCollection->add($route, new Route($route));
 
-            if ($page->getAdapter(AdapterFactory::PAGINATION_ADAPTER)) {
+            if ($page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER)) {
                 $paginationRoute = $route . '/page-{page}';
                 $routeCollection->add($paginationRoute, new Route($paginationRoute));
             }

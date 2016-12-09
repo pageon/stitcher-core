@@ -102,8 +102,8 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
         $result = $adapter->transform($page);
 
         foreach ($result as $page) {
-            $this->assertTrue($page->isParsedField('entries'));
-            $this->assertTrue($page->isParsedField('pagination'));
+            $this->assertTrue($page->isParsedVariable('entries'));
+            $this->assertTrue($page->isParsedVariable('pagination'));
         }
     }
 
