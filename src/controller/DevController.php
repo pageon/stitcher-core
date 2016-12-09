@@ -13,18 +13,22 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * The developer controller is used to render pages on the fly (on an HTTP request). This controller enables a
+ * developer make code changes and see those changes real-time without re-compiling the whole site.
+ */
 class DevController {
 
-    /** @var Stitcher */
+    /**
+     * @var Stitcher
+     */
     protected $stitcher;
 
     /**
-     * DevController constructor.
+     * Create a new developer controller with optional configuration path and -file.
      *
      * @param string $path
      * @param string $name
-     *
-     * @internal param string $configPath
      */
     public function __construct($path = './', $name = 'config.dev.yml') {
         Config::load($path, $name);
@@ -33,7 +37,7 @@ class DevController {
     }
 
     /**
-     * Run the developers controller.
+     * Run the developer controller.
      *
      * This function will read the request URL and dispatch the according route.
      */

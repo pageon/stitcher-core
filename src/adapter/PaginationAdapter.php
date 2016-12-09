@@ -5,6 +5,22 @@ namespace brendt\stitcher\adapter;
 use brendt\stitcher\site\Page;
 use brendt\stitcher\factory\AdapterFactory;
 
+/**
+ * The PaginationAdapter takes a page with a collection of entries and generates pagination for that collection.
+ *
+ * Sample configuration:
+ *
+ *  /examples:
+ *      template: examples/overview
+ *      data:
+ *          collection: collection.yml
+ *      adapters:
+ *      pagination:
+ *          variable: collection
+ *          amount: 4
+ *
+ * @todo Rename `amount` option to `entriesPerPage`
+ */
 class PaginationAdapter extends AbstractAdapter {
 
     /**
@@ -68,7 +84,7 @@ class PaginationAdapter extends AbstractAdapter {
     }
 
     /**
-     * Create a pagination variable
+     * Create a pagination array.
      *
      * @param $pageId
      * @param $pageIndex

@@ -7,6 +7,23 @@ use brendt\stitcher\exception\IdFieldNotFoundException;
 use brendt\stitcher\exception\VariableNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
 
+/**
+ * The CollectionAdapter takes a page with a collection of entries, and generates a detail page for each entry in the
+ * collection.
+ *
+ * Sample configuration:
+ *
+ *  /examples/{id}:
+ *      template: examples/detail
+ *      data:
+ *          example: collection.yml
+ *      adapters:
+ *          collection:
+ *              variable: example
+ *              field: id
+ *
+ * @todo Rename `field` option to `urlVariable`
+ */
 class CollectionAdapter extends AbstractAdapter {
 
     /**

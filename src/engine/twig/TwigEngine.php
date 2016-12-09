@@ -9,15 +9,22 @@ use brendt\stitcher\Config;
 use brendt\stitcher\engine\TemplateEngine;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * The Twig template engine.
+ *
+ * @todo Refactor the templateFolder config
+ */
 class TwigEngine extends Twig_Environment implements TemplateEngine {
 
     /**
+     * An array of template variables available when rendering a template.
+     *
      * @var array
      */
     private $variables = [];
 
     /**
-     * TwigEngine constructor.
+     * Create a new Twig engine and add the Stitcher specific template functions.
      */
     public function __construct() {
         $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
@@ -27,40 +34,33 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
             'cache' => false,
         ]);
 
+        /** @var EnginePlugin $plugin */
         $plugin = Config::getDependency('engine.plugin');
+
         $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], [
-            'is_safe' => ['html']
+            'is_safe' => ['html'],
         ]));
+
         $this->addFunction(new \Twig_SimpleFunction('css', [$plugin, 'css'], [
-            'is_safe' => ['html']
+            'is_safe' => ['html'],
         ]));
+
         $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], [
-            'is_safe' => ['html']
+            'is_safe' => ['html'],
         ]));
+
         $this->addFunction(new \Twig_SimpleFunction('image', [$plugin, 'image']));
     }
 
-    public function thumbnail() {
-        return "<meta>";
-    }
-
     /**
-     * Render the template and return output HTML
-     *
-     * @param SplFileInfo $template
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function renderTemplate(SplFileInfo $template) {
         return $this->render($template->getRelativePathname(), $this->variables);
     }
 
     /**
-     * Add an array of template variables
-     *
-     * @param array $variables
-     *
-     * @return TemplateEngine
+     * {@inheritdoc}
      */
     public function addTemplateVariables(array $variables) {
         $this->variables += $variables;
@@ -69,9 +69,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
     }
 
     /**
-     * Clear all template variables
-     *
-     * @return TemplateEngine
+     * {@inheritdoc}
      */
     public function clearTemplateVariables() {
         $this->variables = [];
@@ -80,10 +78,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
     }
 
     /**
-     * @param $name
-     * @param $value
-     *
-     * @return TemplateEngine
+     * {@inheritdoc}
      */
     public function addTemplateVariable($name, $value) {
         $this->variables[$name] = $value;
@@ -92,9 +87,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
     }
 
     /**
-     * @param $variable
-     *
-     * @return TemplateEngine
+     * {@inheritdoc}
      */
     public function clearTemplateVariable($variable) {
         unset($this->variables[$variable]);
@@ -103,7 +96,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getTemplateExtension() {
         return 'html';

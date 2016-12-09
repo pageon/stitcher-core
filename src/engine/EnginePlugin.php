@@ -8,15 +8,14 @@ use brendt\stitcher\factory\ProviderFactory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class EnginePlugin
- * @package brendt\stitcher\engine
- *
  * This class provides functionality which can be used by template plugins/functions.
+ *
+ * @todo Refactor to brendt\stitcher\template\TemplatePlugin
  */
 class EnginePlugin {
 
     /**
-     * This function will read meta configuration and output the corresponding meta tags.
+     * This function will read meta configuration from `meta` and output the corresponding meta tags.
      *
      * @return string
      */
@@ -43,7 +42,7 @@ class EnginePlugin {
     /**
      * This function will take a source path and an optional inline parameter.
      * The CSS file will be copied from the source path to the public directory.
-     * If the "minify" option is set to true in config.yml, the output will be minified.
+     * If the `minify` option is set to true in config.yml, the output will be minified.
      *
      * If the inline parameter is set, the output won't be copied to a public file,
      * but instead be outputted to an HTML string which can be included in a template.
@@ -90,7 +89,7 @@ class EnginePlugin {
     /**
      * This function will take a source path and an optional inline parameter.
      * The JS file will be copied from the source path to the public directory.
-     * If the "minify" option is set to true in config.yml, the output will be minified.
+     * If the `minify` option is set to true in config.yml, the output will be minified.
      *
      * If the inline parameter is set, the output won't be copied to a public file,
      * but instead be outputted to an HTML string which can be included in a template.
@@ -142,6 +141,8 @@ class EnginePlugin {
      * @param $src
      *
      * @return array
+     *
+     * @see \brendt\image\ResponsiveFactory
      */
     public function image($src) {
         /** @var ResponsiveFactory $factory */

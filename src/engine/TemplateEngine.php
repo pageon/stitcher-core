@@ -5,13 +5,14 @@ namespace brendt\stitcher\engine;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Interface TemplateEngine
- * @package brendt\stitcher\engine
+ * This interface is used as a bridge between different template engine's API and Stitcher.
+ *
+ * @see \brendt\stitcher\Stitcher::stitch()
  */
 interface TemplateEngine {
 
     /**
-     * Render the template and return output HTML
+     * Render the template and return output HTML.
      *
      * @param SplFileInfo $path
      *
@@ -20,7 +21,7 @@ interface TemplateEngine {
     public function renderTemplate(SplFileInfo $path);
 
     /**
-     * Add an array of template variables
+     * Add an array of template variables.
      *
      * @param array $variables
      *
@@ -29,6 +30,8 @@ interface TemplateEngine {
     public function addTemplateVariables(array $variables);
 
     /**
+     * Add a template variable.
+     *
      * @param $name
      * @param $value
      *
@@ -37,13 +40,15 @@ interface TemplateEngine {
     public function addTemplateVariable($name, $value);
 
     /**
-     * Clear all template variables
+     * Clear all template variables.
      *
      * @return TemplateEngine
      */
     public function clearTemplateVariables();
 
     /**
+     * Clear a template variable.
+     *
      * @param $variable
      *
      * @return TemplateEngine
@@ -51,7 +56,11 @@ interface TemplateEngine {
     public function clearTemplateVariable($variable);
 
     /**
-     * @return mixed
+     * Get the template extension for the template engine.
+     *
+     * @return string
+     *
+     * @see \brendt\stitcher\Stitcher::loadTemplates()
      */
     public function getTemplateExtension();
 }
