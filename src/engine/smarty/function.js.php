@@ -2,6 +2,13 @@
 
 use brendt\stitcher\Config;
 
+/**
+ * @param $params
+ *
+ * @return mixed
+ *
+ * @see \brendt\stitcher\engine\EnginePlugin::js()
+ */
 function smarty_function_js($params) {
     $plugin = Config::getDependency('engine.plugin');
 

@@ -9,13 +9,14 @@ use \Smarty;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class SmartyEngine
- * @package brendt\stitcher\engine\smarty
+ * The Smarty template engine.
+ *
+ * @todo Refactor the templateFolder config
  */
 class SmartyEngine extends Smarty implements TemplateEngine {
 
     /**
-     * SmartyEngine constructor.
+     * Create the Smarty engine, set the template- and cache directory; and add the plugin directory.
      */
     public function __construct() {
         parent::__construct();
@@ -30,18 +31,14 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     }
 
     /**
-     * @param SplFileInfo $template
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function renderTemplate(SplFileInfo $template) {
         return $this->fetch($template->getRealPath());
     }
 
     /**
-     * @param array $variables
-     *
-     * @return SmartyEngine $this
+     * {@inheritdoc}
      */
     public function addTemplateVariables(array $variables) {
         foreach ($variables as $name => $variable) {
@@ -52,7 +49,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     }
 
     /**
-     * @return SmartyEngine $this
+     * {@inheritdoc}
      */
     public function clearTemplateVariables() {
         $this->clearAllAssign();
@@ -61,10 +58,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     }
 
     /**
-     * @param $name
-     * @param $value
-     *
-     * @return SmartyEngine
+     * {@inheritdoc}
      */
     public function addTemplateVariable($name, $value) {
         $this->assign($name, $value);
@@ -73,9 +67,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     }
 
     /**
-     * @param $variable
-     *
-     * @return SmartyEngine
+     * {@inheritdoc}
      */
     public function clearTemplateVariable($variable) {
         $this->clearAssign($variable);
@@ -84,7 +76,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getTemplateExtension() {
         return 'tpl';
