@@ -2,7 +2,6 @@
 
 namespace brendt\stitcher;
 
-use brendt\stitcher\provider\Provider;
 use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
