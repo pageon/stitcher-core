@@ -5,12 +5,12 @@ namespace brendt\stitcher\factory;
 use brendt\stitcher\Config;
 use brendt\stitcher\provider\FileProvider;
 use brendt\stitcher\provider\FolderProvider;
+use brendt\stitcher\provider\ImageProvider;
 use brendt\stitcher\provider\JsonProvider;
 use brendt\stitcher\provider\MarkdownProvider;
 use brendt\stitcher\provider\Provider;
-use brendt\stitcher\provider\YamlProvider;
-use brendt\stitcher\provider\ImageProvider;
 use brendt\stitcher\provider\SassProvider;
+use brendt\stitcher\provider\YamlProvider;
 
 class ProviderFactory {
 

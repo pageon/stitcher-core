@@ -6,7 +6,6 @@ use brendt\stitcher\Config;
 use brendt\stitcher\exception\StitcherException;
 use brendt\stitcher\factory\AdapterFactory;
 use brendt\stitcher\Stitcher;
-use Symfony\Component\DependencyInjection\Tests\ParameterTest;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;

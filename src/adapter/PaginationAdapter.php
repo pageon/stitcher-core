@@ -2,8 +2,8 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\site\Page;
 use brendt\stitcher\factory\AdapterFactory;
+use brendt\stitcher\site\Page;
 
 /**
  * The PaginationAdapter takes a page with a collection of entries and generates pagination for that collection.
