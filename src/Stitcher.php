@@ -50,7 +50,7 @@ class Stitcher {
     }
 
     /**
-     * The core stitcher function. This function will compile the configured site and return an array of the parsed
+     * The core stitcher function. This function will compile the configured site and return an array of parsed
      * data.
      *
      * Compiling a site is done in the following steps.
@@ -63,13 +63,13 @@ class Stitcher {
      *      \brendt\stitcher\Stitcher::parseVariables()
      *      - Add all variables to the template engine and render the HTML for each page.
      *
-     * This function takes two optional parameters which are mainly used to render pages on the fly using the developer
-     * controller. The first one, `routes` will take a string or array of routes which should be rendered, instead of
-     * all available routs. The second one, `filterValue` is used to provide a filter when the CollectionAdapter is
-     * used, and only one entry page should be rendered.
+     * This function takes two optional parameters which are used to render pages on the fly when using the
+     * developer controller. The first one, `routes` will take a string or array of routes which should be rendered,
+     * instead of all available routes. The second one, `filterValue` is used to provide a filter when the
+     * CollectionAdapter is used, and only one entry page should be rendered.
      *
      * @param string|array $routes
-     * @param null         $filterValue
+     * @param string       $filterValue
      *
      * @return array
      * @throws TemplateNotFoundException
@@ -158,7 +158,7 @@ class Stitcher {
     }
 
     /**
-     * Loads all templates from either the `directories.template` directory, or the `directories.src`/template
+     * Load all templates from either the `directories.template` directory, or the `directories.src`/template
      * directory. Depending on the configured template engine, set with `engines.template`; .html or .tpl files will be
      * loaded.
      *
@@ -221,8 +221,8 @@ class Stitcher {
     }
 
     /**
-     * This function will take a Page object and parse its variables using a Provider.
-     * This function will only parse variables which weren't parsed already by an adapter.
+     * This function takes a Page object and parse its variables using a Provider. It will only parse variables which
+     * weren't parsed already by an adapter.
      *
      * @param Page $page
      *
@@ -247,7 +247,7 @@ class Stitcher {
     }
 
     /**
-     * This function will save a Stitched output to HTML files in the `directories.public` directory.
+     * This function will save a stitched output to HTML files in the `directories.public` directory.
      *
      * @param array $blanket
      *
@@ -271,8 +271,8 @@ class Stitcher {
     }
 
     /**
-     * This function will get the provider based on the value provided.
-     * This value is parsed by the provider, or returned if no suitable provider was found.
+     * This function will get the provider based on the value. This value is parsed by the provider, or returned if no
+     * suitable provider was found.
      *
      * @param $value
      *
