@@ -9,8 +9,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * The Smarty template engine.
- *
- * @todo Refactor the templateFolder config
  */
 class SmartyEngine extends Smarty implements TemplateEngine {
 
@@ -20,7 +18,7 @@ class SmartyEngine extends Smarty implements TemplateEngine {
     public function __construct() {
         parent::__construct();
 
-        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $templateFolder = Config::get('directories.template');
         $this->addTemplateDir($templateFolder);
 
         $this->setCompileDir(Config::get('directories.cache'));
