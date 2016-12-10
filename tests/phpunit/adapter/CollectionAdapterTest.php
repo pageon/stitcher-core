@@ -20,7 +20,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     private function createPage() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [
@@ -66,7 +66,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     public function test_collection_adapter_throws_variable_not_found_exception() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [
@@ -88,7 +88,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     public function test_collection_adapter_throws_id_field_not_found_exception() {
         $page = new Page('/{wrongId}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [

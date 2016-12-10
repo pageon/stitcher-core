@@ -23,7 +23,7 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     private function createPage() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
                 'intro' => 'intro.md',
             ],

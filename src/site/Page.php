@@ -16,7 +16,6 @@ use brendt\stitcher\exception\TemplateNotFoundException;
  *      - `data`: an optional array of variables which will be mapped onto the template.
  *              Each of these variables is parsed during compile time.
  *              @see \brendt\stitcher\parser\AbstractParser
- *              @todo    : refactor `data` to `variables`.
  *
  *      - `adapters`: an optional array of Adapters for this page. Adapters are used to adapt a page's configuration
  *              to another one.
@@ -80,8 +79,8 @@ class Page {
         $this->id = $id;
         $this->templatePath = $data['template'];
 
-        if (isset($data['data'])) {
-            $this->variables = $data['data'];
+        if (isset($data['variables'])) {
+            $this->variables += $data['variables'];
         }
 
         if (isset($data['adapters'])) {

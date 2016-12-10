@@ -16,8 +16,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class Config
- * @package brendt\stitcher
+ * @todo Change parsing to work the other way around
  */
 class Config {
 
@@ -31,13 +30,11 @@ class Config {
      */
     protected static $container;
 
-    public static function getConfig() {
-        return self::$config;
-    }
-
     /**
      * @param string $root
      * @param string $name
+     *
+     * @todo Refactor `$root` and `$name` into one variable
      */
     public static function load($root = './', $name = 'config.yml') {
         $finder = new Finder();
@@ -87,6 +84,8 @@ class Config {
      * @param $key
      *
      * @return mixed|null
+     *
+     * @todo Refactor to work with dependencies
      */
     public static function get($key) {
         $keys = explode('.', $key);
@@ -123,6 +122,10 @@ class Config {
      */
     public static function reset() {
         self::$config = [];
+    }
+
+    public static function getConfig() {
+        return self::$config;
     }
 
     /**

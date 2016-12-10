@@ -1,17 +1,17 @@
 /:
     template: home
-    data:
+    variables:
         content: home.md
         churches: churches.yml
 
 /churches:
     template: churches/overview
-    data:
+    variables:
         churches: churches.yml
 
 /churches/{id}:
     template: churches/detail
-    data:
+    variables:
         intro: intro.md
         church: churches.yml
     adapters:
