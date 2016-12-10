@@ -1,13 +1,13 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
-use brendt\stitcher\exception\ProviderException;
+use brendt\stitcher\exception\ParserException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlProvider extends AbstractArrayProvider {
+class YamlParser extends AbstractArrayParser {
 
     public function parse($path = '*.yml') {
         $finder = new Finder();
@@ -29,7 +29,7 @@ class YamlProvider extends AbstractArrayProvider {
                     $data[$id] = $parsed;
                 }
             } catch (ParseException $e) {
-                throw new ProviderException("{$file->getRelativePathname()}: {$e->getMessage()}");
+                throw new ParserException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
         }
 

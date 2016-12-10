@@ -3,7 +3,7 @@
 namespace brendt\stitcher\adapter;
 
 use brendt\stitcher\Config;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 
 /**
  * The AbstractAdapter class provides a base for adapters who need to parse template variables.
@@ -11,37 +11,37 @@ use brendt\stitcher\factory\ProviderFactory;
 abstract class AbstractAdapter implements Adapter {
 
     /**
-     * @var ProviderFactory
+     * @var ParserFactory
      */
-    protected $providerFactory;
+    protected $parserFactory;
 
     /**
-     * Construct the adapter and set the provider factory variable.
+     * Construct the adapter and set the parser factory variable.
      *
-     * @see \brendt\stitcher\factory\ProviderFactory
+     * @see \brendt\stitcher\factory\ParserFactory
      */
     public function __construct() {
-        $this->providerFactory = Config::getDependency('factory.provider');
+        $this->parserFactory = Config::getDependency('factory.parser');
     }
 
     /**
-     * This function will get the provider based on the value provided.
-     * This value is parsed by the provider, or returned if no suitable provider was found.
+     * This function will get the parser based on the value provided.
+     * This value is parsed by the parser, or returned if no suitable parser was found.
      *
      * @param $value
      *
      * @return mixed
      *
-     * @see \brendt\stitcher\factory\ProviderFactory
+     * @see \brendt\stitcher\factory\ParserFactory
      */
     protected function getData($value) {
-        $provider = $this->providerFactory->getProvider($value);
+        $parser = $this->parserFactory->getParser($value);
 
-        if (!$provider) {
+        if (!$parser) {
             return $value;
         }
 
-        return $provider->parse($value);
+        return $parser->parse($value);
     }
 
 }

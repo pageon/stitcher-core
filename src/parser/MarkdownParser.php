@@ -1,11 +1,11 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
 use Parsedown;
 use Symfony\Component\Finder\Finder;
 
-class MarkdownProvider extends AbstractProvider {
+class MarkdownParser extends AbstractParser {
 
     /**
      * @param string $path

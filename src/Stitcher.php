@@ -5,7 +5,7 @@ namespace brendt\stitcher;
 use brendt\stitcher\exception\InvalidSiteException;
 use brendt\stitcher\exception\TemplateNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
 use brendt\stitcher\site\Page;
 use brendt\stitcher\site\Site;
@@ -221,15 +221,15 @@ class Stitcher {
     }
 
     /**
-     * This function takes a Page object and parse its variables using a Provider. It will only parse variables which
+     * This function takes a Page object and parse its variables using a Parser. It will only parse variables which
      * weren't parsed already by an adapter.
      *
      * @param Page $page
      *
      * @return Page
      *
-     * @see \brendt\stitcher\factory\ProviderFactory
-     * @see \brendt\stitcher\provider\Provider
+     * @see \brendt\stitcher\factory\ParserFactory
+     * @see \brendt\stitcher\parser\Parser
      * @see \brendt\stitcher\site\Page::isParsedVariable()
      */
     public function parseVariables(Page $page) {
@@ -271,25 +271,25 @@ class Stitcher {
     }
 
     /**
-     * This function will get the provider based on the value. This value is parsed by the provider, or returned if no
-     * suitable provider was found.
+     * This function will get the parser based on the value. This value is parsed by the parser, or returned if no
+     * suitable parser was found.
      *
      * @param $value
      *
      * @return mixed
      *
-     * @see \brendt\stitcher\factory\ProviderFactory
+     * @see \brendt\stitcher\factory\ParserFactory
      */
     private function getData($value) {
-        /** @var ProviderFactory $providerFactory */
-        $providerFactory = Config::getDependency('factory.provider');
-        $provider = $providerFactory->getProvider($value);
+        /** @var ParserFactory $parserFactory */
+        $parserFactory = Config::getDependency('factory.parser');
+        $parser = $parserFactory->getParser($value);
 
-        if (!$provider) {
+        if (!$parser) {
             return $value;
         }
 
-        return $provider->parse($value);
+        return $parser->parse($value);
     }
 
 }

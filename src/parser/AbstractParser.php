@@ -1,10 +1,10 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
 use brendt\stitcher\Config;
 
-abstract class AbstractProvider implements Provider {
+abstract class AbstractParser implements Parser {
 
     /**
      * @var string
@@ -12,7 +12,7 @@ abstract class AbstractProvider implements Provider {
     protected $root;
 
     /**
-     * AbstractProvider constructor.
+     * AbstractParser constructor.
      */
     public function __construct() {
         $this->root = Config::get('directories.src');

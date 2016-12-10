@@ -1,24 +1,24 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
 use brendt\stitcher\Config;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 
-abstract class AbstractArrayProvider extends AbstractProvider {
+abstract class AbstractArrayParser extends AbstractParser {
 
     /**
-     * @var ProviderFactory
+     * @var ParserFactory
      */
-    protected $providerFactory;
+    protected $parserFactory;
 
     /**
-     * AbstractProvider constructor.
+     * AbstractParser constructor.
      */
     public function __construct() {
         parent::__construct();
 
-        $this->providerFactory = Config::getDependency('factory.provider');
+        $this->parserFactory = Config::getDependency('factory.parser');
     }
 
     /**
@@ -39,22 +39,22 @@ abstract class AbstractArrayProvider extends AbstractProvider {
     protected function parseEntryData($id, $entry) {
         foreach ($entry as $field => $value) {
             if (is_string($value) && preg_match('/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
-                $provider = $this->providerFactory->getProvider($value);
+                $parser = $this->parserFactory->getParser($value);
 
-                if (!$provider) {
+                if (!$parser) {
                     continue;
                 }
 
-                $entry[$field] = $provider->parse(trim($value, '/'));
+                $entry[$field] = $parser->parse(trim($value, '/'));
             } elseif (is_array($value) && array_key_exists('src', $value)) {
                 $src = $value['src'];
-                $provider = $this->providerFactory->getProvider($src);
+                $parser = $this->parserFactory->getParser($src);
 
-                if (!$provider) {
+                if (!$parser) {
                     continue;
                 }
 
-                $entry[$field] = $provider->parse($value);
+                $entry[$field] = $parser->parse($value);
             }
 
             if (!isset($entry['id'])) {

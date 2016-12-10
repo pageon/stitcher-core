@@ -1,11 +1,11 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
-use brendt\stitcher\exception\ProviderException;
+use brendt\stitcher\exception\ParserException;
 use Symfony\Component\Finder\Finder;
 
-class JsonProvider extends AbstractArrayProvider {
+class JsonParser extends AbstractArrayParser {
 
     public function parse($path = '*.json') {
         $finder = new Finder();
@@ -20,7 +20,7 @@ class JsonProvider extends AbstractArrayProvider {
             $parsed = json_decode($file->getContents(), true);
 
             if (json_last_error() > 0 && $error = json_last_error_msg()) {
-                throw new ProviderException("{$file->getRelativePathname()}: {$error}");
+                throw new ParserException("{$file->getRelativePathname()}: {$error}");
             }
 
             if (isset($parsed['entries'])) {

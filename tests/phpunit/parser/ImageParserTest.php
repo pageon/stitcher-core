@@ -1,38 +1,38 @@
 <?php
 
-use brendt\stitcher\provider\ImageProvider;
+use brendt\stitcher\parser\ImageParser;
 use brendt\stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
-use brendt\stitcher\provider\YamlProvider;
+use brendt\stitcher\parser\YamlParser;
 
-class ImageProviderTest extends PHPUnit_Framework_TestCase {
+class ImageParserTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
     }
 
-    protected function createImageProvider() {
-        return new ImageProvider();
+    protected function createImageParser() {
+        return new ImageParser();
     }
 
-    protected function createYamlProvider() {
-        return new YamlProvider();
+    protected function createYamlParser() {
+        return new YamlParser();
     }
 
     public function test_image_create() {
-        $imageProvider = $this->createImageProvider();
+        $imageParser = $this->createImageParser();
 
-        $image = $imageProvider->parse('img/green.jpg');
+        $image = $imageParser->parse('img/green.jpg');
 
         $this->assertNotNull($image['src']);
         $this->assertNotNull($image['srcset']);
     }
 
     public function test_image_create_with_extra_fields() {
-        $imageProvider = $this->createImageProvider();
+        $imageParser = $this->createImageParser();
         $altText = 'A green image';
 
-        $image = $imageProvider->parse([
+        $image = $imageParser->parse([
             'src' => 'img/green.jpg',
             'alt' => $altText,
         ]);
@@ -52,16 +52,16 @@ class ImageProviderTest extends PHPUnit_Framework_TestCase {
             $fs->remove($file);
         }
 
-        $imageProvider = $this->createImageProvider();
-        $imageProvider->parse('img/green.jpg');
+        $imageParser = $this->createImageParser();
+        $imageParser->parse('img/green.jpg');
 
         $this->assertTrue($fs->exists($file));
     }
 
     public function test_image_parses_with_extended_fields() {
-        $provider = $this->createYamlProvider();
+        $yamlParser = $this->createYamlParser();
 
-        $data = $provider->parse('church-image.yml');
+        $data = $yamlParser->parse('church-image.yml');
 
         $this->assertTrue(isset($data['church-image']['image']['src']));
         $this->assertTrue(isset($data['church-image']['image']['srcset']));

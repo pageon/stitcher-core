@@ -1,12 +1,12 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
 use brendt\stitcher\Config;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\Finder\Finder;
 
-class SassProvider implements Provider {
+class SassParser implements Parser {
 
     /**
      * @param $path
