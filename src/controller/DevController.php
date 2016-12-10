@@ -15,8 +15,6 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * The developer controller is used to render pages on the fly (on an HTTP request). This controller enables a
  * developer make code changes and see those changes real-time without re-compiling the whole site.
- *
- * @todo Add tests
  */
 class DevController {
 
@@ -38,13 +36,17 @@ class DevController {
     }
 
     /**
-     * Run the developer controller.
+     * Run the developer controller. This function will read the request URL and dispatch the according route.
      *
-     * This function will read the request URL and dispatch the according route.
+     * @param string $url
+     *
+     * @return string
      */
-    public function run() {
-        $request = explode('?', $_SERVER['REQUEST_URI']);
-        $url = reset($request);
+    public function run($url = null) {
+        if (!$url) {
+            $request = explode('?', $_SERVER['REQUEST_URI']);
+            $url = reset($request);
+        }
 
         $routeCollection = new RouteCollection();
         $site = $this->stitcher->loadSite();
@@ -75,25 +77,19 @@ class DevController {
             $blanket = $this->stitcher->stitch($route, $id);
 
             if (isset($blanket[$route])) {
-                echo $blanket[$route];
-
-                return;
+                return $blanket[$route];
             }
 
             if (isset($blanket[$url])) {
-                echo $blanket[$url];
-
-                return;
+                return $blanket[$url];
             }
 
             throw new ResourceNotFoundException();
         } catch (StitcherException $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         } catch (ResourceNotFoundException $e) {
-            echo "404";
+            return "404";
         }
-
-        return;
     }
 
 }
