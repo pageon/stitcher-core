@@ -15,7 +15,7 @@ use brendt\stitcher\exception\TemplateNotFoundException;
  *
  *      - `data`: an optional array of variables which will be mapped onto the template.
  *              Each of these variables is parsed during compile time.
- *              @see \brendt\stitcher\provider\AbstractProvider
+ *              @see \brendt\stitcher\parser\AbstractParser
  *              @todo    : refactor `data` to `variables`.
  *
  *      - `adapters`: an optional array of Adapters for this page. Adapters are used to adapt a page's configuration

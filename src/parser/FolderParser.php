@@ -1,11 +1,11 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 use Symfony\Component\Finder\Finder;
 
-class FolderProvider extends AbstractProvider {
+class FolderParser extends AbstractParser {
 
     /**
      * @param $path
@@ -17,14 +17,14 @@ class FolderProvider extends AbstractProvider {
         $path = trim($path, '/');
         $finder = new Finder();
         $files = $finder->files()->in("{$this->root}/data/{$path}")->name('*.*');
-        $factory = new ProviderFactory();
+        $factory = new ParserFactory();
 
         foreach ($files as $file) {
-            $provider = $factory->getProvider($file->getFilename());
+            $parser = $factory->getParser($file->getFilename());
 
             $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
 
-            $data[$id] = $provider->parse($file->getRelativePathname());
+            $data[$id] = $parser->parse($file->getRelativePathname());
         }
 
         return $data;

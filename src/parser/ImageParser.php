@@ -1,11 +1,11 @@
 <?php
 
-namespace brendt\stitcher\provider;
+namespace brendt\stitcher\parser;
 
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
 
-class ImageProvider extends AbstractProvider {
+class ImageParser extends AbstractParser {
 
     /**
      * @var ResponsiveFactory
@@ -13,7 +13,7 @@ class ImageProvider extends AbstractProvider {
     protected $factory;
 
     /**
-     * AbstractProvider constructor.
+     * AbstractParser constructor.
      */
     public function __construct() {
         parent::__construct();

@@ -5,7 +5,7 @@ namespace brendt\stitcher;
 use brendt\image\config\DefaultConfigurator;
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
 use brendt\stitcher\template\smarty\SmartyEngine;
 use brendt\stitcher\template\TemplatePlugin;
@@ -53,7 +53,7 @@ class Config {
         }
 
         self::$container = new ContainerBuilder();
-        self::$container->register('factory.provider', ProviderFactory::class);
+        self::$container->register('factory.parser', ParserFactory::class);
         self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
 

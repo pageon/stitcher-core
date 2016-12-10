@@ -6,7 +6,7 @@ use brendt\stitcher\template\smarty\SmartyEngine;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class EnginePluginTest extends PHPUnit_Framework_TestCase {
+class TemplatePluginTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

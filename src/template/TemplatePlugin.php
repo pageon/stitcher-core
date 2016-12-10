@@ -4,7 +4,7 @@ namespace brendt\stitcher\template;
 
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -53,11 +53,11 @@ class TemplatePlugin {
      * @return string
      */
     public function css($src, $inline = false) {
-        /** @var ProviderFactory $factory */
-        $factory = Config::getDependency('factory.provider');
+        /** @var ParserFactory $factory */
+        $factory = Config::getDependency('factory.parser');
 
-        $provider = $factory->getProvider($src);
-        $data = $provider->parse($src);
+        $parser = $factory->getParser($src);
+        $data = $parser->parse($src);
 
         if (Config::get('minify')) {
             /** @var \CSSmin $minifier */
@@ -99,11 +99,11 @@ class TemplatePlugin {
      * @return string
      */
     public function js($src, $inline = false, $async = false) {
-        /** @var ProviderFactory $factory */
-        $factory = Config::getDependency('factory.provider');
+        /** @var ParserFactory $factory */
+        $factory = Config::getDependency('factory.parser');
 
-        $provider = $factory->getProvider($src);
-        $data = $provider->parse($src);
+        $parser = $factory->getParser($src);
+        $data = $parser->parse($src);
 
         if (Config::get('minify')) {
             $data = \JSMin::minify($data);
