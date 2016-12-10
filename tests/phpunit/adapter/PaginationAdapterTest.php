@@ -20,7 +20,7 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
     private function createPage() {
         $page = new Page('/entries', [
             'template' => 'home',
-            'data'     => [
+            'variables'     => [
                 'entries' => 'pagination_entries.yml',
             ],
             'adapters' => [
