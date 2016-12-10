@@ -14,7 +14,7 @@
         # Enable pagination for the field `collection`, paginate per 4 entries.
         pagination:
             variable: collection
-            amount: 4
+            entriesPerPage: 4
 
 /examples/{id}:
     template: examples/detail
