@@ -17,9 +17,7 @@ use brendt\stitcher\site\Page;
  *      adapters:
  *      pagination:
  *          variable: collection
- *          amount: 4
- *
- * @todo Rename `amount` option to `entriesPerPage`
+ *          entriesPerPage: 4
  */
 class PaginationAdapter extends AbstractAdapter {
 
@@ -44,14 +42,14 @@ class PaginationAdapter extends AbstractAdapter {
 
         $pageId = rtrim($page->getId(), '/');
         $entries = $this->getData($source);
-        $amount = isset($config['amount']) ? $config['amount'] : 10;
-        $pageCount = (int) ceil(count($entries) / $amount);
+        $entriesPerPage = isset($config['entriesPerPage']) ? $config['entriesPerPage'] : 10;
+        $pageCount = (int) ceil(count($entries) / $entriesPerPage);
 
         $i = 0;
         $result = [];
 
         while ($i < $pageCount) {
-            $pageEntries = array_splice($entries, 0, $amount);
+            $pageEntries = array_splice($entries, 0, $entriesPerPage);
             $pageIndex = $i + 1;
 
             if ($filter && $pageIndex !== (int) $filter) {
