@@ -158,14 +158,13 @@ class Stitcher {
     }
 
     /**
-     * Load all templates from either the `directories.template` directory, or the `directories.src`/template
-     * directory. Depending on the configured template engine, set with `engines.template`; .html or .tpl files will be
-     * loaded.
+     * Load all templates from either the `directories.template` directory. Depending on the configured template
+     * engine, set with `engines.template`; .html or .tpl files will be loaded.
      *
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
-        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $templateFolder = Config::get('directories.template');
         $templateExtension = $this->templateEngine->getTemplateExtension();
         $files = Finder::create()->files()->in($templateFolder)->name("*.{$templateExtension}");
         $templates = [];

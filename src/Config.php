@@ -49,6 +49,10 @@ class Config {
             self::$config[$key] = $value;
         }
 
+        if (!self::get('directories.template')) {
+            self::$config['directories']['template'] = self::get('directories.src') . '/template';
+        }
+
         self::$container = new ContainerBuilder();
         self::$container->register('factory.parser', ParserFactory::class);
         self::$container->register('factory.adapter', AdapterFactory::class);

@@ -11,8 +11,6 @@ use Twig_Loader_Filesystem;
 
 /**
  * The Twig template engine.
- *
- * @todo Refactor the templateFolder config
  */
 class TwigEngine extends Twig_Environment implements TemplateEngine {
 
@@ -27,7 +25,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine {
      * Create a new Twig engine and add the Stitcher specific template functions.
      */
     public function __construct() {
-        $templateFolder = Config::get('directories.template') ? Config::get('directories.template') : Config::get('directories.src') . '/template';
+        $templateFolder = Config::get('directories.template');
         $loader = new Twig_Loader_Filesystem($templateFolder);
 
         parent::__construct($loader, [
