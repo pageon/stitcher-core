@@ -19,7 +19,7 @@
 # Configure the paths of several directories
 directories:
     # The source directory containing
-    src: ./src
+    src: ../src
 
     # The public directory for the dev controller is used to save images
     public: ./
