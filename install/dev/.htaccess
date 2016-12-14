@@ -10,7 +10,7 @@ DirectoryIndex index.dev.php
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^.* - [L]
-    RewriteRule ^(.*)$ index.dev.php [NE,L,QSA]
+    RewriteRule ^(.*)$ index.php [NE,L,QSA]
 </IfModule>
 
 # Enable GZIP
