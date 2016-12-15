@@ -43,7 +43,7 @@ class DevController {
      * @return string
      */
     public function run($url = null) {
-        if (!$url) {
+        if ($url === null) {
             $request = explode('?', $_SERVER['REQUEST_URI']);
             $url = reset($request);
         }
