@@ -1,7 +1,7 @@
 # The production config uses a few different paths to load files.
 # There are also only some image dimensions specified by default.
 
-# This production environment should be accessed via a separate virtualhost.
+# This production environment should be accessed via a separate virtual host.
 # An Apache example of such host configuration could be:
 #
 # <VirtualHost *:80>
@@ -18,16 +18,13 @@
 
 # Configure the paths of several directories
 directories:
-    # The source directory containing
+    # The source directory
     src: ./src
 
     # The public directory in which the site is generated
     public: ./public
 
-    # The public image directory
-    image: ./public/img
-
-    # Cache directory used by smarty
+    # The cache directory
     cache: ./cache
 
 # Configure meta tags
