@@ -6,5 +6,5 @@ use brendt\stitcher\controller\DevController;
 
 // This controller will render HTML pages on the fly.
 // See config.dev.yml for more information.
-$controller = new DevController();
-echo $controller->run(__DIR__ . '/../dev');
+$controller = new DevController(__DIR__ . '/../dev');
+echo $controller->run();
