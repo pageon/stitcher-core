@@ -19,14 +19,14 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
 
     private function createPage() {
         $page = new Page('/entries', [
-            'template' => 'home',
-            'data'     => [
+            'template'  => 'home',
+            'variables' => [
                 'entries' => 'pagination_entries.yml',
             ],
-            'adapters' => [
+            'adapters'  => [
                 'pagination' => [
-                    'variable' => 'entries',
-                    'amount'   => 5,
+                    'variable'       => 'entries',
+                    'entriesPerPage' => 5,
                 ],
             ],
         ]);
@@ -102,8 +102,8 @@ class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
         $result = $adapter->transform($page);
 
         foreach ($result as $page) {
-            $this->assertTrue($page->isParsedField('entries'));
-            $this->assertTrue($page->isParsedField('pagination'));
+            $this->assertTrue($page->isParsedVariable('entries'));
+            $this->assertTrue($page->isParsedVariable('pagination'));
         }
     }
 

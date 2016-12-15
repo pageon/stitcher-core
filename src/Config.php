@@ -4,20 +4,19 @@ namespace brendt\stitcher;
 
 use brendt\image\config\DefaultConfigurator;
 use brendt\image\ResponsiveFactory;
-use brendt\stitcher\engine\EnginePlugin;
 use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ProviderFactory;
+use brendt\stitcher\factory\ParserFactory;
 use brendt\stitcher\factory\TemplateEngineFactory;
+use brendt\stitcher\template\smarty\SmartyEngine;
+use brendt\stitcher\template\TemplatePlugin;
+use CSSmin;
 use Leafo\ScssPhp\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use brendt\stitcher\engine\smarty\SmartyEngine;
-use CSSmin;
 
 /**
- * Class Config
- * @package brendt\stitcher
+ * @todo Change parsing to work the other way around
  */
 class Config {
 
@@ -31,17 +30,12 @@ class Config {
      */
     protected static $container;
 
-    public static function getConfig() {
-        return self::$config;
-    }
-
     /**
      * @param string $root
      * @param string $name
      */
     public static function load($root = './', $name = 'config.yml') {
-        $finder = new Finder();
-        $configFiles = $finder->files()->in($root)->name($name);
+        $configFiles = Finder::create()->files()->in($root)->name($name);
         $config = [];
 
         foreach ($configFiles as $configFile) {
@@ -52,8 +46,12 @@ class Config {
             self::$config[$key] = $value;
         }
 
+        if (!self::get('directories.template')) {
+            self::$config['directories']['template'] = self::get('directories.src') . '/template';
+        }
+
         self::$container = new ContainerBuilder();
-        self::$container->register('factory.provider', ProviderFactory::class);
+        self::$container->register('factory.parser', ParserFactory::class);
         self::$container->register('factory.adapter', AdapterFactory::class);
         self::$container->register('factory.template.engine', TemplateEngineFactory::class);
 
@@ -68,7 +66,7 @@ class Config {
             ->addArgument($imageConfig);
 
         self::$container->register('engine.smarty', SmartyEngine::class);
-        self::$container->register('engine.plugin', EnginePlugin::class);
+        self::$container->register('engine.plugin', TemplatePlugin::class);
         self::$container->register('engine.minify.css', CSSmin::class);
         self::$container->register('engine.sass', Compiler::class)
             ->addMethodCall('addImportPath', ['path' => Config::get('directories.src')]);
@@ -87,6 +85,8 @@ class Config {
      * @param $key
      *
      * @return mixed|null
+     *
+     * @todo Refactor to work with dependencies
      */
     public static function get($key) {
         $keys = explode('.', $key);
@@ -123,6 +123,10 @@ class Config {
      */
     public static function reset() {
         self::$config = [];
+    }
+
+    public static function getConfig() {
+        return self::$config;
     }
 
     /**

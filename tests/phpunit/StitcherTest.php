@@ -23,7 +23,7 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     private function createPage() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
                 'intro' => 'intro.md',
             ],
@@ -64,8 +64,8 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $pages = $stitcher->parseAdapters($page);
 
         foreach ($pages as $page) {
-            $this->assertTrue($page->isParsedField('church'));
-            $this->assertFalse($page->isParsedField('intro'));
+            $this->assertTrue($page->isParsedVariable('church'));
+            $this->assertFalse($page->isParsedVariable('intro'));
         }
     }
 
@@ -76,8 +76,8 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $pages = $stitcher->parseAdapters($page);
         $parsedPage = $stitcher->parseVariables($pages['/church-a']);
 
-        $this->assertTrue($parsedPage->isParsedField('church'));
-        $this->assertTrue($parsedPage->isParsedField('intro'));
+        $this->assertTrue($parsedPage->isParsedVariable('church'));
+        $this->assertTrue($parsedPage->isParsedVariable('intro'));
     }
 
     public function test_stitch() {

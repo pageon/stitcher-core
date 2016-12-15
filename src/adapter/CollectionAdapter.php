@@ -2,11 +2,28 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\site\Page;
 use brendt\stitcher\exception\IdFieldNotFoundException;
 use brendt\stitcher\exception\VariableNotFoundException;
 use brendt\stitcher\factory\AdapterFactory;
+use brendt\stitcher\site\Page;
 
+/**
+ * The CollectionAdapter takes a page with a collection of entries, and generates a detail page for each entry in the
+ * collection.
+ *
+ * Sample configuration:
+ *
+ *  /examples/{id}:
+ *      template: examples/detail
+ *      data:
+ *          example: collection.yml
+ *      adapters:
+ *          collection:
+ *              variable: example
+ *              field: id
+ *
+ * @todo Rename `field` option to `urlVariable`
+ */
 class CollectionAdapter extends AbstractAdapter {
 
     /**
@@ -18,7 +35,7 @@ class CollectionAdapter extends AbstractAdapter {
      * @throws VariableNotFoundException
      */
     public function transform(Page $page, $filter = null) {
-        $config = $page->getAdapter(AdapterFactory::COLLECTION_ADAPTER);
+        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
         if (!isset($config['field']) || !isset($config['variable'])) {
             return [$page];
@@ -51,9 +68,9 @@ class CollectionAdapter extends AbstractAdapter {
             $entryPage = clone $page;
 
             $entryPage
-                ->clearAdapter(AdapterFactory::COLLECTION_ADAPTER)
-                ->setVariable($variable, $entry)
-                ->setParsedField($variable)
+                ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
+                ->setVariableValue($variable, $entry)
+                ->setVariableIsParsed($variable)
                 ->setId($url);
 
             $result[$url] = $entryPage;
