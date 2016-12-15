@@ -2,8 +2,8 @@
 
 use brendt\stitcher\factory\TemplateEngineFactory;
 use brendt\stitcher\Config;
-use brendt\stitcher\engine\smarty\SmartyEngine;
-use brendt\stitcher\engine\twig\TwigEngine;
+use brendt\stitcher\template\smarty\SmartyEngine;
+use brendt\stitcher\template\twig\TwigEngine;
 
 class TemplateEngineFactoryTest extends PHPUnit_Framework_TestCase {
 

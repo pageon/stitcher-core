@@ -20,7 +20,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     private function createPage() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [
@@ -46,8 +46,8 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('/church-a', $result['/church-a']->getId());
         $this->assertEquals('/church-b', $result['/church-b']->getId());
 
-        $this->assertTrue($result['/church-a']->isParsedField('church'));
-        $this->assertTrue($result['/church-b']->isParsedField('church'));
+        $this->assertTrue($result['/church-a']->isParsedVariable('church'));
+        $this->assertTrue($result['/church-b']->isParsedVariable('church'));
     }
 
     public function test_collection_adapter_filtered() {
@@ -66,7 +66,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     public function test_collection_adapter_throws_variable_not_found_exception() {
         $page = new Page('/{id}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [
@@ -88,7 +88,7 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
     public function test_collection_adapter_throws_id_field_not_found_exception() {
         $page = new Page('/{wrongId}', [
             'template' => 'home',
-            'data' => [
+            'variables' => [
                 'church' => 'churches.yml',
             ],
             'adapters' => [

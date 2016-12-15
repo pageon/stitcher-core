@@ -2,9 +2,23 @@
 
 namespace brendt\stitcher\adapter;
 
-use brendt\stitcher\site\Page;
 use brendt\stitcher\factory\AdapterFactory;
+use brendt\stitcher\site\Page;
 
+/**
+ * The PaginationAdapter takes a page with a collection of entries and generates pagination for that collection.
+ *
+ * Sample configuration:
+ *
+ *  /examples:
+ *      template: examples/overview
+ *      data:
+ *          collection: collection.yml
+ *      adapters:
+ *      pagination:
+ *          variable: collection
+ *          entriesPerPage: 4
+ */
 class PaginationAdapter extends AbstractAdapter {
 
     /**
@@ -14,7 +28,7 @@ class PaginationAdapter extends AbstractAdapter {
      * @return Page[]
      */
     public function transform(Page $page, $filter = null) {
-        $config = $page->getAdapter(AdapterFactory::PAGINATION_ADAPTER);
+        $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
 
         if (!isset($config['variable'])) {
             return [$page];
@@ -28,14 +42,14 @@ class PaginationAdapter extends AbstractAdapter {
 
         $pageId = rtrim($page->getId(), '/');
         $entries = $this->getData($source);
-        $amount = isset($config['amount']) ? $config['amount'] : 10;
-        $pageCount = (int) ceil(count($entries) / $amount);
+        $entriesPerPage = isset($config['entriesPerPage']) ? $config['entriesPerPage'] : 10;
+        $pageCount = (int) ceil(count($entries) / $entriesPerPage);
 
         $i = 0;
         $result = [];
 
         while ($i < $pageCount) {
-            $pageEntries = array_splice($entries, 0, $amount);
+            $pageEntries = array_splice($entries, 0, $entriesPerPage);
             $pageIndex = $i + 1;
 
             if ($filter && $pageIndex !== (int) $filter) {
@@ -44,32 +58,14 @@ class PaginationAdapter extends AbstractAdapter {
             }
 
             $url = "{$pageId}/page-{$pageIndex}";
-
-            $next = count($entries) ? $pageIndex + 1 : null;
-            $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
-            $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
-            $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
-
+            $pagination = $this->createPagination($pageId, $pageIndex, $pageCount, $entries);
             $entriesPage = clone $page;
-            $pagination = [
-                'current'  => $pageIndex,
-                'previous' => $previous ? [
-                    'url'   => $previousUrl,
-                    'index' => $previous,
-                ] : null,
-                'next'     => $next ? [
-                    'url'   => $nextUrl,
-                    'index' => $next,
-                ] : null,
-                'pages'    => $pageCount,
-            ];
-
             $entriesPage
-                ->clearAdapter(AdapterFactory::PAGINATION_ADAPTER)
-                ->setVariable($variable, $pageEntries)
-                ->setParsedField($variable)
-                ->setVariable('pagination', $pagination)
-                ->setParsedField('pagination')
+                ->removeAdapter(AdapterFactory::PAGINATION_ADAPTER)
+                ->setVariableValue($variable, $pageEntries)
+                ->setVariableIsParsed($variable)
+                ->setVariableValue('pagination', $pagination)
+                ->setVariableIsParsed('pagination')
                 ->setId($url);
 
             $result[$url] = $entriesPage;
@@ -83,5 +79,35 @@ class PaginationAdapter extends AbstractAdapter {
         }
 
         return $result;
+    }
+
+    /**
+     * Create a pagination array.
+     *
+     * @param $pageId
+     * @param $pageIndex
+     * @param $pageCount
+     * @param $entries
+     *
+     * @return array
+     */
+    protected function createPagination($pageId, $pageIndex, $pageCount, $entries) {
+        $next = count($entries) ? $pageIndex + 1 : null;
+        $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
+        $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
+        $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
+
+        return [
+            'current'  => $pageIndex,
+            'previous' => $previous ? [
+                'url'   => $previousUrl,
+                'index' => $previous,
+            ] : null,
+            'next'     => $next ? [
+                'url'   => $nextUrl,
+                'index' => $next,
+            ] : null,
+            'pages'    => $pageCount,
+        ];
     }
 }
