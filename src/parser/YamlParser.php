@@ -6,36 +6,48 @@ use brendt\stitcher\exception\ParserException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use brendt\stitcher\Config;
 
+/**
+ * The YamlParser take a path to one or more YAML files, and parses the content into an array.
+ *
+ * @see \brendt\stitcher\parser\AbstractArrayParser::parseArrayData()
+ */
 class YamlParser extends AbstractArrayParser {
 
+    /**
+     * @param string $path
+     *
+     * @return mixed
+     * @throws ParserException
+     */
     public function parse($path = '*.yml') {
-        $finder = new Finder();
-        $data = [];
         if (!strpos($path, '.yml')) {
             $path .= '.yml';
         }
 
-        $files = $finder->files()->in("{$this->root}")->path($path);
+        $root = Config::get('directories.src');
+        $files = Finder::create()->files()->in($root)->path($path);
+        $yamlData = [];
 
         foreach ($files as $file) {
             try {
                 $parsed = Yaml::parse($file->getContents());
 
                 if (isset($parsed['entries'])) {
-                    $data += $parsed['entries'];
+                    $yamlData += $parsed['entries'];
                 } else {
                     $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
-                    $data[$id] = $parsed;
+                    $yamlData[$id] = $parsed;
                 }
             } catch (ParseException $e) {
                 throw new ParserException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
         }
 
-        $data = $this->parseArrayData($data);
+        $parsedEntries = $this->parseArrayData($yamlData);
 
-        return $data;
+        return $parsedEntries;
     }
 
 }

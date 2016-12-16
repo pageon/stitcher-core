@@ -2,29 +2,35 @@
 
 namespace brendt\stitcher\parser;
 
+use brendt\stitcher\Config;
 use Parsedown;
 use Symfony\Component\Finder\Finder;
 
-class MarkdownParser extends AbstractParser {
+/**
+ * The MarkDownParser takes a path to a markdown file and will parse it to HTML.
+ */
+class MarkdownParser implements Parser {
 
     /**
      * @param string $path
      *
      * @return string
      */
-    public function parse($path = '*.md') {
-        $html = '';
-        $finder = new Finder();
+    public function parse($path) {
         if (!strpos($path, '.md')) {
             $path .= '.md';
         }
-        $files = $finder->files()->in("{$this->root}")->path($path);
 
-        foreach ($files as $file) {
-            $html = Parsedown::instance()->parse($file->getContents());
+        $root = Config::get('directories.src');
+        $files = Finder::create()->files()->in($root)->path($path)->getIterator();
+        $files->rewind();
+        $markdownFile = $files->current();
 
-            break;
+        if (!$markdownFile) {
+            return '';
         }
+
+        $html = Parsedown::instance()->parse($markdownFile->getContents());
 
         return $html;
     }

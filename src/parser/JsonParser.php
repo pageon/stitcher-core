@@ -2,19 +2,29 @@
 
 namespace brendt\stitcher\parser;
 
+use brendt\stitcher\Config;
 use brendt\stitcher\exception\ParserException;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * The JsonParser take a path to one or more JSON files, and parses the content into an array.
+ */
 class JsonParser extends AbstractArrayParser {
 
+    /**
+     * @param string $path
+     *
+     * @return array
+     * @throws ParserException
+     */
     public function parse($path = '*.json') {
-        $finder = new Finder();
-        $data = [];
         if (!strpos($path, '.json')) {
             $path .= '.json';
         }
 
-        $files = $finder->files()->in("{$this->root}")->path($path);
+        $data = [];
+        $root = Config::get('directories.src');
+        $files = Finder::create()->files()->in("{$root}")->path($path);
 
         foreach ($files as $file) {
             $parsed = json_decode($file->getContents(), true);
