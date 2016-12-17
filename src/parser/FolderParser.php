@@ -40,7 +40,10 @@ class FolderParser implements Parser {
 
             $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
 
-            $data[$id] = $parser->parse($file->getRelativePathname());
+            $data[$id] = [
+                'id'      => $id,
+                'content' => $parser->parse($file->getRelativePathname()),
+            ];
         }
 
         return $data;
