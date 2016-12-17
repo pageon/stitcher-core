@@ -1,7 +1,6 @@
 # Stitcher development htaccess
-
 Options +FollowSymLinks
-DirectoryIndex index.dev.php
+DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
