@@ -5,6 +5,7 @@ namespace brendt\stitcher\parser;
 use brendt\stitcher\Config;
 use brendt\stitcher\factory\ParserFactory;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * The FolderParser take the path to a folder and will read all files in that folder, parsing each of the files
@@ -32,7 +33,9 @@ class FolderParser implements Parser {
     public function parse($path) {
         $path = trim($path, '/');
         $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in("{$root}/data/{$path}")->name('*.*');
+        $files = Finder::create()->files()->in("{$root}/data/{$path}")->name('*.*')->sort(function(SplFileInfo $a, SplFileInfo $b) {
+            return strcmp($b->getRelativePath(), $a->getRelativePath());
+        });
         $data = [];
 
         foreach ($files as $file) {
