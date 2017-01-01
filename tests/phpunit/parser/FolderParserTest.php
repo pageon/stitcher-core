@@ -21,6 +21,9 @@ class FolderParserTest extends PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('church-a', $data);
         $this->assertArrayHasKey('church-b', $data);
         $this->assertArrayHasKey('church-c', $data);
+
+        $this->assertTrue(isset($data['church-a']['id']));
+        $this->assertTrue(isset($data['church-a']['content']));
     }
 
 }
