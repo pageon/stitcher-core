@@ -80,6 +80,25 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
         $this->assertTrue($parsedPage->isParsedVariable('intro'));
     }
 
+    public function test_parse_variables_with_normal_array() {
+        $stitcher = $this->createStitcher();
+        $page = new Page('/a', [
+            'template' => 'a',
+            'variables' => [
+                'test' => [
+                    'title' => 'title',
+                    'body' => 'body',
+                ]
+            ]
+        ]);
+
+        $parsedPage = $stitcher->parseVariables($page);
+
+        $variable = $parsedPage->getVariable('test');
+        $this->assertTrue(isset($variable['title']));
+        $this->assertTrue(isset($variable['body']));
+    }
+
     public function test_stitch() {
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch();

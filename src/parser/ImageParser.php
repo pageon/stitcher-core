@@ -5,7 +5,13 @@ namespace brendt\stitcher\parser;
 use brendt\image\ResponsiveFactory;
 use brendt\stitcher\Config;
 
-class ImageParser extends AbstractParser {
+/**
+ * The ImageParser uses the ResponsiveFactory to create images from an entry (array of parsed data),
+ * or a path to an image.
+ *
+ * @see \brendt\image\ResponsiveFactory::create()
+ */
+class ImageParser implements Parser {
 
     /**
      * @var ResponsiveFactory
@@ -16,15 +22,13 @@ class ImageParser extends AbstractParser {
      * AbstractParser constructor.
      */
     public function __construct() {
-        parent::__construct();
-
         $this->factory = Config::getDependency('factory.image');
     }
 
     /**
      * @param $entry
      *
-     * @return array|mixed
+     * @return array
      */
     public function parse($entry) {
         $data = [];
@@ -51,10 +55,10 @@ class ImageParser extends AbstractParser {
         $image = $this->factory->create($path);
 
         $data = [
-            'src' => $image->src(),
-            'srcset' => $image->srcset(),
-            'sizes' => $image->sizes(),
-        ] + $defaults;
+                'src'    => $image->src(),
+                'srcset' => $image->srcset(),
+                'sizes'  => $image->sizes(),
+            ] + $defaults;
 
         return $data;
     }

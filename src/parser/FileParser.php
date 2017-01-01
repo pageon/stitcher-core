@@ -5,6 +5,9 @@ namespace brendt\stitcher\parser;
 use brendt\stitcher\Config;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * The FileParser takes a path and reads the file contents from that path.
+ */
 class FileParser implements Parser {
 
     /**
@@ -13,15 +16,15 @@ class FileParser implements Parser {
      * @return string
      */
     public function parse($path) {
-        $finder = new Finder();
-        $files = $finder->files()->in(Config::get('directories.src'))->path(trim($path, '/'));
-        $data = '';
+        $files = Finder::create()->files()->in(Config::get('directories.src'))->path(trim($path, '/'))->getIterator();
+        $files->rewind();
+        $file = $files->current();
 
-        foreach ($files as $file) {
-            $data .= $file->getContents();
+        if (!$file) {
+            return '';
         }
 
-        return $data;
+        return $file->getContents();
     }
 
 }

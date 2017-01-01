@@ -52,6 +52,10 @@ class ParserFactory {
      * @return Parser|null
      */
     public function getParser($fileName) {
+        if (!is_string($fileName)) {
+            return null;
+        }
+
         $parser = null;
 
         if (strpos($fileName, '/') === strlen($fileName) - 1) {

@@ -45,4 +45,11 @@ class ParserFactoryTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf(MarkdownParser::class, $factory->getByType(ParserFactory::MARKDOWN_PARSER));
     }
 
+    public function test_get_parser_returns_null_when_no_string_provided() {
+        $factory = $this->createParserFactory();
+
+        $this->assertNull($factory->getParser([]));
+        $this->assertNull($factory->getParser(23));
+    }
+
 }
