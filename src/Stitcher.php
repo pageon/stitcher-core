@@ -205,7 +205,7 @@ class Stitcher {
             foreach ($page->getAdapters() as $type => $adapterConfig) {
                 $adapter = $adapterFactory->getByType($type);
 
-                if ($entryId) {
+                if ($entryId !== null) {
                     $pages = $adapter->transform($page, $entryId);
                 } else {
                     $pages = $adapter->transform($page);
