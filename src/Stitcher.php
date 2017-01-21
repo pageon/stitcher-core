@@ -183,8 +183,8 @@ class Stitcher {
      * An entry id can be provided as a filter. This filter can be used in an adapter to skip rendering unnecessary
      * pages. The filter parameter is used to render pages on the fly when using the developer controller.
      *
-     * @param Page $page
-     * @param null $entryId
+     * @param Page   $page
+     * @param string $entryId
      *
      * @return Page[]
      *

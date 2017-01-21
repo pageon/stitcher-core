@@ -3,6 +3,7 @@
 namespace brendt\stitcher\factory;
 
 use brendt\stitcher\Config;
+use brendt\stitcher\parser\DefaultParser;
 use brendt\stitcher\parser\FileParser;
 use brendt\stitcher\parser\FolderParser;
 use brendt\stitcher\parser\ImageParser;
@@ -32,6 +33,8 @@ class ParserFactory {
 
     const SCSS_PARSER = 'scss';
 
+    const DEFAULT_PARSER = 'default';
+
     private $parsers = [];
 
     private $root;
@@ -56,8 +59,6 @@ class ParserFactory {
             return null;
         }
 
-        $parser = null;
-
         if (strpos($fileName, '/') === strlen($fileName) - 1) {
             $parser = $this->getByType(self::FOLDER_PARSER);
         } else if (strpos($fileName, '.json') !== false) {
@@ -76,6 +77,8 @@ class ParserFactory {
             $parser = $this->getByType(self::JS_PARSER);
         } else if (strpos($fileName, '.scss') !== false || strpos($fileName, '.sass') !== false) {
             $parser = $this->getByType(self::SASS_PARSER);
+        } else {
+            $parser = $this->getByType(self::DEFAULT_PARSER);
         }
 
         return $parser;
@@ -118,6 +121,10 @@ class ParserFactory {
             case self::SCSS_PARSER:
             case self::SASS_PARSER:
                 $parser = new SassParser();
+                break;
+            case self::DEFAULT_PARSER:
+            default:
+                $parser = new DefaultParser();
                 break;
         }
 

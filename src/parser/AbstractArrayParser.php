@@ -65,20 +65,10 @@ abstract class AbstractArrayParser implements Parser {
         foreach ($entry as $field => $value) {
             if (is_string($value) && preg_match('/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
                 $parser = $this->parserFactory->getParser($value);
-
-                if (!$parser) {
-                    continue;
-                }
-
                 $entry[$field] = $parser->parse(trim($value, '/'));
             } elseif (is_array($value) && array_key_exists('src', $value)) {
                 $src = $value['src'];
                 $parser = $this->parserFactory->getParser($src);
-
-                if (!$parser) {
-                    continue;
-                }
-
                 $entry[$field] = $parser->parse($value);
             }
 
