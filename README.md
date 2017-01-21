@@ -9,7 +9,7 @@ composer require brendt/stitcher:1.0.0-alpha
 php vendor/brendt/stitcher/install/stitcher site:install
 ```
 
-[Demo](http://stitcher.pageon.be/)
+[Read the full documentation here](http://stitcher.pageon.be/)
 
 ## Features
 
@@ -21,5 +21,6 @@ php vendor/brendt/stitcher/install/stitcher site:install
 
 #### Future plans
 
+- [ ] Config extending
 - [ ] Command line configuration
 - [ ] Form support
