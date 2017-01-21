@@ -48,6 +48,21 @@ class DevController {
             $url = reset($request);
         }
 
+        try {
+            return $this->getPage($url);
+        } catch (StitcherException $e) {
+            return $e->getMessage();
+        } catch (ResourceNotFoundException $e) {
+            return "404";
+        }
+    }
+
+    /**
+     * Create the route container
+     *
+     * @return \Symfony\Component\Routing\RouteCollection
+     */
+    protected function createRouteCollection() {
         $routeCollection = new RouteCollection();
         $site = $this->stitcher->loadSite();
 
@@ -62,34 +77,38 @@ class DevController {
             }
         }
 
-        try {
-            $matcher = new UrlMatcher($routeCollection, new RequestContext());
-            $routeResult = $matcher->match($url);
-            $route = $routeResult['_route'];
+        return $routeCollection;
+    }
 
-            $id = isset($routeResult['id']) ? $routeResult['id'] : null;
+    /**
+     * @param $url
+     *
+     * @return mixed
+     */
+    protected function getPage($url) {
+        $routeCollection = $this->createRouteCollection();
+        $matcher = new UrlMatcher($routeCollection, new RequestContext());
+        $routeResult = $matcher->match($url);
+        $route = $routeResult['_route'];
 
-            if (isset($routeResult['page'])) {
-                $route = str_replace('/page-{page}', '', $route);
-                $id = $routeResult['page'];
-            }
+        $id = isset($routeResult['id']) ? $routeResult['id'] : null;
 
-            $blanket = $this->stitcher->stitch($route, $id);
-
-            if (isset($blanket[$route])) {
-                return $blanket[$route];
-            }
-
-            if (isset($blanket[$url])) {
-                return $blanket[$url];
-            }
-
-            throw new ResourceNotFoundException();
-        } catch (StitcherException $e) {
-            return $e->getMessage();
-        } catch (ResourceNotFoundException $e) {
-            return "404";
+        if (isset($routeResult['page'])) {
+            $route = str_replace('/page-{page}', '', $route);
+            $id = $routeResult['page'];
         }
+
+        $blanket = $this->stitcher->stitch($route, $id);
+
+        if (isset($blanket[$route])) {
+            return $blanket[$route];
+        }
+
+        if (isset($blanket[$url])) {
+            return $blanket[$url];
+        }
+
+        throw new ResourceNotFoundException();
     }
 
 }
