@@ -94,8 +94,6 @@ class ParserFactory {
             return $this->parsers[$type];
         }
 
-        $parser = null;
-
         switch ($type) {
             case self::IMAGE_PARSER:
                 $parser = new ImageParser();
