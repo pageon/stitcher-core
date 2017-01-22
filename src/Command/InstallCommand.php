@@ -46,7 +46,7 @@ class InstallCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $log = [];
@@ -102,8 +102,6 @@ class InstallCommand extends Command
         } else {
             $output->writeln("Stitcher has already been installed.");
         }
-
-        return;
     }
 
     protected function copyFolder($src, $dst) {
