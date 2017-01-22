@@ -1,12 +1,12 @@
 <?php
 
-namespace brendt\stitcher;
+namespace Brendt\Stitcher;
 
-use brendt\stitcher\command\CleanCommand;
-use brendt\stitcher\command\GenerateCommand;
-use brendt\stitcher\command\InstallCommand;
-use brendt\stitcher\command\RouteCommand;
-use brendt\stitcher\command\RoutesCommand;
+use Brendt\Stitcher\Command\CleanCommand;
+use Brendt\Stitcher\Command\GenerateCommand;
+use Brendt\Stitcher\Command\InstallCommand;
+use Brendt\Stitcher\Command\RouteCommand;
+use Brendt\Stitcher\Command\RoutesCommand;
 use Symfony\Component\Console\Application;
 
 class Console extends Application {

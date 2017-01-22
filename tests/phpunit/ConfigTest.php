@@ -1,6 +1,6 @@
 <?php
 
-use brendt\stitcher\Config;
+use Brendt\Stitcher\Config;
 
 class ConfigTest extends PHPUnit_Framework_TestCase {
 
