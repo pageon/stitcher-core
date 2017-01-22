@@ -1,15 +1,15 @@
 <?php
 
-namespace brendt\stitcher;
+namespace Brendt\Stitcher;
 
-use brendt\stitcher\exception\InvalidSiteException;
-use brendt\stitcher\exception\TemplateNotFoundException;
-use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ParserFactory;
-use brendt\stitcher\factory\TemplateEngineFactory;
-use brendt\stitcher\site\Page;
-use brendt\stitcher\site\Site;
-use brendt\stitcher\template\TemplateEngine;
+use Brendt\Stitcher\Exception\InvalidSiteException;
+use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Factory\TemplateEngineFactory;
+use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Site\Site;
+use Brendt\Stitcher\Template\TemplateEngine;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -55,12 +55,12 @@ class Stitcher {
      *
      * Compiling a site is done in the following steps.
      *
-     *      - Load the site configuration @see \brendt\stitcher\Stitcher::loadSite()
-     *      - Load all available templates @see \brendt\stitcher\Stitcher::loadTemplates()
+     *      - Load the site configuration @see \Brendt\Stitcher\Stitcher::loadSite()
+     *      - Load all available templates @see \Brendt\Stitcher\Stitcher::loadTemplates()
      *      - Loop over all pages and transform every page with the configured adapters (in any are set) @see
-     *      \brendt\stitcher\Stitcher::parseAdapters()
+     *      \Brendt\Stitcher\Stitcher::parseAdapters()
      *      - Loop over all transformed pages and parse the variables which weren't parsed by the page's adapters. @see
-     *      \brendt\stitcher\Stitcher::parseVariables()
+     *      \Brendt\Stitcher\Stitcher::parseVariables()
      *      - Add all variables to the template engine and render the HTML for each page.
      *
      * This function takes two optional parameters which are used to render pages on the fly when using the
@@ -74,9 +74,9 @@ class Stitcher {
      * @return array
      * @throws TemplateNotFoundException
      *
-     * @see \brendt\stitcher\Stitcher::save()
-     * @see \brendt\stitcher\controller\DevController::run()
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform()
+     * @see \Brendt\Stitcher\Stitcher::save()
+     * @see \Brendt\Stitcher\Controller\DevController::run()
+     * @see \Brendt\Stitcher\Adapter\CollectionAdapter::transform()
      */
     public function stitch($routes = [], $filterValue = null) {
         $blanket = [];
@@ -129,8 +129,8 @@ class Stitcher {
      * @return Site
      * @throws InvalidSiteException
      *
-     * @see \brendt\stitcher\site\Page
-     * @see \brendt\stitcher\site\Site
+     * @see \Brendt\Stitcher\Site\Page
+     * @see \Brendt\Stitcher\Site\Site
      */
     public function loadSite() {
         $src = Config::get('directories.src');
@@ -188,8 +188,8 @@ class Stitcher {
      *
      * @return Page[]
      *
-     * @see  \brendt\stitcher\adapter\Adapter::transform()
-     * @see  \brendt\stitcher\controller\DevController::run()
+     * @see  \Brendt\Stitcher\Adapter\Adapter::transform()
+     * @see  \Brendt\Stitcher\Controller\DevController::run()
      *
      * @todo When a page has multiple adapters, this function won't correctly parse more than one. This is considered a
      *       bug, but not a major one because there are only two adapters at this moment, and they can not be used
@@ -226,9 +226,9 @@ class Stitcher {
      *
      * @return Page
      *
-     * @see \brendt\stitcher\factory\ParserFactory
-     * @see \brendt\stitcher\parser\Parser
-     * @see \brendt\stitcher\site\Page::isParsedVariable()
+     * @see \Brendt\Stitcher\Factory\ParserFactory
+     * @see \Brendt\Stitcher\Parser\Parser
+     * @see \Brendt\Stitcher\Site\Page::isParsedVariable()
      */
     public function parseVariables(Page $page) {
         foreach ($page->getVariables() as $name => $value) {
@@ -249,7 +249,7 @@ class Stitcher {
      *
      * @param array $blanket
      *
-     * @see \brendt\stitcher\Stitcher::stitch()
+     * @see \Brendt\Stitcher\Stitcher::stitch()
      */
     public function save(array $blanket) {
         $fs = new Filesystem();
@@ -276,7 +276,7 @@ class Stitcher {
      *
      * @return mixed
      *
-     * @see \brendt\stitcher\factory\ParserFactory
+     * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     private function getData($value) {
         /** @var ParserFactory $parserFactory */

@@ -1,5 +1,5 @@
 {
-    "name" : "brendt/stitcher",
+    "name" : "Brendt/Stitcher",
     "description" : "Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.",
     "license" : "MIT",
     "authors" : [
@@ -29,7 +29,8 @@
     },
     "autoload" : {
         "psr-4" : {
-            "brendt\\stitcher\\" : "src/"
+            "Brendt\\Stitcher\\" : "src/",
+            "Brendt\\Stitcher\\Test\\": "test/"
         }
     }
 }
