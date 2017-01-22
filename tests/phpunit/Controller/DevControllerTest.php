@@ -1,10 +1,12 @@
 <?php
 
-namespace brendt\tests\phpunit\controller;
+namespace Brendt\Stitcher\Tests\Phpunit\Controller;
 
 use Brendt\Stitcher\Controller\DevController;
+use PHPUnit\Framework\TestCase;
 
-class DevControllerTest extends \PHPUnit_Framework_TestCase {
+class DevControllerTest extends TestCase
+{
 
     public function test_run() {
         $controller = new DevController('./tests', 'config.yml');

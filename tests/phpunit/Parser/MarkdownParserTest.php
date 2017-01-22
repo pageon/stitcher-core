@@ -1,9 +1,13 @@
 <?php
 
-use Brendt\Stitcher\Parser\MarkdownParser;
-use Brendt\Stitcher\Config;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-class MarkdownParserTest extends PHPUnit_Framework_TestCase {
+use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Parser\MarkdownParser;
+use PHPUnit\Framework\TestCase;
+
+class MarkdownParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

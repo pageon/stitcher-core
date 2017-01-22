@@ -1,12 +1,13 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Parser;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
 use Brendt\Stitcher\Parser\FileParser;
 use Brendt\Stitcher\Config;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class FileParserTest extends PHPUnit_Framework_TestCase {
+class FileParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
@@ -20,7 +21,7 @@ class FileParserTest extends PHPUnit_Framework_TestCase {
         $parser = $this->createParser();
 
         $result = $parser->parse('css/main.css');
-        
+
         $this->assertContains('body {', $result);
     }
 
