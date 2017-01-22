@@ -7,7 +7,7 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * This interface is used as a bridge between different template engine's API and Stitcher.
  *
- * @see \brendt\stitcher\Stitcher::stitch()
+ * @see \Brendt\Stitcher\Stitcher::stitch()
  */
 interface TemplateEngine {
 
@@ -60,7 +60,7 @@ interface TemplateEngine {
      *
      * @return string
      *
-     * @see \brendt\stitcher\Stitcher::loadTemplates()
+     * @see \Brendt\Stitcher\Stitcher::loadTemplates()
      */
     public function getTemplateExtension();
 }

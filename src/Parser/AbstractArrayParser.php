@@ -33,8 +33,8 @@ abstract class AbstractArrayParser implements Parser {
      *
      * @return mixed
      *
-     * @see \brendt\Stitcher\Parser\YamlParser
-     * @see \brendt\Stitcher\Parser\JsonParser
+     * @see \Brendt\Stitcher\Parser\YamlParser
+     * @see \Brendt\Stitcher\Parser\JsonParser
      */
     protected function parseArrayData(array $data) {
         $result = [];
@@ -59,7 +59,7 @@ abstract class AbstractArrayParser implements Parser {
      *
      * @return array
      *
-     * @see \brendt\stitcher\factory\ParserFactory
+     * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     protected function parseEntryData($id, $entry) {
         foreach ($entry as $field => $value) {

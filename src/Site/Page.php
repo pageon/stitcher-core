@@ -10,18 +10,18 @@ use Brendt\Stitcher\Exception\TemplateNotFoundException;
  *
  *      - `template`: the only required argument. This variable is a path to a template file.
  *              This path is relative to the `directories.src` or `directories.template` configuration entry
- *              @see \brendt\stitcher\Stitcher::loadTemplates
+ *              @see \Brendt\Stitcher\Stitcher::loadTemplates
  *
  *
  *      - `data`: an optional array of variables which will be mapped onto the template.
  *              Each of these variables is parsed during compile time.
- *              @see \brendt\stitcher\parser\AbstractParser
+ *              @see \Brendt\Stitcher\Parser\AbstractParser
  *
  *      - `adapters`: an optional array of Adapters for this page. Adapters are used to adapt a page's configuration
  *              to another one.
- *              @see \brendt\stitcher\adapter\Adapter
+ *              @see \Brendt\Stitcher\Adapter\Adapter
  *
- * @package brendt\Stitcher\Site
+ * @package Brendt\Stitcher\Site
  */
 class Page {
 
@@ -99,9 +99,9 @@ class Page {
      *
      * @return Page
      *
-     * @see \brendt\stitcher\Stitcher::parseVariables
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\Stitcher::parseVariables
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
     public function setVariableIsParsed($name) {
         $this->parsedVariables[$name] = true;
@@ -117,7 +117,7 @@ class Page {
      *
      * @return bool
      *
-     * @see \brendt\stitcher\Stitcher::parseVariables
+     * @see \Brendt\Stitcher\Stitcher::parseVariables
      */
     public function isParsedVariable($name) {
         return isset($this->parsedVariables[$name]);
@@ -128,7 +128,7 @@ class Page {
      *
      * @return string
      *
-     * @see \brendt\stitcher\Stitcher::stitch
+     * @see \Brendt\Stitcher\Stitcher::stitch
      */
     public function getId() {
         return $this->id;
@@ -139,7 +139,7 @@ class Page {
      *
      * @return string
      *
-     * @see \brendt\stitcher\Stitcher::stitch
+     * @see \Brendt\Stitcher\Stitcher::stitch
      */
     public function getTemplatePath() {
         return $this->templatePath;
@@ -150,8 +150,8 @@ class Page {
      *
      * @return array
      *
-     * @see \brendt\stitcher\Stitcher::stitch
-     * @see \brendt\stitcher\Stitcher::parseVariables
+     * @see \Brendt\Stitcher\Stitcher::stitch
+     * @see \Brendt\Stitcher\Stitcher::parseVariables
      */
     public function getVariables() {
         return $this->variables;
@@ -162,7 +162,7 @@ class Page {
      *
      * @return Adapter[]
      *
-     * @see \brendt\stitcher\Stitcher::parseAdapters
+     * @see \Brendt\Stitcher\Stitcher::parseAdapters
      */
     public function getAdapters() {
         return $this->adapters;
@@ -175,9 +175,9 @@ class Page {
      *
      * @return Adapter|null
      *
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
-     * @see \brendt\stitcher\controller\DevController::run
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\controller\DevController::run
      */
     public function getAdapterConfig($name) {
         if (!isset($this->adapters[$name])) {
@@ -194,8 +194,8 @@ class Page {
      *
      * @return mixed|null
      *
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
     public function getVariable($name) {
         if (!isset($this->variables[$name])) {
@@ -213,9 +213,9 @@ class Page {
      *
      * @return Page
      *
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
-     * @see \brendt\stitcher\Stitcher::parseVariables
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\Stitcher::parseVariables
      */
     public function setVariableValue($name, $value) {
         $this->variables[$name] = $value;
@@ -230,8 +230,8 @@ class Page {
      *
      * @return Page
      *
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
     public function removeAdapter($name) {
         if (isset($this->adapters[$name])) {
@@ -249,8 +249,8 @@ class Page {
      *
      * @return Page
      *
-     * @see \brendt\stitcher\adapter\CollectionAdapter::transform
-     * @see \brendt\stitcher\adapter\PagincationAdapter::transform
+     * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
+     * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
     public function setId($id) {
         $this->id = $id;
