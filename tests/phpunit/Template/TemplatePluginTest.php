@@ -1,12 +1,16 @@
 <?php
 
-use Brendt\Stitcher\Template\TemplatePlugin;
+namespace Brendt\Stitcher\Tests\Phpunit\Template;
+
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
+use Brendt\Stitcher\Template\TemplatePlugin;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class TemplatePluginTest extends PHPUnit_Framework_TestCase {
+class TemplatePluginTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
@@ -160,7 +164,7 @@ class TemplatePluginTest extends PHPUnit_Framework_TestCase {
     public function test_image() {
         $plugin = $this->createEnginePlugin();
 
-        $image= $plugin->image('img/blue.jpg');
+        $image = $plugin->image('img/blue.jpg');
 
         $this->assertTrue(isset($image['src']));
         $this->assertTrue(isset($image['srcset']));

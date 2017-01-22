@@ -1,13 +1,17 @@
 <?php
 
+namespace Brendt\Stitcher\Tests\Phpunit\Factory;
+
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Parser\JsonParser;
 use Brendt\Stitcher\Parser\MarkdownParser;
 use Brendt\Stitcher\Parser\YamlParser;
 use Brendt\Stitcher\Config;
+use PHPUnit\Framework\TestCase;
 
-class ParserFactoryTest extends PHPUnit_Framework_TestCase {
+class ParserFactoryTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

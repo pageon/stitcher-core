@@ -1,11 +1,13 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Parser;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
 use Brendt\Stitcher\Parser\AbstractArrayParser;
 use Brendt\Stitcher\Config;
+use PHPUnit\Framework\TestCase;
 
-class AbstractArrayParserTest extends \PHPUnit_Framework_TestCase {
+class AbstractArrayParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
@@ -26,7 +28,8 @@ class AbstractArrayParserTest extends \PHPUnit_Framework_TestCase {
 
 }
 
-class ArrayParserMock extends AbstractArrayParser {
+class ArrayParserMock extends AbstractArrayParser
+{
 
     public function parse($path) {
         return;

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class ParserException extends StitcherException {
+class ParserException extends StitcherException
+{
 
 }

@@ -9,7 +9,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * The JsonParser take a path to one or more JSON files, and parses the content into an array.
  */
-class JsonParser extends AbstractArrayParser {
+class JsonParser extends AbstractArrayParser
+{
 
     /**
      * @param string $path

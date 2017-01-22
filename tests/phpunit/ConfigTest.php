@@ -1,8 +1,12 @@
 <?php
 
-use Brendt\Stitcher\Config;
+namespace Brendt\Stitcher\Tests\Phpunit\Template;
 
-class ConfigTest extends PHPUnit_Framework_TestCase {
+use Brendt\Stitcher\Config;
+use PHPUnit\Framework\TestCase;
+
+class ConfigTest extends TestCase
+{
 
     public function test_config_load() {
         Config::reset();

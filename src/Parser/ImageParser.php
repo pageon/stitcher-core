@@ -11,7 +11,8 @@ use Brendt\Stitcher\Config;
  *
  * @see \brendt\image\ResponsiveFactory::create()
  */
-class ImageParser implements Parser {
+class ImageParser implements Parser
+{
 
     /**
      * @var ResponsiveFactory

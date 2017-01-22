@@ -11,7 +11,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
 
-class CleanCommand extends Command {
+class CleanCommand extends Command
+{
 
     const FORCE = 'force';
 

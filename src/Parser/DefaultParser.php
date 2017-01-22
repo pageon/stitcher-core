@@ -2,7 +2,8 @@
 
 namespace Brendt\Stitcher\Parser;
 
-class DefaultParser implements Parser {
+class DefaultParser implements Parser
+{
 
     /**
      * Parse a path into usable data.
