@@ -1,4 +1,4 @@
-ˇ<?php
+<?php
 
 namespace Brendt\Stitcher\Factory;
 
