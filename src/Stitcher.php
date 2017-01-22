@@ -1,15 +1,15 @@
 <?php
 
-namespace brendt\stitcher;
+namespace Brendt\Stitcher;
 
-use brendt\stitcher\exception\InvalidSiteException;
-use brendt\stitcher\exception\TemplateNotFoundException;
-use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ParserFactory;
-use brendt\stitcher\factory\TemplateEngineFactory;
-use brendt\stitcher\site\Page;
-use brendt\stitcher\site\Site;
-use brendt\stitcher\template\TemplateEngine;
+use Brendt\Stitcher\Exception\InvalidSiteException;
+use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Factory\TemplateEngineFactory;
+use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Site\Site;
+use Brendt\Stitcher\Template\TemplateEngine;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;

@@ -1,14 +1,14 @@
 <?php
 
-namespace brendt\stitcher;
+namespace Brendt\Stitcher;
 
 use brendt\image\config\DefaultConfigurator;
 use brendt\image\ResponsiveFactory;
-use brendt\stitcher\factory\AdapterFactory;
-use brendt\stitcher\factory\ParserFactory;
-use brendt\stitcher\factory\TemplateEngineFactory;
-use brendt\stitcher\template\smarty\SmartyEngine;
-use brendt\stitcher\template\TemplatePlugin;
+use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Factory\TemplateEngineFactory;
+use Brendt\Stitcher\Template\smarty\SmartyEngine;
+use Brendt\Stitcher\Template\TemplatePlugin;
 use CSSmin;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
