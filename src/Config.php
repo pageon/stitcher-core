@@ -139,7 +139,7 @@ class Config {
         $configEntry = [];
         $key = array_shift($keys);
 
-        if (count($keys)) {
+        if ($keys) {
             $configEntry[$key] = self::createConfigEntry($keys, $value);
         } else {
             $configEntry[$key] = $value;
