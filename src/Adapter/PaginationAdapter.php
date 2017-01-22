@@ -19,7 +19,8 @@ use Brendt\Stitcher\Site\Page;
  *          variable: collection
  *          entriesPerPage: 4
  */
-class PaginationAdapter extends AbstractAdapter {
+class PaginationAdapter extends AbstractAdapter
+{
 
     /**
      * @param Page $page

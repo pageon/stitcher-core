@@ -4,7 +4,8 @@ namespace Brendt\Stitcher\Site;
 
 use \Iterator;
 
-class Site implements Iterator {
+class Site implements Iterator
+{
 
     /** @var Page[] */
     private $pages;
@@ -39,5 +40,5 @@ class Site implements Iterator {
     public function valid() {
         return isset($this->pages[$this->position]);
     }
-    
+
 }

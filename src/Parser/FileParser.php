@@ -8,7 +8,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * The FileParser takes a path and reads the file contents from that path.
  */
-class FileParser implements Parser {
+class FileParser implements Parser
+{
 
     /**
      * @param $path

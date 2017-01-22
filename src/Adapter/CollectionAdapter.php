@@ -24,7 +24,8 @@ use Brendt\Stitcher\Site\Page;
  *
  * @todo Rename `field` option to `urlVariable`
  */
-class CollectionAdapter extends AbstractAdapter {
+class CollectionAdapter extends AbstractAdapter
+{
 
     /**
      * @param Page  $page

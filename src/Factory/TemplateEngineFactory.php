@@ -7,7 +7,8 @@ use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use Brendt\Stitcher\Template\TemplateEngine;
 use Brendt\Stitcher\Template\Twig\TwigEngine;
 
-class TemplateEngineFactory {
+class TemplateEngineFactory
+{
 
     const SMARTY_ENGINE = 'smarty';
 

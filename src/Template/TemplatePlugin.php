@@ -10,7 +10,8 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * This class provides functionality which can be used by template plugins/functions.
  */
-class TemplatePlugin {
+class TemplatePlugin
+{
 
     /**
      * This function will read meta configuration from `meta` and output the corresponding meta tags.
