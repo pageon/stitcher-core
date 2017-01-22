@@ -1,10 +1,14 @@
 <?php
 
-use Brendt\Stitcher\Template\Smarty\SmartyEngine;
+namespace Brendt\Stitcher\Tests\Phpunit\Template;
+
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Template\Smarty\SmartyEngine;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class SmartyEngineTest extends PHPUnit_Framework_TestCase {
+class SmartyEngineTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
@@ -77,10 +81,10 @@ class SmartyEngineTest extends PHPUnit_Framework_TestCase {
         $template = $files->current();
 
         $engine->addTemplateVariables([
-            'content' => 'test',
+            'content'  => 'test',
             'churches' => [],
         ]);
-        
+
         $html = $engine->renderTemplate($template);
         $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
     }

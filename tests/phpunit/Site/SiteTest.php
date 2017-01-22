@@ -1,13 +1,14 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Element;
+namespace Brendt\Stitcher\Tests\Phpunit\Site;
 
 use Brendt\Stitcher\Config;
-use \PHPUnit_Framework_TestCase;
-use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Site\Site;
+use PHPUnit\Framework\TestCase;
 
-class SiteTest extends PHPUnit_Framework_TestCase {
+class SiteTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests');

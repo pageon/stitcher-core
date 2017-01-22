@@ -1,9 +1,13 @@
 <?php
 
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
+
 use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Config;
+use PHPUnit\Framework\TestCase;
 
-class FolderParserTest extends PHPUnit_Framework_TestCase {
+class FolderParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

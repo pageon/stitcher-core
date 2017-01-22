@@ -1,10 +1,12 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Parser;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
 use Brendt\Stitcher\Parser\DefaultParser;
+use PHPUnit\Framework\TestCase;
 
-class DefaultParserTest extends \PHPUnit_Framework_TestCase {
+class DefaultParserTest extends TestCase
+{
 
     /**
      * @test

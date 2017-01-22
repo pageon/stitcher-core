@@ -1,13 +1,14 @@
 <?php
 
-namespace Brendt\Stitcher\tests\adapter;
+namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\PaginationAdapter;
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class PaginationAdapterTest extends PHPUnit_Framework_TestCase {
+class PaginationAdapterTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests');
