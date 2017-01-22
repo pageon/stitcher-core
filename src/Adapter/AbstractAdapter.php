@@ -19,7 +19,7 @@ abstract class AbstractAdapter implements Adapter
     /**
      * Construct the adapter and set the parser factory variable.
      *
-     * @see \brendt\stitcher\factory\ParserFactory
+     * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     public function __construct() {
         $this->parserFactory = Config::getDependency('factory.parser');
@@ -33,7 +33,7 @@ abstract class AbstractAdapter implements Adapter
      *
      * @return mixed
      *
-     * @see \brendt\stitcher\factory\ParserFactory
+     * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     protected function getData($value) {
         $parser = $this->parserFactory->getParser($value);

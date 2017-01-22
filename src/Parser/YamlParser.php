@@ -11,7 +11,7 @@ use Brendt\Stitcher\Config;
 /**
  * The YamlParser take a path to one or more YAML files, and parses the content into an array.
  *
- * @see \brendt\Stitcher\Parser\AbstractArrayParser::parseArrayData()
+ * @see \Brendt\Stitcher\Parser\AbstractArrayParser::parseArrayData()
  */
 class YamlParser extends AbstractArrayParser {
 
