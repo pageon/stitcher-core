@@ -1,7 +1,6 @@
 .cache
 .DS_Store
 .idea
-/setupDir
 /tests/.cache
 /tests/public
 /vendor
