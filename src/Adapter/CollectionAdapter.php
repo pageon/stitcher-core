@@ -38,7 +38,7 @@ class CollectionAdapter extends AbstractAdapter
     public function transform(Page $page, $filter = null) {
         $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
-        if (!isset($config['field']) || !isset($config['variable'])) {
+        if (!isset($config['field'], $config['variable'])) {
             return [$page];
         }
 
