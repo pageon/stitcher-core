@@ -201,7 +201,7 @@ class Stitcher {
         $adapterFactory = Config::getDependency('factory.adapter');
         $pages = [];
 
-        if (count($page->getAdapters())) {
+        if ($page->getAdapters()) {
             foreach ($page->getAdapters() as $type => $adapterConfig) {
                 $adapter = $adapterFactory->getByType($type);
 

@@ -52,7 +52,7 @@ class RoutesCommand extends Command
 
             $line = "- <fg=green>{$route}</>: {$page['template']}.tpl";
 
-            if (count($data)) {
+            if ($data) {
                 $line .= "\n\t";
                 $line .= '$' . implode(', $', $data);
             }

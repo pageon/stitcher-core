@@ -94,7 +94,7 @@ class InstallCommand extends Command
             $log[] = "Copied the public/ dir to {$publicDir}";
         }
 
-        if (count($log)) {
+        if ($log) {
             $output->writeln("Stitcher was successfully installed!\n");
             foreach ($log as $line) {
                 $output->writeln("- {$line}");
