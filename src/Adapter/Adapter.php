@@ -7,7 +7,8 @@ use Brendt\Stitcher\Site\Page;
 /**
  * An adapter is used to take one page and transform its config and variables to one or more other pages.
  */
-interface Adapter {
+interface Adapter
+{
 
     /**
      * @param Page        $page

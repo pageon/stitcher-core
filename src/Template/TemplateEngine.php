@@ -9,7 +9,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @see \Brendt\Stitcher\Stitcher::stitch()
  */
-interface TemplateEngine {
+interface TemplateEngine
+{
 
     /**
      * Render the template and return output HTML.

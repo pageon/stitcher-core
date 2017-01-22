@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class IdFieldNotFoundException extends StitcherException {
+class IdFieldNotFoundException extends StitcherException
+{
 
 }

@@ -13,7 +13,8 @@ use Brendt\Stitcher\Parser\Parser;
 use Brendt\Stitcher\Parser\SassParser;
 use Brendt\Stitcher\Parser\YamlParser;
 
-class ParserFactory {
+class ParserFactory
+{
 
     const JSON_PARSER = 'json';
 

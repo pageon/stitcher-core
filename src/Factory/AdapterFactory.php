@@ -7,9 +7,11 @@ use Brendt\Stitcher\Adapter\CollectionAdapter;
 use Brendt\Stitcher\Adapter\PaginationAdapter;
 use Brendt\Stitcher\Exception\UnknownAdapterException;
 
-class AdapterFactory {
+class AdapterFactory
+{
 
     const COLLECTION_ADAPTER = 'collection';
+
     const PAGINATION_ADAPTER = 'pagination';
 
     private $adapters;

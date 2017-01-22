@@ -11,7 +11,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * The FolderParser take the path to a folder and will read all files in that folder, parsing each of the files
  * individually.
  */
-class FolderParser implements Parser {
+class FolderParser implements Parser
+{
 
     /**
      * @var ParserFactory

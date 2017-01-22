@@ -9,7 +9,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateCommand extends Command {
+class GenerateCommand extends Command
+{
 
     const ROUTE = 'route';
 

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class UnknownEngineException extends StitcherException {
+class UnknownEngineException extends StitcherException
+{
 
 }

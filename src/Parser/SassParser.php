@@ -9,7 +9,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * The SassParser take a path to one or more sass files, compiles it to CSS and returns that CSS.
  */
-class SassParser implements Parser {
+class SassParser implements Parser
+{
 
     /**
      * @param $path
