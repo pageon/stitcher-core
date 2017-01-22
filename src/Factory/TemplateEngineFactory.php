@@ -1,11 +1,11 @@
-<?php
+ˇ<?php
 
 namespace Brendt\Stitcher\Factory;
 
 use Brendt\Stitcher\Exception\UnknownEngineException;
-use Brendt\Stitcher\Template\smarty\SmartyEngine;
+use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use Brendt\Stitcher\Template\TemplateEngine;
-use Brendt\Stitcher\Template\twig\TwigEngine;
+use Brendt\Stitcher\Template\Twig\TwigEngine;
 
 class TemplateEngineFactory {
 
