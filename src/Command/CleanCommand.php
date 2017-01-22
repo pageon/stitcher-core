@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class CleanCommand extends Command
 {
@@ -27,7 +28,7 @@ class CleanCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         Config::load();
@@ -52,12 +53,17 @@ class CleanCommand extends Command
         if ($fs->exists($publicDir)) {
             $publicDirectories = $finder->directories()->in($publicDir);
             $directoryPaths = [];
+
+            /** @var SplFileInfo $directory */
             foreach ($publicDirectories as $directory) {
                 $directoryPaths[] = $directory->getPathname();
             }
+
             $fs->remove($directoryPaths);
 
             $publicFiles = $finder->files()->in($publicDir)->notName('.htaccess')->ignoreDotFiles(true);
+
+            /** @var SplFileInfo $file */
             foreach ($publicFiles as $file) {
                 $fs->remove($file->getPathname());
             }
@@ -82,9 +88,5 @@ class CleanCommand extends Command
         } else {
             $output->writeln('No files were found');
         }
-
-
-        return;
-
     }
 }

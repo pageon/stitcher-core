@@ -25,7 +25,7 @@ class RoutesCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         Config::load();
@@ -59,8 +59,6 @@ class RoutesCommand extends Command
 
             $output->writeln($line);
         }
-
-        return;
     }
 
 }

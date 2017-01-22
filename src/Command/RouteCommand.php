@@ -29,7 +29,7 @@ class RouteCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         Config::load();
@@ -48,7 +48,5 @@ class RouteCommand extends Command
         $result = $matcher->match($url);
 
         $output->writeln("<fg=green>{$url}</> matches <fg=green>{$result['_route']}</>");
-
-        return;
     }
 }
