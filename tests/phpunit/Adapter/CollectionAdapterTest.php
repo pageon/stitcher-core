@@ -1,13 +1,14 @@
 <?php
 
-namespace Brendt\Stitcher\tests\adapter;
+namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\CollectionAdapter;
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
+class CollectionAdapterTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests');
@@ -19,16 +20,16 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
 
     private function createPage() {
         $page = new Page('/{id}', [
-            'template' => 'home',
+            'template'  => 'home',
             'variables' => [
                 'church' => 'churches.yml',
             ],
-            'adapters' => [
+            'adapters'  => [
                 'collection' => [
                     'variable' => 'church',
-                    'field' => 'id',
-                ]
-            ]
+                    'field'    => 'id',
+                ],
+            ],
         ]);
 
         return $page;
@@ -65,16 +66,16 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
      */
     public function test_collection_adapter_throws_variable_not_found_exception() {
         $page = new Page('/{id}', [
-            'template' => 'home',
+            'template'  => 'home',
             'variables' => [
                 'church' => 'churches.yml',
             ],
-            'adapters' => [
+            'adapters'  => [
                 'collection' => [
                     'variable' => 'wrongName',
-                    'field' => 'id',
-                ]
-            ]
+                    'field'    => 'id',
+                ],
+            ],
         ]);
 
         $adapter = $this->createAdapter();
@@ -87,16 +88,16 @@ class CollectionAdapterTest extends PHPUnit_Framework_TestCase {
      */
     public function test_collection_adapter_throws_id_field_not_found_exception() {
         $page = new Page('/{wrongId}', [
-            'template' => 'home',
+            'template'  => 'home',
             'variables' => [
                 'church' => 'churches.yml',
             ],
-            'adapters' => [
+            'adapters'  => [
                 'collection' => [
                     'variable' => 'church',
-                    'field' => 'id',
-                ]
-            ]
+                    'field'    => 'id',
+                ],
+            ],
         ]);
 
         $adapter = $this->createAdapter();

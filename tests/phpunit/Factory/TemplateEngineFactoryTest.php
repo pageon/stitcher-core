@@ -1,11 +1,15 @@
 <?php
 
+namespace Brendt\Stitcher\Tests\Phpunit\Factory;
+
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Template\smarty\SmartyEngine;
 use Brendt\Stitcher\Template\twig\TwigEngine;
+use PHPUnit\Framework\TestCase;
 
-class TemplateEngineFactoryTest extends PHPUnit_Framework_TestCase {
+class TemplateEngineFactoryTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

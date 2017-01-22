@@ -1,10 +1,14 @@
 <?php
 
-use Brendt\Stitcher\Template\Twig\TwigEngine;
+namespace Brendt\Stitcher\Tests\Phpunit\Template;
+
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Template\Twig\TwigEngine;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class TwigEngineTest extends PHPUnit_Framework_TestCase {
+class TwigEngineTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.twig.yml');

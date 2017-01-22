@@ -1,11 +1,15 @@
 <?php
 
-use Brendt\Stitcher\Parser\ImageParser;
-use Brendt\Stitcher\Config;
-use Symfony\Component\Filesystem\Filesystem;
-use Brendt\Stitcher\Parser\YamlParser;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-class ImageParserTest extends PHPUnit_Framework_TestCase {
+use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Parser\ImageParser;
+use Brendt\Stitcher\Parser\YamlParser;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+
+class ImageParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

@@ -1,10 +1,14 @@
 <?php
 
-use Brendt\Stitcher\Parser\YamlParser;
-use Brendt\Stitcher\Exception\ParserException;
-use Brendt\Stitcher\Config;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-class YamlParserTest extends PHPUnit_Framework_TestCase {
+use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Exception\ParserException;
+use Brendt\Stitcher\Parser\YamlParser;
+use PHPUnit\Framework\TestCase;
+
+class YamlParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

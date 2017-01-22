@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class StitcherException extends \Exception {
+class StitcherException extends \Exception
+{
 
 }

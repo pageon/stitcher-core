@@ -10,7 +10,8 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * The Smarty template engine.
  */
-class SmartyEngine extends Smarty implements TemplateEngine {
+class SmartyEngine extends Smarty implements TemplateEngine
+{
 
     /**
      * Create the Smarty engine, set the template- and cache directory; and add the plugin directory.

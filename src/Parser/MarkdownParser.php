@@ -9,7 +9,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * The MarkDownParser takes a path to a markdown file and will parse it to HTML.
  */
-class MarkdownParser implements Parser {
+class MarkdownParser implements Parser
+{
 
     /**
      * @param string $path

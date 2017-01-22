@@ -16,7 +16,8 @@ use Symfony\Component\Routing\RouteCollection;
  * The developer controller is used to render pages on the fly (on an HTTP request). This controller enables a
  * developer make code changes and see those changes real-time without re-compiling the whole site.
  */
-class DevController {
+class DevController
+{
 
     /**
      * @var Stitcher

@@ -13,7 +13,8 @@ use Brendt\Stitcher\Config;
  *
  * @see \Brendt\Stitcher\Parser\AbstractArrayParser::parseArrayData()
  */
-class YamlParser extends AbstractArrayParser {
+class YamlParser extends AbstractArrayParser
+{
 
     /**
      * @param string $path

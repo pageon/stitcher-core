@@ -10,20 +10,21 @@ use Brendt\Stitcher\Exception\TemplateNotFoundException;
  *
  *      - `template`: the only required argument. This variable is a path to a template file.
  *              This path is relative to the `directories.src` or `directories.template` configuration entry
- *              @see \Brendt\Stitcher\Stitcher::loadTemplates
+ * @see     \Brendt\Stitcher\Stitcher::loadTemplates
  *
  *
  *      - `data`: an optional array of variables which will be mapped onto the template.
  *              Each of these variables is parsed during compile time.
- *              @see \Brendt\Stitcher\Parser\AbstractParser
+ * @see     \Brendt\Stitcher\Parser\AbstractParser
  *
  *      - `adapters`: an optional array of Adapters for this page. Adapters are used to adapt a page's configuration
  *              to another one.
- *              @see \Brendt\Stitcher\Adapter\Adapter
+ * @see     \Brendt\Stitcher\Adapter\Adapter
  *
  * @package Brendt\Stitcher\Site
  */
-class Page {
+class Page
+{
 
     /**
      * The page's ID.
@@ -93,7 +94,8 @@ class Page {
     /**
      * Defines a variable as parsed.
      * Parsed variables will be ignored by Stitcher when compiling the website.
-     * Adapters can define parsed variables to indicate Stitcher it should skip parsing that variable during compile time.
+     * Adapters can define parsed variables to indicate Stitcher it should skip parsing that variable during compile
+     * time.
      *
      * @param $name
      *

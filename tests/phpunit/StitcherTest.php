@@ -1,18 +1,22 @@
 <?php
 
-use Brendt\Stitcher\Stitcher;
+namespace Brendt\Stitcher\Tests\Phpunit;
+
 use Brendt\Stitcher\Config;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Stitcher;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-class StitcherTest extends PHPUnit_Framework_TestCase  {
+class StitcherTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');
     }
-    
+
     /**
      * @return Stitcher
      */
@@ -22,17 +26,17 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
 
     private function createPage() {
         $page = new Page('/{id}', [
-            'template' => 'home',
+            'template'  => 'home',
             'variables' => [
                 'church' => 'churches.yml',
-                'intro' => 'intro.md',
+                'intro'  => 'intro.md',
             ],
-            'adapters' => [
+            'adapters'  => [
                 'collection' => [
                     'variable' => 'church',
-                    'field' => 'id',
-                ]
-            ]
+                    'field'    => 'id',
+                ],
+            ],
         ]);
 
         return $page;
@@ -83,13 +87,13 @@ class StitcherTest extends PHPUnit_Framework_TestCase  {
     public function test_parse_variables_with_normal_array() {
         $stitcher = $this->createStitcher();
         $page = new Page('/a', [
-            'template' => 'a',
+            'template'  => 'a',
             'variables' => [
                 'test' => [
                     'title' => 'title',
-                    'body' => 'body',
-                ]
-            ]
+                    'body'  => 'body',
+                ],
+            ],
         ]);
 
         $parsedPage = $stitcher->parseVariables($page);

@@ -1,9 +1,13 @@
 <?php
 
-use Brendt\Stitcher\Parser\SassParser;
-use Brendt\Stitcher\Config;
+namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-class SassParserTest extends PHPUnit_Framework_TestCase {
+use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Parser\SassParser;
+use PHPUnit\Framework\TestCase;
+
+class SassParserTest extends TestCase
+{
 
     public function setUp() {
         Config::load('./tests', 'config.yml');

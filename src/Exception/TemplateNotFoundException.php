@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class TemplateNotFoundException extends StitcherException {
+class TemplateNotFoundException extends StitcherException
+{
 
 }

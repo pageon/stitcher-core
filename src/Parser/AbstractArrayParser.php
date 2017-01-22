@@ -12,7 +12,8 @@ use Brendt\Stitcher\Factory\ParserFactory;
  * @see \Brendt\Stitcher\Parser\YamlParser
  * @see \Brendt\Stitcher\Parser\JsonParser
  */
-abstract class AbstractArrayParser implements Parser {
+abstract class AbstractArrayParser implements Parser
+{
 
     /**
      * @var ParserFactory

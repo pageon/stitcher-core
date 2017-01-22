@@ -13,7 +13,8 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteCommand extends Command {
+class RouteCommand extends Command
+{
 
     const URL = 'url';
 

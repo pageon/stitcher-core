@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Exception;
 
-class UnknownAdapterException extends StitcherException {
+class UnknownAdapterException extends StitcherException
+{
 
 }

@@ -12,7 +12,8 @@ use Twig_Loader_Filesystem;
 /**
  * The Twig template engine.
  */
-class TwigEngine extends Twig_Environment implements TemplateEngine {
+class TwigEngine extends Twig_Environment implements TemplateEngine
+{
 
     /**
      * An array of template variables available when rendering a template.
