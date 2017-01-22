@@ -25,28 +25,28 @@ class ParserFactoryTest extends TestCase
         $factory = $this->createParserFactory();
 
         $this->assertInstanceOf(FolderParser::class, $factory->getParser('churches/'));
-        $this->assertInstanceOf(FolderParser::class, $factory->getByType(ParserFactory::FOLDER_PARSER));
+        $this->assertInstanceOf(FolderParser::class, $factory->getByType(ParserFactory::EXTENSION_FOLDER));
     }
 
     public function test_parser_factory_json() {
         $factory = $this->createParserFactory();
 
         $this->assertInstanceOf(JsonParser::class, $factory->getParser('churches.json'));
-        $this->assertInstanceOf(JsonParser::class, $factory->getByType(ParserFactory::JSON_PARSER));
+        $this->assertInstanceOf(JsonParser::class, $factory->getByType(ParserFactory::EXTENSION_JSON));
     }
 
     public function test_parser_factory_yaml() {
         $factory = $this->createParserFactory();
 
         $this->assertInstanceOf(YamlParser::class, $factory->getParser('churches.yml'));
-        $this->assertInstanceOf(YamlParser::class, $factory->getByType(ParserFactory::YAML_PARSER));
+        $this->assertInstanceOf(YamlParser::class, $factory->getByType(ParserFactory::EXTENSION_YML));
     }
 
     public function test_parser_factory_markdown() {
         $factory = $this->createParserFactory();
 
         $this->assertInstanceOf(MarkdownParser::class, $factory->getParser('churches.md'));
-        $this->assertInstanceOf(MarkdownParser::class, $factory->getByType(ParserFactory::MARKDOWN_PARSER));
+        $this->assertInstanceOf(MarkdownParser::class, $factory->getByType(ParserFactory::EXTENSION_MD));
     }
 
     public function test_get_parser_returns_null_when_no_string_provided() {

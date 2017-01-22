@@ -16,25 +16,27 @@ use Brendt\Stitcher\Parser\YamlParser;
 class ParserFactory
 {
 
-    const JSON_PARSER = 'json';
+    const EXTENSION_JSON = 'json';
 
-    const MARKDOWN_PARSER = 'md';
+    const EXTENSION_MD = 'md';
 
-    const FOLDER_PARSER = '/';
+    const EXTENSION_FOLDER = '/';
 
-    const YAML_PARSER = 'yml';
+    const EXTENSION_YML = 'yml';
 
-    const IMAGE_PARSER = 'img';
+    const EXTENSION_YAML = 'yaml';
 
-    const CSS_PARSER = 'css';
+    const EXTENSION_IMG = 'img';
 
-    const JS_PARSER = 'js';
+    const EXTENSION_CSS = 'css';
 
-    const SASS_PARSER = 'sass';
+    const EXTENSION_JS = 'js';
 
-    const SCSS_PARSER = 'scss';
+    const EXTENSION_SASS = 'sass';
 
-    const DEFAULT_PARSER = 'default';
+    const EXTENSION_SCSS = 'scss';
+
+    const PARSER_DEFAULT = 'default';
 
     private $parsers = [];
 
@@ -61,25 +63,25 @@ class ParserFactory
         }
 
         if (strpos($fileName, '/') === strlen($fileName) - 1) {
-            $parser = $this->getByType(self::FOLDER_PARSER);
+            $parser = $this->getByType(self::EXTENSION_FOLDER);
         } else if (strpos($fileName, '.json') !== false) {
-            $parser = $this->getByType(self::JSON_PARSER);
+            $parser = $this->getByType(self::EXTENSION_JSON);
         } else if (strpos($fileName, '.md') !== false) {
-            $parser = $this->getByType(self::MARKDOWN_PARSER);
+            $parser = $this->getByType(self::EXTENSION_MD);
         } else if (strpos($fileName, '.yml') !== false) {
-            $parser = $this->getByType(self::YAML_PARSER);
+            $parser = $this->getByType(self::EXTENSION_YML);
         } else if (strpos($fileName, '.jpg') !== false) {
-            $parser = $this->getByType(self::IMAGE_PARSER);
+            $parser = $this->getByType(self::EXTENSION_IMG);
         } else if (strpos($fileName, '.png') !== false) {
-            $parser = $this->getByType(self::IMAGE_PARSER);
+            $parser = $this->getByType(self::EXTENSION_IMG);
         } else if (strpos($fileName, '.css') !== false) {
-            $parser = $this->getByType(self::CSS_PARSER);
+            $parser = $this->getByType(self::EXTENSION_CSS);
         } else if (strpos($fileName, '.js') !== false) {
-            $parser = $this->getByType(self::JS_PARSER);
+            $parser = $this->getByType(self::EXTENSION_JS);
         } else if (strpos($fileName, '.scss') !== false || strpos($fileName, '.sass') !== false) {
-            $parser = $this->getByType(self::SASS_PARSER);
+            $parser = $this->getByType(self::EXTENSION_SASS);
         } else {
-            $parser = $this->getByType(self::DEFAULT_PARSER);
+            $parser = $this->getByType(self::PARSER_DEFAULT);
         }
 
         return $parser;
@@ -96,32 +98,33 @@ class ParserFactory
         }
 
         switch ($type) {
-            case self::IMAGE_PARSER:
+            case self::EXTENSION_IMG:
                 $parser = new ImageParser();
                 break;
-            case self::FOLDER_PARSER:
+            case self::EXTENSION_FOLDER:
                 $parser = new FolderParser();
                 break;
-            case self::MARKDOWN_PARSER:
+            case self::EXTENSION_MD:
                 $parser = new MarkdownParser();
                 break;
-            case self::JSON_PARSER:
+            case self::EXTENSION_JSON:
                 $parser = new JsonParser();
                 break;
-            case self::YAML_PARSER:
+            case self::EXTENSION_YML:
+            case self::EXTENSION_YAML:
                 $parser = new YamlParser();
                 break;
-            case self::JS_PARSER:
+            case self::EXTENSION_JS:
                 $parser = new FileParser();
                 break;
-            case self::CSS_PARSER:
+            case self::EXTENSION_CSS:
                 $parser = new FileParser();
                 break;
-            case self::SCSS_PARSER:
-            case self::SASS_PARSER:
+            case self::EXTENSION_SCSS:
+            case self::EXTENSION_SASS:
                 $parser = new SassParser();
                 break;
-            case self::DEFAULT_PARSER:
+            case self::PARSER_DEFAULT:
             default:
                 $parser = new DefaultParser();
                 break;
