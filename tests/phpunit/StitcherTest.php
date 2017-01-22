@@ -1,11 +1,11 @@
 <?php
 
-use brendt\stitcher\Stitcher;
-use brendt\stitcher\Config;
+use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use brendt\stitcher\factory\TemplateEngineFactory;
-use brendt\stitcher\site\Page;
+use Brendt\Stitcher\Factory\TemplateEngineFactory;
+use Brendt\Stitcher\Site\Page;
 
 class StitcherTest extends PHPUnit_Framework_TestCase  {
 
