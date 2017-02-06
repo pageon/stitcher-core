@@ -9,18 +9,26 @@ composer require brendt/stitcher:1.0.0-alpha
 php vendor/brendt/stitcher/install/stitcher site:install
 ```
 
+Stitcher is a **PHP tool** for **developers** to create **high performant websites**. At its core, Stitcher is a **static site generator** capable to work with popular **template engines**, and many data formats like **MarkDown, YAML, JSON** and more. 
+
+Besides generating static sites, Stitcher has built-in support for **minification**, **image optimisation**, and **CSS precompiling**.
+
+It supports more advanced features than normal web pages, like **overview** and **detail** pages and **pagination**. In the near future, Stitcher will also be able to handle **filtering** and **form submissions**.
+
 [Read the full documentation here](http://stitcher.pageon.be/)
 
 ## Features
 
 - [X] Static site generator
-- [X] Performance helper functions
-- [X] Meta configuration
 - [X] Sass, CSS and JavaScript compiling and minifying
-- [X] Twig and Smarty support
+- [X] Twig and Smarty
+- [X] Overviews, detail pages and pagination
 
 #### Future plans
 
-- [ ] Config extending
+- [ ] URL generation
+- [ ] Better config support
 - [ ] Command line configuration
+- [ ] Filter support
 - [ ] Form support
+- [ ] Better DI support for extensions
