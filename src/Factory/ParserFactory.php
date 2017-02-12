@@ -63,28 +63,42 @@ class ParserFactory
         }
 
         if (strpos($fileName, '/') === strlen($fileName) - 1) {
-            $parser = $this->getByType(self::EXTENSION_FOLDER);
-        } else if (strpos($fileName, '.json') !== false) {
-            $parser = $this->getByType(self::EXTENSION_JSON);
-        } else if (strpos($fileName, '.md') !== false) {
-            $parser = $this->getByType(self::EXTENSION_MD);
-        } else if (strpos($fileName, '.yml') !== false) {
-            $parser = $this->getByType(self::EXTENSION_YML);
-        } else if (strpos($fileName, '.jpg') !== false) {
-            $parser = $this->getByType(self::EXTENSION_IMG);
-        } else if (strpos($fileName, '.png') !== false) {
-            $parser = $this->getByType(self::EXTENSION_IMG);
-        } else if (strpos($fileName, '.css') !== false) {
-            $parser = $this->getByType(self::EXTENSION_CSS);
-        } else if (strpos($fileName, '.js') !== false) {
-            $parser = $this->getByType(self::EXTENSION_JS);
-        } else if (strpos($fileName, '.scss') !== false || strpos($fileName, '.sass') !== false) {
-            $parser = $this->getByType(self::EXTENSION_SASS);
-        } else {
-            $parser = $this->getByType(self::PARSER_DEFAULT);
+            return $this->getByType(self::EXTENSION_FOLDER);
         }
 
-        return $parser;
+        if (strpos($fileName, '.json') !== false) {
+            return $this->getByType(self::EXTENSION_JSON);
+        }
+
+        if (strpos($fileName, '.md') !== false) {
+            return $this->getByType(self::EXTENSION_MD);
+        }
+
+        if (strpos($fileName, '.yml') !== false) {
+            return $this->getByType(self::EXTENSION_YML);
+        }
+
+        if (strpos($fileName, '.jpg') !== false) {
+            return $this->getByType(self::EXTENSION_IMG);
+        }
+
+        if (strpos($fileName, '.png') !== false) {
+            return $this->getByType(self::EXTENSION_IMG);
+        }
+
+        if (strpos($fileName, '.css') !== false) {
+            return $this->getByType(self::EXTENSION_CSS);
+        }
+
+        if (strpos($fileName, '.js') !== false) {
+            return $this->getByType(self::EXTENSION_JS);
+        }
+
+        if (strpos($fileName, '.scss') !== false || strpos($fileName, '.sass') !== false) {
+            return $this->getByType(self::EXTENSION_SASS);
+        }
+
+        return $this->getByType(self::PARSER_DEFAULT);
     }
 
     /**
