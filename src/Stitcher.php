@@ -197,23 +197,24 @@ class Stitcher {
      *
      */
     public function parseAdapters(Page $page, $entryId = null) {
+        if (!$page->getAdapters()) {
+            return [$page->getId() => $page];
+        }
+
         /** @var AdapterFactory $adapterFactory */
         $adapterFactory = Config::getDependency('factory.adapter');
         $pages = [];
 
-        if ($page->getAdapters()) {
-            foreach ($page->getAdapters() as $type => $adapterConfig) {
-                $adapter = $adapterFactory->getByType($type);
+        foreach ($page->getAdapters() as $type => $adapterConfig) {
+            $adapter = $adapterFactory->getByType($type);
 
-                if ($entryId !== null) {
-                    $pages = $adapter->transform($page, $entryId);
-                } else {
-                    $pages = $adapter->transform($page);
-                }
+            if ($entryId !== null) {
+                $pages = $adapter->transform($page, $entryId);
+            } else {
+                $pages = $adapter->transform($page);
             }
-        } else {
-            $pages = [$page->getId() => $page];
         }
+
 
         return $pages;
     }
