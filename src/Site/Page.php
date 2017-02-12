@@ -176,7 +176,7 @@ class Page
      *
      * @param $name
      *
-     * @return array|null
+     * @return array
      *
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
@@ -184,7 +184,7 @@ class Page
      */
     public function getAdapterConfig($name) {
         if (!isset($this->adapters[$name])) {
-            return null;
+            return [];
         }
 
         return $this->adapters[$name];

@@ -33,6 +33,7 @@ class CollectionAdapter extends AbstractAdapter
      * @param mixed $filter
      *
      * @return Page[]
+     * @throws ConfigurationException
      * @throws IdFieldNotFoundException
      * @throws VariableNotFoundException
      */
