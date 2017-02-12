@@ -81,6 +81,7 @@ class TemplatePlugin
         }
 
         $fs->dumpFile($dst, $data);
+
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$srcParsed}\">";
     }
 
