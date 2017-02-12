@@ -56,12 +56,12 @@ class ImageParser implements Parser
         $image = $this->factory->create($path);
 
         $data = [
-                'src'    => $image->src(),
-                'srcset' => $image->srcset(),
-                'sizes'  => $image->sizes(),
-            ] + $defaults;
+            'src'    => $image->src(),
+            'srcset' => $image->srcset(),
+            'sizes'  => $image->sizes(),
+        ];
 
-        return $data;
+        return $data + $defaults;
     }
 
 }
