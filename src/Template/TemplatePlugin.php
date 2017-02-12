@@ -110,25 +110,25 @@ class TemplatePlugin
         }
 
         if ($inline) {
-            $result = "<script>{$data}</script>";
-        } else {
-            $publicDir = Config::get('directories.public');
-            $fs = new Filesystem();
-            $dst = "{$publicDir}/$src";
-
-            if ($fs->exists($dst)) {
-                $fs->remove($dst);
-            }
-
-            $fs->dumpFile($dst, $data);
-            $result = "<script src=\"{$src}\"";
-
-            if ($async) {
-                $result .= ' async';
-            }
-
-            $result .= "></script>";
+            return "<script>{$data}</script>";
         }
+
+        $publicDir = Config::get('directories.public');
+        $fs = new Filesystem();
+        $dst = "{$publicDir}/$src";
+
+        if ($fs->exists($dst)) {
+            $fs->remove($dst);
+        }
+
+        $fs->dumpFile($dst, $data);
+        $result = "<script src=\"{$src}\"";
+
+        if ($async) {
+            $result .= ' async';
+        }
+
+        $result .= "></script>";
 
         return $result;
     }
