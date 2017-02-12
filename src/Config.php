@@ -139,11 +139,11 @@ class Config {
         $configEntry = [];
         $key = array_shift($keys);
 
-        if ($keys) {
-            $configEntry[$key] = self::createConfigEntry($keys, $value);
-        } else {
-            $configEntry[$key] = $value;
+        if (!$keys) {
+            return [$key => $value];
         }
+
+        $configEntry[$key] = self::createConfigEntry($keys, $value);
 
         return $configEntry;
     }
