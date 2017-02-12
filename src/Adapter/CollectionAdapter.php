@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Exception\IdFieldNotFoundException;
 use Brendt\Stitcher\Exception\VariableNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
@@ -38,26 +39,15 @@ class CollectionAdapter extends AbstractAdapter
     public function transform(Page $page, $filter = null) {
         $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
-        if (!isset($config['field'], $config['variable'])) {
-            return [$page];
-        }
+        $this->validateConfig($config, $page);
 
         $variable = $config['variable'];
-
-        if (!$source = $page->getVariable($variable)) {
-            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
-        }
-
+        $source = $page->getVariable($variable);
+        $field = $config['field'];
         $pageId = $page->getId();
         $entries = $this->getData($source);
-        $field = $config['field'];
-
-        if (strpos($pageId, '{' . $field . '}') === false) {
-            throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
-        }
 
         $result = [];
-
         foreach ($entries as $entry) {
             if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
                 continue;
@@ -78,6 +68,34 @@ class CollectionAdapter extends AbstractAdapter
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $config
+     * @param Page  $page
+     *
+     * @return void
+     * @throws ConfigurationException
+     * @throws IdFieldNotFoundException
+     * @throws VariableNotFoundException
+     */
+    protected function validateConfig(array $config, Page $page) {
+        if (!isset($config['field'], $config['variable'])) {
+            throw new ConfigurationException('Both the configuration entry `field` and `variable` are required when using the Collection adapter.');
+        }
+
+        $variable = $config['variable'];
+
+        if (!$page->getVariable($variable)) {
+            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
+        }
+
+        $field = $config['field'];
+        $pageId = $page->getId();
+
+        if (strpos($pageId, '{' . $field . '}') === false) {
+            throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
+        }
     }
 
 }
