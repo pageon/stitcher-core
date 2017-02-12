@@ -70,7 +70,6 @@ class TemplatePlugin
             return "<style>{$data}</style>";
         }
 
-
         $publicDir = Config::get('directories.public');
         $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
         $fs = new Filesystem();
