@@ -139,7 +139,7 @@ class Config {
         $configEntry = [];
         $key = array_shift($keys);
 
-        if (!$keys) {
+        if (!count($keys)) {
             return [$key => $value];
         }
 
