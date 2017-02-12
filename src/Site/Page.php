@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Site;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Adapter\Adapter;
 
 /**
  * A Page object represents a page entry configured in a YAML file located in the `src/sites/` directory.
@@ -51,7 +52,7 @@ class Page
      * The adapters of this page.
      * Adapters will transform a page's variables and/or the page itself into one or more pages.
      *
-     * @var Adapter[]
+     * @var array
      */
     protected $adapters;
 
@@ -162,7 +163,7 @@ class Page
     /**
      * Get the adapters of this page.
      *
-     * @return Adapter[]
+     * @return array
      *
      * @see \Brendt\Stitcher\Stitcher::parseAdapters
      */
@@ -175,7 +176,7 @@ class Page
      *
      * @param $name
      *
-     * @return Adapter|null
+     * @return array|null
      *
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
