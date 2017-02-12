@@ -67,22 +67,21 @@ class TemplatePlugin
         }
 
         if ($inline) {
-            $result = "<style>{$data}</style>";
-        } else {
-            $publicDir = Config::get('directories.public');
-            $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
-            $fs = new Filesystem();
-            $dst = "{$publicDir}/$srcParsed";
-
-            if ($fs->exists($dst)) {
-                $fs->remove($dst);
-            }
-
-            $fs->dumpFile($dst, $data);
-            $result = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$srcParsed}\">";
+            return "<style>{$data}</style>";
         }
 
-        return $result;
+
+        $publicDir = Config::get('directories.public');
+        $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
+        $fs = new Filesystem();
+        $dst = "{$publicDir}/$srcParsed";
+
+        if ($fs->exists($dst)) {
+            $fs->remove($dst);
+        }
+
+        $fs->dumpFile($dst, $data);
+        return "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$srcParsed}\">";
     }
 
     /**
