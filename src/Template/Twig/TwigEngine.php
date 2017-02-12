@@ -36,18 +36,9 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
         /** @var TemplatePlugin $plugin */
         $plugin = Config::getDependency('engine.plugin');
 
-        $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], [
-            'is_safe' => ['html'],
-        ]));
-
-        $this->addFunction(new \Twig_SimpleFunction('css', [$plugin, 'css'], [
-            'is_safe' => ['html'],
-        ]));
-
-        $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], [
-            'is_safe' => ['html'],
-        ]));
-
+        $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], ['is_safe' => ['html'],]));
+        $this->addFunction(new \Twig_SimpleFunction('css', [$plugin, 'css'], ['is_safe' => ['html'],]));
+        $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], ['is_safe' => ['html'],]));
         $this->addFunction(new \Twig_SimpleFunction('image', [$plugin, 'image']));
     }
 
