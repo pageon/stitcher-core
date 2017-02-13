@@ -88,4 +88,13 @@ class TwigEngineTest extends TestCase
         $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
     }
 
+    public function test_twig_file() {
+        $engine = $this->createEngine();
+        $files = Finder::create()->files()->in(Config::get('directories.template'))->name('fileTest.html')->getIterator();
+        $files->rewind();
+        $template = $files->current();
+
+        $html = $engine->renderTemplate($template);
+        $this->assertContains('data-file="/img/blue.jpg"', $html);
+    }
 }
