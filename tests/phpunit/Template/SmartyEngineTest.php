@@ -89,5 +89,14 @@ class SmartyEngineTest extends TestCase
         $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
     }
 
+    public function test_smarty_file() {
+        $engine = $this->createEngine();
+        $files = Finder::create()->files()->in(Config::get('directories.src') . '/template')->name('fileTest.tpl')->getIterator();
+        $files->rewind();
+        $template = $files->current();
+
+        $html = $engine->renderTemplate($template);
+        $this->assertContains('data-file="/img/blue.jpg"', $html);
+    }
 
 }
