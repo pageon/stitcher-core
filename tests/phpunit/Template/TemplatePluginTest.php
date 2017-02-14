@@ -171,4 +171,18 @@ class TemplatePluginTest extends TestCase
         $this->assertTrue(isset($image['sizes']));
     }
 
+    public function test_file() {
+        $plugin = $this->createEnginePlugin();
+
+        $path = $plugin->file('img/blue.jpg');
+
+        $publicDir = Config::get('directories.public');
+        $fs = new Filesystem();
+
+        $this->assertTrue(strpos($path, '/') === 0);
+
+        $path = trim($path, '/');
+        $this->assertTrue($fs->exists("{$publicDir}/{$path}"));
+    }
+
 }

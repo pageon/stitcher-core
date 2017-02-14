@@ -2,10 +2,12 @@
 
 namespace Brendt\Stitcher\Template;
 
-use brendt\image\ResponsiveFactory;
+use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * This class provides functionality which can be used by template plugins/functions.
@@ -140,7 +142,7 @@ class TemplatePlugin
      *
      * @return array
      *
-     * @see \brendt\image\ResponsiveFactory
+     * @see \Brendt\Image\ResponsiveFactory
      */
     public function image($src) {
         /** @var ResponsiveFactory $factory */
@@ -156,6 +158,38 @@ class TemplatePlugin
             'srcset' => $image->srcset(),
             'sizes'  => $image->sizes(),
         ];
+    }
+
+    /**
+     * Create a public file from the src directory and return its path.
+     *
+     * @param $src
+     *
+     * @return null|string
+     */
+    public function file($src) {
+        $src = trim($src, '/');
+        $srcDir = Config::get('directories.src');
+        $files = Finder::create()->in($srcDir)->path($src)->getIterator();
+        $files->rewind();
+        /** @var SplFileInfo $file */
+        $file = $files->current();
+
+        if (!$file) {
+            return null;
+        }
+
+        $fs = new Filesystem();
+        $publicDir = Config::get('directories.public');
+        $dst = "{$publicDir}/{$src}";
+
+        if ($fs->exists($dst)) {
+            $fs->remove($dst);
+        }
+
+        $fs->dumpFile($dst, $file->getContents());
+
+        return "/{$src}";
     }
 
 }
