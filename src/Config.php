@@ -2,8 +2,8 @@
 
 namespace Brendt\Stitcher;
 
-use brendt\image\config\DefaultConfigurator;
-use brendt\image\ResponsiveFactory;
+use Brendt\Image\Config\DefaultConfigurator;
+use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;

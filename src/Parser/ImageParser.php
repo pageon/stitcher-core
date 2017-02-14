@@ -2,14 +2,14 @@
 
 namespace Brendt\Stitcher\Parser;
 
-use brendt\image\ResponsiveFactory;
+use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Config;
 
 /**
  * The ImageParser uses the ResponsiveFactory to create images from an entry (array of parsed data),
  * or a path to an image.
  *
- * @see \brendt\image\ResponsiveFactory::create()
+ * @see \Brendt\Image\ResponsiveFactory::create()
  */
 class ImageParser implements Parser
 {
