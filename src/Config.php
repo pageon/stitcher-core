@@ -13,6 +13,7 @@ use CSSmin;
 use Leafo\ScssPhp\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -35,6 +36,7 @@ class Config {
      * @param string $name
      */
     public static function load($root = './', $name = 'config.yml') {
+        /** @var SplFileInfo[] $configFiles */
         $configFiles = Finder::create()->files()->in($root)->name($name);
         $config = [];
 
