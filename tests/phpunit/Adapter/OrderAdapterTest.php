@@ -36,6 +36,21 @@ class OrderAdapterTest extends TestCase
         return $page;
     }
 
+    public function test_order_adapter_keeps_ids() {
+        $page = $this->createPage();
+        $adapter = $this->createAdapter();
+
+        $adaptedPages = $adapter->transform($page);
+        $adaptedPage = reset($adaptedPages);
+
+        $entries = $adaptedPage->getVariable('entries');
+
+        $this->assertArrayHasKey('entry-a', $entries);
+        $this->assertArrayHasKey('entry-b', $entries);
+        $this->assertArrayHasKey('entry-c', $entries);
+        $this->assertArrayHasKey('entry-d', $entries);
+    }
+
     public function test_order_adapter() {
         $page = $this->createPage();
         $adapter = $this->createAdapter();
