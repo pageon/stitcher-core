@@ -24,6 +24,11 @@ use Brendt\Stitcher\Site\Page;
 class OrderAdapter extends AbstractAdapter
 {
 
+    /**
+     * A collection of keywords which would reverse the data set.
+     *
+     * @var array
+     */
     private static $reverse = [
         'desc',
         'DESC',
@@ -56,10 +61,18 @@ class OrderAdapter extends AbstractAdapter
 
         $page->setVariableValue($variable, $entries)
             ->setVariableIsParsed($variable);
-        
-        return [$page->getId() => $page];
+
+        /** @var Page[] $result */
+        $result = [$page->getId() => $page];
+
+        return $result;
     }
 
+    /**
+     * @param array $config
+     *
+     * @throws ConfigurationException
+     */
     private function validateConfig(array $config) {
         if (!isset($config['variable']) || !isset($config['field'])) {
             throw new ConfigurationException('Both the configuration entry `field` and `variable` are required when using the Order adapter.');
