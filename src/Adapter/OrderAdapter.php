@@ -43,10 +43,10 @@ class OrderAdapter extends AbstractAdapter
         $variable = $config['variable'];
         $field = $config['field'];
         $direction = isset($config['direction']) ? $config['direction'] : null;
-        
+
         $entries = $this->getData($page->getVariable($variable));
 
-        usort($entries, function ($a, $b) use ($field) {
+        uasort($entries, function ($a, $b) use ($field) {
            return strcmp($a[$field], $b[$field]);
         });
 
