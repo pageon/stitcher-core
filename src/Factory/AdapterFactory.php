@@ -4,6 +4,7 @@ namespace Brendt\Stitcher\Factory;
 
 use Brendt\Stitcher\Adapter\Adapter;
 use Brendt\Stitcher\Adapter\CollectionAdapter;
+use Brendt\Stitcher\Adapter\OrderAdapter;
 use Brendt\Stitcher\Adapter\PaginationAdapter;
 use Brendt\Stitcher\Exception\UnknownAdapterException;
 
@@ -13,6 +14,8 @@ class AdapterFactory
     const COLLECTION_ADAPTER = 'collection';
 
     const PAGINATION_ADAPTER = 'pagination';
+
+    const ORDER_ADAPTER = 'order';
 
     private $adapters;
 
@@ -35,6 +38,10 @@ class AdapterFactory
                 break;
             case self::PAGINATION_ADAPTER:
                 $adapter = new PaginationAdapter();
+
+                break;
+            case self::ORDER_ADAPTER:
+                $adapter = new OrderAdapter();
 
                 break;
             default:
