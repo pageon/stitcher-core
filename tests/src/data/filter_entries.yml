@@ -1,0 +1,11 @@
+entries:
+    entry-a:
+        highlight: true
+    entry-b:
+        highlight: true
+    entry-c:
+        highlight: false
+    entry-d:
+        highlight: false
+    entry-e:
+        highlight: false
