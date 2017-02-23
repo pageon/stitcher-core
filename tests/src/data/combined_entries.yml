@@ -1,0 +1,28 @@
+entries:
+    entry-a:
+        title: A
+        highlight: true
+
+    entry-b:
+        title: B
+        highlight: true
+
+    entry-c:
+        title: C
+        highlight: false
+
+    entry-d:
+        title: D
+        highlight: false
+
+    entry-e:
+        title: E
+        highlight: true
+
+    entry-f:
+        title: F
+        highlight: false
+
+    entry-g:
+        title: G
+        highlight: true

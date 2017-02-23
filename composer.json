@@ -9,7 +9,7 @@
         }
     ],
     "require" : {
-        "PHP" : ">=5.6",
+        "PHP" : ">=7.1",
         "brendt/responsive-images": "^1.0",
         "smarty/smarty" : "^3.1",
         "twig/twig": "~1.0",

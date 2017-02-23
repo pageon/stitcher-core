@@ -22,22 +22,16 @@ use Brendt\Stitcher\Site\Page;
  *          collection:
  *              variable: example
  *              field: id
- *
- * @todo Rename `field` option to `urlVariable`
  */
 class CollectionAdapter extends AbstractAdapter
 {
-
     /**
-     * @param Page  $page
-     * @param mixed $filter
+     * @param Page $page
+     * @param null $filter
      *
      * @return Page[]
-     * @throws ConfigurationException
-     * @throws IdFieldNotFoundException
-     * @throws VariableNotFoundException
      */
-    public function transform(Page $page, $filter = null) {
+    public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
         $this->validateConfig($config, $page);

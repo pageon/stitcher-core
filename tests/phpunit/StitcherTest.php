@@ -9,6 +9,7 @@ use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class StitcherTest extends TestCase
 {
@@ -71,6 +72,40 @@ class StitcherTest extends TestCase
             $this->assertTrue($page->isParsedVariable('church'));
             $this->assertFalse($page->isParsedVariable('intro'));
         }
+    }
+
+    public function test_parse_multiple_adapters() {
+        $stitcher = $this->createStitcher();
+        $page = new Page('/examples', [
+            'template'  => 'home',
+            'variables' => [
+                'entries' => 'combined_entries.yml',
+            ],
+            'adapters'  => [
+                'filter' => [
+                    'entries' => [
+                        'highlight' => true,
+                    ]
+                ],
+                'order' => [
+                    'variable' => 'entries',
+                    'field' => 'title',
+                    'direction' => '-',
+                ]
+            ],
+        ]);
+
+        $adaptedPages = $stitcher->parseAdapters($page);
+        $adaptedPage = reset($adaptedPages);
+        $entries = $adaptedPage->getVariable('entries');
+
+        $this->assertCount(4, $entries);
+        $this->assertArrayHasKey('entry-a', $entries);
+        $this->assertArrayHasKey('entry-b', $entries);
+        $this->assertArrayHasKey('entry-e', $entries);
+        $this->assertArrayHasKey('entry-g', $entries);
+        $this->assertEquals('G', reset($entries)['title']);
+        $this->assertEquals('A', end($entries)['title']);
     }
 
     public function test_parse_variables() {
@@ -165,6 +200,7 @@ class StitcherTest extends TestCase
         $this->assertTrue($fs->exists("{$public}/index.html"));
 
         $finder = new Finder();
+        /** @var SplFileInfo[] $files */
         $files = $finder->in("{$public}/churches")->name('church-a.html');
 
         foreach ($files as $file) {
