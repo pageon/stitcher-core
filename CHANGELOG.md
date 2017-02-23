@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha2
+
+- Bump PHP minimum required version to PHP 7.1
+
 ## 1.0.0-alpha
 
 ```
