@@ -12,3 +12,4 @@ checks:
             - leafo/scssphp
             - intervention/image
             - symfony/routing
+            - brendt/responsive-images
