@@ -29,7 +29,7 @@ class OrderAdapter extends AbstractAdapter
      *
      * @var array
      */
-    private static $reverse = [
+    const REVERSE = [
         'desc',
         'DESC',
         '-',
@@ -57,7 +57,7 @@ class OrderAdapter extends AbstractAdapter
                 return strcmp($a[$field], $b[$field]);
             });
 
-            if (in_array($direction, self::$reverse)) {
+            if (in_array($direction, self::REVERSE)) {
                 $entries = array_reverse($entries, true);
             }
 
