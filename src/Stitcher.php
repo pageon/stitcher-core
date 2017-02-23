@@ -203,18 +203,17 @@ class Stitcher {
 
         /** @var AdapterFactory $adapterFactory */
         $adapterFactory = Config::getDependency('factory.adapter');
-        $pages = [];
+        $pages = [$page];
 
         foreach ($page->getAdapters() as $type => $adapterConfig) {
             $adapter = $adapterFactory->getByType($type);
 
             if ($entryId !== null) {
-                $pages = $adapter->transform($page, $entryId);
+                $pages = $adapter->transform($pages, $entryId);
             } else {
-                $pages = $adapter->transform($page);
+                $pages = $adapter->transform($pages);
             }
         }
-
 
         return $pages;
     }

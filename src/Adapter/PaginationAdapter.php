@@ -28,7 +28,7 @@ class PaginationAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transform(Page $page, $filter = null) {
+    public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
 
         if (!isset($config['variable'])) {

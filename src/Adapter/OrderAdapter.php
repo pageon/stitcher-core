@@ -41,7 +41,7 @@ class OrderAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transform(Page $page, $filter = null) {
+    public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::ORDER_ADAPTER);
 
         $this->validateConfig($config);
@@ -52,7 +52,7 @@ class OrderAdapter extends AbstractAdapter
         $entries = $this->getData($page->getVariable($variable));
 
         uasort($entries, function ($a, $b) use ($field) {
-           return strcmp($a[$field], $b[$field]);
+            return strcmp($a[$field], $b[$field]);
         });
 
         if (in_array($direction, self::$reverse)) {
