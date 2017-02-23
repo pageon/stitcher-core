@@ -17,9 +17,9 @@ use Brendt\Stitcher\Site\Page;
  *  /examples/{id}:
  *      template: examples/detail
  *      data:
- *          example: collection.yml
+ *          variableName: collection.yml
  *      adapters:
- *          collection:
+ *          variableName:
  *              variable: example
  *              field: id
  */
