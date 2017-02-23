@@ -6,10 +6,3 @@ build:
         override:
             -
                 command: 'vendor/bin/phpunit'
-checks:
-    php:
-        excluded_dependencies:
-            - leafo/scssphp
-            - intervention/image
-            - symfony/routing
-            - brendt/responsive-images
