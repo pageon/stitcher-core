@@ -17,9 +17,9 @@ use Brendt\Stitcher\Site\Page;
  *          example: collection.yml
  *      adapters:
  *          order:
- *              variable: example
- *              field: id
- *              direction: desc
+ *              variableName:
+ *                  field: id
+ *                  direction: desc
  */
 class OrderAdapter extends AbstractAdapter
 {
@@ -43,24 +43,27 @@ class OrderAdapter extends AbstractAdapter
      */
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::ORDER_ADAPTER);
+        $config = isset($config['variable']) ? [$config['variable'] => $config] : $config;
 
-        $this->validateConfig($config);
-        $variable = $config['variable'];
-        $field = $config['field'];
-        $direction = isset($config['direction']) ? $config['direction'] : null;
+        foreach ($config as $variable => $order) {
+            $this->validateConfig($order);
 
-        $entries = $this->getData($page->getVariable($variable));
+            $field = $order['field'];
+            $direction = $order['direction'] ?? null;
 
-        uasort($entries, function ($a, $b) use ($field) {
-            return strcmp($a[$field], $b[$field]);
-        });
+            $entries = $this->getData($page->getVariable($variable));
 
-        if (in_array($direction, self::$reverse)) {
-            $entries = array_reverse($entries, true);
+            uasort($entries, function ($a, $b) use ($field) {
+                return strcmp($a[$field], $b[$field]);
+            });
+
+            if (in_array($direction, self::$reverse)) {
+                $entries = array_reverse($entries, true);
+            }
+
+            $page->setVariableValue($variable, $entries)
+                ->setVariableIsParsed($variable);
         }
-
-        $page->setVariableValue($variable, $entries)
-            ->setVariableIsParsed($variable);
 
         /** @var Page[] $result */
         $result = [$page->getId() => $page];
