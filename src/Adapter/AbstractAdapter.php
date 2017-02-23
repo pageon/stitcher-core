@@ -4,6 +4,7 @@ namespace Brendt\Stitcher\Adapter;
 
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\factory\ParserFactory;
+use Brendt\Stitcher\Site\Page;
 
 /**
  * The AbstractAdapter class provides a base for adapters who need to parse template variables.
@@ -23,6 +24,27 @@ abstract class AbstractAdapter implements Adapter
      */
     public function __construct() {
         $this->parserFactory = Config::getDependency('factory.parser');
+    }
+
+    /**
+     * @param Page|Page[] $pages
+     * @param mixed  $filter
+     *
+     * @return Page[]
+     */
+    public function transform($pages, $filter = null) : array {
+        if (!is_array($pages)) {
+            $pages = [$pages];
+        }
+
+        /** @var Page[] $result */
+        $result = [];
+
+        foreach ($pages as $page) {
+            $result += $this->transformPage($page, $filter);
+        }
+
+        return $result;
     }
 
     /**

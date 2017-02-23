@@ -33,7 +33,7 @@ class FilterAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transform(Page $page, $filter = null) {
+    public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::FILTER_ADAPTER);
 
         $this->validateConfig($config);
