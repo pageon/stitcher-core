@@ -11,11 +11,19 @@ interface Adapter
 {
 
     /**
-     * @param Page        $page
+     * @param Page|Page[]       $pages
      * @param string|null $filter
      *
      * @return Page[]
      */
-    public function transform(Page $page, $filter = null);
+    public function transform($pages, $filter = null) : array;
+
+    /**
+     * @param Page $page
+     * @param string|null $filter
+     *
+     * @return Page[]
+     */
+    public function transformPage(Page $page, $filter = null) : array;
 
 }
