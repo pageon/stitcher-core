@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Stitcher\Exception\VariableNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Site\Page;
 
@@ -26,7 +27,8 @@ class PaginationAdapter extends AbstractAdapter
      * @param Page $page
      * @param null $filter
      *
-     * @return Page[]
+     * @return array|Page[]
+     * @throws VariableNotFoundException
      */
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
