@@ -108,7 +108,7 @@ class Config
             $config = $config[$key];
         }
 
-        return null;
+        return $default;
     }
 
     /**
