@@ -42,6 +42,9 @@ engines:
     # Use gd as image engine. Possible configurations: `gd` or `imagick`.
     image: gd
 
+    # Try to use several image optimizers
+    optimizer: true
+
 caches:
     # Enable image caching while rendering
     image: true

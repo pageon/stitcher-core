@@ -41,6 +41,10 @@ engines:
     # Use gd as image engine. Possible configurations: `gd` or `imagick`.
     image: gd
 
+    # Don't optimize images. Disabling this option will increase the DevController's rendering speed,
+    # but will render less optimised images.
+    optimizer: false
+
 caches:
     # Enable image caching while rendering
     image: true
