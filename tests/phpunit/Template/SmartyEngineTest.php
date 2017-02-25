@@ -86,7 +86,7 @@ class SmartyEngineTest extends TestCase
         ]);
 
         $html = $engine->renderTemplate($template);
-        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue.jpg 50w"', $html);
+        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue-50.jpg 50w"', $html);
     }
 
     public function test_smarty_file() {
