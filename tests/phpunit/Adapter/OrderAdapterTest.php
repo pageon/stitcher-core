@@ -57,7 +57,7 @@ class OrderAdapterTest extends TestCase
 
         $adaptedPages = $adapter->transform($page);
         $adaptedPage = reset($adaptedPages);
-        
+
         $entries = $adaptedPage->getVariable('entries');
 
         $firstEntry = reset($entries);
@@ -83,4 +83,41 @@ class OrderAdapterTest extends TestCase
         $this->assertEquals('A', $lastEntry['title']);
     }
 
+    /**
+     * @test
+     */
+    public function it_sorts_multiple_fields() {
+        $page = new Page('/entries', [
+            'template'  => 'home',
+            'variables' => [
+                'collectionA' => 'order_entries.yml',
+                'collectionB' => 'order_entries.yml',
+            ],
+            'adapters'  => [
+                'order' => [
+                    'collectionA' => [
+                        'field' => 'title',
+                    ],
+                    'collectionB' => [
+                        'field'     => 'title',
+                        'direction' => '-',
+                    ],
+                ],
+            ],
+        ]);
+
+        $adapter = $this->createAdapter();
+        /** @var Page[] $adaptedPages */
+        $adaptedPages = $adapter->transformPage($page);
+        $adaptedPage = reset($adaptedPages);
+
+        $collectionA = $adaptedPage->getVariable('collectionA');
+        $collectionB = $adaptedPage->getVariable('collectionB');
+
+        $firstEntryA = reset($collectionA);
+        $firstEntryB = reset($collectionB);
+
+        $this->assertEquals('A', $firstEntryA['title']);
+        $this->assertEquals('D', $firstEntryB['title']);
+    }
 }

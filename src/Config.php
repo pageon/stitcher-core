@@ -19,7 +19,8 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * @todo Change parsing to work the other way around
  */
-class Config {
+class Config
+{
 
     /**
      * @var array
@@ -62,6 +63,7 @@ class Config {
             'publicPath'  => Config::get('directories.public'),
             'sourcePath'  => Config::get('directories.src'),
             'enableCache' => Config::get('caches.image'),
+            'optimize'    => Config::get('engines.optimizer', false),
         ]);
 
         self::$container->register('factory.image', ResponsiveFactory::class)
@@ -84,13 +86,13 @@ class Config {
     }
 
     /**
-     * @param $key
+     * @param string      $key
+     * @param null|string $default
      *
      * @return mixed|null
-     *
      * @todo Refactor to work with dependencies
      */
-    public static function get($key) {
+    public static function get(string $key, string $default = null) {
         $keys = explode('.', $key);
         $config = self::$config;
 
@@ -106,7 +108,7 @@ class Config {
             $config = $config[$key];
         }
 
-        return null;
+        return $default;
     }
 
     /**
