@@ -8,6 +8,8 @@
             "email" : "brent@pageon.be"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require" : {
         "PHP" : ">=7.1",
         "brendt/responsive-images": "^1.0",
