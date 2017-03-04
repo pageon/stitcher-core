@@ -4,24 +4,343 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fd628d919d5b8e7d58788edca3300740",
-    "content-hash": "7a989b7aeee5504b340a319c98215938",
+    "hash": "88cf5217ce32be33e74df1adce6f1157",
+    "content-hash": "a7b750570e17962c11a19ef6f5cfdbf0",
     "packages": [
         {
-            "name": "brendt/responsive-images",
-            "version": "1.2.1",
+            "name": "amphp/amp",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/brendt/responsive-images.git",
-                "reference": "b4f61966250d5bd0a7f2700db773126cd2afc989"
+                "url": "https://github.com/amphp/amp.git",
+                "reference": "72378e2b82d9f1dee6b93de2bee8aa138e7f67e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/b4f61966250d5bd0a7f2700db773126cd2afc989",
-                "reference": "b4f61966250d5bd0a7f2700db773126cd2afc989",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/72378e2b82d9f1dee6b93de2bee8aa138e7f67e1",
+                "reference": "72378e2b82d9f1dee6b93de2bee8aa138e7f67e1",
                 "shasum": ""
             },
             "require": {
+                "async-interop/event-loop": "^0.5",
+                "async-interop/event-loop-implementation": "^0.5",
+                "async-interop/promise": "^0.4",
+                "php": ">=7"
+            },
+            "require-dev": {
+                "amphp/loop": "dev-master",
+                "async-interop/promise-test": "^0.4.1",
+                "friendsofphp/php-cs-fixer": "~1.9",
+                "humbug/humbug": "^1@dev",
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Amp\\": "lib/"
+                },
+                "files": [
+                    "lib/bootstrap.php",
+                    "lib/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@php.net",
+                    "role": "Creator / Lead Developer"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com",
+                    "role": "v2.0 Developer"
+                }
+            ],
+            "description": "A non-blocking concurrency framework for PHP applications",
+            "homepage": "https://github.com/amphp/amp",
+            "keywords": [
+                "async",
+                "asynchronous",
+                "awaitable",
+                "concurrency",
+                "event",
+                "future",
+                "non-blocking",
+                "promise"
+            ],
+            "time": "2017-02-22 21:52:30"
+        },
+        {
+            "name": "amphp/loop",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/loop.git",
+                "reference": "302a5c714c2700d32ca9444be09f21b2835b213f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/loop/zipball/302a5c714c2700d32ca9444be09f21b2835b213f",
+                "reference": "302a5c714c2700d32ca9444be09f21b2835b213f",
+                "shasum": ""
+            },
+            "require": {
+                "async-interop/event-loop": "^0.5"
+            },
+            "provide": {
+                "async-interop/event-loop-implementation": "0.5"
+            },
+            "require-dev": {
+                "async-interop/event-loop-test": "^0.5",
+                "friendsofphp/php-cs-fixer": "~1.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Loop\\": "lib"
+                },
+                "files": [
+                    "lib/bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://amphp.org",
+            "keywords": [
+                "async",
+                "asynchronous",
+                "event",
+                "loop",
+                "reactor"
+            ],
+            "time": "2017-02-17 06:02:04"
+        },
+        {
+            "name": "amphp/parallel",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/parallel.git",
+                "reference": "d6a1b19b8e065eaa8de1d854f19c92d23d16b867"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/parallel/zipball/d6a1b19b8e065eaa8de1d854f19c92d23d16b867",
+                "reference": "d6a1b19b8e065eaa8de1d854f19c92d23d16b867",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^2.0",
+                "amphp/process": "dev-amp_v2 as 0.2"
+            },
+            "require-dev": {
+                "amphp/loop": "dev-master",
+                "amphp/stream": "dev-master as 0.1",
+                "phpunit/phpunit": "^5.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Required for fork contexts",
+                "ext-pthreads": "Required for thread contexts",
+                "ext-sysvsem": "Required for fork synchronization",
+                "ext-sysvshm": "Required for fork contexts"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Parallel\\": "lib"
+                },
+                "files": [
+                    "lib/Worker/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Coakley",
+                    "email": "me@stephencoakley.com"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                }
+            ],
+            "description": "Parallel processing component for Amp.",
+            "homepage": "https://github.com/amphp/parallel",
+            "keywords": [
+                "async",
+                "asynchronous",
+                "concurrent",
+                "multi-processing",
+                "multi-threading"
+            ],
+            "time": "2017-02-18 17:06:03"
+        },
+        {
+            "name": "amphp/process",
+            "version": "dev-amp_v2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/process.git",
+                "reference": "37cf53aa278ccf5806ad5c6a8a83abae40caee0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/process/zipball/37cf53aa278ccf5806ad5c6a8a83abae40caee0d",
+                "reference": "37cf53aa278ccf5806ad5c6a8a83abae40caee0d",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "dev-master as 2.0"
+            },
+            "require-dev": {
+                "amphp/loop": "dev-master",
+                "friendsofphp/php-cs-fixer": "~1.9",
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Process\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob Weinand",
+                    "email": "bobwei9@hotmail.com"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                }
+            ],
+            "description": "Asynchronous process manager",
+            "homepage": "https://github.com/amphp/process",
+            "time": "2017-02-03 22:32:30"
+        },
+        {
+            "name": "async-interop/event-loop",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-interop/event-loop.git",
+                "reference": "372272601b3f43064bd06e90fa1c8f3a009accd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-interop/event-loop/zipball/372272601b3f43064bd06e90fa1c8f3a009accd8",
+                "reference": "372272601b3f43064bd06e90fa1c8f3a009accd8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "^0.3.2",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "phpunit/phpunit": "^4|^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AsyncInterop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "An event loop interface for interoperability.",
+            "keywords": [
+                "async",
+                "event",
+                "interop",
+                "loop"
+            ],
+            "time": "2017-01-05 10:19:16"
+        },
+        {
+            "name": "async-interop/promise",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-interop/promise.git",
+                "reference": "511ae43724719c2419712fa3ebeb020ab94633d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-interop/promise/zipball/511ae43724719c2419712fa3ebeb020ab94633d0",
+                "reference": "511ae43724719c2419712fa3ebeb020ab94633d0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "jakub-onderka/php-console-highlighter": "^0.3.2",
+                "jakub-onderka/php-parallel-lint": "^0.9.2",
+                "phpunit/phpunit": "^4|^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AsyncInterop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A promise interface for interoperability in async operations.",
+            "keywords": [
+                "async",
+                "awaitable",
+                "future",
+                "interop",
+                "promise"
+            ],
+            "time": "2017-01-06 20:45:59"
+        },
+        {
+            "name": "brendt/responsive-images",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brendt/responsive-images.git",
+                "reference": "bca956d664915e07481c94d6145cd8f03514ab94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/bca956d664915e07481c94d6145cd8f03514ab94",
+                "reference": "bca956d664915e07481c94d6145cd8f03514ab94",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "2.0.x-dev@dev",
+                "amphp/loop": "dev-master@dev",
+                "amphp/parallel": "0.1.x-dev@dev",
                 "intervention/image": "^2.3",
                 "php": ">=7.1",
                 "ps/image-optimizer": "^1.0",
@@ -50,7 +369,7 @@
                 }
             ],
             "description": "Create responsive images with PHP, using the srcset and sizes spec.",
-            "time": "2017-02-25 19:44:58"
+            "time": "2017-03-04 08:55:05"
         },
         {
             "name": "erusev/parsedown",
@@ -2505,9 +2824,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.1"
