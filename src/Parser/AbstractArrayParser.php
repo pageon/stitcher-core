@@ -22,9 +22,11 @@ abstract class AbstractArrayParser implements Parser
 
     /**
      * AbstractParser constructor.
+     *
+     * @param ParserFactory $parserFactory
      */
-    public function __construct() {
-        $this->parserFactory = Config::getDependency('factory.parser');
+    public function __construct(ParserFactory $parserFactory) {
+        $this->parserFactory = $parserFactory;
     }
 
     /**
@@ -65,11 +67,11 @@ abstract class AbstractArrayParser implements Parser
     protected function parseEntryData($id, $entry) {
         foreach ($entry as $field => $value) {
             if (is_string($value) && preg_match('/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
-                $parser = $this->parserFactory->getParser($value);
+                $parser = $this->parserFactory->getByFileName($value);
                 $entry[$field] = $parser->parse(trim($value, '/'));
             } elseif (is_array($value) && array_key_exists('src', $value)) {
                 $src = $value['src'];
-                $parser = $this->parserFactory->getParser($src);
+                $parser = $this->parserFactory->getByFileName($src);
                 $entry[$field] = $parser->parse($value);
             }
 

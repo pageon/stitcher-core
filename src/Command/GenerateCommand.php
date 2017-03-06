@@ -29,18 +29,21 @@ class GenerateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         Config::load();
-        $publicDir = Config::get('directories.public');
         $route = $input->getArgument(self::ROUTE);
         $stitcher = new Stitcher();
 
         $blanket = $stitcher->stitch($route);
         $stitcher->save($blanket);
 
-        if ($route) {
-            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
-        } else {
-            $output->writeln("Site successfully generated in <fg=green>{$publicDir}</>.");
-        }
+        $stitcher->done(function () use ($route, $output) {
+            $publicDir = Config::get('directories.public');
+
+            if ($route) {
+                $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
+            } else {
+                $output->writeln("Site successfully generated in <fg=green>{$publicDir}</>.");
+            }
+        });
     }
 
 }

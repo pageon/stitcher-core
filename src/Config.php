@@ -64,6 +64,7 @@ class Config
             'sourcePath'  => Config::get('directories.src'),
             'enableCache' => Config::get('caches.image'),
             'optimize'    => Config::get('engines.optimizer', false),
+            'async'       => true,
         ]);
 
         self::$container->register('factory.image', ResponsiveFactory::class)
@@ -129,8 +130,33 @@ class Config
         self::$config = [];
     }
 
-    public static function getConfig() {
+    /**
+     * @return array
+     */
+    public static function getConfig() : array {
         return self::$config;
+    }
+
+    /**
+     * @param        $config
+     * @param string $prefix
+     *
+     * @return array
+     */
+    public static function flatten(array $config, string $prefix = '') : array {
+        $result = [];
+
+        foreach ($config as $key => $value) {
+            $new_key = $prefix . (empty($prefix) ? '' : '.') . $key;
+
+            if (is_array($value)) {
+                $result = array_merge($result, self::flatten($value, $new_key));
+            } else {
+                $result[$new_key] = $value;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -139,7 +165,7 @@ class Config
      *
      * @return array
      */
-    private static function createConfigEntry($keys, $value) {
+    private static function createConfigEntry($keys, $value) : array {
         $configEntry = [];
         $key = array_shift($keys);
 

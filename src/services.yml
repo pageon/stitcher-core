@@ -1,0 +1,90 @@
+services:
+    stitcher:
+        class: Brendt\Stitcher\Stitcher
+
+    # Adapter
+    adapter.collection:
+        class: Brendt\Stitcher\Adapter\CollectionAdapter
+        arguments: ['@factory.parser']
+    adapter.filter:
+        class: Brendt\Stitcher\Adapter\FilterAdapter
+        arguments: ['@factory.parser']
+    adapter.order:
+        class: Brendt\Stitcher\Adapter\OrderAdapter
+        arguments: ['@factory.parser']
+    adapter.pagination:
+        class: Brendt\Stitcher\Adapter\PaginationAdapter
+        arguments: ['@factory.parser']
+
+    # Parser
+    parser.default:
+        class: Brendt\Stitcher\Parser\DefaultParser
+    parser.file:
+        class: Brendt\Stitcher\Parser\FileParser
+        arguments: ['%directories.src%']
+    parser.folder:
+        class: Brendt\Stitcher\Parser\FileParser
+        arguments: ['@factory.parser', '%directories.src%']
+    parser.image:
+        class: Brendt\Stitcher\Parser\ImageParser
+        arguments: ['@stitcher', '@factory.image']
+    parser.json:
+        class: Brendt\Stitcher\Parser\JsonParser
+        arguments: ['@factory.parser', '%directories.src%']
+    parser.markdown:
+        class: Brendt\Stitcher\Parser\MarkdownParser
+        arguments: ['%directories.src%']
+    parser.sass:
+        class: Brendt\Stitcher\Parser\SassParser
+        arguments: ['@service.sass', '%directories.src%']
+    parser.yaml:
+        class: Brendt\Stitcher\Parser\YamlParser
+        arguments: ['@factory.parser', '%directories.src%']
+
+    # Factory
+    factory.parser:
+        class: Brendt\Stitcher\Factory\ParserFactory
+        arguments: ['@service_container']
+    factory.adapter:
+        class: Brendt\Stitcher\Factory\AdapterFactory
+        arguments: ['@service_container']
+    factory.template:
+        class: Brendt\Stitcher\Factory\TemplateFactory
+        arguments: ['@service_container', '%engines.template%']
+    factory.image:
+        class: Brendt\Image\ResponsiveFactory
+        arguments: ['@configurator.image']
+
+    # Configurator
+    configurator.image:
+        class: Brendt\Image\Config\DefaultConfigurator
+        arguments:
+            config:
+                driver: '%engines.image%'
+                publicPath: '%directories.public%'
+                sourcePath: '%engines.image%'
+                enableCache: '%caches.image%'
+                optimize: '%engines.optimizer%'
+                async: true
+
+    # Service
+    service.sass:
+        class: Leafo\ScssPhp\Compiler
+        calls:
+            - [addImportPath, ['%directories.src%']]
+    service.twig:
+        class: Brendt\Stitcher\Template\Twig\TwigEngine
+        arguments: ['%directories.template%', '@service.template.plugin']
+    service.smart:
+        class: Brendt\Stitcher\Template\Smarty\SmartyEngine
+        arguments: ['%directories.template%', '%directories.cache%']
+    service.template.plugin:
+        class: Brendt\Stitcher\Template\TemplatePlugin
+        arguments:
+            - '@factory.parser'
+            - '@factory.image'
+            - '@service.minifier.css'
+            - '%directories.public%'
+            - '%directories.src%'
+            - '%minify%'
+            - '%meta%'

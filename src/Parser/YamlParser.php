@@ -3,7 +3,9 @@
 namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Exception\ParserException;
+use Brendt\Stitcher\Factory\ParserFactory;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Brendt\Stitcher\Config;
@@ -15,6 +17,22 @@ use Brendt\Stitcher\Config;
  */
 class YamlParser extends AbstractArrayParser
 {
+    /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * JsonParser constructor.
+     *
+     * @param ParserFactory $parserFactory
+     * @param string        $srcDir
+     */
+    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+        parent::__construct($parserFactory);
+
+        $this->srcDir = $srcDir;
+    }
 
     /**
      * @param string $path
@@ -27,8 +45,8 @@ class YamlParser extends AbstractArrayParser
             $path .= '.yml';
         }
 
-        $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in($root)->path($path);
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in($this->srcDir)->path($path);
         $yamlData = [];
 
         foreach ($files as $file) {

@@ -13,6 +13,20 @@ class MarkdownParser implements Parser
 {
 
     /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * MarkdownParser constructor.
+     *
+     * @param string $srcDir
+     */
+    public function __construct(string $srcDir) {
+        $this->srcDir = $srcDir;
+    }
+
+    /**
      * @param string $path
      *
      * @return string
@@ -22,8 +36,7 @@ class MarkdownParser implements Parser
             $path .= '.md';
         }
 
-        $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in($root)->path($path)->getIterator();
+        $files = Finder::create()->files()->in($this->srcDir)->path($path)->getIterator();
         $files->rewind();
         $markdownFile = $files->current();
 

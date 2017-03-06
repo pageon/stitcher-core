@@ -13,16 +13,11 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class StitcherTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests', 'config.yml');
-    }
-
     /**
      * @return Stitcher
      */
-    protected function createStitcher() {
-        return new Stitcher();
+    protected function createStitcher() : Stitcher {
+        return Stitcher::create('./tests/config.yml');
     }
 
     private function createPage() {
@@ -85,13 +80,13 @@ class StitcherTest extends TestCase
                 'filter' => [
                     'entries' => [
                         'highlight' => true,
-                    ]
+                    ],
                 ],
-                'order' => [
-                    'variable' => 'entries',
-                    'field' => 'title',
+                'order'  => [
+                    'variable'  => 'entries',
+                    'field'     => 'title',
                     'direction' => '-',
-                ]
+                ],
             ],
         ]);
 
