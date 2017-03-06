@@ -2,54 +2,35 @@
 
 namespace Brendt\Stitcher\Factory;
 
-use Brendt\Stitcher\Config;
-use Brendt\Stitcher\Parser\DefaultParser;
-use Brendt\Stitcher\Parser\FileParser;
-use Brendt\Stitcher\Parser\FolderParser;
-use Brendt\Stitcher\Parser\ImageParser;
-use Brendt\Stitcher\Parser\JsonParser;
-use Brendt\Stitcher\Parser\MarkdownParser;
 use Brendt\Stitcher\Parser\Parser;
-use Brendt\Stitcher\Parser\SassParser;
-use Brendt\Stitcher\Parser\YamlParser;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ParserFactory
 {
-
     const EXTENSION_JSON = 'json';
-
     const EXTENSION_MD = 'md';
-
     const EXTENSION_FOLDER = '/';
-
     const EXTENSION_YML = 'yml';
-
     const EXTENSION_YAML = 'yaml';
-
     const EXTENSION_IMG = 'img';
-
     const EXTENSION_CSS = 'css';
-
     const EXTENSION_JS = 'js';
-
     const EXTENSION_SASS = 'sass';
-
     const EXTENSION_SCSS = 'scss';
-
     const PARSER_DEFAULT = 'default';
 
-    private $parsers = [];
-
-    private $root;
-
-    private $publicDir;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * ParserFactory constructor.
+     *
+     * @param ContainerInterface $container
      */
-    public function __construct() {
-        $this->root = Config::get('directories.src');
-        $this->publicDir = Config::get('directories.public');
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
     }
 
     /**
@@ -57,7 +38,7 @@ class ParserFactory
      *
      * @return Parser|null
      */
-    public function getParser($fileName) {
+    public function getByFileName($fileName) : ?Parser {
         if (!is_string($fileName)) {
             return null;
         }
@@ -104,51 +85,31 @@ class ParserFactory
     /**
      * @param string $type
      *
-     * @return Parser|null
+     * @return mixed
      */
-    public function getByType($type) {
-        if (isset($this->parsers[$type])) {
-            return $this->parsers[$type];
-        }
-
+    public function getByType($type) : Parser {
         switch ($type) {
             case self::EXTENSION_IMG:
-                $parser = new ImageParser();
-                break;
+                return $this->container->get('parser.image');
             case self::EXTENSION_FOLDER:
-                $parser = new FolderParser();
-                break;
+                return $this->container->get('parser.folder');
             case self::EXTENSION_MD:
-                $parser = new MarkdownParser();
-                break;
+                return $this->container->get('parser.markdown');
             case self::EXTENSION_JSON:
-                $parser = new JsonParser();
-                break;
+                return $this->container->get('parser.json');
             case self::EXTENSION_YML:
             case self::EXTENSION_YAML:
-                $parser = new YamlParser();
-                break;
+                return $this->container->get('parser.yaml');
             case self::EXTENSION_JS:
-                $parser = new FileParser();
-                break;
             case self::EXTENSION_CSS:
-                $parser = new FileParser();
-                break;
+                return $this->container->get('parser.file');
             case self::EXTENSION_SCSS:
             case self::EXTENSION_SASS:
-                $parser = new SassParser();
-                break;
+                return $this->container->get('parser.sass');
             case self::PARSER_DEFAULT:
             default:
-                $parser = new DefaultParser();
-                break;
+                return $this->container->get('parser.default');
         }
-
-        if ($parser) {
-            $this->parsers[$type] = $parser;
-        }
-
-        return $parser;
     }
 
 }

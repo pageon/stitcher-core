@@ -12,12 +12,26 @@ class FileParser implements Parser
 {
 
     /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * FileParser constructor.
+     *
+     * @param string $srcDir
+     */
+    public function __construct(string $srcDir) {
+        $this->srcDir = $srcDir;
+    }
+
+    /**
      * @param $path
      *
      * @return string
      */
     public function parse($path) {
-        $files = Finder::create()->files()->in(Config::get('directories.src'))->path(trim($path, '/'))->getIterator();
+        $files = Finder::create()->files()->in($this->srcDir)->path(trim($path, '/'))->getIterator();
         $files->rewind();
         $file = $files->current();
 
