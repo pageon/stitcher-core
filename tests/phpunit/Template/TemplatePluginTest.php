@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Template;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;

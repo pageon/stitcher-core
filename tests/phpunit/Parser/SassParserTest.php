@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class SassParserTest extends TestCase
 {
-
     public function setUp() {
         Stitcher::create('./tests/config.yml');
     }

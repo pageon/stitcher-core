@@ -3,7 +3,6 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Factory;
 
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\smarty\SmartyEngine;
 use Brendt\Stitcher\Template\twig\TwigEngine;

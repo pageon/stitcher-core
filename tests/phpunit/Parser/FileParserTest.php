@@ -8,12 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class FileParserTest extends TestCase
 {
+    public function setUp() {
+        Stitcher::create('./tests/config.yml');
+    }
+
     /**
      * @return FileParser
      */
     public function createParser() {
-        Stitcher::create('./tests/config.yml');
-
         return Stitcher::get('parser.file');
     }
 

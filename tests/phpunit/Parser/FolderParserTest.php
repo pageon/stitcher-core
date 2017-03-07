@@ -8,12 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 class FolderParserTest extends TestCase
 {
+    public function setUp() {
+        Stitcher::create('./tests/config.yml');
+    }
     /**
      * @return FolderParser
      */
     protected function createFolderParser() {
-        Stitcher::create('./tests/config.yml');
-
         return Stitcher::get('parser.folder');
     }
 
