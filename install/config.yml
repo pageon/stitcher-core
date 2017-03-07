@@ -27,6 +27,9 @@ directories:
     # The cache directory
     cache: ./cache
 
+    # Template directory
+    template: ./src/template
+
 # Configure meta tags
 meta:
     viewport: width=device-width, initial-scale=1
