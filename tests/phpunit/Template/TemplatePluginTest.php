@@ -26,7 +26,7 @@ class TemplatePluginTest extends TestCase
      * @return SmartyEngine
      */
     private function createSmarty() {
-        return new SmartyEngine('./tests/src/template');
+        return new SmartyEngine('./tests/src/template', './tests/.cache');
     }
 
     public function test_css_normal() {
