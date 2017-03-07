@@ -2,13 +2,14 @@
 
 namespace Brendt\Stitcher\Command;
 
+use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class InstallCommand extends Command
 {
@@ -49,6 +50,7 @@ class InstallCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
+        Stitcher::create();
         $log = [];
 
         $srcDir = './src';
@@ -106,6 +108,7 @@ class InstallCommand extends Command
 
     protected function copyFolder($src, $dst) {
         $finder = new Finder();
+        /** @var SplFileInfo[] $srcFiles */
         $srcFiles = $finder->files()->in($src)->ignoreDotFiles(false);
 
         if (!$this->fs->exists($dst)) {
@@ -127,7 +130,7 @@ class InstallCommand extends Command
     }
 
     protected function checkContinue(InputInterface $input, OutputInterface $output) {
-        $srcDir = Config::get('directory.src');
+        $srcDir = Stitcher::getParameter('directory.src');
 
         if ($this->fs->exists($srcDir)) {
             $questionHelper = $this->getHelper('question');

@@ -146,6 +146,15 @@ class Stitcher
     }
 
     /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public static function getParameter(string $key) {
+        return self::$container->getParameter($key);
+    }
+
+    /**
      * The core stitcher function. This function will compile the configured site and return an array of parsed
      * data.
      *

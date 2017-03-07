@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
@@ -32,8 +31,7 @@ class RouteCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Config::load();
-        $stitcher = new Stitcher();
+        $stitcher = Stitcher::create();
         $site = $stitcher->loadSite();
 
         $url = $input->getArgument(self::URL);
