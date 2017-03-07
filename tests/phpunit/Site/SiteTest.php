@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Site;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Stitcher;

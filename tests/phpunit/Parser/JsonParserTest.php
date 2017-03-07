@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class JsonParserTest extends TestCase
 {
-
     public function setUp() {
         Stitcher::create('./tests/config.yml');
     }

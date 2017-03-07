@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ImageParserTest extends TestCase
 {
-
     public function setUp() {
         Stitcher::create('./tests/config.yml');
     }
