@@ -25,6 +25,9 @@ class ParserFactory
      */
     private $container;
 
+    /**
+     * @var callable[]
+     */
     private static $typeFilters = [];
 
     /**
