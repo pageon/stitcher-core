@@ -3,7 +3,9 @@
 namespace Brendt\Stitcher;
 
 /**
- * @todo Change parsing to work the other way around
+ * Config helper class
+ *
+ * @package Brendt\Stitcher
  */
 class Config
 {
