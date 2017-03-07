@@ -29,16 +29,31 @@ use Symfony\Component\Yaml\Yaml;
 class Stitcher
 {
     /**
+     * @var ContainerBuilder
+     */
+    protected static $container;
+
+    /**
+     * @var array
+     */
+    protected static $configDefaults = [
+        'directories.src'      => './src',
+        'directories.public'   => './public',
+        'directories.cache'    => './.cache',
+        'meta'                 => [],
+        'minify'               => false,
+        'engines.template'     => 'smarty',
+        'engines.image'        => 'gd',
+        'engines.optimizer'    => true,
+        'caches.image'         => true,
+    ];
+
+    /**
      * A collection of promises representing Stitcher's state.
      *
      * @var Promise[]
      */
     private $promises = [];
-
-    /**
-     * @var ContainerBuilder
-     */
-    protected static $container;
 
     /**
      * @var string
@@ -62,7 +77,7 @@ class Stitcher
      * @param string $publicDir
      * @param string $templateDir
      */
-    private function __construct(string $srcDir = './src', string $publicDir = './public', ?string $templateDir = './src') {
+    private function __construct(?string $srcDir = './src', ?string $publicDir = './public', ?string $templateDir = './src/template') {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
         $this->templateDir = $templateDir;
@@ -72,10 +87,12 @@ class Stitcher
      * Static constructor
      *
      * @param string $configPath
+     * @param array  $defaultConfig
      *
      * @return Stitcher
+     *
      */
-    public static function create($configPath = './config.yml') : Stitcher {
+    public static function create(string $configPath = './config.yml', array $defaultConfig = []) : Stitcher {
         self::$container = new ContainerBuilder();
 
         $configPathParts = explode('/', $configPath);
@@ -88,21 +105,35 @@ class Stitcher
 
         /** @var SplFileInfo $configFile */
         foreach ($configFiles as $configFile) {
-            $config = Config::flatten(Yaml::parse($configFile->getContents()));
+            $config = array_merge(
+                self::$configDefaults,
+                Yaml::parse($configFile->getContents()),
+                $defaultConfig
+            );
 
-            foreach ($config as $key => $value) {
+            $flatConfig = Config::flatten($config);
+            $flatConfig['directories.template'] = $flatConfig['directories.template'] ?? $flatConfig['directories.src'];
+
+            foreach ($flatConfig as $key => $value) {
                 self::$container->setParameter($key, $value);
             }
 
-            $srcDir = $config['directories.src'] ?? $srcDir;
-            $publicDir = $config['directories.public'] ?? $publicDir;
-            $templateDir = $config['directories.template'] ?? $templateDir;
+            $srcDir = $flatConfig['directories.src'] ?? $srcDir;
+            $publicDir = $flatConfig['directories.public'] ?? $publicDir;
+            $templateDir = $flatConfig['directories.template'] ?? $templateDir;
+
+            if (isset($config['meta'])) {
+                self::$container->setParameter('meta', $config['meta']);
+            }
         }
+
+        $stitcher = new self($srcDir, $publicDir, $templateDir);
+        self::$container->set('stitcher', $stitcher);
 
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
         $serviceLoader->load('services.yml');
 
-        return new self($srcDir, $publicDir, $templateDir);
+        return $stitcher;
     }
 
     /**
@@ -143,7 +174,7 @@ class Stitcher
      * @see \Brendt\Stitcher\Controller\DevController::run()
      * @see \Brendt\Stitcher\Adapter\CollectionAdapter::transform()
      */
-    public function stitch(array $routes = [], string $filterValue = null) {
+    public function stitch($routes = [], string $filterValue = null) {
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = self::get('factory.template');
         $templateEngine = $templateEngineFactory->getDefault();
@@ -168,8 +199,8 @@ class Stitcher
             $templateIsset = isset($templates[$page->getTemplatePath()]);
 
             if (!$templateIsset) {
-                if (isset($page['template'])) {
-                    throw new TemplateNotFoundException("Template {$page['template']} not found.");
+                if ($template = $page->getTemplatePath()) {
+                    throw new TemplateNotFoundException("Template {$template} not found.");
                 } else {
                     throw new TemplateNotFoundException('No template was set.');
                 }
@@ -233,8 +264,11 @@ class Stitcher
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
-        $templateEngine = self::get('engines.template');
+        /** @var TemplateEngineFactory $templateEngineFactory */
+        $templateEngineFactory = self::get('factory.template');
+        $templateEngine = $templateEngineFactory->getDefault();
         $templateExtension = $templateEngine->getTemplateExtension();
+
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in($this->templateDir)->name("*.{$templateExtension}");
         $templates = [];
@@ -318,15 +352,11 @@ class Stitcher
     public function save(array $blanket) {
         $fs = new Filesystem();
 
-        if (!$fs->exists($this->publicDir)) {
-            $fs->mkdir($this->publicDir);
-        }
-
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';
             }
-
+            
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
     }

@@ -3,18 +3,18 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
 use Brendt\Stitcher\Parser\FileParser;
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class FileParserTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests', 'config.yml');
-    }
-
+    /**
+     * @return FileParser
+     */
     public function createParser() {
-        return new FileParser();
+        Stitcher::create('./tests/config.yml');
+
+        return Stitcher::get('parser.file');
     }
 
     public function test_parse_css() {

@@ -21,7 +21,7 @@ class FileParser implements Parser
      *
      * @param string $srcDir
      */
-    public function __construct(string $srcDir) {
+    public function __construct($srcDir) {
         $this->srcDir = $srcDir;
     }
 

@@ -3,19 +3,19 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\FilterAdapter;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class FilterAdapterTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests');
-    }
-
+    /**
+     * @return FilterAdapter
+     */
     private function createAdapter() {
-        return new FilterAdapter();
+        Stitcher::create('./tests/config.yml');
+
+        return Stitcher::get('adapter.filter');
     }
 
     private function createPage() {

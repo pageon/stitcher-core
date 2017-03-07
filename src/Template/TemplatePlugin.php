@@ -68,7 +68,6 @@ class TemplatePlugin
         $this->srcDir = $srcDir;
         $this->minify = $minify;
 
-        // TODO: meta will break because of flattened config
         $this->meta = is_array($meta) ? $meta : [$meta];
     }
 

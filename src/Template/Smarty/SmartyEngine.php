@@ -17,7 +17,7 @@ class SmartyEngine extends Smarty implements TemplateEngine
      * @param string $templateDir
      * @param string $cacheDir
      */
-    public function __construct(string $templateDir, string $cacheDir) {
+    public function __construct(?string $templateDir = './src', ?string $cacheDir = './') {
         parent::__construct();
 
         $this->addTemplateDir($templateDir);

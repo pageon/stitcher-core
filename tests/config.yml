@@ -3,6 +3,7 @@ directories:
     public: ./tests/public
     image: ./tests/public/img
     cache: ./tests/.cache
+    template: ./tests/src/template
 
 engines:
     image: gd

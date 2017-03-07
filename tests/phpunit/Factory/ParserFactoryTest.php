@@ -7,18 +7,20 @@ use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Parser\JsonParser;
 use Brendt\Stitcher\Parser\MarkdownParser;
 use Brendt\Stitcher\Parser\YamlParser;
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class ParserFactoryTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
+    /**
+     * @return ParserFactory
+     */
     protected function createParserFactory() {
-        return new ParserFactory();
+        return Stitcher::get('factory.parser');
     }
 
     public function test_parser_factory_folder() {

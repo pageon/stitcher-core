@@ -3,19 +3,19 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\CollectionAdapter;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class CollectionAdapterTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests');
-    }
-
+    /**
+     * @return CollectionAdapter
+     */
     private function createAdapter() {
-        return new CollectionAdapter();
+        Stitcher::create('./tests/config.yml');
+
+        return Stitcher::get('adapter.collection');
     }
 
     private function createPage() {
@@ -62,7 +62,7 @@ class CollectionAdapterTest extends TestCase
     }
 
     /**
-     * @expectedException Brendt\Stitcher\Exception\VariableNotFoundException
+     * @expectedException \Brendt\Stitcher\Exception\VariableNotFoundException
      */
     public function test_collection_adapter_throws_variable_not_found_exception() {
         $page = new Page('/{id}', [
@@ -84,7 +84,7 @@ class CollectionAdapterTest extends TestCase
     }
 
     /**
-     * @expectedException Brendt\Stitcher\exception\IdFieldNotFoundException
+     * @expectedException \Brendt\Stitcher\exception\IdFieldNotFoundException
      */
     public function test_collection_adapter_throws_id_field_not_found_exception() {
         $page = new Page('/{wrongId}', [
