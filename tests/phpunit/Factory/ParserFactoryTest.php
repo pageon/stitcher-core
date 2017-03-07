@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Factory;
 
 use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Parser\FileParser;
 use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Parser\JsonParser;
 use Brendt\Stitcher\Parser\MarkdownParser;
@@ -49,6 +50,13 @@ class ParserFactoryTest extends TestCase
 
         $this->assertInstanceOf(MarkdownParser::class, $factory->getByFileName('churches.md'));
         $this->assertInstanceOf(MarkdownParser::class, $factory->getByType(ParserFactory::EXTENSION_MD));
+    }
+
+    public function test_parser_factory_js() {
+        $factory = $this->createParserFactory();
+
+        $this->assertInstanceOf(FileParser::class, $factory->getByFileName('script.js'));
+        $this->assertInstanceOf(FileParser::class, $factory->getByType(ParserFactory::EXTENSION_JS));
     }
 
     public function test_get_parser_returns_null_when_no_string_provided() {
