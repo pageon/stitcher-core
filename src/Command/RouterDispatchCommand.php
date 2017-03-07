@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Command;
 
+use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteCommand extends Command
+class RouterDispatchCommand extends Command
 {
 
     const URL = 'url';
@@ -35,7 +36,10 @@ class RouteCommand extends Command
         $site = $stitcher->loadSite();
 
         $url = $input->getArgument(self::URL);
-        $routes = array_keys($site);
+        $routes = [];
+        foreach ($site as $page) {
+            $routes[] = $page->getId();
+        }
         $routeCollection = new RouteCollection();
 
         foreach ($routes as $route) {

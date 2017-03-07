@@ -27,6 +27,9 @@ directories:
     # Cache directory used by smarty
     cache: ./cache
 
+    # Template directory
+    template: ./src/template
+
 meta:
     viewport: width=device-width, initial-scale=1
 
