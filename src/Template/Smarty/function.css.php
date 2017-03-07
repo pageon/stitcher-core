@@ -12,7 +12,7 @@ use Brendt\Stitcher\Template\TemplatePlugin;
  */
 function smarty_function_css($params) {
     /** @var TemplatePlugin $plugin */
-    $plugin = Stitcher::get('engine.plugin');
+    $plugin = Stitcher::get('service.template.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
     $inline = isset($params['inline']);

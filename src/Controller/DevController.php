@@ -31,9 +31,10 @@ class DevController
      * @param string $name
      */
     public function __construct($path = './', $name = 'config.dev.yml') {
-        Config::load($path, $name);
+        $path = rtrim($path, '/');
+        $name = ltrim($name, '/');
 
-        $this->stitcher = new Stitcher();
+        $this->stitcher = Stitcher::create("{$path}/{$name}");
     }
 
     /**

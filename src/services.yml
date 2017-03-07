@@ -1,6 +1,6 @@
 services:
     stitcher:
-        class: Brendt\Stitcher\Stitcher
+        synthetic: true
 
     # Adapter
     adapter.collection:
@@ -23,7 +23,7 @@ services:
         class: Brendt\Stitcher\Parser\FileParser
         arguments: ['%directories.src%']
     parser.folder:
-        class: Brendt\Stitcher\Parser\FileParser
+        class: Brendt\Stitcher\Parser\FolderParser
         arguments: ['@factory.parser', '%directories.src%']
     parser.image:
         class: Brendt\Stitcher\Parser\ImageParser
@@ -49,7 +49,7 @@ services:
         class: Brendt\Stitcher\Factory\AdapterFactory
         arguments: ['@service_container']
     factory.template:
-        class: Brendt\Stitcher\Factory\TemplateFactory
+        class: Brendt\Stitcher\Factory\TemplateEngineFactory
         arguments: ['@service_container', '%engines.template%']
     factory.image:
         class: Brendt\Image\ResponsiveFactory
@@ -62,7 +62,7 @@ services:
             config:
                 driver: '%engines.image%'
                 publicPath: '%directories.public%'
-                sourcePath: '%engines.image%'
+                sourcePath: '%directories.src%'
                 enableCache: '%caches.image%'
                 optimize: '%engines.optimizer%'
                 async: true
@@ -72,10 +72,12 @@ services:
         class: Leafo\ScssPhp\Compiler
         calls:
             - [addImportPath, ['%directories.src%']]
+    service.minifier.css:
+        class: \CSSmin
     service.twig:
         class: Brendt\Stitcher\Template\Twig\TwigEngine
         arguments: ['%directories.template%', '@service.template.plugin']
-    service.smart:
+    service.smarty:
         class: Brendt\Stitcher\Template\Smarty\SmartyEngine
         arguments: ['%directories.template%', '%directories.cache%']
     service.template.plugin:

@@ -2,26 +2,28 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Template;
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
 class SmartyEngineTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
+    /**
+     * @return SmartyEngine
+     */
     private function createEngine() {
-        return new SmartyEngine();
+        return Stitcher::get('service.smarty');
     }
 
     private function getFiles() {
         $finder = new Finder();
 
-        return $finder->files()->in(Config::get('directories.src') . '/template')->name('index.tpl');
+        return $finder->files()->in('./tests/src/template')->name('index.tpl');
     }
 
     public function test_smarty_renders_from_path() {
@@ -76,7 +78,7 @@ class SmartyEngineTest extends TestCase
 
     public function test_smarty_image() {
         $engine = $this->createEngine();
-        $files = Finder::create()->files()->in(Config::get('directories.src') . '/template')->name('home.tpl')->getIterator();
+        $files = Finder::create()->files()->in('./tests/src/template')->name('home.tpl')->getIterator();
         $files->rewind();
         $template = $files->current();
 
@@ -91,7 +93,7 @@ class SmartyEngineTest extends TestCase
 
     public function test_smarty_file() {
         $engine = $this->createEngine();
-        $files = Finder::create()->files()->in(Config::get('directories.src') . '/template')->name('fileTest.tpl')->getIterator();
+        $files = Finder::create()->files()->in('./tests/src/template')->name('fileTest.tpl')->getIterator();
         $files->rewind();
         $template = $files->current();
 

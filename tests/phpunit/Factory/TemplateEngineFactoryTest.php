@@ -4,6 +4,7 @@ namespace Brendt\Stitcher\Tests\Phpunit\Factory;
 
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\smarty\SmartyEngine;
 use Brendt\Stitcher\Template\twig\TwigEngine;
 use PHPUnit\Framework\TestCase;
@@ -12,11 +13,14 @@ class TemplateEngineFactoryTest extends TestCase
 {
 
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
+    /**
+     * @return TemplateEngineFactory
+     */
     protected function createTemplateEngineFactory() {
-        return new TemplateEngineFactory();
+        return Stitcher::get('factory.template');
     }
 
     public function test_factory_smarty() {
@@ -32,7 +36,7 @@ class TemplateEngineFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException Brendt\Stitcher\exception\UnknownEngineException
+     * @expectedException \Brendt\Stitcher\exception\UnknownEngineException
      */
     public function test_unknown_id_throws_exception() {
         $factory = $this->createTemplateEngineFactory();

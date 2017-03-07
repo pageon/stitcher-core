@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Template;
 
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;
 use PHPUnit\Framework\TestCase;
@@ -11,38 +12,36 @@ use Symfony\Component\Finder\Finder;
 
 class TemplatePluginTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     /**
      * @return TemplatePlugin
      */
     private function createEnginePlugin() {
-        return new TemplatePlugin();
+        return Stitcher::get('service.template.plugin');
     }
 
     /**
      * @return SmartyEngine
      */
     private function createSmarty() {
-        return new SmartyEngine();
+        return new SmartyEngine('./tests/src/template');
     }
 
     public function test_css_normal() {
-        $publicDir = Config::get('directories.public');
         $plugin = $this->createEnginePlugin();
         $finder = new Finder();
         $fs = new Filesystem();
-        $fs->remove("{$publicDir}/css");
+        $fs->remove("./tests/public/css");
 
         $result = $plugin->css('css/main.css');
 
         $this->assertEquals('<link rel="stylesheet" type="text/css" href="css/main.css">', $result);
-        $this->assertTrue($fs->exists("{$publicDir}/css/main.css"));
+        $this->assertTrue($fs->exists("./tests/public/css/main.css"));
 
-        $files = $finder->files()->in($publicDir)->path('css/main.css');
+        $files = $finder->files()->in('./tests/public')->path('css/main.css');
         foreach ($files as $file) {
             $this->assertContains('body {', $file->getContents());
         }
@@ -59,18 +58,17 @@ class TemplatePluginTest extends TestCase
     }
 
     public function test_sass_normal() {
-        $publicDir = Config::get('directories.public');
         $plugin = $this->createEnginePlugin();
         $finder = new Finder();
         $fs = new Filesystem();
-        $fs->remove("{$publicDir}/css");
+        $fs->remove("./tests/public/css");
 
         $result = $plugin->css('css/main.scss');
 
         $this->assertEquals('<link rel="stylesheet" type="text/css" href="css/main.css">', $result);
-        $this->assertTrue($fs->exists("{$publicDir}/css/main.css"));
+        $this->assertTrue($fs->exists("./tests/public/css/main.css"));
 
-        $files = $finder->files()->in($publicDir)->path('css/main.css');
+        $files = $finder->files()->in('./tests/public')->path('css/main.css');
         foreach ($files as $file) {
             $this->assertContains('p a {', $file->getContents());
         }
@@ -89,7 +87,7 @@ class TemplatePluginTest extends TestCase
     public function test_css_in_template() {
         $engine = $this->createSmarty();
 
-        $engine->addTemplateDir(Config::get('directories.src') . '/template');
+        $engine->addTemplateDir('./tests/src/template');
         $result = $engine->fetch('index.tpl');
 
         $this->assertContains('<style>', $result);
@@ -108,18 +106,17 @@ class TemplatePluginTest extends TestCase
     }
 
     public function test_js_normal() {
-        $publicDir = Config::get('directories.public');
         $plugin = $this->createEnginePlugin();
         $finder = new Finder();
         $fs = new Filesystem();
-        $fs->remove("{$publicDir}/js");
+        $fs->remove("./tests/public/js");
 
         $result = $plugin->js('js/main.js');
 
         $this->assertEquals('<script src="js/main.js"></script>', $result);
-        $this->assertTrue($fs->exists("{$publicDir}/js/main.js"));
+        $this->assertTrue($fs->exists("./tests/public/js/main.js"));
 
-        $files = $finder->files()->in($publicDir)->path('js/main.js');
+        $files = $finder->files()->in('./tests/public')->path('js/main.js');
         foreach ($files as $file) {
             $this->assertContains("var foo = 'bar';", $file->getContents());
         }
@@ -136,7 +133,7 @@ class TemplatePluginTest extends TestCase
     public function test_js_in_template() {
         $engine = $this->createSmarty();
 
-        $engine->addTemplateDir(Config::get('directories.src') . '/template');
+        $engine->addTemplateDir('./tests/src/template');
         $result = $engine->fetch('index.tpl');
 
         $this->assertContains('<script>', $result);
@@ -155,7 +152,7 @@ class TemplatePluginTest extends TestCase
     public function test_meta_in_template() {
         $engine = $this->createSmarty();
 
-        $engine->addTemplateDir(Config::get('directories.src') . '/template');
+        $engine->addTemplateDir('./tests/src/template');
         $result = $engine->fetch('index.tpl');
 
         $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $result);
@@ -173,16 +170,13 @@ class TemplatePluginTest extends TestCase
 
     public function test_file() {
         $plugin = $this->createEnginePlugin();
-
         $path = $plugin->file('img/blue.jpg');
-
-        $publicDir = Config::get('directories.public');
         $fs = new Filesystem();
 
         $this->assertTrue(strpos($path, '/') === 0);
 
         $path = trim($path, '/');
-        $this->assertTrue($fs->exists("{$publicDir}/{$path}"));
+        $this->assertTrue($fs->exists("./tests/public/{$path}"));
     }
 
 }

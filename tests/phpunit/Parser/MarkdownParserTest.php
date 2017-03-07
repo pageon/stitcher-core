@@ -2,19 +2,18 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-use Brendt\Stitcher\Config;
-use Brendt\Stitcher\Parser\MarkdownParser;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class MarkdownParserTest extends TestCase
 {
 
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     protected function createMarkdownParser() {
-        return new MarkdownParser('./install/data');
+                return Stitcher::get('parser.markdown');
     }
 
     public function test_markdown_parser_creates_html() {
