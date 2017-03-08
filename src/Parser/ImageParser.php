@@ -14,7 +14,6 @@ use Brendt\Stitcher\Stitcher;
  */
 class ImageParser implements Parser
 {
-
     /**
      * @var Stitcher
      */

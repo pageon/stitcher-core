@@ -46,7 +46,7 @@ class OrderAdapter extends AbstractAdapter
         $config = isset($config['variable']) ? [$config['variable'] => $config] : $config;
 
         foreach ($config as $variable => $order) {
-            $this->validateConfig($order);
+            $this->validateConfig((array) $order);
 
             $field = $order['field'];
             $direction = $order['direction'] ?? null;

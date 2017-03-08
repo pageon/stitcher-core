@@ -382,7 +382,7 @@ class Stitcher
     }
 
     /**
-     * @param Promise $promise
+     * @param Promise|null $promise
      *
      * @return Stitcher
      */
