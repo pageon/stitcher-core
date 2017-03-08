@@ -53,12 +53,12 @@ class JsonParser extends AbstractArrayParser
                 throw new ParserException("{$file->getRelativePathname()}: {$error}");
             }
 
-            if (isset($parsed['entries'])) {
-                $data += $parsed['entries'];
-            } else {
+            if (!isset($parsed['entries'])) {
                 $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
-                $data[$id] = $parsed;
+                $parsed = ['entries' => [$id => $parsed]];
             }
+
+            $data += $parsed['entries'];
         }
 
         $data = $this->parseArrayData($data);
