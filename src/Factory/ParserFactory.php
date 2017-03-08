@@ -26,7 +26,7 @@ class ParserFactory
     private $container;
 
     /**
-     * @var callable[]
+     * @var array
      */
     private static $typeFilters = [];
 
@@ -91,6 +91,10 @@ class ParserFactory
 
         $type = self::PARSER_DEFAULT;
 
+        /**
+         * @var string     $filterType
+         * @var callable[] $filters
+         */
         foreach (self::$typeFilters as $filterType => $filters) {
             foreach ($filters as $filterCheck) {
                 if ($filterCheck($fileName)) {

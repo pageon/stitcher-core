@@ -189,7 +189,7 @@ class Stitcher
         $templateEngine = $templateEngineFactory->getDefault();
         $blanket = [];
 
-        $site = $this->loadSite($routes);
+        $site = $this->loadSite((array) $routes);
         $templates = $this->loadTemplates();
 
         foreach ($site as $page) {
@@ -230,15 +230,14 @@ class Stitcher
      * @see \Brendt\Stitcher\Site\Page
      * @see \Brendt\Stitcher\Site\Site
      */
-    public function loadSite($routes = []) : Site {
+    public function loadSite(array $routes = []) : Site {
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in("{$this->srcDir}/site")->name('*.yml');
         $site = new Site();
-        $routes = (array) $routes;
 
         foreach ($files as $file) {
             try {
-                $fileContents = Yaml::parse($file->getContents());
+                $fileContents = (array) Yaml::parse($file->getContents());
             } catch (ParseException $e) {
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
