@@ -234,7 +234,7 @@ class Stitcher
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in("{$this->srcDir}/site")->name('*.yml');
         $site = new Site();
-        $routes = is_array($routes) ? $routes: [$routes];
+        $routes = (array) $routes;
 
         foreach ($files as $file) {
             try {
