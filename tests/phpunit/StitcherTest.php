@@ -214,6 +214,11 @@ class StitcherTest extends TestCase
             $this->assertContains('Church', $html);
             $this->assertContains('Intro', $html);
         }
+
+        $this->assertArrayHasKey('/churches/church-a', $blanket);
+        $this->assertArrayHasKey('/churches/church-b', $blanket);
+        $this->assertArrayNotHasKey('/churches', $blanket);
+        $this->assertArrayNotHasKey('/', $blanket);
     }
 
     public function test_stitch_route_multiple() {

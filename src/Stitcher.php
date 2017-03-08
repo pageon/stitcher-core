@@ -187,24 +187,12 @@ class Stitcher
         /** @var TemplateEngineFactory $templateEngineFactory */
         $templateEngineFactory = self::get('factory.template');
         $templateEngine = $templateEngineFactory->getDefault();
-
         $blanket = [];
 
-        $site = $this->loadSite();
+        $site = $this->loadSite($routes);
         $templates = $this->loadTemplates();
 
-        if (is_string($routes)) {
-            $routes = [$routes];
-        }
-
         foreach ($site as $page) {
-            $route = $page->getId();
-
-            $skipRoute = count($routes) && !in_array($route, $routes);
-            if ($skipRoute) {
-                continue;
-            }
-
             $templateIsset = isset($templates[$page->getTemplatePath()]);
 
             if (!$templateIsset) {
@@ -235,16 +223,18 @@ class Stitcher
      * Load a site from YAML configuration files in the `directories.src`/site directory.
      * All YAML files are loaded and parsed into Page objects and added to a Site collection.
      *
+     * @param array $routes
+     *
      * @return Site
      * @throws InvalidSiteException
-     *
      * @see \Brendt\Stitcher\Site\Page
      * @see \Brendt\Stitcher\Site\Site
      */
-    public function loadSite() {
+    public function loadSite($routes = []) : Site {
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in("{$this->srcDir}/site")->name('*.yml');
         $site = new Site();
+        $routes = is_array($routes) ? $routes: [$routes];
 
         foreach ($files as $file) {
             try {
@@ -258,6 +248,10 @@ class Stitcher
             }
 
             foreach ($fileContents as $route => $data) {
+                if (count($routes) && !in_array($route, $routes)) {
+                    continue;
+                }
+
                 $page = new Page($route, $data);
                 $site->addPage($page);
             }
