@@ -47,24 +47,24 @@ class YamlParser extends AbstractArrayParser
 
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in($this->srcDir)->path($path);
-        $yamlData = [];
+        $data = [];
 
         foreach ($files as $file) {
             try {
                 $parsed = Yaml::parse($file->getContents());
 
-                if (isset($parsed['entries'])) {
-                    $yamlData += $parsed['entries'];
-                } else {
+                if (!isset($parsed['entries'])) {
                     $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
-                    $yamlData[$id] = $parsed;
+                    $parsed = ['entries' => [$id => $parsed]];
                 }
+
+                $data += $parsed['entries'];
             } catch (ParseException $e) {
                 throw new ParserException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
         }
 
-        $parsedEntries = $this->parseArrayData($yamlData);
+        $parsedEntries = $this->parseArrayData($data);
 
         return $parsedEntries;
     }
