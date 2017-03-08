@@ -50,7 +50,7 @@ class RouterListCommand extends Command
 
             $line = "- <fg=green>{$route}</>: {$page['template']}.tpl";
 
-            if ($data) {
+            if (!empty($data)) {
                 $line .= "\n\t";
                 $line .= '$' . implode(', $', $data);
             }

@@ -77,7 +77,7 @@ class CleanCommand extends Command
             $log[] = "Removed the cache directory: {$cacheDir}";
         }
 
-        if ($log) {
+        if (!empty($log)) {
             $output->writeln("Successfully cleaned up\n");
 
             foreach ($log as $line) {
