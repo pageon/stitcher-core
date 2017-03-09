@@ -41,6 +41,8 @@ class GenerateCommand extends Command
                 $output->writeln("Site successfully generated in <fg=green>{$publicDir}</>.");
             }
         });
+
+        \Amp\wait($stitcher->getPromise());
     }
 
 }
