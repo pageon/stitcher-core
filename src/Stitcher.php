@@ -395,10 +395,17 @@ class Stitcher
     }
 
     /**
+     * @return Promise
+     */
+    public function getPromise() : Promise {
+        return \Amp\all($this->promises);
+    }
+
+    /**
      * @param callable $callback
      */
     public function done(callable $callback) {
-        $donePromise = \Amp\all($this->promises);
+        $donePromise = $this->getPromise();
 
         $donePromise->when($callback);
     }

@@ -102,6 +102,8 @@ class DevController
 
         $blanket = $this->stitcher->stitch($route, $id);
 
+        \Amp\wait($this->stitcher->getPromise());
+
         if (isset($blanket[$route])) {
             return $blanket[$route];
         }
