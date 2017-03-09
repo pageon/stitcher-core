@@ -14,14 +14,20 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class CleanCommand extends Command
 {
-
     const FORCE = 'force';
+
+    /**
+     * @var Filesystem
+     */
+    private $fs;
 
     protected function configure() {
         $this->setName('site:clean')
             ->setDescription('Do a cleanup')
             ->setHelp("This command cleans all generated files.")
             ->addOption(self::FORCE, InputArgument::OPTIONAL);
+
+        $this->fs = new Filesystem();
     }
 
     /**
@@ -37,56 +43,84 @@ class CleanCommand extends Command
         $publicDir = Stitcher::getParameter('directories.public');
         $cacheDir = Stitcher::getParameter('directories.cache');
 
-        if (!$force) {
-            $questionHelper = $this->getHelper('question');
-            $question = new Question("Are you sure you want to clean all generated files ({$publicDir} and {$cacheDir}) [y/N] ", false);
 
-            if (!$questionHelper->ask($input, $output, $question)) {
-                return;
-            }
-        }
+        $this->checkForcedClean($force, $publicDir, $cacheDir, $input, $output);
 
-        $fs = new Filesystem();
-        $finder = new Finder();
         $log = [];
+        $log[] = $this->cleanPublicDir($publicDir);
+        $log[] = $this->cleanCacheDir($cacheDir);
 
-        if ($fs->exists($publicDir)) {
-            $publicDirectories = $finder->directories()->in($publicDir);
-            $directoryPaths = [];
+        $output->writeln("Successfully cleaned up\n");
 
-            /** @var SplFileInfo $directory */
-            foreach ($publicDirectories as $directory) {
-                $directoryPaths[] = $directory->getPathname();
-            }
-
-            $fs->remove($directoryPaths);
-
-            $publicFiles = $finder->files()->in($publicDir)->notName('.htaccess')->ignoreDotFiles(true);
-
-            /** @var SplFileInfo $file */
-            foreach ($publicFiles as $file) {
-                $fs->remove($file->getPathname());
-            }
-
-            $log[] = "Cleaned the public directory: {$publicDir}";
+        foreach ($log as $line) {
+            $output->writeln("- {$line}");
         }
 
-        if ($fs->exists($cacheDir)) {
-            $fs->remove($cacheDir);
+        $output->writeln("\nRun <fg=green>site:generate</> to generate these files again.");
+    }
 
-            $log[] = "Removed the cache directory: {$cacheDir}";
+    /**
+     * @param bool            $force
+     * @param string          $publicDir
+     * @param string          $cacheDir
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
+    private function checkForcedClean($force = false, string $publicDir, string $cacheDir, InputInterface $input, OutputInterface $output) : void {
+        if ($force) {
+            return;
         }
 
-        if (!empty($log)) {
-            $output->writeln("Successfully cleaned up\n");
+        $questionHelper = $this->getHelper('question');
+        $question = new Question("Are you sure you want to clean all generated files ({$publicDir} and {$cacheDir}) [y/N] ", false);
 
-            foreach ($log as $line) {
-                $output->writeln("- {$line}");
-            }
-
-            $output->writeln("\nRun <fg=green>site:generate</> to generate these files again.");
-        } else {
-            $output->writeln('No files were found');
+        if (!$questionHelper->ask($input, $output, $question)) {
+            return;
         }
+    }
+
+    /**
+     * @param string $publicDir
+     *
+     * @return null|string
+     */
+    private function cleanPublicDir(string $publicDir) : string {
+        if (!$this->fs->exists($publicDir)) {
+            return '';
+        }
+
+        $publicDirectories = Finder::create()->directories()->in($publicDir);
+        $directoryPaths = [];
+
+        /** @var SplFileInfo $directory */
+        foreach ($publicDirectories as $directory) {
+            $directoryPaths[] = $directory->getPathname();
+        }
+
+        $this->fs->remove($directoryPaths);
+
+        $publicFiles = Finder::create()->files()->in($publicDir)->notName('.htaccess')->ignoreDotFiles(true);
+
+        /** @var SplFileInfo $file */
+        foreach ($publicFiles as $file) {
+            $this->fs->remove($file->getPathname());
+        }
+
+        return "Cleaned the public directory: {$publicDir}";
+    }
+
+    /**
+     * @param string $cacheDir
+     *
+     * @return null|string
+     */
+    private function cleanCacheDir(string $cacheDir) : ?string {
+        if (!$this->fs->exists($cacheDir)) {
+            return '';
+        }
+
+        $this->fs->remove($cacheDir);
+
+        return "Removed the cache directory: {$cacheDir}";
     }
 }

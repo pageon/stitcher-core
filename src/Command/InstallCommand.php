@@ -30,7 +30,8 @@ class InstallCommand extends Command
     }
 
     protected function configure() {
-        $this->setName('site:install')
+        $this->setName('install')
+            ->setAliases(['site:install'])
             ->setDescription('Setup a new Stitcher installation')
             ->setHelp("This command will generate several files as a base installation. (Only if they don't exist yet.)
             

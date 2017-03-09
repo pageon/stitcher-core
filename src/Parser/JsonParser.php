@@ -13,7 +13,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class JsonParser extends AbstractArrayParser
 {
-
     /**
      * @var string
      */
