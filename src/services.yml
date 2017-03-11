@@ -65,7 +65,7 @@ services:
                 sourcePath: '%directories.src%'
                 enableCache: '%caches.image%'
                 optimize: '%engines.optimizer%'
-                async: true
+                async: '%engines.async%'
 
     # Service
     service.sass:

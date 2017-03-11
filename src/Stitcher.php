@@ -37,15 +37,16 @@ class Stitcher
      * @var array
      */
     protected static $configDefaults = [
-        'directories.src'      => './src',
-        'directories.public'   => './public',
-        'directories.cache'    => './.cache',
-        'meta'                 => [],
-        'minify'               => false,
-        'engines.template'     => 'smarty',
-        'engines.image'        => 'gd',
-        'engines.optimizer'    => true,
-        'caches.image'         => true,
+        'directories.src'    => './src',
+        'directories.public' => './public',
+        'directories.cache'  => './.cache',
+        'meta'               => [],
+        'minify'             => false,
+        'engines.template'   => 'smarty',
+        'engines.image'      => 'gd',
+        'engines.optimizer'  => true,
+        'engines.async'      => true,
+        'caches.image'       => true,
     ];
 
     /**
@@ -354,7 +355,7 @@ class Stitcher
             if ($path === '/') {
                 $path = 'index';
             }
-            
+
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
     }
