@@ -2,20 +2,18 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Exception\ParserException;
-use Brendt\Stitcher\Parser\JsonParser;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class JsonParserTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     protected function createJsonParser() {
-        return new JsonParser('./setup/data');
+        return Stitcher::get('parser.json');
     }
 
     public function test_json_parser_parse_without_extension() {

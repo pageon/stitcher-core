@@ -2,25 +2,22 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-use Brendt\Stitcher\Config;
-use Brendt\Stitcher\Parser\ImageParser;
-use Brendt\Stitcher\Parser\YamlParser;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ImageParserTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     protected function createImageParser() {
-        return new ImageParser();
+        return Stitcher::get('parser.image');
     }
 
     protected function createYamlParser() {
-        return new YamlParser();
+        return Stitcher::get('parser.yaml');
     }
 
     public function test_image_create() {

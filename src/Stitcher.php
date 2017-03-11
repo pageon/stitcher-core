@@ -2,14 +2,17 @@
 
 namespace Brendt\Stitcher;
 
+use AsyncInterop\Promise;
+use Brendt\Stitcher\Adapter\Adapter;
 use Brendt\Stitcher\Exception\InvalidSiteException;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
-use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
-use Brendt\Stitcher\Template\TemplateEngine;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -23,30 +26,133 @@ use Symfony\Component\Yaml\Yaml;
  * The stitching process is done in several steps, with the final result being a fully rendered website in the
  * `directories.public` folder.
  */
-class Stitcher {
+class Stitcher
+{
+    /**
+     * @var ContainerBuilder
+     */
+    protected static $container;
 
     /**
-     * A collection of all templates available when rendering a Stitcher application.
+     * @var array
+     */
+    protected static $configDefaults = [
+        'directories.src'    => './src',
+        'directories.public' => './public',
+        'directories.cache'  => './.cache',
+        'meta'               => [],
+        'minify'             => false,
+        'engines.template'   => 'smarty',
+        'engines.image'      => 'gd',
+        'engines.optimizer'  => true,
+        'engines.async'      => true,
+        'caches.image'       => true,
+    ];
+
+    /**
+     * A collection of promises representing Stitcher's state.
      *
-     * @var SplFileInfo[]
+     * @var Promise[]
      */
-    protected $templates;
+    private $promises = [];
 
     /**
-     * The template engine which is configured via `engines.template`.
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * @var string
+     */
+    private $publicDir;
+
+    /**
+     * @var string
+     */
+    private $templateDir;
+
+    /**
+     * @see \Brendt\Stitcher\Stitcher::create()
      *
-     * @var TemplateEngine
+     * @param string $srcDir
+     * @param string $publicDir
+     * @param string $templateDir
      */
-    private $templateEngine;
+    private function __construct(?string $srcDir = './src', ?string $publicDir = './public', ?string $templateDir = './src/template') {
+        $this->srcDir = $srcDir;
+        $this->publicDir = $publicDir;
+        $this->templateDir = $templateDir;
+    }
 
     /**
-     * Stitcher constructor.
+     * Static constructor
+     *
+     * @param string $configPath
+     * @param array  $defaultConfig
+     *
+     * @return Stitcher
+     *
      */
-    public function __construct() {
-        /** @var TemplateEngineFactory $templateEngineFactory */
-        $templateEngineFactory = Config::getDependency('factory.template.engine');
+    public static function create(string $configPath = './config.yml', array $defaultConfig = []) : Stitcher {
+        self::$container = new ContainerBuilder();
 
-        $this->templateEngine = $templateEngineFactory->getByType(Config::get('engines.template'));
+        $configPathParts = explode('/', $configPath);
+        $configFileName = array_pop($configPathParts);
+        $configPath = implode('/', $configPathParts) . '/';
+        $configFiles = Finder::create()->files()->in($configPath)->name($configFileName);
+        $srcDir = null;
+        $publicDir = null;
+        $templateDir = null;
+
+        /** @var SplFileInfo $configFile */
+        foreach ($configFiles as $configFile) {
+            $config = array_merge(
+                self::$configDefaults,
+                Yaml::parse($configFile->getContents()),
+                $defaultConfig
+            );
+
+            $flatConfig = Config::flatten($config);
+            $flatConfig['directories.template'] = $flatConfig['directories.template'] ?? $flatConfig['directories.src'];
+
+            foreach ($flatConfig as $key => $value) {
+                self::$container->setParameter($key, $value);
+            }
+
+            $srcDir = $flatConfig['directories.src'] ?? $srcDir;
+            $publicDir = $flatConfig['directories.public'] ?? $publicDir;
+            $templateDir = $flatConfig['directories.template'] ?? $templateDir;
+
+            if (isset($config['meta'])) {
+                self::$container->setParameter('meta', $config['meta']);
+            }
+        }
+
+        $stitcher = new self($srcDir, $publicDir, $templateDir);
+        self::$container->set('stitcher', $stitcher);
+
+        $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
+        $serviceLoader->load('services.yml');
+
+        return $stitcher;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return mixed
+     */
+    public static function get(string $id) {
+        return self::$container->get($id);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public static function getParameter(string $key) {
+        return self::$container->getParameter($key);
     }
 
     /**
@@ -78,29 +184,21 @@ class Stitcher {
      * @see \Brendt\Stitcher\Controller\DevController::run()
      * @see \Brendt\Stitcher\Adapter\CollectionAdapter::transform()
      */
-    public function stitch($routes = [], $filterValue = null) {
+    public function stitch($routes = [], string $filterValue = null) {
+        /** @var TemplateEngineFactory $templateEngineFactory */
+        $templateEngineFactory = self::get('factory.template');
+        $templateEngine = $templateEngineFactory->getDefault();
         $blanket = [];
 
-        $site = $this->loadSite();
+        $site = $this->loadSite((array) $routes);
         $templates = $this->loadTemplates();
 
-        if (is_string($routes)) {
-            $routes = [$routes];
-        }
-
         foreach ($site as $page) {
-            $route = $page->getId();
-
-            $skipRoute = count($routes) && !in_array($route, $routes);
-            if ($skipRoute) {
-                continue;
-            }
-
             $templateIsset = isset($templates[$page->getTemplatePath()]);
 
             if (!$templateIsset) {
-                if (isset($page['template'])) {
-                    throw new TemplateNotFoundException("Template {$page['template']} not found.");
+                if ($template = $page->getTemplatePath()) {
+                    throw new TemplateNotFoundException("Template {$template} not found.");
                 } else {
                     throw new TemplateNotFoundException('No template was set.');
                 }
@@ -113,9 +211,9 @@ class Stitcher {
                 $entryPage = $this->parseVariables($entryPage);
 
                 // Render each page
-                $this->templateEngine->addTemplateVariables($entryPage->getVariables());
-                $blanket[$entryPage->getId()] = $this->templateEngine->renderTemplate($pageTemplate);
-                $this->templateEngine->clearTemplateVariables();
+                $templateEngine->addTemplateVariables($entryPage->getVariables());
+                $blanket[$entryPage->getId()] = $templateEngine->renderTemplate($pageTemplate);
+                $templateEngine->clearTemplateVariables();
             }
         }
 
@@ -126,29 +224,30 @@ class Stitcher {
      * Load a site from YAML configuration files in the `directories.src`/site directory.
      * All YAML files are loaded and parsed into Page objects and added to a Site collection.
      *
+     * @param array $routes
+     *
      * @return Site
      * @throws InvalidSiteException
-     *
      * @see \Brendt\Stitcher\Site\Page
      * @see \Brendt\Stitcher\Site\Site
      */
-    public function loadSite() {
-        $src = Config::get('directories.src');
-        $files = Finder::create()->files()->in("{$src}/site")->name('*.yml');
+    public function loadSite(array $routes = []) : Site {
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in("{$this->srcDir}/site")->name('*.yml');
         $site = new Site();
 
         foreach ($files as $file) {
             try {
-                $fileContents = Yaml::parse($file->getContents());
+                $fileContents = (array) Yaml::parse($file->getContents());
             } catch (ParseException $e) {
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
 
-            if (!is_array($fileContents)) {
-                continue;
-            }
-
             foreach ($fileContents as $route => $data) {
+                if (count($routes) && !in_array($route, $routes)) {
+                    continue;
+                }
+
                 $page = new Page($route, $data);
                 $site->addPage($page);
             }
@@ -164,9 +263,13 @@ class Stitcher {
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
-        $templateFolder = Config::get('directories.template');
-        $templateExtension = $this->templateEngine->getTemplateExtension();
-        $files = Finder::create()->files()->in($templateFolder)->name("*.{$templateExtension}");
+        /** @var TemplateEngineFactory $templateEngineFactory */
+        $templateEngineFactory = self::get('factory.template');
+        $templateEngine = $templateEngineFactory->getDefault();
+        $templateExtension = $templateEngine->getTemplateExtension();
+
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in($this->templateDir)->name("*.{$templateExtension}");
         $templates = [];
 
         foreach ($files as $file) {
@@ -190,23 +293,17 @@ class Stitcher {
      *
      * @see  \Brendt\Stitcher\Adapter\Adapter::transform()
      * @see  \Brendt\Stitcher\Controller\DevController::run()
-     *
-     * @todo When a page has multiple adapters, this function won't correctly parse more than one. This is considered a
-     *       bug, but not a major one because there are only two adapters at this moment, and they can not be used
-     *       together anyway.
-     *
      */
     public function parseAdapters(Page $page, $entryId = null) {
         if (!$page->getAdapters()) {
             return [$page->getId() => $page];
         }
 
-        /** @var AdapterFactory $adapterFactory */
-        $adapterFactory = Config::getDependency('factory.adapter');
         $pages = [$page];
 
         foreach ($page->getAdapters() as $type => $adapterConfig) {
-            $adapter = $adapterFactory->getByType($type);
+            /** @var Adapter $adapter */
+            $adapter = self::get("adapter.{$type}");
 
             if ($entryId !== null) {
                 $pages = $adapter->transform($pages, $entryId);
@@ -253,18 +350,13 @@ class Stitcher {
      */
     public function save(array $blanket) {
         $fs = new Filesystem();
-        $public = Config::get('directories.public');
-
-        if (!$fs->exists($public)) {
-            $fs->mkdir($public);
-        }
 
         foreach ($blanket as $path => $page) {
             if ($path === '/') {
                 $path = 'index';
             }
 
-            $fs->dumpFile($public . "/{$path}.html", $page);
+            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
     }
 
@@ -280,14 +372,43 @@ class Stitcher {
      */
     private function getData($value) {
         /** @var ParserFactory $parserFactory */
-        $parserFactory = Config::getDependency('factory.parser');
-        $parser = $parserFactory->getParser($value);
+        $parserFactory = self::get('factory.parser');
+        $parser = $parserFactory->getByFileName($value);
 
         if (!$parser) {
             return $value;
         }
 
         return $parser->parse($value);
+    }
+
+    /**
+     * @param Promise|null $promise
+     *
+     * @return Stitcher
+     */
+    public function addPromise(?Promise $promise) : Stitcher {
+        if ($promise) {
+            $this->promises[] = $promise;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Promise
+     */
+    public function getPromise() : Promise {
+        return \Amp\all($this->promises);
+    }
+
+    /**
+     * @param callable $callback
+     */
+    public function done(callable $callback) {
+        $donePromise = $this->getPromise();
+
+        $donePromise->when($callback);
     }
 
 }

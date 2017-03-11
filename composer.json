@@ -8,6 +8,8 @@
             "email" : "brent@pageon.be"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require" : {
         "PHP" : ">=7.1",
         "brendt/responsive-images": "^1.0",
@@ -21,11 +23,12 @@
         "symfony/dependency-injection" : "^3.1",
         "leafo/scssphp": "^0.6.6",
         "mrclay/minify": "^2.3",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "symfony/config": "^3.2"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",
-        "phpunit/phpunit" : "^5.6"
+        "phpunit/phpunit" : "^6.0"
     },
     "autoload" : {
         "psr-4" : {

@@ -2,20 +2,18 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Exception\ParserException;
-use Brendt\Stitcher\Parser\YamlParser;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class YamlParserTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     protected function createYamlParser() {
-        return new YamlParser();
+        return Stitcher::get('parser.yaml');
     }
 
     public function test_yaml_parser_parse_without_extension() {

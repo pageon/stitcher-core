@@ -17,6 +17,15 @@ class Site implements Iterator
         $this->position = 0;
     }
 
+    public function getPages() : array {
+        return $this->pages;
+    }
+
+    public function setPages(array $pages) {
+        $this->pages = $pages;
+        $this->rewind();
+    }
+
     public function addPage(Page $page) {
         $this->pages[] = $page;
     }

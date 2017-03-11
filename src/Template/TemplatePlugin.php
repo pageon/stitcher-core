@@ -5,6 +5,8 @@ namespace Brendt\Stitcher\Template;
 use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Factory\ParserFactory;
+use CSSmin;
+use JSMin;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -16,20 +18,68 @@ class TemplatePlugin
 {
 
     /**
+     * @var string
+     */
+    private $publicDir;
+
+    /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * @var ParserFactory
+     */
+    private $parserFactory;
+
+    /**
+     * @var ResponsiveFactory
+     */
+    private $responsiveFactory;
+
+    /**
+     * @var CSSmin
+     */
+    private $cssMinifier;
+
+    /**
+     * @var array
+     */
+    private $meta;
+
+    /**
+     * @var bool
+     */
+    private $minify;
+
+    public function __construct(
+        ParserFactory $parserFactory,
+        ResponsiveFactory $responsiveFactory,
+        CSSmin $cssMinifier,
+        string $publicDir,
+        string $srcDir,
+        $minify,
+        $meta
+    ) {
+        $this->parserFactory = $parserFactory;
+        $this->responsiveFactory = $responsiveFactory;
+        $this->cssMinifier = $cssMinifier;
+        $this->publicDir = $publicDir;
+        $this->srcDir = $srcDir;
+        $this->minify = $minify;
+
+        $this->meta = is_array($meta) ? $meta : [$meta];
+    }
+
+    /**
      * This function will read meta configuration from `meta` and output the corresponding meta tags.
      *
      * @return string
      */
     public function meta() {
-        $meta = Config::get('meta');
-
-        if (!is_array($meta)) {
-            $meta = [$meta];
-        }
-
         $result = [];
 
-        foreach ($meta as $name => $content) {
+        foreach ($this->meta as $name => $content) {
             if (!is_string($content)) {
                 continue;
             }
@@ -56,26 +106,20 @@ class TemplatePlugin
      * @return string
      */
     public function css($src, $inline = false) {
-        /** @var ParserFactory $factory */
-        $factory = Config::getDependency('factory.parser');
-
-        $parser = $factory->getParser($src);
+        $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
-        if (Config::get('minify')) {
-            /** @var \CSSmin $minifier */
-            $minifier = Config::getDependency('engine.minify.css');
-            $data = $minifier->run($data);
+        if ($this->minify) {
+            $data = $this->cssMinifier->run($data);
         }
 
         if ($inline) {
             return "<style>{$data}</style>";
         }
 
-        $publicDir = Config::get('directories.public');
         $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
         $fs = new Filesystem();
-        $dst = "{$publicDir}/$srcParsed";
+        $dst = "{$this->publicDir}/$srcParsed";
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);
@@ -101,23 +145,19 @@ class TemplatePlugin
      * @return string
      */
     public function js($src, $inline = false, $async = false) {
-        /** @var ParserFactory $factory */
-        $factory = Config::getDependency('factory.parser');
-
-        $parser = $factory->getParser($src);
+        $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
-        if (Config::get('minify')) {
-            $data = \JSMin::minify($data);
+        if ($this->minify) {
+            $data = JSMin::minify($data);
         }
 
         if ($inline) {
             return "<script>{$data}</script>";
         }
 
-        $publicDir = Config::get('directories.public');
         $fs = new Filesystem();
-        $dst = "{$publicDir}/$src";
+        $dst = "{$this->publicDir}/$src";
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);
@@ -145,9 +185,7 @@ class TemplatePlugin
      * @see \Brendt\Image\ResponsiveFactory
      */
     public function image($src) {
-        /** @var ResponsiveFactory $factory */
-        $factory = Config::getDependency('factory.image');
-        $image = $factory->create($src);
+        $image = $this->responsiveFactory->create($src);
 
         if (!$image) {
             return ['src' => null, 'srcset' => null, 'sizes' => null];
@@ -169,8 +207,7 @@ class TemplatePlugin
      */
     public function file($src) {
         $src = trim($src, '/');
-        $srcDir = Config::get('directories.src');
-        $files = Finder::create()->in($srcDir)->path($src)->getIterator();
+        $files = Finder::create()->in($this->srcDir)->path($src)->getIterator();
         $files->rewind();
         /** @var SplFileInfo $file */
         $file = $files->current();
@@ -180,8 +217,7 @@ class TemplatePlugin
         }
 
         $fs = new Filesystem();
-        $publicDir = Config::get('directories.public');
-        $dst = "{$publicDir}/{$src}";
+        $dst = "{$this->publicDir}/{$src}";
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);

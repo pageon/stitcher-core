@@ -27,6 +27,9 @@ directories:
     # The cache directory
     cache: ./cache
 
+    # Template directory
+    template: ./src/template
+
 # Configure meta tags
 meta:
     viewport: width=device-width, initial-scale=1
@@ -44,6 +47,10 @@ engines:
 
     # Try to use several image optimizers
     optimizer: true
+
+    # Use asynchronous processes to render resource-intensive stuff. Currently: images.
+    # NOTE: When using async rendering, the current image library in use might not be able to render very large images.
+    async: true
 
 caches:
     # Enable image caching while rendering

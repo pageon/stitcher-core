@@ -13,16 +13,13 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class StitcherTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests', 'config.yml');
-    }
-
     /**
+     * @param array $defaultConfig
+     *
      * @return Stitcher
      */
-    protected function createStitcher() {
-        return new Stitcher();
+    protected function createStitcher(array $defaultConfig = []) : Stitcher {
+        return Stitcher::create('./tests/config.yml', $defaultConfig);
     }
 
     private function createPage() {
@@ -85,13 +82,13 @@ class StitcherTest extends TestCase
                 'filter' => [
                     'entries' => [
                         'highlight' => true,
-                    ]
+                    ],
                 ],
-                'order' => [
-                    'variable' => 'entries',
-                    'field' => 'title',
+                'order'  => [
+                    'variable'  => 'entries',
+                    'field'     => 'title',
                     'direction' => '-',
-                ]
+                ],
             ],
         ]);
 
@@ -186,22 +183,21 @@ class StitcherTest extends TestCase
     }
 
     public function test_save() {
-        $public = Config::get('directories.public');
         $fs = new Filesystem();
-        $fs->remove($public);
+        $fs->remove('././tests/public/index.html/public');
 
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch();
         $stitcher->save($blanket);
 
-        $this->assertTrue($fs->exists("{$public}/churches/church-a.html"));
-        $this->assertTrue($fs->exists("{$public}/churches/church-b.html"));
-        $this->assertTrue($fs->exists("{$public}/churches.html"));
-        $this->assertTrue($fs->exists("{$public}/index.html"));
+        $this->assertTrue($fs->exists("./tests/public/index.html"));
+        $this->assertTrue($fs->exists("./tests/public/churches/church-a.html"));
+        $this->assertTrue($fs->exists("./tests/public/churches/church-b.html"));
+        $this->assertTrue($fs->exists("./tests/public/churches.html"));
 
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
-        $files = $finder->in("{$public}/churches")->name('church-a.html');
+        $files = $finder->in("./tests/public/churches")->name('church-a.html');
 
         foreach ($files as $file) {
             $html = $file->getContents();
@@ -218,6 +214,11 @@ class StitcherTest extends TestCase
             $this->assertContains('Church', $html);
             $this->assertContains('Intro', $html);
         }
+
+        $this->assertArrayHasKey('/churches/church-a', $blanket);
+        $this->assertArrayHasKey('/churches/church-b', $blanket);
+        $this->assertArrayNotHasKey('/churches', $blanket);
+        $this->assertArrayNotHasKey('/', $blanket);
     }
 
     public function test_stitch_route_multiple() {
@@ -232,18 +233,13 @@ class StitcherTest extends TestCase
     }
 
     public function test_stitch_with_twig() {
-        $templateEngineId = Config::get('templates');
-        Config::set('templates', TemplateEngineFactory::TWIG_ENGINE);
-
-        $stitcher = $this->createStitcher();
+        $stitcher = $this->createStitcher(['engines.template' => 'twig']);
         $blanket = $stitcher->stitch('/churches/{id}');
 
         foreach ($blanket as $page => $html) {
             $this->assertContains('Church', $html);
             $this->assertContains('Intro', $html);
         }
-
-        Config::set('templates', $templateEngineId);
     }
 
 }

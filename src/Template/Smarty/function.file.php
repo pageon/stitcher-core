@@ -1,6 +1,7 @@
 <?php
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\Template\TemplatePlugin;
 
 /**
  * @param $params
@@ -10,7 +11,8 @@ use Brendt\Stitcher\Config;
  * @see \Brendt\Stitcher\Template\EnginePlugin::css()
  */
 function smarty_function_file($params) {
-    $plugin = Config::getDependency('engine.plugin');
+    /** @var TemplatePlugin $plugin */
+    $plugin = Stitcher::get('service.template.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
 

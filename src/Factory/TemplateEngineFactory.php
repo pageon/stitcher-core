@@ -3,48 +3,58 @@
 namespace Brendt\Stitcher\Factory;
 
 use Brendt\Stitcher\Exception\UnknownEngineException;
-use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use Brendt\Stitcher\Template\TemplateEngine;
-use Brendt\Stitcher\Template\Twig\TwigEngine;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TemplateEngineFactory
 {
-
     const SMARTY_ENGINE = 'smarty';
-
     const TWIG_ENGINE = 'twig';
 
-    private $engines;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var string
+     */
+    private $templateEngine;
+
+    /**
+     * TemplateEngineFactory constructor.
+     *
+     * @param ContainerInterface $container
+     * @param string             $templateEngine
+     */
+    public function __construct(ContainerInterface $container, string $templateEngine) {
+        $this->container = $container;
+        $this->templateEngine = $templateEngine;
+    }
 
     /**
      * @param $type
      *
-     * @return TemplateEngine
+     * @return mixed
+     *
      * @throws UnknownEngineException
      */
-    public function getByType($type) {
-        if (isset($this->engines[$type])) {
-            return $this->engines[$type];
-        }
-
+    public function getByType($type) : TemplateEngine {
         switch ($type) {
             case self::TWIG_ENGINE:
-                $engine = new TwigEngine();
-
-                break;
+                return $this->container->get('service.twig');
             case self::SMARTY_ENGINE:
-                $engine = new SmartyEngine();
-
-                break;
+                return $this->container->get('service.smarty');
             default:
                 throw new UnknownEngineException();
         }
+    }
 
-        if ($engine) {
-            $this->engines[$type] = $engine;
-        }
-
-        return $engine;
+    /**
+     * @return TemplateEngine
+     */
+    public function getDefault() : TemplateEngine {
+        return $this->getByType($this->templateEngine);
     }
 
 }

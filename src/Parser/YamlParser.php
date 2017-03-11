@@ -3,7 +3,9 @@
 namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Exception\ParserException;
+use Brendt\Stitcher\Factory\ParserFactory;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use Brendt\Stitcher\Config;
@@ -15,6 +17,22 @@ use Brendt\Stitcher\Config;
  */
 class YamlParser extends AbstractArrayParser
 {
+    /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * JsonParser constructor.
+     *
+     * @param ParserFactory $parserFactory
+     * @param string        $srcDir
+     */
+    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+        parent::__construct($parserFactory);
+
+        $this->srcDir = $srcDir;
+    }
 
     /**
      * @param string $path
@@ -27,26 +45,26 @@ class YamlParser extends AbstractArrayParser
             $path .= '.yml';
         }
 
-        $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in($root)->path($path);
-        $yamlData = [];
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in($this->srcDir)->path($path);
+        $data = [];
 
         foreach ($files as $file) {
             try {
                 $parsed = Yaml::parse($file->getContents());
 
-                if (isset($parsed['entries'])) {
-                    $yamlData += $parsed['entries'];
-                } else {
+                if (!isset($parsed['entries'])) {
                     $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
-                    $yamlData[$id] = $parsed;
+                    $parsed = ['entries' => [$id => $parsed]];
                 }
+
+                $data += $parsed['entries'];
             } catch (ParseException $e) {
                 throw new ParserException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
         }
 
-        $parsedEntries = $this->parseArrayData($yamlData);
+        $parsedEntries = $this->parseArrayData($data);
 
         return $parsedEntries;
     }
