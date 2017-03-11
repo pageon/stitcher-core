@@ -99,16 +99,18 @@ class Stitcher
         $configPathParts = explode('/', $configPath);
         $configFileName = array_pop($configPathParts);
         $configPath = implode('/', $configPathParts) . '/';
-        $configFiles = Finder::create()->files()->in($configPath)->name($configFileName);
+        $configFiles = Finder::create()->files()->in($configPath)->name($configFileName)->depth(0);
         $srcDir = null;
         $publicDir = null;
         $templateDir = null;
 
         /** @var SplFileInfo $configFile */
         foreach ($configFiles as $configFile) {
+            $fileConfig = Yaml::parse($configFile->getContents());
+
             $config = array_merge(
                 self::$configDefaults,
-                Yaml::parse($configFile->getContents()),
+                Config::flatten($fileConfig),
                 $defaultConfig
             );
 
@@ -123,8 +125,8 @@ class Stitcher
             $publicDir = $flatConfig['directories.public'] ?? $publicDir;
             $templateDir = $flatConfig['directories.template'] ?? $templateDir;
 
-            if (isset($config['meta'])) {
-                self::$container->setParameter('meta', $config['meta']);
+            if (isset($fileConfig['meta'])) {
+                self::$container->setParameter('meta', $fileConfig['meta']);
             }
         }
 
