@@ -7,28 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
+    public function test_flatten() {
+        $config = [
+            'a' => [
+                'b' => 'hi'
+            ],
+        ];
 
-    public function test_config_load() {
-        Config::reset();
-        Config::load('./tests');
+        $flatConfig = Config::flatten($config);
 
-        $this->assertNotEmpty(Config::get('directories'));
+        $this->assertTrue(isset($flatConfig['a.b']));
     }
-
-    public function test_recursive_config_load() {
-        Config::reset();
-        Config::load('./tests');
-
-        $this->assertNotEmpty(Config::get('engines.image'));
-    }
-
-    public function test_recursive_config_set() {
-        $value = 'A';
-
-        Config::load('./tests');
-        Config::set('test.property.a', $value);
-
-        $this->assertEquals($value, Config::get('test.property.a'));
-    }
-
 }

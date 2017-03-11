@@ -4,17 +4,18 @@ namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
 use Brendt\Stitcher\Parser\AbstractArrayParser;
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class AbstractArrayParserTest extends TestCase
 {
 
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     public function test_parse_normal_array() {
-        $parser = new ArrayParserMock();
+        $parser = new ArrayParserMock(Stitcher::get('factory.parser'));
         $result = $parser->parseEntryData('test', [
             'test' => [
                 'title' => 'title',
@@ -30,7 +31,6 @@ class AbstractArrayParserTest extends TestCase
 
 class ArrayParserMock extends AbstractArrayParser
 {
-
     public function parse($path) {
         return;
     }
@@ -38,5 +38,4 @@ class ArrayParserMock extends AbstractArrayParser
     public function parseEntryData($id, $entry) {
         return parent::parseEntryData($id, $entry);
     }
-
 }

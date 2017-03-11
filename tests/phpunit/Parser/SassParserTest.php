@@ -2,19 +2,17 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Parser;
 
-use Brendt\Stitcher\Config;
-use Brendt\Stitcher\Parser\SassParser;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class SassParserTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.yml');
+        Stitcher::create('./tests/config.yml');
     }
 
     public function createSassParser() {
-        return new SassParser();
+        return Stitcher::get('parser.sass');
     }
 
     public function test_parse() {

@@ -20,10 +20,19 @@ class FolderParser implements Parser
     private $parserFactory;
 
     /**
-     * FolderParser constructor
+     * @var string
      */
-    public function __construct() {
-        $this->parserFactory = Config::getDependency('factory.parser');
+    private $srcDir;
+
+    /**
+     * FolderParser constructor
+     *
+     * @param ParserFactory $parserFactory
+     * @param string        $srcDir
+     */
+    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+        $this->parserFactory = $parserFactory;
+        $this->srcDir = $srcDir;
     }
 
     /**
@@ -33,15 +42,12 @@ class FolderParser implements Parser
      */
     public function parse($path) {
         $path = trim($path, '/');
-        $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in("{$root}/data/{$path}")->name('*.*')->sort(function(SplFileInfo $a, SplFileInfo $b) {
-            return strcmp($b->getRelativePath(), $a->getRelativePath());
-        });
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in("{$this->srcDir}/data/{$path}")->name('*.*');
         $data = [];
 
         foreach ($files as $file) {
-            $parser = $this->parserFactory->getParser($file->getFilename());
-
+            $parser = $this->parserFactory->getByFileName($file->getFilename());
             $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
 
             $data[$id] = [

@@ -24,23 +24,22 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
 
     /**
      * Create a new Twig engine and add the Stitcher specific template functions.
+     *
+     * @param string         $templateDir
+     * @param TemplatePlugin $templatePlugin
      */
-    public function __construct() {
-        $templateFolder = Config::get('directories.template');
-        $loader = new Twig_Loader_Filesystem($templateFolder);
+    public function __construct(string $templateDir, TemplatePlugin $templatePlugin) {
+        $loader = new Twig_Loader_Filesystem($templateDir);
 
         parent::__construct($loader, [
             'cache' => false,
         ]);
 
-        /** @var TemplatePlugin $plugin */
-        $plugin = Config::getDependency('engine.plugin');
-
-        $this->addFunction(new \Twig_SimpleFunction('meta', [$plugin, 'meta'], ['is_safe' => ['html'],]));
-        $this->addFunction(new \Twig_SimpleFunction('css', [$plugin, 'css'], ['is_safe' => ['html'],]));
-        $this->addFunction(new \Twig_SimpleFunction('js', [$plugin, 'js'], ['is_safe' => ['html'],]));
-        $this->addFunction(new \Twig_SimpleFunction('image', [$plugin, 'image']));
-        $this->addFunction(new \Twig_SimpleFunction('file', [$plugin, 'file']));
+        $this->addFunction(new \Twig_SimpleFunction('meta', [$templatePlugin, 'meta'], ['is_safe' => ['html'],]));
+        $this->addFunction(new \Twig_SimpleFunction('css', [$templatePlugin, 'css'], ['is_safe' => ['html'],]));
+        $this->addFunction(new \Twig_SimpleFunction('js', [$templatePlugin, 'js'], ['is_safe' => ['html'],]));
+        $this->addFunction(new \Twig_SimpleFunction('image', [$templatePlugin, 'image']));
+        $this->addFunction(new \Twig_SimpleFunction('file', [$templatePlugin, 'file']));
     }
 
     /**

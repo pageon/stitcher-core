@@ -3,19 +3,19 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\PaginationAdapter;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class PaginationAdapterTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests');
-    }
-
+    /**
+     * @return PaginationAdapter
+     */
     private function createAdapter() {
-        return new PaginationAdapter();
+        Stitcher::create('./tests/config.yml');
+
+        return Stitcher::get('adapter.pagination');
     }
 
     private function createPage() {

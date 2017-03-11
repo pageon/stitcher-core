@@ -2,30 +2,28 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Template;
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Twig\TwigEngine;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
 class TwigEngineTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests', 'config.twig.yml');
+        Stitcher::create('./tests/config.twig.yml');
     }
 
-    public function tearDown() {
-        Config::reset();
-    }
-
+    /**
+     * @return TwigEngine
+     */
     private function createEngine() {
-        return new TwigEngine();
+        return Stitcher::get('service.twig');
     }
 
     private function getFiles() {
         $finder = new Finder();
 
-        return $finder->files()->in(Config::get('directories.template'))->name('index.html');
+        return $finder->files()->in('./tests/src/template_twig')->name('index.html');
     }
 
     public function test_twig_renders_from_path() {
@@ -80,7 +78,7 @@ class TwigEngineTest extends TestCase
 
     public function test_twig_image() {
         $engine = $this->createEngine();
-        $files = Finder::create()->files()->in(Config::get('directories.template'))->name('home.html')->getIterator();
+        $files = Finder::create()->files()->in('./tests/src/template_twig')->name('home.html')->getIterator();
         $files->rewind();
         $template = $files->current();
 
@@ -90,7 +88,7 @@ class TwigEngineTest extends TestCase
 
     public function test_twig_file() {
         $engine = $this->createEngine();
-        $files = Finder::create()->files()->in(Config::get('directories.template'))->name('fileTest.html')->getIterator();
+        $files = Finder::create()->files()->in('./tests/src/template_twig')->name('fileTest.html')->getIterator();
         $files->rewind();
         $template = $files->current();
 

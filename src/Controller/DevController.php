@@ -31,9 +31,10 @@ class DevController
      * @param string $name
      */
     public function __construct($path = './', $name = 'config.dev.yml') {
-        Config::load($path, $name);
+        $path = rtrim($path, '/');
+        $name = ltrim($name, '/');
 
-        $this->stitcher = new Stitcher();
+        $this->stitcher = Stitcher::create("{$path}/{$name}");
     }
 
     /**
@@ -100,6 +101,8 @@ class DevController
         }
 
         $blanket = $this->stitcher->stitch($route, $id);
+
+        \Amp\wait($this->stitcher->getPromise());
 
         if (isset($blanket[$route])) {
             return $blanket[$route];

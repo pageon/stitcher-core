@@ -1,6 +1,7 @@
 <?php
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\Template\TemplatePlugin;
 
 /**
  * @return mixed
@@ -8,7 +9,8 @@ use Brendt\Stitcher\Config;
  * @see \Brendt\Stitcher\Template\EnginePlugin::meta()
  */
 function smarty_function_meta() {
-    $plugin = Config::getDependency('engine.plugin');
+    /** @var TemplatePlugin $plugin */
+    $plugin = Stitcher::get('service.template.plugin');
 
     return $plugin->meta();
 }

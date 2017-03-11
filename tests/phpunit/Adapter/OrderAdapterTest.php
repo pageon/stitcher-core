@@ -3,19 +3,19 @@
 namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
 
 use Brendt\Stitcher\Adapter\OrderAdapter;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class OrderAdapterTest extends TestCase
 {
-
-    public function setUp() {
-        Config::load('./tests');
-    }
-
+    /**
+     * @return OrderAdapter
+     */
     private function createAdapter() {
-        return new OrderAdapter();
+        Stitcher::create('./tests/config.yml');
+
+        return Stitcher::get('adapter.order');
     }
 
     private function createPage($direction = null) {

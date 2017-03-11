@@ -2,24 +2,19 @@
 
 namespace Brendt\Stitcher\Tests\Phpunit\Site;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
+use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
 {
-
     public function setUp() {
-        Config::load('./tests');
+        Stitcher::create('./tests/config.yml');
     }
 
     private function createSite() {
         return new Site();
-    }
-
-    public function test_construct() {
-        new Site();
     }
 
     public function test_iteration() {
@@ -39,5 +34,4 @@ class SiteTest extends TestCase
 
         $this->assertEquals(2, $count);
     }
-
 }

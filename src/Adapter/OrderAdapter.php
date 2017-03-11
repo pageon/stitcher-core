@@ -23,7 +23,6 @@ use Brendt\Stitcher\Site\Page;
  */
 class OrderAdapter extends AbstractAdapter
 {
-
     /**
      * A collection of keywords which would reverse the data set.
      *
@@ -46,7 +45,7 @@ class OrderAdapter extends AbstractAdapter
         $config = isset($config['variable']) ? [$config['variable'] => $config] : $config;
 
         foreach ($config as $variable => $order) {
-            $this->validateConfig($order);
+            $this->validateConfig((array) $order);
 
             $field = $order['field'];
             $direction = $order['direction'] ?? null;
@@ -72,11 +71,11 @@ class OrderAdapter extends AbstractAdapter
     }
 
     /**
-     * @param array $config
+     * @param array|null $config
      *
      * @throws ConfigurationException
      */
-    private function validateConfig(array $config) {
+    private function validateConfig(?array $config) {
         if (!isset($config['field'])) {
             throw ConfigurationException::requiredAdapterOptions(AdapterFactory::ORDER_ADAPTER, 'field');
         }

@@ -4,13 +4,31 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Exception\ParserException;
+use Brendt\Stitcher\Factory\ParserFactory;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * The JsonParser take a path to one or more JSON files, and parses the content into an array.
  */
 class JsonParser extends AbstractArrayParser
 {
+    /**
+     * @var string
+     */
+    private $srcDir;
+
+    /**
+     * JsonParser constructor.
+     *
+     * @param ParserFactory $parserFactory
+     * @param string        $srcDir
+     */
+    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+        parent::__construct($parserFactory);
+
+        $this->srcDir = $srcDir;
+    }
 
     /**
      * @param string $path
@@ -24,8 +42,8 @@ class JsonParser extends AbstractArrayParser
         }
 
         $data = [];
-        $root = Config::get('directories.src');
-        $files = Finder::create()->files()->in("{$root}")->path($path);
+        /** @var SplFileInfo[] $files */
+        $files = Finder::create()->files()->in($this->srcDir)->path($path);
 
         foreach ($files as $file) {
             $parsed = json_decode($file->getContents(), true);
@@ -34,12 +52,12 @@ class JsonParser extends AbstractArrayParser
                 throw new ParserException("{$file->getRelativePathname()}: {$error}");
             }
 
-            if (isset($parsed['entries'])) {
-                $data += $parsed['entries'];
-            } else {
+            if (!isset($parsed['entries'])) {
                 $id = str_replace(".{$file->getExtension()}", '', $file->getFilename());
-                $data[$id] = $parsed;
+                $parsed = ['entries' => [$id => $parsed]];
             }
+
+            $data += $parsed['entries'];
         }
 
         $data = $this->parseArrayData($data);

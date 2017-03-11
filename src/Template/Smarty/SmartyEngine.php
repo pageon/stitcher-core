@@ -3,7 +3,6 @@
 namespace Brendt\Stitcher\Template\Smarty;
 
 use \Smarty;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Template\TemplateEngine;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -12,17 +11,17 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class SmartyEngine extends Smarty implements TemplateEngine
 {
-
     /**
      * Create the Smarty engine, set the template- and cache directory; and add the plugin directory.
+     *
+     * @param string $templateDir
+     * @param string $cacheDir
      */
-    public function __construct() {
+    public function __construct(?string $templateDir = './src', ?string $cacheDir = './.cache') {
         parent::__construct();
 
-        $templateFolder = Config::get('directories.template');
-        $this->addTemplateDir($templateFolder);
-
-        $this->setCompileDir(Config::get('directories.cache'));
+        $this->addTemplateDir($templateDir);
+        $this->setCompileDir($cacheDir);
         $this->addPluginsDir([__DIR__]);
 
         $this->caching = false;

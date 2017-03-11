@@ -2,16 +2,15 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RoutesCommand extends Command
+class RouterListCommand extends Command
 {
-
     const FILTER = 'filter';
 
     protected function configure() {
@@ -28,37 +27,26 @@ class RoutesCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Config::load();
-        $stitcher = new Stitcher();
+        $stitcher = Stitcher::create();
         $site = $stitcher->loadSite();
         $filter = $input->getArgument(self::FILTER);
 
-        if ($filter) {
-            $output->writeln("Available routes (filtered by <fg=green>{$filter}</>):\n");
-        } else {
-            $output->writeln("Available routes:\n");
-        }
+        $output->writeln("Found routes:");
 
+        /**
+         * @var string $route
+         * @var Page $page
+         */
         foreach ($site as $route => $page) {
-            if ($filter && strpos($route, $filter) === false) {
+            if ($filter && strpos($page->getId(), $filter) === false) {
                 continue;
             }
 
-            $data = [];
+            $output->writeln("- <fg=green>{$page->getId()}</>: {$page->getTemplatePath()}.tpl");
 
-            if (isset($page['data'])) {
-                $data = array_keys($page['data']);
+            foreach ($page->getVariables() as $variable => $value) {
+                $output->writeln("\t\${$variable}: {$value}");
             }
-
-            $line = "- <fg=green>{$route}</>: {$page['template']}.tpl";
-
-            if ($data) {
-                $line .= "\n\t";
-                $line .= '$' . implode(', $', $data);
-            }
-
-            $output->writeln($line);
         }
     }
-
 }

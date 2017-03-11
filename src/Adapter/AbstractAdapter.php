@@ -20,10 +20,12 @@ abstract class AbstractAdapter implements Adapter
     /**
      * Construct the adapter and set the parser factory variable.
      *
+     * @param ParserFactory $parserFactory
+     *
      * @see \Brendt\Stitcher\Factory\ParserFactory
      */
-    public function __construct() {
-        $this->parserFactory = Config::getDependency('factory.parser');
+    public function __construct(ParserFactory $parserFactory) {
+        $this->parserFactory = $parserFactory;
     }
 
     /**
@@ -58,7 +60,7 @@ abstract class AbstractAdapter implements Adapter
      * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     protected function getData($value) {
-        $parser = $this->parserFactory->getParser($value);
+        $parser = $this->parserFactory->getByFileName($value);
 
         if (!$parser) {
             return $value;

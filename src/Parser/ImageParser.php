@@ -4,6 +4,7 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Config;
+use Brendt\Stitcher\Stitcher;
 
 /**
  * The ImageParser uses the ResponsiveFactory to create images from an entry (array of parsed data),
@@ -13,17 +14,25 @@ use Brendt\Stitcher\Config;
  */
 class ImageParser implements Parser
 {
+    /**
+     * @var Stitcher
+     */
+    private $stitcher;
 
     /**
      * @var ResponsiveFactory
      */
-    protected $factory;
+    private $responsiveFactory;
 
     /**
      * AbstractParser constructor.
+     *
+     * @param Stitcher          $stitcher
+     * @param ResponsiveFactory $responsiveFactory
      */
-    public function __construct() {
-        $this->factory = Config::getDependency('factory.image');
+    public function __construct(Stitcher $stitcher, ResponsiveFactory $responsiveFactory) {
+        $this->stitcher = $stitcher;
+        $this->responsiveFactory = $responsiveFactory;
     }
 
     /**
@@ -53,7 +62,8 @@ class ImageParser implements Parser
             return $data;
         }
 
-        $image = $this->factory->create($path);
+        $image = $this->responsiveFactory->create($path);
+        $this->stitcher->addPromise($image->getPromise());
 
         $data = [
             'src'    => $image->src(),

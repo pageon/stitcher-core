@@ -2,10 +2,9 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Config;
+use AsyncInterop\Loop;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -28,13 +27,15 @@ class GenerateCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Config::load();
-        $publicDir = Config::get('directories.public');
+        $stitcher = Stitcher::create();
         $route = $input->getArgument(self::ROUTE);
-        $stitcher = new Stitcher();
 
-        $blanket = $stitcher->stitch($route);
-        $stitcher->save($blanket);
+        Loop::execute(function () use ($stitcher, $route) {
+            $blanket = $stitcher->stitch($route);
+            $stitcher->save($blanket);
+        });
+
+        $publicDir = Stitcher::getParameter('directories.public');
 
         if ($route) {
             $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");

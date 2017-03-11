@@ -3,63 +3,50 @@
 namespace Brendt\Stitcher\Factory;
 
 use Brendt\Stitcher\Adapter\Adapter;
-use Brendt\Stitcher\Adapter\CollectionAdapter;
-use Brendt\Stitcher\Adapter\FilterAdapter;
-use Brendt\Stitcher\Adapter\OrderAdapter;
-use Brendt\Stitcher\Adapter\PaginationAdapter;
 use Brendt\Stitcher\Exception\UnknownAdapterException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AdapterFactory
 {
-
     const COLLECTION_ADAPTER = 'collection';
-
     const PAGINATION_ADAPTER = 'pagination';
-
     const ORDER_ADAPTER = 'order';
-
     const FILTER_ADAPTER = 'filter';
 
-    private $adapters;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * AdapterFactory constructor.
+     *
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
+    }
 
     /**
      * @param $type
      *
-     * @return Adapter
+     * @return mixed
      *
      * @throws UnknownAdapterException
      */
-    public function getByType($type) {
-        if (isset($this->adapters[$type])) {
-            return $this->adapters[$type];
-        }
-
+    public function getByType($type) : Adapter {
         switch ($type) {
             case self::COLLECTION_ADAPTER:
-                $adapter = new CollectionAdapter();
-
-                break;
+                return $this->container->get('adapter.collection');
             case self::PAGINATION_ADAPTER:
-                $adapter = new PaginationAdapter();
-
-                break;
+                return $this->container->get('adapter.pagination');
             case self::ORDER_ADAPTER:
-                $adapter = new OrderAdapter();
-
-                break;
+                return $this->container->get('adapter.order');
             case self::FILTER_ADAPTER:
-                $adapter = new FilterAdapter();
-
-                break;
+                return $this->container->get('adapter.filter');
             default:
                 throw new UnknownAdapterException();
         }
-
-        if ($adapter) {
-            $this->adapters[$type] = $adapter;
-        }
-
-        return $adapter;
     }
 
 }
