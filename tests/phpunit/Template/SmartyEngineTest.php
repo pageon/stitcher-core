@@ -76,6 +76,16 @@ class SmartyEngineTest extends TestCase
         }
     }
 
+    public function test_smarty_meta_with_extra_data() {
+        $engine = $this->createEngine();
+        $files = $this->getFiles();
+
+        foreach ($files as $template) {
+            $html = $engine->renderTemplate($template);
+            $this->assertContains('<meta name="og:description"', $html);
+        }
+    }
+
     public function test_smarty_image() {
         $engine = $this->createEngine();
         $files = Finder::create()->files()->in('./tests/src/template')->name('home.tpl')->getIterator();
