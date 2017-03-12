@@ -74,12 +74,16 @@ class TemplatePlugin
     /**
      * This function will read meta configuration from `meta` and output the corresponding meta tags.
      *
+     * @param array $meta
+     *
      * @return string
      */
-    public function meta() {
+    public function meta(array $meta = []) : string {
         $result = [];
 
-        foreach ($this->meta as $name => $content) {
+        $meta = array_merge($this->meta, $meta);
+
+        foreach ($meta as $name => $content) {
             if (!is_string($content)) {
                 continue;
             }
