@@ -148,6 +148,18 @@ class TemplatePluginTest extends TestCase
         $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $result);
     }
 
+    public function test_meta_with_extra_data() {
+        $plugin = $this->createEnginePlugin();
+
+        $result = $plugin->meta([
+            'viewport' => 'test',
+            'tag' => 'value'
+        ]);
+
+        $this->assertContains('<meta name="viewport" content="test">', $result);
+        $this->assertContains('<meta name="tag" content="value">', $result);
+    }
+
     public function test_meta_in_template() {
         $engine = $this->createSmarty();
 

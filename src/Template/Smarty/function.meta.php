@@ -4,13 +4,16 @@ use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\TemplatePlugin;
 
 /**
- * @return mixed
+ * @param array $params
  *
+ * @return mixed
  * @see \Brendt\Stitcher\Template\EnginePlugin::meta()
  */
-function smarty_function_meta() {
+function smarty_function_meta(array $params) {
     /** @var TemplatePlugin $plugin */
     $plugin = Stitcher::get('service.template.plugin');
 
-    return $plugin->meta();
+    $meta = (array) ($params['meta'] ?? []);
+
+    return $plugin->meta($meta);
 }
