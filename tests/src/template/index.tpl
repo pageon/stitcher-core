@@ -1,7 +1,7 @@
 <html>
     <head>
         <title></title>
-        {meta}
+        {meta meta=['og:description' => 'test']}
         {css src="css/main.css" inline=true}
     </head>
     <body>
