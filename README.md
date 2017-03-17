@@ -15,7 +15,7 @@ Or as a project:
 composer create-project brendt/stitcher-site
 ```
 
-[Read the full documentation here](http://stitcher.pageon.be/)
+[Read the full documentation here](http://stitcher.pageon.be/guide/setting-up)
 
 ## Features
 
