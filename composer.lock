@@ -327,16 +327,16 @@
         },
         {
             "name": "brendt/responsive-images",
-            "version": "1.3.2",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brendt/responsive-images.git",
-                "reference": "b712c28f0f550f37953b3afa7d92c1a9e2901232"
+                "reference": "804c9e2401c6be415c51a3d6fcd2f78cf9805256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/b712c28f0f550f37953b3afa7d92c1a9e2901232",
-                "reference": "b712c28f0f550f37953b3afa7d92c1a9e2901232",
+                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/804c9e2401c6be415c51a3d6fcd2f78cf9805256",
+                "reference": "804c9e2401c6be415c51a3d6fcd2f78cf9805256",
                 "shasum": ""
             },
             "require": {
@@ -373,7 +373,7 @@
                 }
             ],
             "description": "Create responsive images with PHP, using the srcset and sizes spec.",
-            "time": "2017-03-16 08:13:40"
+            "time": "2017-03-17 08:57:07"
         },
         {
             "name": "erusev/parsedown",
