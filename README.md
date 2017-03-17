@@ -2,11 +2,17 @@
 
 # Stitcher
 
-Static websites with PHP, YAML, MarkDown, JSON and Smarty/Twig.
+High performance, static websites for PHP developers.
 
 ```sh
-composer require brendt/stitcher:1.0.0-alpha
+composer require brendt/stitcher @alpha
 php vendor/brendt/stitcher/install/stitcher site:install
+```
+
+Or as a project:
+
+```sh
+composer create-project brendt/stitcher-site
 ```
 
 Stitcher is a **PHP tool** for **developers** to create **high performant websites**. At its core, Stitcher is a **static site generator** capable to work with popular **template engines**, and many data formats like **MarkDown, YAML, JSON** and more. 
@@ -19,16 +25,17 @@ It supports more advanced features than normal web pages, like **overview** and 
 
 ## Features
 
-- [X] Static site generator
-- [X] Sass, CSS and JavaScript compiling and minifying
-- [X] Twig and Smarty
-- [X] Overviews, detail pages and pagination
+- Static site generation
+- Twig and Smarty support
+- Image optimisation
+- Overview and detail pages
+- Pagination, filtering and ordering of data sets
+- MarkDown, YAML and JSON support
+- Sass and scss support
+- JavaScript and CSS minifier
+- Meta helpers
 
-#### Future plans
+## Future plans
 
-- [ ] URL generation
-- [ ] Better config support
-- [ ] Command line configuration
-- [ ] Filter support
-- [ ] Form support
-- [ ] Better DI support for extensions
+- URL helpers
+- Form support
