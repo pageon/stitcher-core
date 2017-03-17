@@ -111,25 +111,20 @@ class Stitcher
 
             $config = array_merge(
                 self::$configDefaults,
+                $fileConfig,
                 Config::flatten($fileConfig),
                 $defaultConfig
             );
 
+            $config['directories.template'] = $config['directories.template'] ?? $config['directories.src'];
 
-            $flatConfig = Config::flatten($config);
-            $flatConfig['directories.template'] = $flatConfig['directories.template'] ?? $flatConfig['directories.src'];
-
-            foreach ($flatConfig as $key => $value) {
+            foreach ($config as $key => $value) {
                 self::$container->setParameter($key, $value);
             }
 
-            $srcDir = $flatConfig['directories.src'] ?? $srcDir;
-            $publicDir = $flatConfig['directories.public'] ?? $publicDir;
-            $templateDir = $flatConfig['directories.template'] ?? $templateDir;
-
-            if (isset($fileConfig['meta'])) {
-                self::$container->setParameter('meta', $fileConfig['meta']);
-            }
+            $srcDir = $config['directories.src'] ?? $srcDir;
+            $publicDir = $config['directories.public'] ?? $publicDir;
+            $templateDir = $config['directories.template'] ?? $templateDir;
         }
 
         $stitcher = new self($srcDir, $publicDir, $templateDir);
