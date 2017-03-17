@@ -21,7 +21,7 @@ class Config
         foreach ($config as $key => $value) {
             $new_key = $prefix . (empty($prefix) ? '' : '.') . $key;
 
-            if (is_array($value)) {
+            if (is_array($value) && count($value)) {
                 $result = array_merge($result, self::flatten($value, $new_key));
             } else {
                 $result[$new_key] = $value;

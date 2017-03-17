@@ -66,6 +66,7 @@ services:
                 enableCache: '%caches.image%'
                 optimize: '%engines.optimizer%'
                 async: '%engines.async%'
+                optimizerOptions: '%optimizer.options%'
 
     # Service
     service.sass:

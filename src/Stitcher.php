@@ -47,6 +47,7 @@ class Stitcher
         'engines.optimizer'  => true,
         'engines.async'      => true,
         'caches.image'       => true,
+        'optimizer.options'  => [],
     ];
 
     /**
@@ -113,6 +114,7 @@ class Stitcher
                 Config::flatten($fileConfig),
                 $defaultConfig
             );
+
 
             $flatConfig = Config::flatten($config);
             $flatConfig['directories.template'] = $flatConfig['directories.template'] ?? $flatConfig['directories.src'];
