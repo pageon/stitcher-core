@@ -91,3 +91,11 @@ services:
             - '%directories.src%'
             - '%minify%'
             - '%meta%'
+
+    parser.site:
+        class: Brendt\Stitcher\SiteParser
+        arguments:
+            - '%directories.src%'
+            - '%directories.template%'
+            - '@factory.parser'
+            - '@factory.template'
