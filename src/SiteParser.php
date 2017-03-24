@@ -117,7 +117,7 @@ class SiteParser
             } catch (ParseException $e) {
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
-            {}
+
             foreach ($fileContents as $route => $data) {
                 if (count($routes) && !in_array($route, $routes)) {
                     continue;
