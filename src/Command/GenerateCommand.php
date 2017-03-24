@@ -29,11 +29,11 @@ class GenerateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output) {
         $stitcher = Stitcher::create();
         $route = $input->getArgument(self::ROUTE);
+        $blanket = $stitcher->stitch($route);
+        $stitcher->save($blanket);
 
-        Loop::execute(function () use ($stitcher, $route) {
-            $blanket = $stitcher->stitch($route);
-            $stitcher->save($blanket);
-        });
+//        Loop::execute(function () use ($stitcher, $route) {
+//        });
 
         $publicDir = Stitcher::getParameter('directories.public');
 

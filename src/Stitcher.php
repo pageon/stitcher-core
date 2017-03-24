@@ -220,34 +220,34 @@ class Stitcher
         }
     }
 
-    /**
-     * @param Promise|null $promise
-     *
-     * @return Stitcher
-     */
-    public function addPromise(?Promise $promise) : Stitcher {
-        if ($promise) {
-            $this->promises[] = $promise;
-        }
+//    /**
+//     * @param Promise|null $promise
+//     *
+//     * @return Stitcher
+//     */
+//    public function addPromise(?Promise $promise) : Stitcher {
+//        if ($promise) {
+//            $this->promises[] = $promise;
+//        }
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
+//    /**
+//     * @return Promise
+//     */
+//    public function getPromise() : Promise {
+//        return \Amp\all($this->promises);
+//    }
 
-    /**
-     * @return Promise
-     */
-    public function getPromise() : Promise {
-        return \Amp\all($this->promises);
-    }
-
-    /**
-     * @param callable $callback
-     */
-    public function done(callable $callback) {
-        $donePromise = $this->getPromise();
-
-        $donePromise->when($callback);
-    }
+//    /**
+//     * @param callable $callback
+//     */
+//    public function done(callable $callback) {
+//        $donePromise = $this->getPromise();
+//
+//        $donePromise->when($callback);
+//    }
 
 }
 

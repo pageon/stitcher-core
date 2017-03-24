@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3a489b1c01218708c5bb1a791a638472",
-    "content-hash": "ee5824110da85ce638d01f3cd6792097",
+    "hash": "d2ce834951099e328874956f488c3bc1",
+    "content-hash": "5b08892e5d0df43b7c7bc40eb29fef1a",
     "packages": [
         {
             "name": "amphp/amp",
@@ -326,16 +326,16 @@
         },
         {
             "name": "brendt/responsive-images",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brendt/responsive-images.git",
-                "reference": "804c9e2401c6be415c51a3d6fcd2f78cf9805256"
+                "reference": "c011efe84ca0e76df5e67d6e7e54f991d5a533ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/804c9e2401c6be415c51a3d6fcd2f78cf9805256",
-                "reference": "804c9e2401c6be415c51a3d6fcd2f78cf9805256",
+                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/c011efe84ca0e76df5e67d6e7e54f991d5a533ed",
+                "reference": "c011efe84ca0e76df5e67d6e7e54f991d5a533ed",
                 "shasum": ""
             },
             "require": {
@@ -372,7 +372,7 @@
                 }
             ],
             "description": "Create responsive images with PHP, using the srcset and sizes spec.",
-            "time": "2017-03-17 08:57:07"
+            "time": "2017-03-24 06:00:46"
         },
         {
             "name": "erusev/parsedown",
