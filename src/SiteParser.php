@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Adapter\Adapter;
+use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Site\Page;
@@ -39,18 +40,25 @@ class SiteParser
     private $templateEngineFactory;
 
     /**
+     * @var AdapterFactory
+     */
+    private $adapterFactory;
+
+    /**
      * SiteParser constructor.
      *
      * @param string                $srcDir
      * @param string                $templateDir
      * @param ParserFactory         $parserFactory
      * @param TemplateEngineFactory $templateEngineFactory
+     * @param AdapterFactory        $adapterFactory
      */
-    public function __construct(string $srcDir, string $templateDir, ParserFactory $parserFactory, TemplateEngineFactory $templateEngineFactory) {
+    public function __construct(string $srcDir, string $templateDir, ParserFactory $parserFactory, TemplateEngineFactory $templateEngineFactory, AdapterFactory $adapterFactory) {
         $this->srcDir = $srcDir;
         $this->templateDir = $templateDir;
         $this->parserFactory = $parserFactory;
         $this->templateEngineFactory = $templateEngineFactory;
+        $this->adapterFactory = $adapterFactory;
     }
 
     /**
@@ -175,9 +183,7 @@ class SiteParser
         $pages = [$page];
 
         foreach ($page->getAdapters() as $type => $adapterConfig) {
-            /** @var Adapter $adapter */
-            // TODO: Work with adapter factory
-            $adapter = Stitcher::get("adapter.{$type}");
+            $adapter = $this->adapterFactory->getByType($type);
 
             if ($entryId !== null) {
                 $pages = $adapter->transform($pages, $entryId);
