@@ -99,3 +99,4 @@ services:
             - '%directories.template%'
             - '@factory.parser'
             - '@factory.template'
+            - '@factory.adapter'

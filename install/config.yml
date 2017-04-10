@@ -52,6 +52,14 @@ engines:
     # NOTE: When using async rendering, the current image library in use might not be able to render very large images.
     async: true
 
+# A list of libraries and resources which should be delivered as-is, without parsing.
+cdn:
+#    - lib/js/file.js
+#    - lib/css/
+
 caches:
     # Enable image caching while rendering
     image: true
+
+    # Cache CDN resources
+    cdn: true
