@@ -40,16 +40,11 @@ class Stitcher
         'engines.image'      => 'gd',
         'engines.optimizer'  => true,
         'engines.async'      => true,
+        'cdn'                => [],
         'caches.image'       => true,
+        'caches.cdn'         => true,
         'optimizer.options'  => [],
     ];
-
-    /**
-     * A collection of promises representing Stitcher's state.
-     *
-     * @var Promise[]
-     */
-    private $promises = [];
 
     /**
      * @var string
@@ -186,6 +181,8 @@ class Stitcher
         /** @var SiteParser $siteParser */
         $siteParser = self::get('parser.site');
 
+        $this->prepareCdn();
+
         return $siteParser->parse($routes, $filterValue);
     }
 
@@ -220,34 +217,26 @@ class Stitcher
         }
     }
 
-//    /**
-//     * @param Promise|null $promise
-//     *
-//     * @return Stitcher
-//     */
-//    public function addPromise(?Promise $promise) : Stitcher {
-//        if ($promise) {
-//            $this->promises[] = $promise;
-//        }
-//
-//        return $this;
-//    }
+    /**
+     * Parse CDN resources and libraries
+     */
+    public function prepareCdn() {
+        $cdn = (array) self::getParameter('cdn');
+        $enableCache = self::getParameter('caches.cdn');
+        $fs = new Filesystem();
 
-//    /**
-//     * @return Promise
-//     */
-//    public function getPromise() : Promise {
-//        return \Amp\all($this->promises);
-//    }
+        foreach ($cdn as $resource) {
+            $resource = trim($resource, '/');
+            $publicResourcePath = "{$this->publicDir}/{$resource}";
 
-//    /**
-//     * @param callable $callback
-//     */
-//    public function done(callable $callback) {
-//        $donePromise = $this->getPromise();
-//
-//        $donePromise->when($callback);
-//    }
+            if ($enableCache && $fs->exists($publicResourcePath)) {
+                continue;
+            }
+
+            $sourceResourcePath = "{$this->srcDir}/{$resource}";
+            $fs->copy($sourceResourcePath, $publicResourcePath, true);
+        }
+    }
 
 }
 
