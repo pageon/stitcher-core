@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher;
 
-use AsyncInterop\Promise;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\Config\FileLocator;
