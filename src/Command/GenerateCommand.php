@@ -32,9 +32,6 @@ class GenerateCommand extends Command
         $blanket = $stitcher->stitch($route);
         $stitcher->save($blanket);
 
-//        Loop::execute(function () use ($stitcher, $route) {
-//        });
-
         $publicDir = Stitcher::getParameter('directories.public');
 
         if ($route) {
