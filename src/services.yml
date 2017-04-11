@@ -15,6 +15,9 @@ services:
     adapter.pagination:
         class: Brendt\Stitcher\Adapter\PaginationAdapter
         arguments: ['@factory.parser']
+    adapter.limit:
+        class: Brendt\Stitcher\Adapter\LimitAdapter
+        arguments: ['@factory.parser']
 
     # Parser
     parser.default:
