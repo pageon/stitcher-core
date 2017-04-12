@@ -31,8 +31,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "Brendt\\Stitcher\\" : "src/",
-            "Brendt\\Stitcher\\Tests\\Phpunit\\": "tests/phpunit"
+            "Brendt\\Stitcher\\" : "src/"
         }
     }
 }
