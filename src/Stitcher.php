@@ -90,35 +90,26 @@ class Stitcher
     public static function create(string $configPath = './config.yml', array $defaultConfig = []) : Stitcher {
         self::$container = new ContainerBuilder();
 
-        $configPathParts = explode('/', $configPath);
-        $configFileName = array_pop($configPathParts);
-        $configPath = implode('/', $configPathParts) . '/';
-        $configFiles = Finder::create()->files()->in($configPath)->name($configFileName)->depth(0);
-        $srcDir = null;
-        $publicDir = null;
-        $templateDir = null;
+        $configFile = Config::getConfigFile($configPath);
+        $parsedConfig = Yaml::parse($configFile->getContents());
+        $parsedConfig = Config::parseImports($parsedConfig);
 
-        /** @var SplFileInfo $configFile */
-        foreach ($configFiles as $configFile) {
-            $fileConfig = Yaml::parse($configFile->getContents());
+        $config = array_merge(
+            self::$configDefaults,
+            $parsedConfig,
+            Config::flatten($parsedConfig),
+            $defaultConfig
+        );
 
-            $config = array_merge(
-                self::$configDefaults,
-                $fileConfig,
-                Config::flatten($fileConfig),
-                $defaultConfig
-            );
+        $config['directories.template'] = $config['directories.template'] ?? $config['directories.src'];
 
-            $config['directories.template'] = $config['directories.template'] ?? $config['directories.src'];
-
-            foreach ($config as $key => $value) {
-                self::$container->setParameter($key, $value);
-            }
-
-            $srcDir = $config['directories.src'] ?? $srcDir;
-            $publicDir = $config['directories.public'] ?? $publicDir;
-            $templateDir = $config['directories.template'] ?? $templateDir;
+        foreach ($config as $key => $value) {
+            self::$container->setParameter($key, $value);
         }
+
+        $srcDir = $config['directories.src'] ?? null;
+        $publicDir = $config['directories.public'] ?? null;
+        $templateDir = $config['directories.template'] ?? null;
 
         $stitcher = new self($srcDir, $publicDir, $templateDir);
         self::$container->set('stitcher', $stitcher);

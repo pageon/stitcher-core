@@ -12,6 +12,7 @@ class AdapterFactory
     const PAGINATION_ADAPTER = 'pagination';
     const ORDER_ADAPTER = 'order';
     const FILTER_ADAPTER = 'filter';
+    const LIMIT_ADAPTER = 'limit';
 
     /**
      * @var ContainerInterface
@@ -44,6 +45,8 @@ class AdapterFactory
                 return $this->container->get('adapter.order');
             case self::FILTER_ADAPTER:
                 return $this->container->get('adapter.filter');
+            case self::LIMIT_ADAPTER:
+                return $this->container->get('adapter.limit');
             default:
                 throw new UnknownAdapterException();
         }
