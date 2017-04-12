@@ -1,8 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Factory;
+namespace Brendt\Stitcher\Factory;
 
-use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Parser\FileParser;
 use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Parser\JsonParser;

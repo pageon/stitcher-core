@@ -1,8 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Factory;
+namespace Brendt\Stitcher\Factory;
 
-use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\smarty\SmartyEngine;
 use Brendt\Stitcher\Template\twig\TwigEngine;

@@ -1,11 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit;
+namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Config;
-use Brendt\Stitcher\Factory\TemplateEngineFactory;
-use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

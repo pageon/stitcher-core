@@ -1,6 +1,6 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Parser;
+namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Exception\ParserException;
 use Brendt\Stitcher\Stitcher;

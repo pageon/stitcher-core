@@ -1,10 +1,8 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit;
+namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\SiteParser;
-use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class SiteParserTest extends TestCase

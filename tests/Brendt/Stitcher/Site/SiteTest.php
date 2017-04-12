@@ -1,9 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Site;
+namespace Brendt\Stitcher\Site;
 
-use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
