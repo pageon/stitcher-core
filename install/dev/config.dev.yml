@@ -16,6 +16,9 @@
 #     </Directory>
 # </VirtualHost>
 
+imports:
+    - ../config.yml
+
 # Configure the paths of several directories
 directories:
     # The source directory containing
@@ -30,25 +33,13 @@ directories:
     # Template directory
     template: ../src/template
 
-meta:
-    viewport: width=device-width, initial-scale=1
-
 # Do not minify CSS or JavaScript
 minify: false
 
 # Configure engines
 engines:
-    # Choose the template engine. Available options: smarty, twig
-    template: smarty
-
-    # Use gd as image engine. Possible configurations: `gd` or `imagick`.
-    image: gd
 
     # Don't optimize images. Disabling this option will increase the DevController's rendering speed,
     # but will render less optimised images.
     optimizer: false
-
-caches:
-    # Enable image caching while rendering
-    image: true
 
