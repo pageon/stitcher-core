@@ -1,9 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Parser;
+namespace Brendt\Stitcher\Parser;
 
-use Brendt\Stitcher\Parser\AbstractArrayParser;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 

@@ -1,10 +1,9 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Template;
+namespace Brendt\Stitcher\Template;
 
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
-use Brendt\Stitcher\Template\TemplatePlugin;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;

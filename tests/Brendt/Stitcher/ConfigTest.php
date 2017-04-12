@@ -1,8 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Template;
+namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Config;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase

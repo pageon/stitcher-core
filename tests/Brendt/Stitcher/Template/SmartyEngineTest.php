@@ -1,6 +1,6 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Template;
+namespace Brendt\Stitcher\Template;
 
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;

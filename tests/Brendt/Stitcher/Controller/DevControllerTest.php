@@ -1,8 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Controller;
+namespace Brendt\Stitcher\Controller;
 
-use Brendt\Stitcher\Controller\DevController;
 use PHPUnit\Framework\TestCase;
 
 class DevControllerTest extends TestCase

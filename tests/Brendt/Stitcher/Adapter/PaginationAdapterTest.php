@@ -1,8 +1,7 @@
 <?php
 
-namespace Brendt\Stitcher\Tests\Phpunit\Adapter;
+namespace Brendt\Stitcher\Adapter;
 
-use Brendt\Stitcher\Adapter\PaginationAdapter;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
