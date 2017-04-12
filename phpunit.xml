@@ -7,7 +7,7 @@
 >
     <testsuites>
         <testsuite name="default">
-            <directory>tests/phpunit</directory>
+            <directory>tests/Brendt</directory>
         </testsuite>
     </testsuites>
 </phpunit>

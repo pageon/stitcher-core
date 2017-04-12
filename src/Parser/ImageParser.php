@@ -63,7 +63,6 @@ class ImageParser implements Parser
         }
 
         $image = $this->responsiveFactory->create($path);
-//        $this->stitcher->addPromise($image->getPromise());
 
         $data = [
             'src'    => $image->src(),
