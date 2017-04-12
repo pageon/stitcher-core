@@ -2,6 +2,10 @@
 
 namespace Brendt\Stitcher;
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Config helper class
  *
@@ -9,6 +13,46 @@ namespace Brendt\Stitcher;
  */
 class Config
 {
+
+    /**
+     * @param array $config
+     *
+     * @return array
+     */
+    public static function parseImports(array $config) : array {
+        if (!isset($config['imports'])) {
+            return $config;
+        }
+
+        $mergedConfig = [];
+
+        foreach ($config['imports'] as $import) {
+            $importConfig = self::parseImports(Yaml::parse(self::getConfigFile($import)->getContents()));
+
+            $mergedConfig = array_replace_recursive($mergedConfig, $importConfig);
+        }
+
+        $mergedConfig = array_replace_recursive($mergedConfig, $config);
+
+        return $mergedConfig;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return null|SplFileInfo
+     */
+    public static function getConfigFile(string $path) : ?SplFileInfo {
+        $pathParts = explode('/', $path);
+        $configFileName = array_pop($pathParts);
+        $configPath = implode('/', $pathParts) . '/';
+
+        $configFiles = Finder::create()->files()->in($configPath)->name($configFileName)->depth(0)->getIterator();
+        $configFiles->rewind();
+
+        return $configFiles->current();
+    }
+
     /**
      * @param        $config
      * @param string $prefix
