@@ -110,6 +110,7 @@ class SiteParser
                 }
             }
 
+            $page->parseMeta($page->getVariables());
             $pages = $this->parseAdapters($page, $filterValue);
 
             $pageTemplate = $templates[$page->getTemplatePath()];

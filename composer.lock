@@ -321,16 +321,16 @@
         },
         {
             "name": "pageon/html-meta",
-            "version": "0.2.1",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pageon/html-meta.git",
-                "reference": "88863662c0149a8cb5962e284a5126273f62c95c"
+                "reference": "41ab9f465cf48befdbd2ba1c400e4fe6368f61c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pageon/html-meta/zipball/88863662c0149a8cb5962e284a5126273f62c95c",
-                "reference": "88863662c0149a8cb5962e284a5126273f62c95c",
+                "url": "https://api.github.com/repos/pageon/html-meta/zipball/41ab9f465cf48befdbd2ba1c400e4fe6368f61c9",
+                "reference": "41ab9f465cf48befdbd2ba1c400e4fe6368f61c9",
                 "shasum": ""
             },
             "require": {
@@ -357,7 +357,7 @@
                 }
             ],
             "description": "Manage HTML meta tags in PHP",
-            "time": "2017-04-13 04:32:08"
+            "time": "2017-04-13 05:14:45"
         },
         {
             "name": "ps/image-optimizer",

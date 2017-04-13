@@ -285,7 +285,7 @@ class Page
             $this->meta->title($data['title']);
         }
 
-        if (isset($data['image'])) {
+        if (isset($data['image']['src'])) {
             $this->meta->image($data['image']['src']);
         }
 
