@@ -271,6 +271,8 @@ class Page
 
     /**
      * @param array $data
+     *
+     * @todo Create separate meta crawlers
      */
     public function parseMeta(array $data) {
         if (isset($data['meta'])) {
