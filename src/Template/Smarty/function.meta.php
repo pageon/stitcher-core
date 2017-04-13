@@ -2,6 +2,7 @@
 
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\TemplatePlugin;
+use Brendt\Html\Meta\Meta;
 
 /**
  * @param array $params
@@ -13,7 +14,7 @@ function smarty_function_meta(array $params) {
     /** @var TemplatePlugin $plugin */
     $plugin = Stitcher::get('service.template.plugin');
 
-    $meta = (array) ($params['meta'] ?? []);
+    $extra = (array) ($params['extra'] ?? []);
 
-    return $plugin->meta($meta);
+    return $plugin->meta($extra);
 }

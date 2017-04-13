@@ -64,6 +64,17 @@ class SmartyEngine extends Smarty implements TemplateEngine
     }
 
     /**
+     * Check whether a template variable is set
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasTemplateVariable(string $name) : bool {
+        return $this->getTemplateVars($name) != null;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function clearTemplateVariable($variable) {

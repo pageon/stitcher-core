@@ -2,9 +2,10 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Html\Meta\Meta;
 use Brendt\Image\ResponsiveFactory;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Site\Page;
 use CSSmin;
 use JSMin;
 use Symfony\Component\Filesystem\Filesystem;
@@ -43,14 +44,14 @@ class TemplatePlugin
     private $cssMinifier;
 
     /**
-     * @var array
-     */
-    private $meta;
-
-    /**
      * @var bool
      */
     private $minify;
+
+    /**
+     * @var Page
+     */
+    private $page;
 
     public function __construct(
         ParserFactory $parserFactory,
@@ -58,8 +59,7 @@ class TemplatePlugin
         CSSmin $cssMinifier,
         string $publicDir,
         string $srcDir,
-        $minify,
-        $meta
+        bool $minify
     ) {
         $this->parserFactory = $parserFactory;
         $this->responsiveFactory = $responsiveFactory;
@@ -67,31 +67,34 @@ class TemplatePlugin
         $this->publicDir = $publicDir;
         $this->srcDir = $srcDir;
         $this->minify = $minify;
+    }
 
-        $this->meta = is_array($meta) ? $meta : [$meta];
+    /**
+     * @param Page $page
+     *
+     * @return TemplatePlugin
+     */
+    public function setPage(Page $page) : TemplatePlugin {
+        $this->page = $page;
+
+        return $this;
     }
 
     /**
      * This function will read meta configuration from `meta` and output the corresponding meta tags.
      *
-     * @param array $meta
+     * @param array $extra
      *
      * @return string
      */
-    public function meta(array $meta = []) : string {
-        $result = [];
+    public function meta(array $extra = []) : string {
+        $meta = $this->page ? $this->page->meta : new Meta();
 
-        $meta = array_merge($this->meta, $meta);
-
-        foreach ($meta as $name => $content) {
-            if (!is_string($content)) {
-                continue;
-            }
-
-            $result[] = "<meta name=\"{$name}\" content=\"{$content}\">";
+        foreach ($extra as $name => $content) {
+            $meta->name($name, $content);
         }
 
-        return implode("\n", $result);
+        return $meta->render();
     }
 
     /**
