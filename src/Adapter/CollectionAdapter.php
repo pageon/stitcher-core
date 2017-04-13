@@ -52,6 +52,7 @@ class CollectionAdapter extends AbstractAdapter
 
             $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
             $entryPage = clone $page;
+            $entryPage->parseMeta($entry);
 
             $entryPage
                 ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
@@ -92,5 +93,4 @@ class CollectionAdapter extends AbstractAdapter
             throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
         }
     }
-
 }

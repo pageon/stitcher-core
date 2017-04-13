@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Site;
 
+use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Adapter\Adapter;
 
@@ -26,6 +27,10 @@ use Brendt\Stitcher\Adapter\Adapter;
  */
 class Page
 {
+    /**
+     * @var Meta
+     */
+    public $meta;
 
     /**
      * The page's ID.
@@ -68,18 +73,21 @@ class Page
     /**
      * Construct a new page
      *
-     * @param string $id
-     * @param array  $data
+     * @param string    $id
+     * @param array     $data
+     *
+     * @param Meta|null $meta
      *
      * @throws TemplateNotFoundException
      */
-    public function __construct($id, array $data = []) {
+    public function __construct($id, array $data = [], Meta $meta = null) {
         if (!isset($data['template'])) {
             throw new TemplateNotFoundException("No template was set for page {$id}");
         }
 
         $this->id = $id;
         $this->templatePath = $data['template'];
+        $this->meta = $meta ?? new Meta();
 
         if (isset($data['variables'])) {
             $this->variables += $data['variables'];
@@ -259,6 +267,39 @@ class Page
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function parseMeta(array $data) {
+        if (isset($data['meta'])) {
+            foreach ($data['meta'] as $name => $value) {
+                $value = $data[$value] ?? $value;
+
+                $this->meta->name($name, $value);
+            }
+        }
+
+        if (isset($data['title'])) {
+            $this->meta->title($data['title']);
+        }
+
+        if (isset($data['image'])) {
+            $this->meta->image($data['image']['src']);
+        }
+
+        if (isset($data['description'])) {
+            $this->meta->description($data['description']);
+        }
+
+        if (isset($data['pagination']['next'])) {
+            $this->meta->link('next', $data['pagination']['next']['url']);
+        }
+
+        if (isset($data['pagination']['prev'])) {
+            $this->meta->link('prev', $data['pagination']['prev']['url']);
+        }
     }
 
 }

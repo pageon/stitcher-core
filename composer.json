@@ -23,7 +23,8 @@
         "leafo/scssphp": "^0.6.6",
         "mrclay/minify": "^2.3",
         "erusev/parsedown": "^1.6",
-        "symfony/config": "^3.2"
+        "symfony/config": "^3.2",
+        "pageon/html-meta": "@dev"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

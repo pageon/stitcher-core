@@ -41,6 +41,15 @@ interface TemplateEngine
     public function addTemplateVariable($name, $value);
 
     /**
+     * Check whether a template variable is set
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasTemplateVariable(string $name) : bool;
+
+    /**
      * Clear all template variables.
      *
      * @return TemplateEngine

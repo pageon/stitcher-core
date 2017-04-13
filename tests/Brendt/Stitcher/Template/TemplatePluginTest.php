@@ -2,11 +2,14 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Html\Meta\Meta;
+use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class TemplatePluginTest extends TestCase
 {
@@ -40,6 +43,7 @@ class TemplatePluginTest extends TestCase
         $this->assertTrue($fs->exists("./tests/public/css/main.css"));
 
         $files = $finder->files()->in('./tests/public')->path('css/main.css');
+        /** @var SplFileInfo $file */
         foreach ($files as $file) {
             $this->assertContains('body {', $file->getContents());
         }
@@ -142,7 +146,7 @@ class TemplatePluginTest extends TestCase
     public function test_meta() {
         $plugin = $this->createEnginePlugin();
 
-        $result = $plugin->meta();
+        $result = $plugin->meta(Stitcher::getParameter('meta'));
 
         $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $result);
     }
@@ -152,7 +156,7 @@ class TemplatePluginTest extends TestCase
 
         $result = $plugin->meta([
             'viewport' => 'test',
-            'tag' => 'value'
+            'tag' => 'value',
         ]);
 
         $this->assertContains('<meta name="viewport" content="test">', $result);
@@ -161,7 +165,15 @@ class TemplatePluginTest extends TestCase
 
     public function test_meta_in_template() {
         $engine = $this->createSmarty();
+        /** @var TemplatePlugin $templatePlugin */
+        $templatePlugin = Stitcher::get('service.template.plugin');
+        $meta = new Meta();
+        foreach (Stitcher::getParameter('meta') as $name => $content) {
+            $meta->name($name, $content);
+        }
 
+        $templatePlugin->setPage(new Page('index', ['template' => 'index'], $meta));
+        
         $engine->addTemplateDir('./tests/src/template');
         $result = $engine->fetch('index.tpl');
 

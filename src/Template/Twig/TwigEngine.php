@@ -59,6 +59,17 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
     }
 
     /**
+     * Check whether a template variable is set
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasTemplateVariable(string $name) : bool {
+        return isset($this->variables[$name]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function clearTemplateVariables() {
