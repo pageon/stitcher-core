@@ -1,7 +1,7 @@
 <html>
     <head>
         <title></title>
-        {meta meta=['og:description' => 'test']}
+        {meta extra=['og:description' => 'test']}
         {css src="css/main.css" inline=true}
     </head>
     <body>
