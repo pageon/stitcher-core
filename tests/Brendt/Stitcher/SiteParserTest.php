@@ -10,7 +10,7 @@ class SiteParserTest extends TestCase
     private function createSiteParser() : SiteParser {
         $stitcher = Stitcher::create('./tests/config.yml');
 
-        $parser = new SiteParser('./tests/src', './tests/src/template', $stitcher::get('factory.parser'), $stitcher::get('factory.template'), $stitcher::get('factory.adapter'));
+        $parser = new SiteParser('./tests/src', './tests/src/template', $stitcher::get('service.template.plugin'), $stitcher::get('factory.parser'), $stitcher::get('factory.template'), $stitcher::get('factory.adapter'));
 
         return $parser;
     }

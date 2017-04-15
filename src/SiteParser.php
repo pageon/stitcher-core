@@ -2,12 +2,13 @@
 
 namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Adapter\Adapter;
+use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
+use Brendt\Stitcher\Template\TemplatePlugin;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -45,20 +46,42 @@ class SiteParser
     private $adapterFactory;
 
     /**
+     * @var array
+     */
+    private $metaConfig;
+
+    /**
+     * @var TemplatePlugin
+     */
+    private $templatePlugin;
+
+    /**
      * SiteParser constructor.
      *
      * @param string                $srcDir
      * @param string                $templateDir
      * @param ParserFactory         $parserFactory
      * @param TemplateEngineFactory $templateEngineFactory
+     * @param TemplatePlugin        $templatePlugin
      * @param AdapterFactory        $adapterFactory
+     * @param array                 $metaConfig
      */
-    public function __construct(string $srcDir, string $templateDir, ParserFactory $parserFactory, TemplateEngineFactory $templateEngineFactory, AdapterFactory $adapterFactory) {
+    public function __construct(
+        string $srcDir,
+        string $templateDir,
+        TemplatePlugin $templatePlugin,
+        ParserFactory $parserFactory,
+        TemplateEngineFactory $templateEngineFactory,
+        AdapterFactory $adapterFactory,
+        array $metaConfig = []
+    ) {
         $this->srcDir = $srcDir;
         $this->templateDir = $templateDir;
+        $this->templatePlugin = $templatePlugin;
         $this->parserFactory = $parserFactory;
         $this->templateEngineFactory = $templateEngineFactory;
         $this->adapterFactory = $adapterFactory;
+        $this->metaConfig = $metaConfig;
     }
 
     /**
@@ -88,14 +111,17 @@ class SiteParser
             }
 
             $pages = $this->parseAdapters($page, $filterValue);
-
             $pageTemplate = $templates[$page->getTemplatePath()];
+
             foreach ($pages as $entryPage) {
                 $entryPage = $this->parseVariables($entryPage);
+                $entryPage->parseMeta($entryPage->getVariables());
 
-                // Render each page
+                $this->templatePlugin->setPage($entryPage);
                 $templateEngine->addTemplateVariables($entryPage->getVariables());
+
                 $blanket[$entryPage->getId()] = $templateEngine->renderTemplate($pageTemplate);
+
                 $templateEngine->clearTemplateVariables();
             }
         }
@@ -131,7 +157,7 @@ class SiteParser
                     continue;
                 }
 
-                $page = new Page($route, $data);
+                $page = new Page($route, $data, $this->createMeta());
                 $site->addPage($page);
             }
         }
@@ -218,6 +244,10 @@ class SiteParser
                 ->setVariableIsParsed($name);
         }
 
+        if ($meta = $page->getVariable('meta')) {
+            $page->parseMeta(['meta' => $meta]);
+        }
+
         return $page;
     }
 
@@ -250,5 +280,11 @@ class SiteParser
         }
 
         return $parser->parse($value);
+    }
+
+    private function createMeta() : Meta {
+        $meta = new Meta();
+
+        return $meta;
     }
 }
