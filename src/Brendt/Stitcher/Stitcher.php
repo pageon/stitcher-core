@@ -59,12 +59,7 @@ class Stitcher
      * @var string
      */
     private $templateDir;
-
-    /**
-     * @var SiteParser
-     */
-    private $siteParser;
-
+    
     /**
      * @see \Brendt\Stitcher\Stitcher::create()
      *
