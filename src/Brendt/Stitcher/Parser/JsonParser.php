@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Parser;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Exception\ParserException;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Symfony\Component\Finder\Finder;

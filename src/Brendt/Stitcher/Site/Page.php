@@ -4,7 +4,6 @@ namespace Brendt\Stitcher\Site;
 
 use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
-use Brendt\Stitcher\Adapter\Adapter;
 use Brendt\Stitcher\Site\Http\Header;
 
 /**

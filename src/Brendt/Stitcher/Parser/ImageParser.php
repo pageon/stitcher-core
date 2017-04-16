@@ -3,7 +3,6 @@
 namespace Brendt\Stitcher\Parser;
 
 use Brendt\Image\ResponsiveFactory;
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\Stitcher;
 
 /**
