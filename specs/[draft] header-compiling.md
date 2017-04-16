@@ -23,8 +23,17 @@ The `Page` class will hold a collection of HTTP headers which can be added via a
  should take the header name and header value as separate parameters.
  
 Page header compiling should be triggered in the `SiteParser::parse` method, for every page.
- 
+
 ## Compiling headers to the correct source
+
+Because of the difference between the development and production environment in Stitcher, headers should be set different
+ depending on which environment. This requires a few more classes to be added:
+ 
+- `Brendt\Stitcher\Site\Http\HeaderCompiler`: the interface for all header compilers.
+- `Brendt\Stitcher\Site\Http\HtaccessHeaderCompiler`: this class will parse headers into a `.htaccess` file.
+- `Brendt\Stitcher\Site\Http\RuntimeHeaderCompiler`: this class will parse header at runtime.
+- `Brendt\Stitcher\Factory\HeaderCompilerFactory`: depending on the environment, this factory gives the correct 
+ `HeaderCompiler` implementation.
 
 ## `.htaccess` rendering
 
@@ -32,4 +41,9 @@ Stitcher will hold an object representing the `.htaccess` file in memory when co
  to HTML, Stitcher will also add that page's id and its headers to the collection object. When all pages are compiled, 
  this object is rendered and saved to the `.htaccess` file.
 
+- `Brendt\Stitcher\Site\Http\Htaccess`: the class which represents the `.htaccess` file and can render it.
+
 ### Partial `.htaccess` rendering
+
+Sometimes we're only rendering one page. This should remain possible with the dynamic `.htaccess` parser, whilst not 
+ clearing all other page configuration. 
