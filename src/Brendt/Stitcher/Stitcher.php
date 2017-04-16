@@ -30,6 +30,7 @@ class Stitcher
      * @var array
      */
     protected static $configDefaults = [
+        'environment'          => 'development',
         'directories.src'      => './src',
         'directories.public'   => './public',
         'directories.cache'    => './.cache',
