@@ -1,3 +1,5 @@
+environment: test
+
 directories:
     src: ./tests/src
     public: ./tests/public
