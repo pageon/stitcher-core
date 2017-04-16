@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Adapter;
 
-use Brendt\Stitcher\Config;
 use Brendt\Stitcher\factory\ParserFactory;
 use Brendt\Stitcher\Site\Page;
 

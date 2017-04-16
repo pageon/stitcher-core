@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Adapter;
 
-use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Site\Page;
 

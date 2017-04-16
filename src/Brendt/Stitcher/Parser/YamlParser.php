@@ -8,7 +8,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use Brendt\Stitcher\Config;
 
 /**
  * The YamlParser take a path to one or more YAML files, and parses the content into an array.
