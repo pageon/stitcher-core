@@ -49,6 +49,7 @@ services:
         class: Brendt\Stitcher\Site\Http\RuntimeHeaderCompiler
     compiler.header.htaccess:
         class: Brendt\Stitcher\Site\Http\HtaccessHeaderCompiler
+        arguments: ['@service.htaccess']
 
     # Factory
     factory.parser:
@@ -67,8 +68,8 @@ services:
         class: Brendt\Stitcher\Factory\HeaderCompilerFactory
         arguments: ['%environment%']
         calls:
-            - [addHeaderCompiler, ['development', '%compiler.header.runtime%']]
-            - [addHeaderCompiler, ['production', '%compiler.header.htaccess%']]
+            - [addHeaderCompiler, ['development', '@compiler.header.runtime']]
+            - [addHeaderCompiler, ['production', '@compiler.header.htaccess']]
 
     # Configurator
     configurator.image:
@@ -105,6 +106,9 @@ services:
             - '%directories.public%'
             - '%directories.src%'
             - '%minify%'
+    service.htaccess:
+        class: Brendt\Stitcher\Site\Http\Htaccess
+        arguments: ['%directories.htaccess%']
 
     parser.site:
         class: Brendt\Stitcher\SiteParser
