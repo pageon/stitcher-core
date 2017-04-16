@@ -30,19 +30,20 @@ class Stitcher
      * @var array
      */
     protected static $configDefaults = [
-        'directories.src'    => './src',
-        'directories.public' => './public',
-        'directories.cache'  => './.cache',
-        'meta'               => [],
-        'minify'             => false,
-        'engines.template'   => 'smarty',
-        'engines.image'      => 'gd',
-        'engines.optimizer'  => true,
-        'engines.async'      => true,
-        'cdn'                => [],
-        'caches.image'       => true,
-        'caches.cdn'         => true,
-        'optimizer.options'  => [],
+        'directories.src'      => './src',
+        'directories.public'   => './public',
+        'directories.cache'    => './.cache',
+        'directories.htaccess' => './public/.htaccess',
+        'meta'                 => [],
+        'minify'               => false,
+        'engines.template'     => 'smarty',
+        'engines.image'        => 'gd',
+        'engines.optimizer'    => true,
+        'engines.async'        => true,
+        'cdn'                  => [],
+        'caches.image'         => true,
+        'caches.cdn'           => true,
+        'optimizer.options'    => [],
     ];
 
     /**
@@ -115,7 +116,7 @@ class Stitcher
         self::$container->set('stitcher', $stitcher);
 
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
-        $serviceLoader->load('services.yml');
+        $serviceLoader->load(__DIR__ . '/../../services.yml');
 
         return $stitcher;
     }

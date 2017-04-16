@@ -24,7 +24,8 @@
         "mrclay/minify": "^2.3",
         "erusev/parsedown": "^1.6",
         "symfony/config": "^3.2",
-        "pageon/html-meta": "@dev"
+        "pageon/html-meta": "@dev",
+        "tivie/htaccess-parser": "^0.2@dev"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

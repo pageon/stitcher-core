@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aa852a28cc33898fc0fb53a72e969543",
-    "content-hash": "fc0c21990d03bc92b23d43eab2eb4817",
+    "hash": "29d9fc806e8b4817b962abe8e38ea88e",
+    "content-hash": "25c63cc8af220298fea7405d157f23af",
     "packages": [
         {
             "name": "brendt/responsive-images",
@@ -1182,6 +1182,51 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-03-20 09:45:15"
+        },
+        {
+            "name": "tivie/htaccess-parser",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tivie/php-htaccess-parser.git",
+                "reference": "d12e9f6945a6aa79c0c1fd55c77010e798e6ce28"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tivie/php-htaccess-parser/zipball/d12e9f6945a6aa79c0c1fd55c77010e798e6ce28",
+                "reference": "d12e9f6945a6aa79c0c1fd55c77010e798e6ce28",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.8.1",
+                "phpunit/phpunit": "4.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tivie\\HtaccessParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Estevão Soares dos Santos",
+                    "email": "estevao@soares-dos-santos.com"
+                }
+            ],
+            "description": "A .htaccess parser and validator implemented in PHP",
+            "homepage": "https://github.com/tivie/php-htaccess-parser",
+            "keywords": [
+                ".htaccess",
+                "htaccess"
+            ],
+            "time": "2015-02-04 18:36:08"
         },
         {
             "name": "twig/twig",
@@ -2761,7 +2806,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pageon/html-meta": 20
+        "pageon/html-meta": 20,
+        "tivie/htaccess-parser": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
