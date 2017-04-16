@@ -44,6 +44,12 @@ services:
         class: Brendt\Stitcher\Parser\YamlParser
         arguments: ['@factory.parser', '%directories.src%']
 
+    # Compilers
+    compiler.header.runtime:
+        class: Brendt\Stitcher\Site\Http\RuntimeHeaderCompiler
+    compiler.header.htaccess:
+        class: Brendt\Stitcher\Site\Http\HtaccessHeaderCompiler
+
     # Factory
     factory.parser:
         class: Brendt\Stitcher\Factory\ParserFactory
@@ -57,6 +63,12 @@ services:
     factory.image:
         class: Brendt\Image\ResponsiveFactory
         arguments: ['@configurator.image']
+    factory.header.compiler:
+        class: Brendt\Stitcher\Factory\HeaderCompilerFactory
+        arguments: ['%environment%']
+        calls:
+            - [addHeaderCompiler, ['development', '%compiler.header.runtime%']]
+            - [addHeaderCompiler, ['production', '%compiler.header.htaccess%']]
 
     # Configurator
     configurator.image:
