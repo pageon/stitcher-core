@@ -227,7 +227,6 @@ class Stitcher
             $fs->copy($sourceResourcePath, $publicResourcePath, true);
         }
     }
-
 }
 
 
