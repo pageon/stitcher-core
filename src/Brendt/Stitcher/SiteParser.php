@@ -244,10 +244,6 @@ class SiteParser
                 ->setVariableIsParsed($name);
         }
 
-        if ($meta = $page->getVariable('meta')) {
-            $page->parseMeta(['meta' => $meta]);
-        }
-
         return $page;
     }
 

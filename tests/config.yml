@@ -6,7 +6,7 @@ directories:
     image: ./tests/public/img
     cache: ./tests/.cache
     template: ./tests/src/template
-    htaccess: ./tests/.test.htaccess
+    htaccess: ./tests/public/.htaccess
 
 engines:
     image: gd

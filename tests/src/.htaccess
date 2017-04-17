@@ -25,11 +25,9 @@
 </ifmodule>
 
 <ifmodule mod_headers.c>
-    <ifmodule mod_http2.c>
-        <FilesMatch "^\/page-id$">
-            Header add Link "</main.css>; rel=preload; as=style"
-            Header add Link "</img/image.jpg>; rel=preload; as=image"
-            Header add Link "</js/script.js>; rel=preload; as=script"
-        </FilesMatch>
-    </ifmodule>
+    <FilesMatch "^\/page-id$">
+        Header add Link "</main.css>; rel=preload; as=style"
+        Header add Link "</img/image.jpg>; rel=preload; as=image"
+        Header add Link "</js/script.js>; rel=preload; as=script"
+    </FilesMatch>
 </ifmodule>
