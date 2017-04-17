@@ -1,19 +1,27 @@
 # Changelog
 
-## 1.0.0-alpha2
+## 1.0.0-alpha4
+
+Add dynamic .htaccess support. 
+
+This update adds some BC breaking changes, two things need to happen for old projects to work.
+   
+Regenerate the composer autoload mapping.   
+
+```sh
+composer dump-autoload -o
+```
+
+Add the `environment` parameter to config files.
+
+```yaml
+# config.yml
+environment: production
+
+# dev/dev.config.yml
+environment: development
+```
+
+## 1.0.0-alpha3
 
 - Bump PHP minimum required version to PHP 7.1
-
-## 1.0.0-alpha
-
-```
-composer require brendt/stitcher:1.0.0-alpha
-```
-
-- Static generator
-- Console support
-- Base installation
-- Performance helper functions
-- Meta configuration
-- Sass, CSS and JavaScript support (compiling and minifying)
-- Twig and Smarty support

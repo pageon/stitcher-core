@@ -1,7 +1,7 @@
 <phpunit
         backupGlobals="false"
         backupStaticAttributes="false"
-        bootstrap="vendor/autoload.php"
+        bootstrap="tests/Bootstrap.php"
         colors="true"
         testsuite="default"
 >

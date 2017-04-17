@@ -3,13 +3,12 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -30,19 +29,21 @@ class Stitcher
      * @var array
      */
     protected static $configDefaults = [
-        'directories.src'    => './src',
-        'directories.public' => './public',
-        'directories.cache'  => './.cache',
-        'meta'               => [],
-        'minify'             => false,
-        'engines.template'   => 'smarty',
-        'engines.image'      => 'gd',
-        'engines.optimizer'  => true,
-        'engines.async'      => true,
-        'cdn'                => [],
-        'caches.image'       => true,
-        'caches.cdn'         => true,
-        'optimizer.options'  => [],
+        'environment'          => 'development',
+        'directories.src'      => './src',
+        'directories.public'   => './public',
+        'directories.cache'    => './.cache',
+        'directories.htaccess' => './public/.htaccess',
+        'meta'                 => [],
+        'minify'               => false,
+        'engines.template'     => 'smarty',
+        'engines.image'        => 'gd',
+        'engines.optimizer'    => true,
+        'engines.async'        => true,
+        'cdn'                  => [],
+        'caches.image'         => true,
+        'caches.cdn'           => true,
+        'optimizer.options'    => [],
     ];
 
     /**
@@ -59,12 +60,7 @@ class Stitcher
      * @var string
      */
     private $templateDir;
-
-    /**
-     * @var SiteParser
-     */
-    private $siteParser;
-
+    
     /**
      * @see \Brendt\Stitcher\Stitcher::create()
      *
@@ -115,7 +111,7 @@ class Stitcher
         self::$container->set('stitcher', $stitcher);
 
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
-        $serviceLoader->load('services.yml');
+        $serviceLoader->load(__DIR__ . '/../../services.yml');
 
         return $stitcher;
     }
@@ -171,6 +167,13 @@ class Stitcher
         /** @var SiteParser $siteParser */
         $siteParser = self::get('parser.site');
 
+        /** @var Htaccess $htaccess */
+        $htaccess = self::get('service.htaccess');
+
+        if ($filterValue === null) {
+            $htaccess->clearPageBlocks();
+        }
+
         $this->prepareCdn();
 
         return $siteParser->parse($routes, $filterValue);
@@ -205,6 +208,10 @@ class Stitcher
 
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
+
+        /** @var Htaccess $htaccess */
+        $htaccess = self::get('service.htaccess');
+        $fs->dumpFile("{$this->publicDir}/.htaccess", $htaccess->parse());
     }
 
     /**
@@ -227,7 +234,6 @@ class Stitcher
             $fs->copy($sourceResourcePath, $publicResourcePath, true);
         }
     }
-
 }
 
 

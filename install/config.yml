@@ -16,6 +16,9 @@
 #     </Directory>
 # </VirtualHost>
 
+# Set the environment. Can be `production` or `development`
+environment: production
+
 # Configure the paths of several directories
 directories:
     # The source directory
