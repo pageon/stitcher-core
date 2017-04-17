@@ -1,9 +1,12 @@
+environment: test
+
 directories:
     src: ./tests/src
     public: ./tests/public
     image: ./tests/public/img
     cache: ./tests/.cache
     template: ./tests/src/template
+    htaccess: ./tests/public/.htaccess
 
 engines:
     image: gd

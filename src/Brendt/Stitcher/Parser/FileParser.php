@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Parser;
 
-use Brendt\Stitcher\Config;
 use Symfony\Component\Finder\Finder;
 
 /**

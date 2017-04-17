@@ -4,7 +4,7 @@ namespace Brendt\Stitcher\Site;
 
 use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
-use Brendt\Stitcher\Adapter\Adapter;
+use Brendt\Stitcher\Site\Http\Header;
 
 /**
  * A Page object represents a page entry configured in a YAML file located in the `src/sites/` directory.
@@ -69,6 +69,11 @@ class Page
      * @var array
      */
     protected $parsedVariables = [];
+
+    /**
+     * @var Header[]
+     */
+    private $headers = [];
 
     /**
      * Construct a new page
@@ -267,6 +272,20 @@ class Page
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * @param Header $header
+     */
+    public function addHeader(Header $header) {
+        $this->headers[] = $header;
+    }
+
+    /**
+     * @return Header[]
+     */
+    public function getHeaders() : array {
+        return $this->headers;
     }
 
     /**

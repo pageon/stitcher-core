@@ -140,5 +140,4 @@ class StitcherTest extends TestCase
             $this->assertContains('Intro', $html);
         }
     }
-
 }

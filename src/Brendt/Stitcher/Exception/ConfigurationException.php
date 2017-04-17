@@ -19,4 +19,13 @@ class ConfigurationException extends StitcherException
         return new self("The configuration {$entries} `{$fields}` {$are} required when using the {$adapter} adapter.");
     }
 
+    /**
+     * @param $path
+     *
+     * @return ConfigurationException
+     */
+    public static function fileNotFound($path) : ConfigurationException {
+        return new self("Could not load file: `{$path}`.");
+    }
+
 }

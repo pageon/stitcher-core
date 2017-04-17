@@ -3,11 +3,15 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Html\Meta\Meta;
+use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\Factory\HeaderCompilerFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
+use Brendt\Stitcher\Site\Http\HeaderCompiler;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
+use Brendt\Stitcher\Template\TemplateEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -46,6 +50,11 @@ class SiteParser
     private $adapterFactory;
 
     /**
+     * @var HeaderCompilerFactory
+     */
+    private $headerCompilerFactory;
+
+    /**
      * @var array
      */
     private $metaConfig;
@@ -56,14 +65,30 @@ class SiteParser
     private $templatePlugin;
 
     /**
+     * @var HeaderCompiler|null
+     */
+    private $headerCompiler;
+
+    /**
+     * @var TemplateEngine
+     */
+    private $templateEngine;
+
+    /**
+     * @var SplFileInfo[]
+     */
+    private $templates;
+
+    /**
      * SiteParser constructor.
      *
      * @param string                $srcDir
      * @param string                $templateDir
+     * @param TemplatePlugin        $templatePlugin
      * @param ParserFactory         $parserFactory
      * @param TemplateEngineFactory $templateEngineFactory
-     * @param TemplatePlugin        $templatePlugin
      * @param AdapterFactory        $adapterFactory
+     * @param HeaderCompilerFactory $headerCompilerFactory
      * @param array                 $metaConfig
      */
     public function __construct(
@@ -73,6 +98,7 @@ class SiteParser
         ParserFactory $parserFactory,
         TemplateEngineFactory $templateEngineFactory,
         AdapterFactory $adapterFactory,
+        HeaderCompilerFactory $headerCompilerFactory,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
@@ -81,52 +107,12 @@ class SiteParser
         $this->parserFactory = $parserFactory;
         $this->templateEngineFactory = $templateEngineFactory;
         $this->adapterFactory = $adapterFactory;
+        $this->headerCompilerFactory = $headerCompilerFactory;
         $this->metaConfig = $metaConfig;
-    }
 
-    /**
-     * Parse a path into usable data.
-     *
-     * @param array  $routes
-     * @param string $filterValue
-     *
-     * @return mixed
-     */
-    public function parse($routes = [], string $filterValue = null) : array {
-        $templateEngine = $this->templateEngineFactory->getDefault();
-        $blanket = [];
-
-        $site = $this->loadSite((array) $routes);
-        $templates = $this->loadTemplates();
-
-        foreach ($site as $page) {
-            $templateIsset = isset($templates[$page->getTemplatePath()]);
-
-            if (!$templateIsset) {
-                if ($template = $page->getTemplatePath()) {
-                    throw new TemplateNotFoundException("Template {$template} not found.");
-                } else {
-                    throw new TemplateNotFoundException('No template was set.');
-                }
-            }
-
-            $pages = $this->parseAdapters($page, $filterValue);
-            $pageTemplate = $templates[$page->getTemplatePath()];
-
-            foreach ($pages as $entryPage) {
-                $entryPage = $this->parseVariables($entryPage);
-                $entryPage->parseMeta($entryPage->getVariables());
-
-                $this->templatePlugin->setPage($entryPage);
-                $templateEngine->addTemplateVariables($entryPage->getVariables());
-
-                $blanket[$entryPage->getId()] = $templateEngine->renderTemplate($pageTemplate);
-
-                $templateEngine->clearTemplateVariables();
-            }
-        }
-
-        return $blanket;
+        $this->headerCompiler = $this->headerCompilerFactory->getHeaderCompilerByEnvironment();
+        $this->templateEngine = $this->templateEngineFactory->getDefault();
+        $this->templates = $this->loadTemplates();
     }
 
     /**
@@ -172,8 +158,7 @@ class SiteParser
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
-        $templateEngine = $this->templateEngineFactory->getDefault();
-        $templateExtension = $templateEngine->getTemplateExtension();
+        $templateExtension = $this->templateEngine->getTemplateExtension();
 
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in($this->templateDir)->name("*.{$templateExtension}");
@@ -183,8 +168,67 @@ class SiteParser
             $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
             $templates[$id] = $file;
         }
-
+        
         return $templates;
+    }
+
+    /**
+     * Parse a path into usable data.
+     *
+     * @param array  $routes
+     * @param string $filterValue
+     *
+     * @return array|mixed
+     * @throws TemplateNotFoundException
+     */
+    public function parse($routes = [], string $filterValue = null) : array {
+        $blanket = [];
+
+        $site = $this->loadSite((array) $routes);
+
+        foreach ($site as $page) {
+            $templateIsset = isset($this->templates[$page->getTemplatePath()]);
+
+            if (!$templateIsset) {
+                if ($template = $page->getTemplatePath()) {
+                    throw new TemplateNotFoundException("Template {$template} not found.");
+                } else {
+                    throw new TemplateNotFoundException('No template was set.');
+                }
+            }
+
+            $pages = $this->parseAdapters($page, $filterValue);
+
+            foreach ($pages as $entryPage) {
+                $blanket[$entryPage->getId()] = $this->parsePage($entryPage);
+            }
+        }
+
+        return $blanket;
+    }
+
+    /**
+     * @param Page $page
+     *
+     * @return string
+     */
+    public function parsePage(Page $page) : string {
+        $entryPage = $this->parseVariables($page);
+        $entryPage->parseMeta($entryPage->getVariables());
+
+        if ($this->headerCompiler) {
+            $this->headerCompiler->compilePage($page);
+        }
+
+        $this->templatePlugin->setPage($entryPage);
+        $this->templateEngine->addTemplateVariables($entryPage->getVariables());
+
+        $pageTemplate = $this->templates[$page->getTemplatePath()];
+        $result = $this->templateEngine->renderTemplate($pageTemplate);
+
+        $this->templateEngine->clearTemplateVariables();
+
+        return $result;
     }
 
     /**
@@ -242,10 +286,6 @@ class SiteParser
             $page
                 ->setVariableValue($name, $this->getData($value))
                 ->setVariableIsParsed($name);
-        }
-
-        if ($meta = $page->getVariable('meta')) {
-            $page->parseMeta(['meta' => $meta]);
         }
 
         return $page;
