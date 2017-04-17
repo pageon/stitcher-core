@@ -70,6 +70,7 @@ services:
         calls:
             - [addHeaderCompiler, ['development', '@compiler.header.runtime']]
             - [addHeaderCompiler, ['production', '@compiler.header.htaccess']]
+            - [addHeaderCompiler, ['test', '@compiler.header.htaccess']]
 
     # Configurator
     configurator.image:
@@ -119,4 +120,5 @@ services:
             - '@factory.parser'
             - '@factory.template'
             - '@factory.adapter'
+            - '@factory.header.compiler'
             - '%meta%'
