@@ -36,7 +36,7 @@ class Htaccess
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
-            throw ConfigurationException::fileNotFound($path);
+            $this->fs->dumpFile($path, __DIR__ . '/../../../../.htaccess');
         }
 
         $this->parser = new Parser(new \SplFileObject($path));
@@ -62,7 +62,11 @@ class Htaccess
         $headerBlock = null;
 
         foreach ($this->contents as $content) {
-            if ($content instanceof Block && strtolower($content->getName()) === 'ifmodule' && $content->getArguments()[0] === 'mod_headers.c') {
+            if ($content instanceof Block
+                && strtolower($content->getName()) === 'ifmodule'
+                && count($content->getArguments())
+                && $content->getArguments()[0] === 'mod_headers.c'
+            ) {
                 $headerBlock = $content;
 
                 break;
@@ -91,9 +95,13 @@ class Htaccess
         $pageName = '"^\/' . $pageId . '.html$"';
 
         foreach ($headerBlock as $content) {
-            if ($content instanceof Block && strtolower($content->getName()) === 'filesmatch' && $content->getArguments()[0] === $pageName) {
+            if ($content instanceof Block
+                && strtolower($content->getName()) === 'filesmatch'
+                && count($content->getArguments())
+                && $content->getArguments()[0] === $pageName
+            ) {
                 $pageBlock = $content;
-                
+
                 break;
             }
         }
@@ -103,7 +111,18 @@ class Htaccess
             $pageBlock->addArgument($pageName);
             $headerBlock->addChild($pageBlock);
         }
-        
+
         return $pageBlock;
+    }
+
+    public function clearPageBlocks() {
+        $pageBlock = null;
+        $headerBlock = $this->getHeaderBlock();
+
+        foreach ($headerBlock as $content) {
+            if ($content instanceof Block && strtolower($content->getName()) === 'filesmatch') {
+                $headerBlock->removeChild($content);
+            }
+        }
     }
 }

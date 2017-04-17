@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -166,6 +167,13 @@ class Stitcher
         /** @var SiteParser $siteParser */
         $siteParser = self::get('parser.site');
 
+        /** @var Htaccess $htaccess */
+        $htaccess = self::get('service.htaccess');
+
+        if ($filterValue === null) {
+            $htaccess->clearPageBlocks();
+        }
+
         $this->prepareCdn();
 
         return $siteParser->parse($routes, $filterValue);
@@ -200,6 +208,10 @@ class Stitcher
 
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
+
+        /** @var Htaccess $htaccess */
+        $htaccess = self::get('service.htaccess');
+        $fs->dumpFile("{$this->publicDir}/.htaccess", $htaccess->parse());
     }
 
     /**
