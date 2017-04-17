@@ -36,7 +36,7 @@ class Htaccess
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
-            $this->fs->dumpFile($path, __DIR__ . '/../../../../.htaccess');
+            $this->fs->dumpFile($path, file_get_contents(__DIR__ . '/../../../../.htaccess'));
         }
 
         $this->parser = new Parser(new \SplFileObject($path));
@@ -74,7 +74,8 @@ class Htaccess
         }
 
         if (!$headerBlock) {
-            $headerBlock = new Block('ifmodule', 'mod_headers.c');
+            $headerBlock = new Block('ifmodule');
+            $headerBlock->addArgument('mod_headers.c');
             $this->contents->append($headerBlock);
         }
 

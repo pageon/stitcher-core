@@ -2,6 +2,8 @@
 
 namespace Brendt\Stitcher;
 
+use Brendt\Stitcher\Site\Http\Header;
+use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +12,15 @@ class SiteParserTest extends TestCase
     private function createSiteParser() : SiteParser {
         $stitcher = Stitcher::create('./tests/config.yml');
 
-        $parser = new SiteParser('./tests/src', './tests/src/template', $stitcher::get('service.template.plugin'), $stitcher::get('factory.parser'), $stitcher::get('factory.template'), $stitcher::get('factory.adapter'));
+        $parser = new SiteParser(
+            './tests/src',
+            './tests/src/template',
+            $stitcher::get('service.template.plugin'),
+            $stitcher::get('factory.parser'),
+            $stitcher::get('factory.template'),
+            $stitcher::get('factory.adapter'),
+            $stitcher::get('factory.header.compiler')
+        );
 
         return $parser;
     }
@@ -126,5 +136,24 @@ class SiteParserTest extends TestCase
         $variable = $parsedPage->getVariable('test');
         $this->assertTrue(isset($variable['title']));
         $this->assertTrue(isset($variable['body']));
+    }
+
+    public function test_header_compilers() {
+        $siteParser = $this->createSiteParser();
+        $page = new Page('/a', [
+            'template'  => 'index'
+        ]);
+        $page->addHeader(Header::link('"</main.css>; rel=preload; as=style"'));
+
+        $siteParser->parsePage($page);
+        /** @var Htaccess $htaccess */
+        $htaccess = Stitcher::get('service.htaccess');
+
+        $this->assertContains(
+'<ifmodule mod_headers.c>
+    <filesmatch "^\/a.html$">
+        Header add Link "</main.css>; rel=preload; as=style"
+    </filesmatch>
+</ifmodule>', $htaccess->parse());
     }
 }

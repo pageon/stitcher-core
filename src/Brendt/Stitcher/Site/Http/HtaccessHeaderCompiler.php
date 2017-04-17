@@ -25,9 +25,14 @@ class HtaccessHeaderCompiler implements HeaderCompiler
      * @param Page $page
      */
     public function compilePage(Page $page) : void {
+        $headers = $page->getHeaders();
+        if (!count($headers)) {
+            return;
+        }
+
         $pageBlock = $this->htaccess->getPageBlock($page);
 
-        foreach ($page->getHeaders() as $header) {
+        foreach ($headers as $header) {
             $directive = new Directive('Header');
             $directive->addArgument("add {$header->getHtaccessHeader()}");
 
