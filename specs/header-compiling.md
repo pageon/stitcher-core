@@ -1,4 +1,4 @@
-# [draft] Header compiling
+# Header compiling
 
 The need to be able to compile headers via Stitcher becomes clear when talking about HTTP/2 server push and
  caching headers. Ideally, every page should be able to specify its own custom headers. Because of the nature of Stitcher, 
@@ -16,6 +16,34 @@ This approach means we need support for several things:
 - Compiling headers to the correct source (`.htaccess` or via PHP).
 - In the case of production, being able to dynamically build the `.htaccess` file.
 - Being able to build parts of the `.htaccess` file in case we're only compiling part of site.
+
+## Upgrade
+
+Header compiling support was added in Stitcher 1.0.0-alpha4. Upgrading from an older Stitcher project requires two things.
+
+Regenerate the composer autoload mapping.   
+
+```sh
+composer dump-autoload -o
+```
+
+Add the `environment` parameter to config files.
+
+```yaml
+# config.yml
+environment: production
+
+# dev/dev.config.yml
+environment: development
+```
+
+And optionally add a second parameter in the production configuration to specify where the .htaccess file is saved. This
+ parameter defaults to `./public/.htaccess`.
+ 
+```yaml
+directories:
+    htaccess: ./my-path/to/.htaccess
+```
 
 ## Header support in pages
 
