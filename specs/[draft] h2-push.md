@@ -16,17 +16,11 @@ This includes:
 
 ## Header support
 
-With this specification, Stitcher adds support to manipulate production `.htaccess` files. The `DevController` can support
- custom headers via PHP. During the compile-time of a Stitcher website, each page will hold a collection of HTTP headers 
- which will be added to the `.htaccess` configuration.
- 
-h2 server push headers will reside in two conditional blocks:
+h2 server push headers will reside in the `mod_headers` conditional block:
 
 ```apacheconfig
 <ifmodule mod_headers.c>
-    <ifmodule mod_http2.c>
-        # ...
-    </ifmodule>
+    # ...
 </ifmodule>
 ```
 

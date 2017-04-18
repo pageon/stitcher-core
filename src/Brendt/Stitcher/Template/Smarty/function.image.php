@@ -16,7 +16,8 @@ function smarty_function_image(array $params, Smarty_Internal_Template $template
     $plugin = Stitcher::get('service.template.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
-    $image = $plugin->image($src);
+    $push = isset($params['push']);
+    $image = $plugin->image($src, $push);
 
     $template->assign($params['var'], $image);
 }
