@@ -5,6 +5,7 @@ namespace Brendt\Stitcher\Template;
 use Brendt\Html\Meta\Meta;
 use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Site\Http\Header;
 use Brendt\Stitcher\Site\Page;
 use CSSmin;
 use JSMin;
@@ -108,11 +109,12 @@ class TemplatePlugin
      * Files with the .scss and .sass extensions will be compiled to normal CSS files.
      *
      * @param string $src
-     * @param bool   $inline
+     * @param bool   $inline Inline this resource
+     * @param bool   $push   Use HTTP/2 server push to send this resource.
      *
      * @return string
      */
-    public function css($src, $inline = false) {
+    public function css(string $src, bool $inline = false, bool $push = false) : string {
         $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
@@ -123,10 +125,13 @@ class TemplatePlugin
         if ($inline) {
             return "<style>{$data}</style>";
         }
-
         $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
         $fs = new Filesystem();
         $dst = "{$this->publicDir}/$srcParsed";
+
+        if ($push) {
+            $this->page->addHeader(Header::link("\"</{$srcParsed}>; rel=preload; as=style\""));
+        }
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);
@@ -146,12 +151,13 @@ class TemplatePlugin
      * but instead be outputted to an HTML string which can be included in a template.
      *
      * @param string $src
-     * @param bool   $inline
+     * @param bool   $inline Inline this resource
      * @param bool   $async
+     * @param bool   $push   Use HTTP/2 server push to send this resource.
      *
      * @return string
      */
-    public function js($src, $inline = false, $async = false) {
+    public function js(string $src, bool $inline = false, bool $async = false, bool $push = false) : string {
         $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
@@ -165,6 +171,10 @@ class TemplatePlugin
 
         $fs = new Filesystem();
         $dst = "{$this->publicDir}/$src";
+
+        if ($push) {
+            $this->page->addHeader(Header::link("\"</{$src}>; rel=preload; as=script\""));
+        }
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);
@@ -185,17 +195,22 @@ class TemplatePlugin
     /**
      * Create a responsive image using brendt\responsive-images.
      *
-     * @param $src
+     * @param      $src
+     * @param bool $push Use HTTP/2 server push to send this resource.
      *
      * @return array
      *
      * @see \Brendt\Image\ResponsiveFactory
      */
-    public function image($src) {
+    public function image(string $src, bool $push = false) : array {
         $image = $this->responsiveFactory->create($src);
 
         if (!$image) {
             return ['src' => null, 'srcset' => null, 'sizes' => null];
+        }
+
+        if ($push) {
+            $this->page->addHeader(Header::link("\"</{$image->src()}>; rel=preload; as=image\""));
         }
 
         return [
@@ -208,11 +223,12 @@ class TemplatePlugin
     /**
      * Create a public file from the src directory and return its path.
      *
-     * @param $src
+     * @param string $src
+     * @param bool   $push Use HTTP/2 server push to send this resource.
      *
      * @return null|string
      */
-    public function file($src) {
+    public function file($src, bool $push = false) : ?string {
         $src = trim($src, '/');
         $files = Finder::create()->in($this->srcDir)->path($src)->getIterator();
         $files->rewind();
@@ -225,6 +241,10 @@ class TemplatePlugin
 
         $fs = new Filesystem();
         $dst = "{$this->publicDir}/{$src}";
+
+        if ($push) {
+            $this->page->addHeader(Header::link("\"</{$src}>; rel=preload; as=document\""));
+        }
 
         if ($fs->exists($dst)) {
             $fs->remove($dst);

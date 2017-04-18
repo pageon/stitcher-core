@@ -16,6 +16,7 @@ function smarty_function_css($params) {
 
     $src = isset($params['src']) ? $params['src'] : null;
     $inline = isset($params['inline']);
+    $push = isset($params['push']);
 
-    return $plugin->css($src, $inline);
+    return $plugin->css($src, $inline, $push);
 }
