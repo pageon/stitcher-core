@@ -15,6 +15,7 @@ function smarty_function_file($params) {
     $plugin = Stitcher::get('service.template.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
+    $push = isset($params['push']);
 
-    return $plugin->file($src);
+    return $plugin->file($src, $push);
 }
