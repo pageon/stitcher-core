@@ -92,8 +92,9 @@ class Htaccess
     public function &getPageBlock(Page $page) {
         $pageBlock = null;
         $headerBlock = $this->getHeaderBlock();
-        $pageId = trim($page->getId(), '/');
-        $pageName = '"^\/' . $pageId . '.html$"';
+        $pageId = trim($page->getId(), '/') ?? 'index';
+        $pageId = pathinfo($pageId !== '' ? "{$pageId}" : 'index', PATHINFO_BASENAME);
+        $pageName = '"^' . $pageId . '\.html$"';
 
         foreach ($headerBlock as $content) {
             if ($content instanceof Block

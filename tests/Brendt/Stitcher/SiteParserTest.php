@@ -151,7 +151,7 @@ class SiteParserTest extends TestCase
 
         $this->assertContains(
 '<ifmodule mod_headers.c>
-    <filesmatch "^\/a.html$">
+    <filesmatch "^a\.html$">
         Header add Link "</main.css>; rel=preload; as=style"
     </filesmatch>
 </ifmodule>', $htaccess->parse());

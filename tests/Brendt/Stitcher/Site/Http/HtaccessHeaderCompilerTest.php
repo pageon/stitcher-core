@@ -28,7 +28,7 @@ class HtaccessHeaderCompilerTest extends TestCase
         $compiler->compilePage($page);
 
         $this->assertContains(
-'    <filesmatch "^\/blog/overview.html$">
+'    <filesmatch "^overview\.html$">
         Header add Link "</main.css>; rel=preload; as=style"
     </filesmatch>', $this->htaccess->parse());
     }
