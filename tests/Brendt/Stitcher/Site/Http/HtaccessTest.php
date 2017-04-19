@@ -25,7 +25,7 @@ class HtaccessTest extends TestCase
         $page = new Page('/blog/read', ['template' => 'blog/overview']);
         $htaccess->getPageBlock($page);
 
-        $this->assertContains('<filesmatch "^\/blog/read.html$">', $htaccess->parse());
+        $this->assertContains('<filesmatch "^read\.html$">', $htaccess->parse());
     }
 
     /**
