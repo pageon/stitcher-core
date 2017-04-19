@@ -216,15 +216,15 @@ class SiteParser
         $entryPage = $this->parseVariables($page);
         $entryPage->parseMeta($entryPage->getVariables());
 
-        if ($this->headerCompiler) {
-            $this->headerCompiler->compilePage($page);
-        }
-
         $this->templatePlugin->setPage($entryPage);
         $this->templateEngine->addTemplateVariables($entryPage->getVariables());
 
         $pageTemplate = $this->templates[$page->getTemplatePath()];
         $result = $this->templateEngine->renderTemplate($pageTemplate);
+        
+        if ($this->headerCompiler) {
+            $this->headerCompiler->compilePage($page);
+        }
 
         $this->templateEngine->clearTemplateVariables();
 
