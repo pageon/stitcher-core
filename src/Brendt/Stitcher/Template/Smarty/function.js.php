@@ -17,6 +17,7 @@ function smarty_function_js($params) {
     $src = isset($params['src']) ? $params['src'] : null;
     $inline = isset($params['inline']);
     $async = isset($params['async']);
+    $push = isset($params['push']);
 
-    return $plugin->js($src, $inline, $async);
+    return $plugin->js($src, $inline, $async, $push);
 }
