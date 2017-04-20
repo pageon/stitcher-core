@@ -93,7 +93,7 @@ class TwigEngineTest extends TestCase
         $template = $files->current();
 
         $html = $engine->renderTemplate($template);
-        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue-50.jpg 50w"', $html);
+        $this->assertContains('<img src="/img/blue.jpg" srcset="/img/blue-50.jpg 50w', $html);
     }
 
     public function test_twig_file() {
