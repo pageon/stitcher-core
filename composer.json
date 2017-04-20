@@ -33,7 +33,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "Brendt\\Stitcher\\" : "src/"
+            "Brendt\\Stitcher\\" : "src/Brendt/Stitcher"
         }
     }
 }
