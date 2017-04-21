@@ -103,7 +103,7 @@ class ParserFactory
                 }
             }
         }
-        
+
         return $this->getByType($type);
     }
 

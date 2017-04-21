@@ -87,9 +87,9 @@ class Htaccess
      *
      * @param Page $page
      *
-     * @return mixed|null|Block
+     * @return Block
      */
-    public function &getPageBlock(Page $page) {
+    public function &getPageBlock(Page $page) : Block {
         $pageBlock = null;
         $headerBlock = $this->getHeaderBlock();
         $pageId = trim($page->getId(), '/') ?? 'index';
@@ -117,7 +117,10 @@ class Htaccess
         return $pageBlock;
     }
 
-    public function clearPageBlocks() {
+    /**
+     * Clear all page header blocks
+     */
+    public function clearPageBlocks() : void {
         $pageBlock = null;
         $headerBlock = $this->getHeaderBlock();
 
