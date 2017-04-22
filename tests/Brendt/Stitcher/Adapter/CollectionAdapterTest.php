@@ -104,4 +104,16 @@ class CollectionAdapterTest extends TestCase
         $adapter->transform($page, 'church-a');
     }
 
+    public function test_collection_adapter_can_parse_meta() {
+        $page = $this->createPage();
+        $adapter = $this->createAdapter();
+
+        $result = $adapter->transform($page, 'church-a');
+        $page = $result['/church-a'];
+        $meta = $page->meta->render();
+
+        $this->assertContains('name="description" content="This is a church with the name A"', $meta);
+        $this->assertContains('name="image" content="/img/green.jpg"', $meta);
+    }
+
 }

@@ -176,7 +176,7 @@ class Stitcher
 
         $this->prepareCdn();
 
-        return $siteParser->parse($routes, $filterValue);
+        return $siteParser->parse((array) $routes, $filterValue);
     }
 
     /**
