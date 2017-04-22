@@ -16,41 +16,12 @@ class MetaCompiler
      * MetaCompiler constructor.
      */
     public function __construct() {
-        $this->addCompiler('title', function (Page $page, string $data) {
-            $page->meta->title($data);
-        });
-
-        $this->addCompiler('description', function (Page $page, string $data) {
-            $page->meta->description($data);
-        });
-
-        $this->addCompiler('image', function (Page $page, $data) {
-            if (is_array($data) && isset($data['src'])) {
-                $page->meta->image($data['src']);
-            } else if (is_string($data)) {
-                $page->meta->image($data);
-            }
-        });
-
-        $this->addCompiler('pagination', function (Page $page, array $pagination) {
-            if (isset($pagination['next']['url'])) {
-                $page->meta->link('next', $pagination['next']['url']);
-            }
-
-            if (isset($pagination['prev']['url'])) {
-                $page->meta->link('prev', $pagination['prev']['url']);
-            }
-        });
-
-        $this->addCompiler('meta', function (Page $page, array $data) {
-            foreach ($data as $name => $item) {
-                $this->compilePageVariable($page, $name, $item, true);
-            }
-        });
-
-        $this->addCompiler('_name', function (Page $page, $data, string $name) {
-            $page->meta->name($name, $data);
-        });
+        $this->addCompiler('title', [$this, 'compileTitle']);
+        $this->addCompiler('description', [$this, 'compileDescription']);
+        $this->addCompiler('image', [$this, 'compileImage']);
+        $this->addCompiler('pagination', [$this, 'compilePagination']);
+        $this->addCompiler('meta', [$this, 'compileMeta']);
+        $this->addCompiler('_name', [$this, 'compileNamedMeta']);
     }
 
     /**
@@ -98,6 +69,67 @@ class MetaCompiler
         }
 
         $compileCallable($page, $data, $name);
+    }
+
+    /**
+     * @param Page   $page
+     * @param string $data
+     */
+    private function compileTitle(Page $page, string $data) {
+        $page->meta->title($data);
+    }
+
+    /**
+     * @param Page   $page
+     * @param string $data
+     */
+    private function compileDescription(Page $page, string $data) {
+        $page->meta->description($data);
+    }
+
+    /**
+     * @param Page $page
+     * @param      $data
+     */
+    private function compileImage(Page $page, $data) {
+        if (is_array($data) && isset($data['src'])) {
+            $page->meta->image($data['src']);
+        } else if (is_string($data)) {
+            $page->meta->image($data);
+        }
+    }
+
+    /**
+     * @param Page  $page
+     * @param array $pagination
+     */
+    private function compilePagination(Page $page, array $pagination) {
+        if (isset($pagination['next']['url'])) {
+            $page->meta->link('next', $pagination['next']['url']);
+        }
+
+        if (isset($pagination['prev']['url'])) {
+            $page->meta->link('prev', $pagination['prev']['url']);
+        }
+    }
+
+    /**
+     * @param Page  $page
+     * @param array $data
+     */
+    private function compileMeta(Page $page, array $data) {
+        foreach ($data as $name => $item) {
+            $this->compilePageVariable($page, $name, $item, true);
+        }
+    }
+
+    /**
+     * @param Page   $page
+     * @param        $data
+     * @param string $name
+     */
+    private function compileNamedMeta(Page $page, $data, string $name) {
+        $page->meta->name($name, $data);
     }
 
 }
