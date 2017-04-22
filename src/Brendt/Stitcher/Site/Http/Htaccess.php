@@ -22,7 +22,7 @@ class Htaccess
     private $parser;
 
     /**
-     * @var \ArrayAccess|HtaccessContainer
+     * @var array|\ArrayAccess|HtaccessContainer
      */
     private $contents;
 
@@ -65,7 +65,10 @@ class Htaccess
         if (!$headerBlock) {
             $headerBlock = new Block('ifmodule');
             $headerBlock->addArgument('mod_headers.c');
-            $this->contents->append($headerBlock);
+
+            if ($this->contents instanceof HtaccessContainer) {
+                $this->contents->append($headerBlock);
+            }
         }
 
         return $headerBlock;
