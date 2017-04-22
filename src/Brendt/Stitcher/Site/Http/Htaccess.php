@@ -5,6 +5,7 @@ namespace Brendt\Stitcher\Site\Http;
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Site\Page;
 use Symfony\Component\Filesystem\Filesystem;
+use Tivie\HtaccessParser\HtaccessContainer;
 use Tivie\HtaccessParser\Parser;
 use Tivie\HtaccessParser\Token\Block;
 
@@ -21,7 +22,7 @@ class Htaccess
     private $parser;
 
     /**
-     * @var array
+     * @var HtaccessContainer
      */
     private $contents;
 

@@ -16,6 +16,7 @@ use Brendt\Stitcher\Template\TemplateEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 class SiteParser
