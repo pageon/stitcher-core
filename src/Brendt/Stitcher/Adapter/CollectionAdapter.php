@@ -2,10 +2,13 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Exception\IdFieldNotFoundException;
 use Brendt\Stitcher\Exception\VariableNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\factory\ParserFactory;
+use Brendt\Stitcher\Site\Meta\MetaCompiler;
 use Brendt\Stitcher\Site\Page;
 
 /**
@@ -25,6 +28,17 @@ use Brendt\Stitcher\Site\Page;
  */
 class CollectionAdapter extends AbstractAdapter
 {
+    /**
+     * @var MetaCompiler
+     */
+    private $metaCompiler;
+
+    public function __construct(ParserFactory $parserFactory, MetaCompiler $metaCompiler) {
+        parent::__construct($parserFactory);
+
+        $this->metaCompiler = $metaCompiler;
+    }
+
     /**
      * @param Page $page
      * @param null $filter
@@ -52,7 +66,10 @@ class CollectionAdapter extends AbstractAdapter
 
             $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
             $entryPage = clone $page;
-            $entryPage->parseMeta($entry);
+
+            foreach ($entry as $entryVariableName => $entryVariableValue) {
+                $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
+            }
 
             $entryPage
                 ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)

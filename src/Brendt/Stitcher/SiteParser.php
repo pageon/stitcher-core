@@ -9,6 +9,7 @@ use Brendt\Stitcher\Factory\HeaderCompilerFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Site\Http\HeaderCompiler;
+use Brendt\Stitcher\Site\Meta\MetaCompiler;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Template\TemplateEngine;
@@ -80,6 +81,11 @@ class SiteParser
     private $templates;
 
     /**
+     * @var MetaCompiler
+     */
+    private $metaCompiler;
+
+    /**
      * SiteParser constructor.
      *
      * @param string                $srcDir
@@ -89,6 +95,7 @@ class SiteParser
      * @param TemplateEngineFactory $templateEngineFactory
      * @param AdapterFactory        $adapterFactory
      * @param HeaderCompilerFactory $headerCompilerFactory
+     * @param MetaCompiler          $metaCompiler
      * @param array                 $metaConfig
      */
     public function __construct(
@@ -99,6 +106,7 @@ class SiteParser
         TemplateEngineFactory $templateEngineFactory,
         AdapterFactory $adapterFactory,
         HeaderCompilerFactory $headerCompilerFactory,
+        MetaCompiler $metaCompiler,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
@@ -108,6 +116,7 @@ class SiteParser
         $this->templateEngineFactory = $templateEngineFactory;
         $this->adapterFactory = $adapterFactory;
         $this->headerCompilerFactory = $headerCompilerFactory;
+        $this->metaCompiler = $metaCompiler;
         $this->metaConfig = $metaConfig;
 
         $this->headerCompiler = $this->headerCompilerFactory->getHeaderCompilerByEnvironment();
@@ -214,7 +223,7 @@ class SiteParser
      */
     public function parsePage(Page $page) : string {
         $entryPage = $this->parseVariables($page);
-        $entryPage->parseMeta($entryPage->getVariables());
+        $this->metaCompiler->compilePage($page);
 
         $this->templatePlugin->setPage($entryPage);
         $this->templateEngine->addTemplateVariables($entryPage->getVariables());
