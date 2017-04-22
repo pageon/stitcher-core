@@ -116,11 +116,9 @@ class Htaccess
      */
     private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) : ?Block {
         foreach ($headerBlock as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'filesmatch'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === $pageName
-            ) {
+            $arguments = $content->getArguments();
+
+            if (reset($arguments) === $pageName) {
                 return $content;
             }
         }
@@ -135,11 +133,8 @@ class Htaccess
      */
     private function findHeaderBlockByModName(string $modName) : ?Block {
         foreach ($this->contents as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'ifmodule'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === $modName
-            ) {
+            $arguments = $content->getArguments();
+            if (reset($arguments) === $modName) {
                 return $content;
             }
         }
