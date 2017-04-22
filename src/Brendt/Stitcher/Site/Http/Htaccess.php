@@ -33,7 +33,7 @@ class Htaccess
      *
      * @throws ConfigurationException
      */
-    function __construct(string $path) {
+    public function __construct(string $path) {
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
@@ -91,11 +91,11 @@ class Htaccess
      * @return Block
      */
     public function &getPageBlock(Page $page) : Block {
-        $pageBlock = null;
         $headerBlock = $this->getHeaderBlock();
         $pageId = trim($page->getId(), '/') ?? 'index';
         $pageId = pathinfo($pageId !== '' ? "{$pageId}" : 'index', PATHINFO_BASENAME);
         $pageName = '"^' . $pageId . '\.html$"';
+        $pageBlock = null;
 
         foreach ($headerBlock as $content) {
             if ($content instanceof Block
