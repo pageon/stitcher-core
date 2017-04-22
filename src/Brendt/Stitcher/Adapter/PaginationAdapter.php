@@ -63,7 +63,6 @@ class PaginationAdapter extends AbstractAdapter
             $url = "{$pageId}/page-{$pageIndex}";
             $pagination = $this->createPagination($pageId, $pageIndex, $pageCount, $entries);
             $entriesPage = clone $page;
-            $entriesPage->parseMeta(['pagination' => $pagination]);
 
             $entriesPage
                 ->removeAdapter(AdapterFactory::PAGINATION_ADAPTER)
