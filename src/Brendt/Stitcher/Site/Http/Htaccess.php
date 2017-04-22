@@ -22,7 +22,7 @@ class Htaccess
     private $parser;
 
     /**
-     * @var HtaccessContainer
+     * @var \ArrayAccess|HtaccessContainer
      */
     private $contents;
 
@@ -122,7 +122,6 @@ class Htaccess
      * Clear all page header blocks
      */
     public function clearPageBlocks() : void {
-        $pageBlock = null;
         $headerBlock = $this->getHeaderBlock();
 
         foreach ($headerBlock as $content) {
