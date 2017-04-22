@@ -60,19 +60,7 @@ class Htaccess
      * @return Block
      */
     public function &getHeaderBlock() : Block {
-        $headerBlock = null;
-
-        foreach ($this->contents as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'ifmodule'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === 'mod_headers.c'
-            ) {
-                $headerBlock = $content;
-
-                break;
-            }
-        }
+        $headerBlock = $this->findHeaderBlockByModName('mod_headers.c');
 
         if (!$headerBlock) {
             $headerBlock = new Block('ifmodule');
@@ -95,19 +83,8 @@ class Htaccess
         $pageId = trim($page->getId(), '/') ?? 'index';
         $pageId = pathinfo($pageId !== '' ? "{$pageId}" : 'index', PATHINFO_BASENAME);
         $pageName = '"^' . $pageId . '\.html$"';
-        $pageBlock = null;
 
-        foreach ($headerBlock as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'filesmatch'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === $pageName
-            ) {
-                $pageBlock = $content;
-
-                break;
-            }
-        }
+        $pageBlock = $this->findPageBlockByParentAndName($headerBlock, $pageName);
 
         if (!$pageBlock) {
             $pageBlock = new Block('filesmatch');
@@ -129,5 +106,44 @@ class Htaccess
                 $headerBlock->removeChild($content);
             }
         }
+    }
+
+    /**
+     * @param Block  $headerBlock
+     * @param string $pageName
+     *
+     * @return null|Block
+     */
+    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) : ?Block {
+        foreach ($headerBlock as $content) {
+            if ($content instanceof Block
+                && strtolower($content->getName()) === 'filesmatch'
+                && count($content->getArguments())
+                && $content->getArguments()[0] === $pageName
+            ) {
+                return $content;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $modName
+     *
+     * @return null|Block
+     */
+    private function findHeaderBlockByModName(string $modName) : ?Block {
+        foreach ($this->contents as $content) {
+            if ($content instanceof Block
+                && strtolower($content->getName()) === 'ifmodule'
+                && count($content->getArguments())
+                && $content->getArguments()[0] === $modName
+            ) {
+                return $content;
+            }
+        }
+
+        return null;
     }
 }
