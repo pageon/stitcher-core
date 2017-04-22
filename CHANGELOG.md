@@ -1,5 +1,9 @@
 # Changelog
 
+## [WIP] 1.0.0-alpha5 
+
+- Improve meta support.
+
 ## 1.0.0-alpha4
 
 Add dynamic .htaccess support. 

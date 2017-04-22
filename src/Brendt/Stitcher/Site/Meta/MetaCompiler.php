@@ -24,8 +24,12 @@ class MetaCompiler
             $page->meta->description($data);
         });
 
-        $this->addCompiler('image', function (Page $page, string $data) {
-            $page->meta->image($data);
+        $this->addCompiler('image', function (Page $page, $data) {
+            if (is_array($data) && isset($data['src'])) {
+                $page->meta->image($data['src']);
+            } else if (is_string($data)) {
+                $page->meta->image($data);
+            }
         });
 
         $this->addCompiler('pagination', function (Page $page, array $pagination) {
@@ -82,7 +86,7 @@ class MetaCompiler
      * @param mixed  $data
      * @param bool   $force
      */
-    private function compilePageVariable(Page $page, string $name, $data, bool $force = false) : void {
+    public function compilePageVariable(Page $page, string $name, $data, bool $force = false) : void {
         $isCustomCompiler = isset($this->compilers[$name]);
 
         if (!$isCustomCompiler && !$force) {

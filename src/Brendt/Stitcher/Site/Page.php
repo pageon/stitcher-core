@@ -288,39 +288,4 @@ class Page
         return $this->headers;
     }
 
-    /**
-     * @param array $data
-     *
-     * @todo Create separate meta crawlers
-     */
-    public function parseMeta(array $data) {
-        if (isset($data['meta'])) {
-            foreach ($data['meta'] as $name => $value) {
-                $value = $data[$value] ?? $value;
-
-                $this->meta->name($name, $value);
-            }
-        }
-
-        if (isset($data['title'])) {
-            $this->meta->title($data['title']);
-        }
-
-        if (isset($data['image']['src'])) {
-            $this->meta->image($data['image']['src']);
-        }
-
-        if (isset($data['description'])) {
-            $this->meta->description($data['description']);
-        }
-
-        if (isset($data['pagination']['next'])) {
-            $this->meta->link('next', $data['pagination']['next']['url']);
-        }
-
-        if (isset($data['pagination']['prev'])) {
-            $this->meta->link('prev', $data['pagination']['prev']['url']);
-        }
-    }
-
 }
