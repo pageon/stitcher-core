@@ -5,7 +5,7 @@ services:
     # Adapter
     adapter.collection:
         class: Brendt\Stitcher\Adapter\CollectionAdapter
-        arguments: ['@factory.parser']
+        arguments: ['@factory.parser', '@compiler.meta']
     adapter.filter:
         class: Brendt\Stitcher\Adapter\FilterAdapter
         arguments: ['@factory.parser']
@@ -50,6 +50,8 @@ services:
     compiler.header.htaccess:
         class: Brendt\Stitcher\Site\Http\HtaccessHeaderCompiler
         arguments: ['@service.htaccess']
+    compiler.meta:
+        class: Brendt\Stitcher\Site\Meta\MetaCompiler
 
     # Factory
     factory.parser:
@@ -121,4 +123,5 @@ services:
             - '@factory.template'
             - '@factory.adapter'
             - '@factory.header.compiler'
+            - '@compiler.meta'
             - '%meta%'
