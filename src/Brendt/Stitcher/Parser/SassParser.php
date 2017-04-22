@@ -30,6 +30,7 @@ class SassParser implements Parser
      */
     public function __construct(Compiler $sass, string $srcDir) {
         $this->sass = $sass;
+        $this->sass->addImportPath("{$srcDir}/css");
         $this->srcDir = $srcDir;
     }
 

@@ -39,7 +39,7 @@ class ParserFactory
         $this->container = $container;
 
         self::addTypeFilter(self::EXTENSION_FOLDER, function ($fileName) {
-            return strpos($fileName, '/') === strlen($fileName) - 1;
+            return substr($fileName, -1) === '/';
         });
 
         self::addTypeFilter(self::EXTENSION_JSON, function ($fileName) {
@@ -103,7 +103,7 @@ class ParserFactory
                 }
             }
         }
-        
+
         return $this->getByType($type);
     }
 

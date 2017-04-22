@@ -19,7 +19,8 @@ class SiteParserTest extends TestCase
             $stitcher::get('factory.parser'),
             $stitcher::get('factory.template'),
             $stitcher::get('factory.adapter'),
-            $stitcher::get('factory.header.compiler')
+            $stitcher::get('factory.header.compiler'),
+            $stitcher::get('compiler.meta')
         );
 
         return $parser;
@@ -138,10 +139,29 @@ class SiteParserTest extends TestCase
         $this->assertTrue(isset($variable['body']));
     }
 
+    public function test_meta_compilers() {
+        $siteParser = $this->createSiteParser();
+        $page = new Page('/a', [
+            'template'  => 'index',
+            'variables' => [
+                'title' => 'A',
+                'meta'  => [
+                    'description' => 'B',
+                ],
+            ],
+        ]);
+        
+        $siteParser->parsePage($page);
+        $meta = $page->meta->render();
+
+        $this->assertContains('name="title" content="A"', $meta);
+        $this->assertContains('name="description" content="B"', $meta);
+    }
+
     public function test_header_compilers() {
         $siteParser = $this->createSiteParser();
         $page = new Page('/a', [
-            'template'  => 'index'
+            'template' => 'index',
         ]);
         $page->addHeader(Header::link('"</main.css>; rel=preload; as=style"'));
 
@@ -150,7 +170,7 @@ class SiteParserTest extends TestCase
         $htaccess = Stitcher::get('service.htaccess');
 
         $this->assertContains(
-'<ifmodule mod_headers.c>
+            '<ifmodule mod_headers.c>
     <filesmatch "^a\.html$">
         Header add Link "</main.css>; rel=preload; as=style"
     </filesmatch>

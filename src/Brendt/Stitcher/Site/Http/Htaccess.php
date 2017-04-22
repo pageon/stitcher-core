@@ -5,6 +5,7 @@ namespace Brendt\Stitcher\Site\Http;
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Site\Page;
 use Symfony\Component\Filesystem\Filesystem;
+use Tivie\HtaccessParser\HtaccessContainer;
 use Tivie\HtaccessParser\Parser;
 use Tivie\HtaccessParser\Token\Block;
 
@@ -21,7 +22,7 @@ class Htaccess
     private $parser;
 
     /**
-     * @var array
+     * @var array|\ArrayAccess|HtaccessContainer
      */
     private $contents;
 
@@ -32,7 +33,7 @@ class Htaccess
      *
      * @throws ConfigurationException
      */
-    function __construct(string $path) {
+    public function __construct(string $path) {
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
@@ -59,24 +60,15 @@ class Htaccess
      * @return Block
      */
     public function &getHeaderBlock() : Block {
-        $headerBlock = null;
-
-        foreach ($this->contents as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'ifmodule'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === 'mod_headers.c'
-            ) {
-                $headerBlock = $content;
-
-                break;
-            }
-        }
+        $headerBlock = $this->findHeaderBlockByModName('mod_headers.c');
 
         if (!$headerBlock) {
             $headerBlock = new Block('ifmodule');
             $headerBlock->addArgument('mod_headers.c');
-            $this->contents->append($headerBlock);
+
+            if ($this->contents instanceof HtaccessContainer) {
+                $this->contents->append($headerBlock);
+            }
         }
 
         return $headerBlock;
@@ -87,26 +79,15 @@ class Htaccess
      *
      * @param Page $page
      *
-     * @return mixed|null|Block
+     * @return Block
      */
-    public function &getPageBlock(Page $page) {
-        $pageBlock = null;
+    public function &getPageBlock(Page $page) : Block {
         $headerBlock = $this->getHeaderBlock();
         $pageId = trim($page->getId(), '/') ?? 'index';
         $pageId = pathinfo($pageId !== '' ? "{$pageId}" : 'index', PATHINFO_BASENAME);
         $pageName = '"^' . $pageId . '\.html$"';
 
-        foreach ($headerBlock as $content) {
-            if ($content instanceof Block
-                && strtolower($content->getName()) === 'filesmatch'
-                && count($content->getArguments())
-                && $content->getArguments()[0] === $pageName
-            ) {
-                $pageBlock = $content;
-
-                break;
-            }
-        }
+        $pageBlock = $this->findPageBlockByParentAndName($headerBlock, $pageName);
 
         if (!$pageBlock) {
             $pageBlock = new Block('filesmatch');
@@ -117,8 +98,10 @@ class Htaccess
         return $pageBlock;
     }
 
-    public function clearPageBlocks() {
-        $pageBlock = null;
+    /**
+     * Clear all page header blocks
+     */
+    public function clearPageBlocks() : void {
         $headerBlock = $this->getHeaderBlock();
 
         foreach ($headerBlock as $content) {
@@ -126,5 +109,39 @@ class Htaccess
                 $headerBlock->removeChild($content);
             }
         }
+    }
+
+    /**
+     * @param Block  $headerBlock
+     * @param string $pageName
+     *
+     * @return null|Block
+     */
+    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) : ?Block {
+        foreach ($headerBlock as $content) {
+            $arguments = $content->getArguments();
+
+            if (reset($arguments) === $pageName) {
+                return $content;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $modName
+     *
+     * @return null|Block
+     */
+    private function findHeaderBlockByModName(string $modName) : ?Block {
+        foreach ($this->contents as $content) {
+            $arguments = $content->getArguments();
+            if (reset($arguments) === $modName) {
+                return $content;
+            }
+        }
+
+        return null;
     }
 }

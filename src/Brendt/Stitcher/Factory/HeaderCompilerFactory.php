@@ -21,7 +21,7 @@ class HeaderCompilerFactory
      *
      * @param string $environment
      */
-    function __construct(string $environment) {
+    public function __construct(string $environment) {
         $this->environment = $environment;
     }
 
