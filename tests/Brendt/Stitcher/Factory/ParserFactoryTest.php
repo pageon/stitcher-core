@@ -26,7 +26,7 @@ class ParserFactoryTest extends TestCase
     public function test_parser_factory_folder() {
         $factory = $this->createParserFactory();
 
-        $this->assertInstanceOf(FolderParser::class, $factory->getByFileName('churches/'));
+        $this->assertInstanceOf(FolderParser::class, $factory->getByFileName('./test/churches/'));
         $this->assertInstanceOf(FolderParser::class, $factory->getByType(ParserFactory::EXTENSION_FOLDER));
     }
 
