@@ -3,6 +3,7 @@
 ## [WIP] 1.0.0-alpha5 
 
 - Improve meta support.
+- Fix folder parser bug with nested folders.
 
 ## 1.0.0-alpha4
 
