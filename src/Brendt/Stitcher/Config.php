@@ -42,7 +42,7 @@ class Config
      *
      * @return null|SplFileInfo
      */
-    public static function getConfigFile(string $path) : ?SplFileInfo {
+    public static function getConfigFile(string $path) {
         $pathParts = explode('/', $path);
         $configFileName = array_pop($pathParts);
         $configPath = implode('/', $pathParts) . '/';

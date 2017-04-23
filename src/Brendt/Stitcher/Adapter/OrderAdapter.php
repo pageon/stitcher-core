@@ -75,7 +75,7 @@ class OrderAdapter extends AbstractAdapter
      *
      * @throws ConfigurationException
      */
-    private function validateConfig(?array $config) {
+    private function validateConfig(array $config = []) {
         if (!isset($config['field'])) {
             throw ConfigurationException::requiredAdapterOptions(AdapterFactory::ORDER_ADAPTER, 'field');
         }
