@@ -24,7 +24,7 @@ class HtaccessHeaderCompiler implements HeaderCompiler
     /**
      * @param Page $page
      */
-    public function compilePage(Page $page) : void {
+    public function compilePage(Page $page) {
         $headers = $page->getHeaders();
         if (!count($headers)) {
             return;
