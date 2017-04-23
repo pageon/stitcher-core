@@ -1,8 +1,8 @@
 build:
     environment:
         php:
-            version: 7.1.0
+            version: 7.0.8
     tests:
         override:
             -
-                command: 'composer dump-autoload -o && vendor/bin/phpunit'
+                command: 'vendor/bin/phpunit'

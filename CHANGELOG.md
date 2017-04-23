@@ -2,6 +2,7 @@
 
 ## [WIP] 1.0.0-alpha5 
 
+- Add PHP 7.0 support
 - Improve meta support.
 - Fix folder parser bug with nested folders.
 - Bugfix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`.
