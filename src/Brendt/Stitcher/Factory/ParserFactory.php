@@ -84,7 +84,7 @@ class ParserFactory
      *
      * @return Parser|null
      */
-    public function getByFileName($fileName) : ?Parser {
+    public function getByFileName($fileName) {
         if (!is_string($fileName)) {
             return null;
         }

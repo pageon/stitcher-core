@@ -13,6 +13,17 @@ class RouterListCommand extends Command
 {
     const FILTER = 'filter';
 
+    /**
+     * @var Stitcher
+     */
+    private $stitcher;
+
+    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+        parent::__construct();
+
+        $this->stitcher = Stitcher::create($configPath, $defaultConfig);
+    }
+
     protected function configure() {
         $this->setName('router:list')
             ->setDescription('Show the available routes')
@@ -27,8 +38,7 @@ class RouterListCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $stitcher = Stitcher::create();
-        $site = $stitcher->loadSite();
+        $site = $this->stitcher->loadSite();
         $filter = $input->getArgument(self::FILTER);
 
         $output->writeln("Found routes:");

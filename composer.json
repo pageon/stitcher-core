@@ -1,6 +1,16 @@
 {
-    "name" : "Brendt/Stitcher",
+    "name" : "brendt/stitcher",
+    "homepage": "http://stitcher.pageon.be",
     "description" : "Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.",
+    "keywords" : [
+        "static site",
+        "static",
+        "generator",
+        "performance",
+        "twig",
+        "smarty",
+        "SEO"
+    ],
     "license" : "MIT",
     "authors" : [
         {
@@ -8,24 +18,24 @@
             "email" : "brent@pageon.be"
         }
     ],
-    "prefer-stable": true,
+    "prefer-stable" : true,
     "require" : {
-        "PHP" : ">=7.1",
-        "brendt/responsive-images": "^1.5",
+        "PHP" : ">=7.0",
+        "brendt/responsive-images" : "^1.5",
         "smarty/smarty" : "^3.1",
-        "twig/twig": "~1.0",
+        "twig/twig" : "~1.0",
         "symfony/yaml" : "^3.1",
         "symfony/finder" : "^3.1",
         "symfony/filesystem" : "^3.1",
         "symfony/console" : "^3.1",
         "symfony/routing" : "^3.1",
         "symfony/dependency-injection" : "^3.1",
-        "leafo/scssphp": "^0.6.6",
-        "mrclay/minify": "^2.3",
-        "erusev/parsedown": "^1.6",
-        "symfony/config": "^3.2",
-        "pageon/html-meta": "@dev",
-        "tivie/htaccess-parser": "^0.2@dev"
+        "leafo/scssphp" : "^0.6.6",
+        "mrclay/minify" : "^2.3",
+        "erusev/parsedown" : "^1.6",
+        "symfony/config" : "^3.2",
+        "pageon/html-meta" : "^1.0",
+        "tivie/htaccess-parser" : "^0.2@dev"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",
