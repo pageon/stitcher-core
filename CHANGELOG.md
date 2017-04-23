@@ -7,6 +7,7 @@
 - Improve meta support.
 - Fix folder parser bug with nested folders.
 - Fix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`.
+- Use stable version of `pageon/html-meta`.
 
 ## 1.0.0-alpha4
 
