@@ -101,7 +101,7 @@ class Htaccess
     /**
      * Clear all page header blocks
      */
-    public function clearPageBlocks() : void {
+    public function clearPageBlocks() {
         $headerBlock = $this->getHeaderBlock();
 
         foreach ($headerBlock as $content) {
@@ -117,7 +117,7 @@ class Htaccess
      *
      * @return null|Block
      */
-    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) : ?Block {
+    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) {
         foreach ($headerBlock as $content) {
             $arguments = $content->getArguments();
 
@@ -134,7 +134,7 @@ class Htaccess
      *
      * @return null|Block
      */
-    private function findHeaderBlockByModName(string $modName) : ?Block {
+    private function findHeaderBlockByModName(string $modName) {
         foreach ($this->contents as $content) {
             $arguments = $content->getArguments();
             if (reset($arguments) === $modName) {

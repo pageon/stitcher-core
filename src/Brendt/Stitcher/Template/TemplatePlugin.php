@@ -228,7 +228,7 @@ class TemplatePlugin
      *
      * @return null|string
      */
-    public function file($src, bool $push = false) : ?string {
+    public function file($src, bool $push = false) {
         $src = trim($src, '/');
         $files = Finder::create()->in($this->srcDir)->path($src)->getIterator();
         $files->rewind();

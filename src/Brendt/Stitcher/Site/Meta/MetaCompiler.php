@@ -39,7 +39,7 @@ class MetaCompiler
     /**
      * @param Page $page
      */
-    public function compilePage(Page $page) : void {
+    public function compilePage(Page $page) {
         $variables = $page->getVariables();
 
         foreach ($variables as $name => $data) {
@@ -57,7 +57,7 @@ class MetaCompiler
      * @param mixed  $data
      * @param bool   $force
      */
-    public function compilePageVariable(Page $page, string $name, $data, bool $force = false) : void {
+    public function compilePageVariable(Page $page, string $name, $data, bool $force = false) {
         $isCustomCompiler = isset($this->compilers[$name]);
 
         if (!$isCustomCompiler && !$force) {
