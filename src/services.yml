@@ -112,6 +112,8 @@ services:
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
         arguments: ['%directories.htaccess%']
+    service.event.dispatcher:
+        class: Symfony\Component\EventDispatcher\EventDispatcher
 
     parser.site:
         class: Brendt\Stitcher\SiteParser
@@ -124,4 +126,5 @@ services:
             - '@factory.adapter'
             - '@factory.header.compiler'
             - '@compiler.meta'
+            - '@service.event.dispatcher'
             - '%meta%'

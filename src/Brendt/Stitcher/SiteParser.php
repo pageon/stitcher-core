@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Html\Meta\Meta;
+use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\HeaderCompilerFactory;
@@ -14,6 +15,7 @@ use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Template\TemplateEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -21,6 +23,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class SiteParser
 {
+    const EVENT_PARSER_INIT = 'parser.initialised';
+
+    const EVENT_PAGE_PARSING = 'page.parsing';
+
+    const EVENT_PAGE_PARSED = 'page.parsed';
+
     /**
      * @var string
      */
@@ -87,6 +95,11 @@ class SiteParser
     private $metaCompiler;
 
     /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * SiteParser constructor.
      *
      * @param string                $srcDir
@@ -97,6 +110,7 @@ class SiteParser
      * @param AdapterFactory        $adapterFactory
      * @param HeaderCompilerFactory $headerCompilerFactory
      * @param MetaCompiler          $metaCompiler
+     * @param EventDispatcher       $eventDispatcher
      * @param array                 $metaConfig
      */
     public function __construct(
@@ -108,6 +122,7 @@ class SiteParser
         AdapterFactory $adapterFactory,
         HeaderCompilerFactory $headerCompilerFactory,
         MetaCompiler $metaCompiler,
+        EventDispatcher $eventDispatcher,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
@@ -118,6 +133,7 @@ class SiteParser
         $this->adapterFactory = $adapterFactory;
         $this->headerCompilerFactory = $headerCompilerFactory;
         $this->metaCompiler = $metaCompiler;
+        $this->eventDispatcher = $eventDispatcher;
         $this->metaConfig = $metaConfig;
 
         $this->headerCompiler = $this->headerCompilerFactory->getHeaderCompilerByEnvironment();
@@ -195,8 +211,11 @@ class SiteParser
         $blanket = [];
 
         $site = $this->loadSite((array) $routes);
+        $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
 
         foreach ($site as $page) {
+            $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
+
             $templateIsset = isset($this->templates[$page->getTemplatePath()]);
 
             if (!$templateIsset) {
@@ -209,9 +228,12 @@ class SiteParser
 
             $pages = $this->parseAdapters($page, $filterValue);
 
+            /** @var Page $entryPage */
             foreach ($pages as $entryPage) {
                 $blanket[$entryPage->getId()] = $this->parsePage($entryPage);
             }
+
+            $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSED, Event::create(['page' => $page]));
         }
 
         return $blanket;
