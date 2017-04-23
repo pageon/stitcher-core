@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f56af15778ecef932adf2525ac629926",
-    "content-hash": "8b57fba881b198da8524a2d072c240c5",
+    "hash": "fd156694ef6c1628d4e3f5675b6b4d99",
+    "content-hash": "fb6dbdd54cf4e011780e83e90d33119d",
     "packages": [
         {
             "name": "brendt/responsive-images",
@@ -320,16 +320,16 @@
         },
         {
             "name": "pageon/html-meta",
-            "version": "0.3.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pageon/html-meta.git",
-                "reference": "b45e13055d29c531dba99fa1de0c828b103a6973"
+                "reference": "1a07ccea6ad426d4182173fa96be7d4878491b8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pageon/html-meta/zipball/b45e13055d29c531dba99fa1de0c828b103a6973",
-                "reference": "b45e13055d29c531dba99fa1de0c828b103a6973",
+                "url": "https://api.github.com/repos/pageon/html-meta/zipball/1a07ccea6ad426d4182173fa96be7d4878491b8d",
+                "reference": "1a07ccea6ad426d4182173fa96be7d4878491b8d",
                 "shasum": ""
             },
             "require": {
@@ -356,7 +356,13 @@
                 }
             ],
             "description": "Manage HTML meta tags in PHP",
-            "time": "2017-04-23 07:16:01"
+            "keywords": [
+                "html meta",
+                "meta",
+                "meta tags",
+                "seo"
+            ],
+            "time": "2017-04-23 14:38:19"
         },
         {
             "name": "ps/image-optimizer",
@@ -2850,7 +2856,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pageon/html-meta": 20,
         "tivie/htaccess-parser": 20
     },
     "prefer-stable": true,

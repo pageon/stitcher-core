@@ -1,5 +1,5 @@
 {
-    "name" : "Brendt/Stitcher",
+    "name" : "brendt/stitcher",
     "homepage": "http://stitcher.pageon.be",
     "description" : "Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.",
     "keywords" : [
@@ -34,7 +34,7 @@
         "mrclay/minify" : "^2.3",
         "erusev/parsedown" : "^1.6",
         "symfony/config" : "^3.2",
-        "pageon/html-meta" : "@dev",
+        "pageon/html-meta" : "^1.0",
         "tivie/htaccess-parser" : "^0.2@dev"
     },
     "require-dev" : {
