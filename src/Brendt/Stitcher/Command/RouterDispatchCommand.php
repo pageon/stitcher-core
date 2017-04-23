@@ -18,6 +18,17 @@ class RouterDispatchCommand extends Command
 
     const URL = 'url';
 
+    /**
+     * @var Stitcher
+     */
+    private $stitcher;
+
+    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+        parent::__construct();
+
+        $this->stitcher = Stitcher::create($configPath, $defaultConfig);
+    }
+
     protected function configure() {
         $this->setName('router:dispatch')
             ->setDescription('Simulate routing of an URL')
@@ -32,8 +43,7 @@ class RouterDispatchCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $stitcher = Stitcher::create();
-        $site = $stitcher->loadSite();
+        $site = $this->stitcher->loadSite();
 
         $url = $input->getArgument(self::URL);
         $routes = [];

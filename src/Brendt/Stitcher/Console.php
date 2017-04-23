@@ -11,14 +11,14 @@ use Symfony\Component\Console\Application;
 
 class Console extends Application {
 
-    public function __construct() {
+    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
         parent::__construct('Stitcher Console');
 
         $this->add(new InstallCommand());
-        $this->add(new GenerateCommand());
+        $this->add(new GenerateCommand($configPath, $defaultConfig));
         $this->add(new CleanCommand());
-        $this->add(new RouterListCommand());
-        $this->add(new RouterDispatchCommand());
+        $this->add(new RouterListCommand($configPath, $defaultConfig));
+        $this->add(new RouterDispatchCommand($configPath, $defaultConfig));
     }
 
 }
