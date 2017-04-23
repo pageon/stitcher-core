@@ -51,7 +51,7 @@ class HeaderCompilerFactory
     /**
      * @return HeaderCompiler|null
      */
-    public function getHeaderCompilerByEnvironment() : ?HeaderCompiler {
+    public function getHeaderCompilerByEnvironment() {
         return $this->headerCompilers[$this->environment] ?? null;
     }
 }
