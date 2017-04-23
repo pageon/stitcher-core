@@ -20,7 +20,8 @@ class SiteParserTest extends TestCase
             $stitcher::get('factory.template'),
             $stitcher::get('factory.adapter'),
             $stitcher::get('factory.header.compiler'),
-            $stitcher::get('compiler.meta')
+            $stitcher::get('compiler.meta'),
+            $stitcher::get('service.event.dispatcher')
         );
 
         return $parser;

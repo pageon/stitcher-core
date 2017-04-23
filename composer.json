@@ -35,7 +35,8 @@
         "erusev/parsedown" : "^1.6",
         "symfony/config" : "^3.2",
         "pageon/html-meta" : "^1.0",
-        "tivie/htaccess-parser" : "^0.2@dev"
+        "tivie/htaccess-parser" : "^0.2@dev",
+        "symfony/event-dispatcher": "^3.2"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",
