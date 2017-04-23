@@ -13,6 +13,17 @@ class GenerateCommand extends Command
 
     const ROUTE = 'route';
 
+    /**
+     * @var Stitcher
+     */
+    private $stitcher;
+
+    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+        parent::__construct();
+
+        $this->stitcher = Stitcher::create($configPath, $defaultConfig);
+    }
+
     protected function configure() {
         $this->setName('site:generate')
             ->setDescription('Generate the website')
@@ -27,10 +38,9 @@ class GenerateCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $stitcher = Stitcher::create();
         $route = $input->getArgument(self::ROUTE);
-        $blanket = $stitcher->stitch($route);
-        $stitcher->save($blanket);
+        $blanket = $this->stitcher->stitch($route);
+        $this->stitcher->save($blanket);
 
         $publicDir = Stitcher::getParameter('directories.public');
 

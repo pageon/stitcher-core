@@ -3,9 +3,10 @@
 ## [WIP] 1.0.0-alpha5 
 
 - Add PHP 7.0 support
+- Add Command tests for Router commands and Generate command.
 - Improve meta support.
 - Fix folder parser bug with nested folders.
-- Bugfix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`.
+- Fix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`.
 
 ## 1.0.0-alpha4
 
