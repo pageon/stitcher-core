@@ -101,7 +101,7 @@ class Htaccess
     /**
      * Clear all page header blocks
      */
-    public function clearPageBlocks() : void {
+    public function clearPageBlocks() {
         $headerBlock = $this->getHeaderBlock();
 
         foreach ($headerBlock as $content) {

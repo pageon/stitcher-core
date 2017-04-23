@@ -9,21 +9,21 @@
     "packages": [
         {
             "name": "brendt/responsive-images",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brendt/responsive-images.git",
-                "reference": "64028cba0129686c83d557ccd8cb825a621ab114"
+                "reference": "c3ba0c66abf404db34a1d683470b58595433471e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/64028cba0129686c83d557ccd8cb825a621ab114",
-                "reference": "64028cba0129686c83d557ccd8cb825a621ab114",
+                "url": "https://api.github.com/repos/brendt/responsive-images/zipball/c3ba0c66abf404db34a1d683470b58595433471e",
+                "reference": "c3ba0c66abf404db34a1d683470b58595433471e",
                 "shasum": ""
             },
             "require": {
                 "intervention/image": "^2.3",
-                "php": ">=7.1",
+                "php": ">=7.0",
                 "ps/image-optimizer": "^1.0",
                 "symfony/filesystem": "^3.1",
                 "symfony/finder": "^3.1"
@@ -49,7 +49,7 @@
                 }
             ],
             "description": "Create responsive images with PHP, using the srcset and sizes spec.",
-            "time": "2017-04-20 19:46:59"
+            "time": "2017-04-23 07:10:30"
         },
         {
             "name": "erusev/parsedown",
@@ -320,20 +320,20 @@
         },
         {
             "name": "pageon/html-meta",
-            "version": "0.2.2",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pageon/html-meta.git",
-                "reference": "41ab9f465cf48befdbd2ba1c400e4fe6368f61c9"
+                "reference": "b45e13055d29c531dba99fa1de0c828b103a6973"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pageon/html-meta/zipball/41ab9f465cf48befdbd2ba1c400e4fe6368f61c9",
-                "reference": "41ab9f465cf48befdbd2ba1c400e4fe6368f61c9",
+                "url": "https://api.github.com/repos/pageon/html-meta/zipball/b45e13055d29c531dba99fa1de0c828b103a6973",
+                "reference": "b45e13055d29c531dba99fa1de0c828b103a6973",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.0"
             },
             "require-dev": {
                 "larapack/dd": "^1.1",
@@ -356,7 +356,7 @@
                 }
             ],
             "description": "Manage HTML meta tags in PHP",
-            "time": "2017-04-13 05:14:45"
+            "time": "2017-04-23 07:16:01"
         },
         {
             "name": "ps/image-optimizer",

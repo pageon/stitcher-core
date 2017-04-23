@@ -66,7 +66,7 @@ class CleanCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      */
-    private function checkForcedClean($force = false, string $publicDir, string $cacheDir, InputInterface $input, OutputInterface $output) : void {
+    private function checkForcedClean($force = false, string $publicDir, string $cacheDir, InputInterface $input, OutputInterface $output) {
         if ($force) {
             return;
         }
