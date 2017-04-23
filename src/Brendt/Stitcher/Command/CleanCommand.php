@@ -114,7 +114,7 @@ class CleanCommand extends Command
      *
      * @return null|string
      */
-    private function cleanCacheDir(string $cacheDir) : ?string {
+    private function cleanCacheDir(string $cacheDir) {
         if (!$this->fs->exists($cacheDir)) {
             return '';
         }

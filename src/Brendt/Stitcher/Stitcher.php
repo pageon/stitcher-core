@@ -68,7 +68,7 @@ class Stitcher
      * @param string $publicDir
      * @param string $templateDir
      */
-    private function __construct(?string $srcDir = './src', ?string $publicDir = './public', ?string $templateDir = './src/template') {
+    private function __construct($srcDir = './src', $publicDir = './public', $templateDir = './src/template') {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
         $this->templateDir = $templateDir;
