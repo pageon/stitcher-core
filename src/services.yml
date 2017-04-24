@@ -1,6 +1,13 @@
 services:
+    app.console:
+        synthetic: true
+
     stitcher:
         synthetic: true
+
+    command.generate:
+        class: Brendt\Stitcher\Command\GenerateCommand
+        arguments: ['@app.console', '@service.event.dispatcher']
 
     # Adapter
     adapter.collection:

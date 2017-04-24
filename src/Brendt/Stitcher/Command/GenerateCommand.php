@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Command;
 
-use AsyncInterop\Loop;
+use Brendt\Stitcher\Console;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
@@ -13,8 +13,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class GenerateCommand extends Command
+class GenerateCommand extends Command implements EventSubscriberInterface
 {
 
     const ROUTE = 'route';
@@ -25,19 +26,31 @@ class GenerateCommand extends Command
     private $stitcher;
 
     /**
-     * @var EventDispatcher
-     */
-    private $eventDispatcher;
-
-    /**
      * @var ProgressBar
      */
     private $progress;
 
-    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    /**
+     * @var Console
+     */
+    private $app;
+
+    /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    public function __construct(Console $app, EventDispatcher $eventDispatcher) {
         parent::__construct();
 
-        $this->stitcher = Stitcher::create($configPath, $defaultConfig);
+        $this->app = $app;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->stitcher = Stitcher::create();
     }
 
     protected function configure() {
@@ -54,61 +67,67 @@ class GenerateCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
+        /** @var EventDispatcher $eventDispatcher */
+        $eventDispatcher = Stitcher::get('service.event.dispatcher');
+        $eventDispatcher->addSubscriber($this);
+        $this->output = $output;
+
         $route = $input->getArgument(self::ROUTE);
-
-        $this->eventDispatcher = Stitcher::get('service.event.dispatcher');
-        $this->eventDispatcher->addListener(SiteParser::EVENT_PARSER_INIT, function (Event $event) use ($output) {
-            /** @var Site $site */
-            $site = $event->getData()['site'] ?? null;
-
-            if (!$site) {
-                return;
-            }
-
-            $amount = count($site->getPages());
-
-            $this->progress = new ProgressBar($output, $amount);
-            $this->progress->setFormatDefinition('custom', "%current%/%max% -- %message%\n[%bar%]");
-            $this->progress->setFormat('custom');
-            $this->progress->start();
-        });
-
-        $this->eventDispatcher->addListener(SiteParser::EVENT_PAGE_PARSING, function (Event $event) use ($output) {
-            if (!$this->progress) {
-                return;
-            }
-
-            /** @var Page $page */
-            $page = $event->getData()['page'] ?? null;
-
-            if (!$page) {
-                return;
-            }
-
-            $this->progress->setMessage($page->getId());
-        });
-
-
-        $this->eventDispatcher->addListener(SiteParser::EVENT_PAGE_PARSED, function (Event $event) use ($output) {
-            if (!$this->progress) {
-                return;
-            }
-
-            $this->progress->advance();
-        });
-
         $blanket = $this->stitcher->stitch($route);
         $this->stitcher->save($blanket);
-        $this->progress->setMessage('');
         $this->progress->finish();
 
         $publicDir = Stitcher::getParameter('directories.public');
 
         if ($route) {
-            $output->writeln("\n\n<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
+            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
         } else {
-            $output->writeln("\n\nSite successfully generated in <fg=green>{$publicDir}</>.");
+            $output->writeln("\nSite successfully generated in <fg=green>{$publicDir}</>.");
         }
     }
 
+    public static function getSubscribedEvents() {
+        return [
+            SiteParser::EVENT_PARSER_INIT => 'onSiteParserInit',
+            SiteParser::EVENT_PAGE_PARSING => 'onPageParsing',
+            SiteParser::EVENT_PAGE_PARSED => 'onPageParsed',
+        ];
+    }
+
+    public function onSiteParserInit(Event $event) {
+        /** @var Site $site */
+        $site = $event->getData()['site'] ?? null;
+
+        if (!$site) {
+            return;
+        }
+
+        $amount = count($site->getPages());
+
+        $this->progress = new ProgressBar($this->output, $amount);
+        $this->progress->setBarWidth(40);
+        $this->progress->setFormatDefinition('custom', "\n%current%/%max% [%bar%] %message%\n");
+        $this->progress->setFormat('custom');
+        $this->progress->setMessage('');
+        $this->progress->start();
+    }
+
+    public function onPageParsing(Event $event) {
+        /** @var Page $page */
+        $page = $event->getData()['page'] ?? null;
+
+        if (!$this->progress || !$page) {
+            return;
+        }
+
+        $this->progress->setMessage($page->getId());
+    }
+
+    public function onPageParsed() {
+        if (!$this->progress) {
+            return;
+        }
+
+        $this->progress->advance();
+    }
 }
