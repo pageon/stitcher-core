@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Console;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Site\Page;
@@ -36,9 +35,15 @@ class GenerateCommand extends Command implements EventSubscriberInterface
      */
     private $output;
 
-    public function __construct(Stitcher $stitcher, EventDispatcher $eventDispatcher) {
+    /**
+     * @var string
+     */
+    private $publicDir;
+
+    public function __construct(string $publicDir, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
         parent::__construct();
 
+        $this->publicDir = $publicDir;
         $this->stitcher = $stitcher;
         $eventDispatcher->addSubscriber($this);
     }
@@ -64,12 +69,10 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $this->stitcher->save($blanket);
         $this->progress->finish();
 
-        $publicDir = App::getParameter('directories.public');
-
         if ($route) {
-            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$publicDir}</>.");
+            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>.");
         } else {
-            $output->writeln("\nSite successfully generated in <fg=green>{$publicDir}</>.");
+            $output->writeln("\nSite successfully generated in <fg=green>{$this->publicDir}</>.");
         }
     }
 
