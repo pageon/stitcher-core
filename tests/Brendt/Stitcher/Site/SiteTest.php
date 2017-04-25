@@ -2,13 +2,13 @@
 
 namespace Brendt\Stitcher\Site;
 
-use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\App;
 use PHPUnit\Framework\TestCase;
 
 class SiteTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     private function createSite() {

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Twig\TwigEngine;
 use PHPUnit\Framework\TestCase;
@@ -10,14 +11,14 @@ use Symfony\Component\Finder\Finder;
 class TwigEngineTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.twig.yml');
+        App::init('./tests/config.twig.yml');
     }
 
     /**
      * @return TwigEngine
      */
     private function createEngine() {
-        return Stitcher::get('service.twig');
+        return App::get('service.twig');
     }
 
     private function getFiles() {

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
@@ -12,9 +13,9 @@ class CollectionAdapterTest extends TestCase
      * @return CollectionAdapter
      */
     private function createAdapter() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
 
-        return Stitcher::get('adapter.collection');
+        return App::get('adapter.collection');
     }
 
     private function createPage() {

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Factory;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Parser\FileParser;
 use Brendt\Stitcher\Parser\FolderParser;
 use Brendt\Stitcher\Parser\JsonParser;
@@ -13,14 +14,14 @@ use PHPUnit\Framework\TestCase;
 class ParserFactoryTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     /**
      * @return ParserFactory
      */
     protected function createParserFactory() {
-        return Stitcher::get('factory.parser');
+        return App::get('factory.parser');
     }
 
     public function test_parser_factory_folder() {
