@@ -15,7 +15,7 @@ class StitcherTest extends TestCase
      * @return Stitcher
      */
     protected function createStitcher(array $defaultConfig = []) : Stitcher {
-        return Stitcher::create('./tests/config.yml', $defaultConfig);
+        return App::init('./tests/config.yml', $defaultConfig)::get('stitcher');
     }
 
     public function test_stitch() {

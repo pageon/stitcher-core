@@ -1,6 +1,14 @@
 services:
     stitcher:
-        synthetic: true
+        class: Brendt\Stitcher\Stitcher
+        arguments:
+            - '%directories.src%'
+            - '%directories.public%'
+            - '%directories.template%'
+            - '%cdn%'
+            - '%caches.cdn%'
+            - '@parser.site'
+            - '@service.htaccess'
 
     # Adapter
     adapter.collection:

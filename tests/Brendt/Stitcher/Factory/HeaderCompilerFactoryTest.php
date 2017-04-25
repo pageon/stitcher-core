@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Factory;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Http\HtaccessHeaderCompiler;
 use Brendt\Stitcher\Site\Http\RuntimeHeaderCompiler;
 use Brendt\Stitcher\Stitcher;
@@ -10,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class HeaderCompilerFactoryTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     /**
@@ -18,7 +19,7 @@ class HeaderCompilerFactoryTest extends TestCase
      */
     public function it_finds_the_runtime_compiler() {
         /** @var HeaderCompilerFactory $factory */
-        $factory = Stitcher::get('factory.header.compiler');
+        $factory = App::get('factory.header.compiler');
 
         $compiler = $factory->setEnvironment('development');
 
@@ -30,7 +31,7 @@ class HeaderCompilerFactoryTest extends TestCase
      */
     public function it_finds_the_htaccess_compiler() {
         /** @var HeaderCompilerFactory $factory */
-        $factory = Stitcher::get('factory.header.compiler');
+        $factory = App::get('factory.header.compiler');
 
         $compiler = $factory->setEnvironment('production');
 

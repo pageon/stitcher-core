@@ -1,6 +1,6 @@
 <?php
 
-namespace Brendt\Stitcher\Controller;
+namespace Brendt\Stitcher\Application;
 
 use PHPUnit\Framework\TestCase;
 
