@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Exception\ParserException;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
@@ -9,11 +10,11 @@ use PHPUnit\Framework\TestCase;
 class JsonParserTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     protected function createJsonParser() {
-        return Stitcher::get('parser.json');
+        return App::get('parser.json');
     }
 
     public function test_json_parser_parse_without_extension() {

@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Http\Header;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
@@ -10,19 +11,8 @@ use PHPUnit\Framework\TestCase;
 class SiteParserTest extends TestCase
 {
     private function createSiteParser() : SiteParser {
-        $stitcher = Stitcher::create('./tests/config.yml');
-
-        $parser = new SiteParser(
-            './tests/src',
-            './tests/src/template',
-            $stitcher::get('service.template.plugin'),
-            $stitcher::get('factory.parser'),
-            $stitcher::get('factory.template'),
-            $stitcher::get('factory.adapter'),
-            $stitcher::get('factory.header.compiler'),
-            $stitcher::get('compiler.meta'),
-            $stitcher::get('service.event.dispatcher')
-        );
+        App::init('./tests/config.yml');
+        $parser = App::get('parser.site');
 
         return $parser;
     }
@@ -168,7 +158,7 @@ class SiteParserTest extends TestCase
 
         $siteParser->parsePage($page);
         /** @var Htaccess $htaccess */
-        $htaccess = Stitcher::get('service.htaccess');
+        $htaccess = App::get('service.htaccess');
 
         $this->assertContains(
             '<ifmodule mod_headers.c>

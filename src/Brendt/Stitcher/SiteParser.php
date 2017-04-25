@@ -275,7 +275,7 @@ class SiteParser
      * @return Page[]
      *
      * @see  \Brendt\Stitcher\Adapter\Adapter::transform()
-     * @see  \Brendt\Stitcher\Controller\DevController::run()
+     * @see  \Brendt\Stitcher\Application\DevController::run()
      */
     public function parseAdapters(Page $page, $entryId = null) {
         if (!$page->getAdapters()) {

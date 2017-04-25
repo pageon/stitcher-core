@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use PHPUnit\Framework\TestCase;
@@ -10,14 +11,14 @@ use Symfony\Component\Finder\Finder;
 class SmartyEngineTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     /**
      * @return SmartyEngine
      */
     private function createEngine() {
-        return Stitcher::get('service.smarty');
+        return App::get('service.smarty');
     }
 
     private function getFiles() {
