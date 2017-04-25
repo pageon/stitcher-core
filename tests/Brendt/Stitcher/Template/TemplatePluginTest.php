@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Template;
 
 use Brendt\Html\Meta\Meta;
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
@@ -14,14 +15,14 @@ use Symfony\Component\Finder\SplFileInfo;
 class TemplatePluginTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     /**
      * @return TemplatePlugin
      */
     private function createEnginePlugin() {
-        return Stitcher::get('service.template.plugin');
+        return App::get('service.template.plugin');
     }
 
     /**
@@ -146,7 +147,7 @@ class TemplatePluginTest extends TestCase
     public function test_meta() {
         $plugin = $this->createEnginePlugin();
 
-        $result = $plugin->meta(Stitcher::getParameter('meta'));
+        $result = $plugin->meta(App::getParameter('meta'));
 
         $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $result);
     }
@@ -166,9 +167,9 @@ class TemplatePluginTest extends TestCase
     public function test_meta_in_template() {
         $engine = $this->createSmarty();
         /** @var TemplatePlugin $templatePlugin */
-        $templatePlugin = Stitcher::get('service.template.plugin');
+        $templatePlugin = App::get('service.template.plugin');
         $meta = new Meta();
-        foreach (Stitcher::getParameter('meta') as $name => $content) {
+        foreach (App::getParameter('meta') as $name => $content) {
             $meta->name($name, $content);
         }
 

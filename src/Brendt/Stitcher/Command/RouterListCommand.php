@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Command;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
@@ -18,10 +19,10 @@ class RouterListCommand extends Command
      */
     private $stitcher;
 
-    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+    public function __construct(Stitcher $stitcher) {
         parent::__construct();
 
-        $this->stitcher = Stitcher::create($configPath, $defaultConfig);
+        $this->stitcher = $stitcher;
     }
 
     protected function configure() {

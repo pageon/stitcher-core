@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -9,15 +10,15 @@ use Symfony\Component\Filesystem\Filesystem;
 class ImageParserTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     protected function createImageParser() {
-        return Stitcher::get('parser.image');
+        return App::get('parser.image');
     }
 
     protected function createYamlParser() {
-        return Stitcher::get('parser.yaml');
+        return App::get('parser.yaml');
     }
 
     public function test_image_create() {

@@ -2,11 +2,16 @@
 
 namespace Brendt\Stitcher\Command;
 
+use Brendt\Stitcher\App;
 use Brendt\Test\CommandTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 class GenerateCommandTest extends CommandTestCase
 {
+
+    public function setUp() {
+        App::init('./tests/config.yml');
+    }
 
     protected function tearDown() {
         $fs = new Filesystem();
@@ -25,6 +30,8 @@ class GenerateCommandTest extends CommandTestCase
         $this->assertTrue($fs->exists('./tests/public/churches/church-a.html'));
         $this->assertTrue($fs->exists('./tests/public/churches.html'));
         $this->assertTrue($fs->exists('./tests/public/.htaccess'));
+        $this->assertContains('-----', $output);
+        $this->assertContains('=====', $output);
         $this->assertContains('success', $output);
     }
 

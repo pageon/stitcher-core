@@ -1,6 +1,43 @@
 services:
+    app.console:
+        class: Brendt\Stitcher\Application\Console
+        calls:
+            - [add, ['@command.generate']]
+            - [add, ['@command.clean']]
+            - [add, ['@command.install']]
+            - [add, ['@command.router.dispatch']]
+            - [add, ['@command.router.list']]
+
+    app.dev.controller:
+        class: Brendt\Stitcher\Application\DevController
+        arguments:
+            - '@stitcher'
+
     stitcher:
-        synthetic: true
+        class: Brendt\Stitcher\Stitcher
+        arguments:
+            - '%directories.src%'
+            - '%directories.public%'
+            - '%directories.template%'
+            - '%cdn%'
+            - '%caches.cdn%'
+            - '@parser.site'
+            - '@service.htaccess'
+
+    # Command
+    command.generate:
+        class: Brendt\Stitcher\Command\GenerateCommand
+        arguments: ['%directories.public%', '@stitcher', '@service.event.dispatcher']
+    command.clean:
+        class: Brendt\Stitcher\Command\CleanCommand
+    command.install:
+        class: Brendt\Stitcher\Command\InstallCommand
+    command.router.dispatch:
+        class: Brendt\Stitcher\Command\RouterDispatchCommand
+        arguments: ['@stitcher']
+    command.router.list:
+        class: Brendt\Stitcher\Command\RouterListCommand
+        arguments: ['@stitcher']
 
     # Adapter
     adapter.collection:
@@ -112,6 +149,8 @@ services:
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
         arguments: ['%directories.htaccess%']
+    service.event.dispatcher:
+        class: Symfony\Component\EventDispatcher\EventDispatcher
 
     parser.site:
         class: Brendt\Stitcher\SiteParser
@@ -124,4 +163,5 @@ services:
             - '@factory.adapter'
             - '@factory.header.compiler'
             - '@compiler.meta'
+            - '@service.event.dispatcher'
             - '%meta%'

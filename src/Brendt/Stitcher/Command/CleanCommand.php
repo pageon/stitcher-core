@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\App;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,11 +37,9 @@ class CleanCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Stitcher::create();
-
         $force = $input->getOption(self::FORCE);
-        $publicDir = Stitcher::getParameter('directories.public');
-        $cacheDir = Stitcher::getParameter('directories.cache');
+        $publicDir = App::getParameter('directories.public');
+        $cacheDir = App::getParameter('directories.cache');
 
 
         $this->checkForcedClean($force, $publicDir, $cacheDir, $input, $output);

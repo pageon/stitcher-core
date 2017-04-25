@@ -21,32 +21,6 @@ use Symfony\Component\Yaml\Yaml;
 class Stitcher
 {
     /**
-     * @var ContainerBuilder
-     */
-    protected static $container;
-
-    /**
-     * @var array
-     */
-    protected static $configDefaults = [
-        'environment'          => 'development',
-        'directories.src'      => './src',
-        'directories.public'   => './public',
-        'directories.cache'    => './.cache',
-        'directories.htaccess' => './public/.htaccess',
-        'meta'                 => [],
-        'minify'               => false,
-        'engines.template'     => 'smarty',
-        'engines.image'        => 'gd',
-        'engines.optimizer'    => true,
-        'engines.async'        => true,
-        'cdn'                  => [],
-        'caches.image'         => true,
-        'caches.cdn'           => true,
-        'optimizer.options'    => [],
-    ];
-
-    /**
      * @var string
      */
     private $srcDir;
@@ -60,78 +34,52 @@ class Stitcher
      * @var string
      */
     private $templateDir;
-    
+
     /**
-     * @see \Brendt\Stitcher\Stitcher::create()
-     *
-     * @param string $srcDir
-     * @param string $publicDir
-     * @param string $templateDir
+     * @var array
      */
-    private function __construct($srcDir = './src', $publicDir = './public', $templateDir = './src/template') {
+    private $cdn;
+
+    /**
+     * @var bool
+     */
+    private $cdnCache;
+
+    /**
+     * @var SiteParser
+     */
+    private $siteParser;
+
+    /**
+     * @var Htaccess
+     */
+    private $htaccess;
+
+    /**
+     * @param string     $srcDir
+     * @param string     $publicDir
+     * @param string     $templateDir
+     * @param array      $cdn
+     * @param bool       $cdnCache
+     * @param SiteParser $siteParser
+     * @param Htaccess   $htaccess
+     */
+    public function __construct(
+        $srcDir,
+        $publicDir,
+        $templateDir,
+        array $cdn,
+        bool $cdnCache,
+        SiteParser $siteParser,
+        Htaccess $htaccess
+    ) {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
         $this->templateDir = $templateDir;
-    }
-
-    /**
-     * Static constructor
-     *
-     * @param string $configPath
-     * @param array  $defaultConfig
-     *
-     * @return Stitcher
-     *
-     */
-    public static function create(string $configPath = './config.yml', array $defaultConfig = []) : Stitcher {
-        self::$container = new ContainerBuilder();
-
-        $configFile = Config::getConfigFile($configPath);
-        $parsedConfig = Yaml::parse($configFile->getContents());
-        $parsedConfig = Config::parseImports($parsedConfig);
-
-        $config = array_merge(
-            self::$configDefaults,
-            $parsedConfig,
-            Config::flatten($parsedConfig),
-            $defaultConfig
-        );
-
-        $config['directories.template'] = $config['directories.template'] ?? $config['directories.src'];
-
-        foreach ($config as $key => $value) {
-            self::$container->setParameter($key, $value);
-        }
-
-        $srcDir = $config['directories.src'] ?? null;
-        $publicDir = $config['directories.public'] ?? null;
-        $templateDir = $config['directories.template'] ?? null;
-
-        $stitcher = new self($srcDir, $publicDir, $templateDir);
-        self::$container->set('stitcher', $stitcher);
-
-        $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
-        $serviceLoader->load(__DIR__ . '/../../services.yml');
-
-        return $stitcher;
-    }
-
-    /**
-     * @param string $id
-     *
-     * @return mixed
-     */
-    public static function get(string $id) {
-        return self::$container->get($id);
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public static function getParameter(string $key) {
-        return self::$container->getParameter($key);
+        $this->cdn = $cdn;
+        $this->cdnCache = $cdnCache;
+        $this->siteParser = $siteParser;
+        $this->htaccess = $htaccess;
     }
 
     /**
@@ -160,23 +108,17 @@ class Stitcher
      * @throws TemplateNotFoundException
      *
      * @see \Brendt\Stitcher\Stitcher::save()
-     * @see \Brendt\Stitcher\Controller\DevController::run()
+     * @see \Brendt\Stitcher\Application\DevController::run()
      * @see \Brendt\Stitcher\Adapter\CollectionAdapter::transform()
      */
     public function stitch($routes = [], string $filterValue = null) : array {
-        /** @var SiteParser $siteParser */
-        $siteParser = self::get('parser.site');
-
-        /** @var Htaccess $htaccess */
-        $htaccess = self::get('service.htaccess');
-
         if ($filterValue === null) {
-            $htaccess->clearPageBlocks();
+            $this->htaccess->clearPageBlocks();
         }
 
         $this->prepareCdn();
 
-        return $siteParser->parse((array) $routes, $filterValue);
+        return $this->siteParser->parse((array) $routes, $filterValue);
     }
 
     /**
@@ -185,10 +127,7 @@ class Stitcher
      * @return Site
      */
     public function loadSite(array $routes = []) : Site {
-        /** @var SiteParser $siteParser */
-        $siteParser = self::get('parser.site');
-
-        return $siteParser->loadSite($routes);
+        return $this->siteParser->loadSite($routes);
     }
 
     /**
@@ -209,24 +148,20 @@ class Stitcher
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
 
-        /** @var Htaccess $htaccess */
-        $htaccess = self::get('service.htaccess');
-        $fs->dumpFile("{$this->publicDir}/.htaccess", $htaccess->parse());
+        $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
     }
 
     /**
      * Parse CDN resources and libraries
      */
     public function prepareCdn() {
-        $cdn = (array) self::getParameter('cdn');
-        $enableCache = self::getParameter('caches.cdn');
         $fs = new Filesystem();
 
-        foreach ($cdn as $resource) {
+        foreach ($this->cdn as $resource) {
             $resource = trim($resource, '/');
             $publicResourcePath = "{$this->publicDir}/{$resource}";
 
-            if ($enableCache && $fs->exists($publicResourcePath)) {
+            if ($this->cdnCache && $fs->exists($publicResourcePath)) {
                 continue;
             }
 
