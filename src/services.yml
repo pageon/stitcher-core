@@ -1,13 +1,38 @@
 services:
     app.console:
-        synthetic: true
+        class: Brendt\Stitcher\Application\Console
+        calls:
+            - [add, ['@command.generate']]
+            - [add, ['@command.clean']]
+            - [add, ['@command.install']]
+            - [add, ['@command.router.dispatch']]
+            - [add, ['@command.router.list']]
 
     stitcher:
-        synthetic: true
+        class: Brendt\Stitcher\Stitcher
+        arguments:
+            - '%directories.src%'
+            - '%directories.public%'
+            - '%directories.template%'
+            - '%cdn%'
+            - '%caches.cdn%'
+            - '@parser.site'
+            - '@service.htaccess'
 
+    # Command
     command.generate:
         class: Brendt\Stitcher\Command\GenerateCommand
-        arguments: ['@app.console', '@service.event.dispatcher']
+        arguments: ['@stitcher', '@service.event.dispatcher']
+    command.clean:
+        class: Brendt\Stitcher\Command\CleanCommand
+    command.install:
+        class: Brendt\Stitcher\Command\InstallCommand
+    command.router.dispatch:
+        class: Brendt\Stitcher\Command\RouterDispatchCommand
+        arguments: ['@stitcher']
+    command.router.list:
+        class: Brendt\Stitcher\Command\RouterListCommand
+        arguments: ['@stitcher']
 
     # Adapter
     adapter.collection:

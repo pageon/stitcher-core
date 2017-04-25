@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
@@ -9,11 +10,11 @@ class AbstractArrayParserTest extends TestCase
 {
 
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     public function test_parse_normal_array() {
-        $parser = new ArrayParserMock(Stitcher::get('factory.parser'));
+        $parser = new ArrayParserMock(App::get('factory.parser'));
         $result = $parser->parseEntryData('test', [
             'test' => [
                 'title' => 'title',

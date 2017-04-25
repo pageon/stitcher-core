@@ -1,8 +1,8 @@
 <?php
 
-namespace Brendt\Stitcher\Controller;
+namespace Brendt\Stitcher\Application;
 
-use Brendt\Stitcher\Config;
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Exception\StitcherException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Stitcher;
@@ -34,7 +34,7 @@ class DevController
         $path = rtrim($path, '/');
         $name = ltrim($name, '/');
 
-        $this->stitcher = Stitcher::create("{$path}/{$name}");
+        $this->stitcher = App::init("{$path}/{$name}")::get('stitcher');
     }
 
     /**
