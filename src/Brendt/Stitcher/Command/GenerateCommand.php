@@ -67,12 +67,12 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $route = $input->getArgument(self::ROUTE);
         $blanket = $this->stitcher->stitch($route);
         $this->stitcher->save($blanket);
-        $this->progress->finish();
+        $this->progress->clear();
 
         if ($route) {
-            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>.");
         } else {
-            $output->writeln("\nSite successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("Site successfully generated in <fg=green>{$this->publicDir}</>.");
         }
     }
 
@@ -96,7 +96,7 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
         $this->progress = new ProgressBar($this->output, $amount);
         $this->progress->setBarWidth(40);
-        $this->progress->setFormatDefinition('custom', "\n%current%/%max% [%bar%] %message%\n");
+        $this->progress->setFormatDefinition('custom', "%current%/%max% [%bar%] %message%\n");
         $this->progress->setFormat('custom');
         $this->progress->setMessage('');
         $this->progress->start();
