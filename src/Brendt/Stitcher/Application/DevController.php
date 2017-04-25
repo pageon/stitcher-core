@@ -46,14 +46,12 @@ class DevController
         }
 
         try {
-            echo $this->getPage($url);
+            return $this->getPage($url);
         } catch (StitcherException $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         } catch (ResourceNotFoundException $e) {
-            echo "404";
+            return "404";
         }
-
-        return;
     }
 
     /**
