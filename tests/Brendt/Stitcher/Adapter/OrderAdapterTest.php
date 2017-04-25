@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
@@ -12,9 +13,9 @@ class OrderAdapterTest extends TestCase
      * @return OrderAdapter
      */
     private function createAdapter() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
 
-        return Stitcher::get('adapter.order');
+        return App::get('adapter.order');
     }
 
     private function createPage($direction = null) {
