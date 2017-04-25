@@ -78,6 +78,14 @@ class App
     }
 
     /**
+     * @param string      $id
+     * @param Application $application
+     */
+    public static function setApplication(string $id, Application $application) {
+        self::$container->set($id, $application);
+    }
+
+    /**
      * @param string $key
      *
      * @return mixed

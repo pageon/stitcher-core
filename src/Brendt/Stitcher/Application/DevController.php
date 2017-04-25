@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Application;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Exception\StitcherException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Stitcher;
@@ -27,14 +26,10 @@ class DevController
     /**
      * Create a new developer controller with optional configuration path and -file.
      *
-     * @param string $path
-     * @param string $name
+     * @param Stitcher $stitcher
      */
-    public function __construct($path = './', $name = 'config.dev.yml') {
-        $path = rtrim($path, '/');
-        $name = ltrim($name, '/');
-
-        $this->stitcher = App::init("{$path}/{$name}")::get('stitcher');
+    public function __construct(Stitcher $stitcher) {
+        $this->stitcher = $stitcher;
     }
 
     /**

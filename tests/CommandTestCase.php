@@ -2,6 +2,7 @@
 
 namespace Brendt\Test;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Application\Console;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
@@ -10,7 +11,8 @@ use Symfony\Component\Console\Output\StreamOutput;
 abstract class CommandTestCase extends TestCase
 {
     public function runCommand(string $command) : string {
-        $application = new Console('./tests/config.yml');
+        /** @var Console $application */
+        $application = App::get('app.console');
         $application->setAutoExit(false);
 
         $fp = tmpfile();

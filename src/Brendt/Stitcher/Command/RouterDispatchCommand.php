@@ -23,10 +23,10 @@ class RouterDispatchCommand extends Command
      */
     private $stitcher;
 
-    public function __construct(string $configPath = './config.yml', array $defaultConfig = []) {
+    public function __construct(Stitcher $stitcher) {
         parent::__construct();
 
-        $this->stitcher = App::get('stitcher');
+        $this->stitcher = $stitcher;
     }
 
     protected function configure() {

@@ -13,31 +13,13 @@
 #### Breaking changes
 
 A last big refactor has been done to support more extensions in the future. This means both the `Console` and the `DevController`
- now live in a different namespace. Two changes need to be made. You can either copy the new install files, or manually edit
- the existing files.
- 
-Install:
+ now live in a different namespace. Two changes need to be made, which can be performed with the following commands.
 
 ```
 rm stitcher
 rm dev/index.php
-
 cp vendor/Brendt/Stitcher/install/stitcher ./stitcher
 cp vendor/Brendt/Stitcher/install/dev/index.php ./dev/index.php
-```
-
-Manual:
- 
-```
-# ./stitcher
-
-use Brendt\Stitcher\Application\Console;
-```
-
-```
-# ./dev/index.php
-
-use Brendt\Stitcher\Application\DevController;
 ```
  
 ## 1.0.0-alpha4
