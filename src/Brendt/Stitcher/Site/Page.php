@@ -193,7 +193,7 @@ class Page
      *
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
-     * @see \Brendt\Stitcher\controller\DevController::run
+     * @see \Brendt\Stitcher\Application\DevController::run
      */
     public function getAdapterConfig($name) {
         if (!isset($this->adapters[$name])) {

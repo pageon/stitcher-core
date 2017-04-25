@@ -2,19 +2,20 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
 
 class FolderParserTest extends TestCase
 {
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
     /**
      * @return FolderParser
      */
     protected function createFolderParser() {
-        return Stitcher::get('parser.folder');
+        return App::get('parser.folder');
     }
 
     public function test_folder_parser_parse() {

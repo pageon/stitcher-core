@@ -3,7 +3,7 @@
 
 require './vendor/autoload.php';
 
-use Brendt\Stitcher\Console;
+use Brendt\Stitcher\Application\Console;
 
 // The console provides some helper commands while creating your website.
 // Run ./stitcher in your terminal to see all options.

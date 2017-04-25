@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,7 +50,6 @@ class InstallCommand extends Command
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        Stitcher::create();
         $log = [];
 
         $srcDir = './src';
@@ -131,7 +129,7 @@ class InstallCommand extends Command
     }
 
     protected function checkContinue(InputInterface $input, OutputInterface $output) {
-        $srcDir = Stitcher::getParameter('directory.src');
+        $srcDir = App::getParameter('directory.src');
 
         if ($this->fs->exists($srcDir)) {
             $questionHelper = $this->getHelper('question');

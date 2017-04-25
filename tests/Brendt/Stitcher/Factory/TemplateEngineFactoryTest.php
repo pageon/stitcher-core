@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Factory;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\smarty\SmartyEngine;
 use Brendt\Stitcher\Template\twig\TwigEngine;
@@ -11,14 +12,14 @@ class TemplateEngineFactoryTest extends TestCase
 {
 
     public function setUp() {
-        Stitcher::create('./tests/config.yml');
+        App::init('./tests/config.yml');
     }
 
     /**
      * @return TemplateEngineFactory
      */
     protected function createTemplateEngineFactory() {
-        return Stitcher::get('factory.template');
+        return App::get('factory.template');
     }
 
     public function test_factory_smarty() {
