@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class SiteParserTest extends TestCase
 {
     private function createSiteParser() : SiteParser {
-        $stitcher = App::init('./tests/config.yml')::get('stitcher');
+        App::init('./tests/config.yml');
         $parser = App::get('parser.site');
 
         return $parser;

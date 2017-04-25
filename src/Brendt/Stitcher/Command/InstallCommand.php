@@ -19,11 +19,9 @@ class InstallCommand extends Command
 
     /**
      * InstallCommand constructor.
-     *
-     * @param string $name
      */
-    public function __construct($name = null) {
-        parent::__construct($name);
+    public function __construct() {
+        parent::__construct(null);
 
         $this->fs = new Filesystem();
     }
