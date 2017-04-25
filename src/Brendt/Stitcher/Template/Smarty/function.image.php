@@ -1,6 +1,6 @@
 <?php
 
-use Brendt\Stitcher\Stitcher;
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Template\TemplatePlugin;
 
 /**
@@ -13,7 +13,7 @@ use Brendt\Stitcher\Template\TemplatePlugin;
  */
 function smarty_function_image(array $params, Smarty_Internal_Template $template) {
     /** @var TemplatePlugin $plugin */
-    $plugin = Stitcher::get('service.template.plugin');
+    $plugin = App::get('service.template.plugin');
 
     $src = isset($params['src']) ? $params['src'] : null;
     $push = isset($params['push']);

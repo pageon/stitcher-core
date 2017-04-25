@@ -2,7 +2,7 @@
 
 namespace Brendt\Test;
 
-use Brendt\Stitcher\Console;
+use Brendt\Stitcher\Application\Console;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\StreamOutput;
