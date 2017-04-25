@@ -8,6 +8,11 @@ services:
             - [add, ['@command.router.dispatch']]
             - [add, ['@command.router.list']]
 
+    app.dev.controller:
+        class: Brendt\Stitcher\Application\DevController
+        arguments:
+            - '@stitcher'
+
     stitcher:
         class: Brendt\Stitcher\Stitcher
         arguments:
