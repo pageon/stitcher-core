@@ -65,11 +65,9 @@ class App
 
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
         $serviceLoader->load(__DIR__ . '/../../services.yml');
-
-        $pluginConfigurationCollection = self::parsePlugins($config);
-        foreach ($pluginConfigurationCollection as $pluginConfiguration) {
-            $serviceLoader->load($pluginConfiguration->getServicePath());
-        }
+        $pluginConfigurationCollection = self::loadPlugins($config);
+        self::loadPluginServices($serviceLoader, $pluginConfigurationCollection);
+        self::loadPluginConfig($pluginConfigurationCollection);
 
         return new self();
     }
@@ -79,7 +77,7 @@ class App
      *
      * @return PluginConfiguration[]
      */
-    public static function parsePlugins(array $config) : array {
+    public static function loadPlugins(array $config) : array {
         if (!isset($config['plugins'])) {
             return [];
         }
@@ -95,6 +93,30 @@ class App
         return $pluginConfigurationCollection;
     }
 
+    /**
+     * @param PluginConfiguration[] $pluginConfigurationCollection
+     */
+    public static function loadPluginConfig(array $pluginConfigurationCollection) {
+        foreach ($pluginConfigurationCollection as $pluginConfig) {
+            $flatPluginConfig = Config::flatten($pluginConfig);
+
+            foreach ($flatPluginConfig as $key => $value) {
+                if (!self::$container->hasParameter($key)) {
+                    self::$container->setParameter($key, $value);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param YamlFileLoader $serviceLoader
+     * @param array          $pluginConfigurationCollection
+     */
+    public static function loadPluginServices(YamlFileLoader $serviceLoader, array $pluginConfigurationCollection) {
+        foreach ($pluginConfigurationCollection as $pluginConfiguration) {
+            $serviceLoader->load($pluginConfiguration->getServicePath());
+        }
+    }
 
     /**
      * @param string $id
