@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher;
 
+use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;

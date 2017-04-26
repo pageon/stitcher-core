@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher;
 
+use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -46,13 +47,13 @@ class App
         self::$container = new ContainerBuilder();
 
         $configFile = Config::getConfigFile($configPath);
-        $parsedConfig = Yaml::parse($configFile->getContents());
-        $parsedConfig = Config::parseImports($parsedConfig);
+        $parsedDefaultConfig = Yaml::parse($configFile->getContents());
+        $parsedImportConfig = Config::parseImports($parsedDefaultConfig);
 
         $config = array_merge(
             self::$configDefaults,
-            $parsedConfig,
-            Config::flatten($parsedConfig),
+            $parsedImportConfig,
+            Config::flatten($parsedImportConfig),
             $defaultConfig
         );
 
@@ -65,8 +66,35 @@ class App
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
         $serviceLoader->load(__DIR__ . '/../../services.yml');
 
+        $pluginConfigurationCollection = self::parsePlugins($config);
+        foreach ($pluginConfigurationCollection as $pluginConfiguration) {
+            $serviceLoader->load($pluginConfiguration->getServicePath());
+        }
+
         return new self();
     }
+
+    /**
+     * @param array $config
+     *
+     * @return PluginConfiguration[]
+     */
+    public static function parsePlugins(array $config) : array {
+        if (!isset($config['plugins'])) {
+            return [];
+        }
+
+        $pluginConfigurationCollection = [];
+
+        foreach ($config['plugins'] as $pluginPath) {
+            $pluginConfiguration = new PluginConfiguration($pluginPath);
+
+            $pluginConfigurationCollection[] = $pluginConfiguration;
+        }
+
+        return $pluginConfigurationCollection;
+    }
+
 
     /**
      * @param string $id
