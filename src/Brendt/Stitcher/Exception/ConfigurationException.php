@@ -28,4 +28,8 @@ class ConfigurationException extends StitcherException
         return new self("Could not load file: `{$path}`.");
     }
 
+    public static function pluginNotFound($path) : ConfigurationException {
+        return new self("Could not find plugin in {$path}. Looking for a `*Plugin.php` file in this directory");
+    }
+
 }
