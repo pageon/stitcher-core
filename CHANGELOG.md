@@ -22,8 +22,8 @@ A last big refactor has been done to support more extensions in the future. This
 ```
 rm ./stitcher
 rm ./dev/index.php
-cp vendor/Brendt/Stitcher/install/stitcher ./stitcher
-cp vendor/Brendt/Stitcher/install/dev/index.php ./dev/index.php
+cp vendor/brendt/stitcher/install/stitcher ./stitcher
+cp vendor/brendt/stitcher/install/dev/index.php ./dev/index.php
 ```
  
 ## 1.0.0-alpha4
