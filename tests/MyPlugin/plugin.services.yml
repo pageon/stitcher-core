@@ -1,0 +1,4 @@
+services:
+    plugin.my.service:
+        class: MyPlugin\MyService
+        arguments: ['%plugin.my.parameter%', '@stitcher']

@@ -98,7 +98,7 @@ class App
      */
     public static function loadPluginConfig(array $pluginConfigurationCollection) {
         foreach ($pluginConfigurationCollection as $pluginConfig) {
-            $flatPluginConfig = Config::flatten($pluginConfig);
+            $flatPluginConfig = Config::flatten($pluginConfig->getConfig());
 
             foreach ($flatPluginConfig as $key => $value) {
                 if (!self::$container->hasParameter($key)) {
@@ -114,7 +114,13 @@ class App
      */
     public static function loadPluginServices(YamlFileLoader $serviceLoader, array $pluginConfigurationCollection) {
         foreach ($pluginConfigurationCollection as $pluginConfiguration) {
-            $serviceLoader->load($pluginConfiguration->getServicePath());
+            $servicePath = $pluginConfiguration->getServicePath();
+
+            if (!$servicePath) {
+                continue;
+            }
+            
+            $serviceLoader->load($servicePath);
         }
     }
 
