@@ -10,7 +10,8 @@
 - Refactor the use of the dependency container, enabling future extensions. (See breaking changes).
 - Fix folder parser bug with nested folders.
 - Fix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`. This is useful when 
- doing includes and IDE auto-completion. 
+ doing includes and IDE auto-completion.
+- Fix for meta tags on detail pages not correctly set. 
 - Use stable version of `pageon/html-meta`.
 
 #### Breaking changes
