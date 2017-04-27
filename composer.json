@@ -46,5 +46,10 @@
         "psr-4" : {
             "Brendt\\Stitcher\\" : "src/Brendt/Stitcher"
         }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "MyPlugin\\" : "tests/MyPlugin"
+        }
     }
 }
