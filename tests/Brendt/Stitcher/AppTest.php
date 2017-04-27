@@ -7,11 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class AppTest extends TestCase
 {
-    protected function setUp() {
-        require_once __DIR__ . '/../../MyPlugin/TestPlugin.php';
-        require_once __DIR__ . '/../../MyPlugin/MyService.php';
-    }
-
     public function test_plugin_loading() {
         App::init('./tests/plugin.config.yml');
 
