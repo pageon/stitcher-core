@@ -66,6 +66,7 @@ class CollectionAdapter extends AbstractAdapter
 
             $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
             $entryPage = clone $page;
+            $entryPage->meta = new Meta();
 
             foreach ($entry as $entryVariableName => $entryVariableValue) {
                 $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
