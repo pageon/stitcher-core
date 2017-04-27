@@ -5,8 +5,18 @@ namespace Brendt\Stitcher\Plugin;
 interface Plugin
 {
 
-    public function getConfigPath() : string;
+    /**
+     * Get the location of your plugin's `config.yml` file.
+     *
+     * @return null|string
+     */
+    public function getConfigPath();
 
-    public function getServicesPath() : string;
+    /**
+     * Get the location of your plugin's `services.yml` file.
+     *
+     * @return null|string
+     */
+    public function getServicesPath();
 
 }
