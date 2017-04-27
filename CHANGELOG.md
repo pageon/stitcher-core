@@ -4,6 +4,7 @@
 
 - Add PHP 7.0 support
 - Add Command tests for Router commands and Generate command.
+- Add plugin support!
 - Improved meta support.
 - Improved generate command feedback.
 - Refactor the use of the dependency container, enabling future extensions. (See breaking changes).
