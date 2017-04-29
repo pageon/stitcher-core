@@ -54,13 +54,19 @@ class TemplatePlugin
      */
     private $page;
 
+    /**
+     * @var array
+     */
+    private $meta;
+
     public function __construct(
         ParserFactory $parserFactory,
         ResponsiveFactory $responsiveFactory,
         CSSmin $cssMinifier,
         string $publicDir,
         string $srcDir,
-        bool $minify
+        bool $minify,
+        $meta
     ) {
         $this->parserFactory = $parserFactory;
         $this->responsiveFactory = $responsiveFactory;
@@ -68,6 +74,7 @@ class TemplatePlugin
         $this->publicDir = $publicDir;
         $this->srcDir = $srcDir;
         $this->minify = $minify;
+        $this->meta = (array) $meta;
     }
 
     /**
@@ -90,6 +97,10 @@ class TemplatePlugin
      */
     public function meta(array $extra = []) : string {
         $meta = $this->page ? $this->page->meta : new Meta();
+
+        foreach ($this->meta as $name => $content) {
+            $meta->name($name, $content);
+        }
 
         foreach ($extra as $name => $content) {
             $meta->name($name, $content);
