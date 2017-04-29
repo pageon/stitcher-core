@@ -146,6 +146,7 @@ services:
             - '%directories.public%'
             - '%directories.src%'
             - '%minify%'
+            - '%meta%'
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
         arguments: ['%directories.htaccess%']
