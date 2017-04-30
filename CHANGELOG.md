@@ -1,6 +1,6 @@
 # Changelog
 
-## [WIP] 1.0.0-alpha5 
+## 1.0.0-alpha5 
 
 - Add plugin support!
 - Add PHP 7.0 support
