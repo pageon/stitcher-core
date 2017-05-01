@@ -12,7 +12,7 @@
 - Fix folder parser bug with nested folders.
 - Fix with Sass compiler import paths. The Sass compiler can now also look directly in `src/css`. This is useful when doing includes and IDE auto-completion.
 - Fix global meta tags not being loaded.
-- Fix for meta tags on detail pages not correctly set. 
+- Fix for meta tags on detail pages not correctly set.
 
 #### Breaking changes
 

@@ -166,7 +166,11 @@ class Stitcher
             }
 
             $sourceResourcePath = "{$this->srcDir}/{$resource}";
-            $fs->copy($sourceResourcePath, $publicResourcePath, true);
+            if (is_dir($sourceResourcePath)) {
+                $fs->mirror($sourceResourcePath, $publicResourcePath);
+            } else {
+                $fs->copy($sourceResourcePath, $publicResourcePath, true);
+            }
         }
     }
 }
