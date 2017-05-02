@@ -4,6 +4,7 @@ namespace Brendt\Stitcher;
 
 use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
+use Brendt\Stitcher\Exception\InvalidSiteException;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\HeaderCompilerFactory;
