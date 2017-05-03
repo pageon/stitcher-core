@@ -64,6 +64,8 @@ abstract class AbstractArrayParser implements Parser
      * @see \Brendt\Stitcher\Factory\ParserFactory
      */
     protected function parseEntryData($id, $entry) {
+        $entry = (array) $entry;
+
         foreach ($entry as $field => $value) {
             if (is_string($value) && preg_match('/.*\.(md|jpg|png|json|yml)$/', $value) > 0) {
                 $parser = $this->parserFactory->getByFileName($value);
