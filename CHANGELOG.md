@@ -1,9 +1,5 @@
 # Changelog
 
-## Upcoming
-
-- Add `init` call support for Plugins. This method is optional to implement.
-
 ## 1.0.0-alpha5 
 
 - Add plugin support!

@@ -122,9 +122,7 @@ class App
 
             $serviceLoader->load($servicePath);
             $plugin = $pluginConfiguration->getPlugin();
-            if (method_exists($plugin, 'init')) {
-                $plugin->init();
-            }
+            $plugin->init();
         }
     }
 
