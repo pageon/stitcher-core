@@ -66,8 +66,8 @@ class App
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
         $serviceLoader->load(__DIR__ . '/../../services.yml');
         $pluginConfigurationCollection = self::loadPlugins($config);
-        self::loadPluginServices($serviceLoader, $pluginConfigurationCollection);
         self::loadPluginConfig($pluginConfigurationCollection);
+        self::loadPluginServices($serviceLoader, $pluginConfigurationCollection);
 
         return new self();
     }
@@ -109,8 +109,8 @@ class App
     }
 
     /**
-     * @param YamlFileLoader $serviceLoader
-     * @param array          $pluginConfigurationCollection
+     * @param YamlFileLoader        $serviceLoader
+     * @param PluginConfiguration[] $pluginConfigurationCollection
      */
     public static function loadPluginServices(YamlFileLoader $serviceLoader, array $pluginConfigurationCollection) {
         foreach ($pluginConfigurationCollection as $pluginConfiguration) {
@@ -119,8 +119,12 @@ class App
             if (!$servicePath) {
                 continue;
             }
-            
+
             $serviceLoader->load($servicePath);
+            $plugin = $pluginConfiguration->getPlugin();
+            if (method_exists($plugin, 'init')) {
+                $plugin->init();
+            }
         }
     }
 
