@@ -39,7 +39,7 @@ class FilterAdapter extends AbstractAdapter
         $this->validateConfig($config);
 
         foreach ($config as $variable => $filters) {
-            $entries = $this->getData($page->getVariable($variable));
+            $entries = $this->getData($page->getVariable($variable)) ?? [];
 
             foreach ($filters as $field => $value) {
                 $entries = array_filter($entries, function ($entry) use ($field, $value) {
