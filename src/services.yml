@@ -1,4 +1,5 @@
 services:
+
     app.console:
         class: Brendt\Stitcher\Application\Console
         calls:
