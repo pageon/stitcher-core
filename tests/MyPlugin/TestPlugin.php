@@ -2,12 +2,19 @@
 
 namespace MyPlugin;
 
+use Brendt\Stitcher\App;
+use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Plugin\Plugin;
 
 class TestPlugin implements Plugin
 {
-    public function init() {
-        return;
+    /**
+     * @var AdapterFactory
+     */
+    private $adapterFactory;
+
+    public function __construct() {
+        $this->adapterFactory = App::get('factory.adapter');
     }
 
     public function getConfigPath() {
@@ -16,5 +23,12 @@ class TestPlugin implements Plugin
 
     public function getServicesPath() {
         return __DIR__ . '/plugin.services.yml';
+    }
+
+    /**
+     * @return AdapterFactory
+     */
+    public function getAdapterFactory() : AdapterFactory {
+        return $this->adapterFactory;
     }
 }
