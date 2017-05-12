@@ -19,6 +19,8 @@ class AdapterFactory
      */
     private $container;
 
+    private $adapters = [];
+
     /**
      * AdapterFactory constructor.
      *
@@ -26,6 +28,34 @@ class AdapterFactory
      */
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
+
+        $this->addAdapter(self::COLLECTION_ADAPTER, function () {
+            return $this->container->get('adapter.collection');
+        });
+
+        $this->addAdapter(self::PAGINATION_ADAPTER, function () {
+            return $this->container->get('adapter.pagination');
+        });
+
+        $this->addAdapter(self::ORDER_ADAPTER, function () {
+            return $this->container->get('adapter.order');
+        });
+
+        $this->addAdapter(self::FILTER_ADAPTER, function () {
+            return $this->container->get('adapter.filter');
+        });
+
+        $this->addAdapter(self::LIMIT_ADAPTER, function () {
+            return $this->container->get('adapter.limit');
+        });
+    }
+
+    /**
+     * @param string   $adapterName
+     * @param callable $filter
+     */
+    public function addAdapter(string $adapterName, callable $filter) {
+        $this->adapters[$adapterName] = $filter;
     }
 
     /**
@@ -36,20 +66,11 @@ class AdapterFactory
      * @throws UnknownAdapterException
      */
     public function getByType($type) : Adapter {
-        switch ($type) {
-            case self::COLLECTION_ADAPTER:
-                return $this->container->get('adapter.collection');
-            case self::PAGINATION_ADAPTER:
-                return $this->container->get('adapter.pagination');
-            case self::ORDER_ADAPTER:
-                return $this->container->get('adapter.order');
-            case self::FILTER_ADAPTER:
-                return $this->container->get('adapter.filter');
-            case self::LIMIT_ADAPTER:
-                return $this->container->get('adapter.limit');
-            default:
-                throw new UnknownAdapterException();
+        if (!isset($this->adapters[$type])) {
+            throw new UnknownAdapterException();
         }
+
+        return $this->adapters[$type]($this->container);
     }
 
 }
