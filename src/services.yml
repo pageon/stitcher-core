@@ -155,15 +155,20 @@ services:
         class: Symfony\Component\EventDispatcher\EventDispatcher
 
     parser.site:
-        class: Brendt\Stitcher\SiteParser
+        class: Brendt\Stitcher\Parser\Site\SiteParser
         arguments:
             - '%directories.src%'
-            - '%directories.template%'
-            - '@service.template.plugin'
-            - '@factory.parser'
-            - '@factory.template'
-            - '@factory.adapter'
-            - '@factory.header.compiler'
-            - '@compiler.meta'
             - '@service.event.dispatcher'
+            - '@parser.page'
             - '%meta%'
+
+    parser.page:
+        class: Brendt\Stitcher\Parser\Site\PageParser
+        arguments:
+            - '%directories.template%'
+            - '@factory.adapter'
+            - '@factory.parser'
+            - '@factory.header.compiler'
+            - '@factory.template'
+            - '@service.template.plugin'
+            - '@compiler.meta'
