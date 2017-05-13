@@ -51,14 +51,16 @@ class CollectionAdapter extends AbstractAdapter
         $this->validateConfig($config, $page);
 
         $variable = $config['variable'];
-        $source = $page->getVariable($variable);
         $field = $config['field'];
+        $entries = $this->getData($page->getVariable($variable));
         $pageId = $page->getId();
-        $entries = $this->getData($source);
 
+        reset($entries);
         $result = [];
-        foreach ($entries as $entry) {
+        while ($entry = current($entries)) {
             if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
+                next($entries);
+
                 continue;
             }
 
@@ -72,16 +74,46 @@ class CollectionAdapter extends AbstractAdapter
                 $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
             }
 
+
             $entryPage
                 ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
                 ->setVariableValue($variable, $entry)
                 ->setVariableIsParsed($variable)
                 ->setId($url);
 
+            if (!$entryPage->getVariable('browse')) {
+                $browse = $this->getBrowseData($entries);
+
+                $entryPage->setVariableValue('browse', $browse)
+                    ->setVariableIsParsed('browse');
+            }
+
             $result[$url] = $entryPage;
         }
 
         return $result;
+    }
+
+    /**
+     * @param $entries
+     *
+     * @return array
+     */
+    private function getBrowseData(&$entries) : array {
+        $prev = prev($entries);
+
+        if (!$prev) {
+            reset($entries);
+        } else {
+            next($entries);
+        }
+
+        $next = next($entries);
+
+        return [
+            'prev' => $prev,
+            'next' => $next,
+        ];
     }
 
     /**
