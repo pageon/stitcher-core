@@ -81,13 +81,8 @@ class CollectionAdapter extends AbstractAdapter
                 ->setVariableIsParsed($variable)
                 ->setId($url);
 
-            if (!$entryPage->getVariable('browse')) {
-                $browse = $this->getBrowseData($entries);
-
-                $entryPage->setVariableValue('browse', $browse)
-                    ->setVariableIsParsed('browse');
-            }
-
+            $this->parseBrowseData($entryPage, $entries);
+            
             $result[$url] = $entryPage;
         }
 
@@ -95,11 +90,16 @@ class CollectionAdapter extends AbstractAdapter
     }
 
     /**
-     * @param $entries
+     * @param Page  $entryPage
+     * @param array $entries
      *
-     * @return array
+     * @return void
      */
-    private function getBrowseData(&$entries) : array {
+    private function parseBrowseData(Page $entryPage, array &$entries) {
+        if ($entryPage->getVariable('browse')) {
+            return;
+        }
+
         $prev = prev($entries);
 
         if (!$prev) {
@@ -110,10 +110,10 @@ class CollectionAdapter extends AbstractAdapter
 
         $next = next($entries);
 
-        return [
+        $entryPage->setVariableValue('browse', [
             'prev' => $prev,
             'next' => $next,
-        ];
+        ])->setVariableIsParsed('browse');
     }
 
     /**
