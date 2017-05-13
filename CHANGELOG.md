@@ -7,6 +7,8 @@
 - Make the adapter factory extensible.
 - Improve the CollectionAdapter by adding the `browse` variable. This variable can be used to browse the detail pages. 
  It has a `next` and `prev` key which contains the next and previous entry, if there are any.
+- Moved `Brendt\Stitcher\SiteParser` to `Brendt\Stitcher\Parser\Site\SiteParser` and refactored its service definition.
+- Added `Brendt\Stitcher\Parser\Site\PageParser` to parse a single page, which is no longer the responsibility of `SiteParser`.
 
 ## 1.0.0-alpha5 
 

@@ -3,13 +3,10 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Site;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * The Stitcher class is the core compiler of every Stitcher application. This class takes care of all routes, pages,

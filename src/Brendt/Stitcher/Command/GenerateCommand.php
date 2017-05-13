@@ -2,11 +2,10 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\Console;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
-use Brendt\Stitcher\SiteParser;
+use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;

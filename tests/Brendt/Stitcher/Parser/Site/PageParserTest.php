@@ -1,6 +1,6 @@
 <?php
 
-namespace Brendt\Stitcher;
+namespace Brendt\Stitcher\Parser\Site;
 
 use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Http\Header;
@@ -8,11 +8,15 @@ use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
 use PHPUnit\Framework\TestCase;
 
-class SiteParserTest extends TestCase
+class PageParserTest extends TestCase
 {
-    private function createSiteParser() : SiteParser {
+    protected function setUp() {
         App::init('./tests/config.yml');
-        $parser = App::get('parser.site');
+    }
+
+    private function createPageParser() : PageParser {
+        /** @var PageParser $parser */
+        $parser = App::get('parser.page');
 
         return $parser;
     }
@@ -35,18 +39,9 @@ class SiteParserTest extends TestCase
         return $page;
     }
 
-    public function test_site_loading() {
-        $siteParser = $this->createSiteParser();
-        $site = $siteParser->loadSite();
-
-        foreach ($site as $page) {
-            $this->assertNotNull($page->getId());
-        }
-    }
-
     public function test_template_loading() {
-        $siteParser = $this->createSiteParser();
-        $site = $siteParser->loadTemplates();
+        $pageParser = $this->createPageParser();
+        $site = $pageParser->loadTemplates();
 
         $this->assertArrayHasKey('index', $site);
         $this->assertArrayHasKey('home', $site);
@@ -55,10 +50,10 @@ class SiteParserTest extends TestCase
     }
 
     public function test_parse_adapters() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = $this->createPage();
 
-        $pages = $siteParser->parseAdapters($page);
+        $pages = $pageParser->parseAdapters($page);
 
         foreach ($pages as $page) {
             $this->assertTrue($page->isParsedVariable('church'));
@@ -67,7 +62,7 @@ class SiteParserTest extends TestCase
     }
 
     public function test_parse_multiple_adapters() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = new Page('/examples', [
             'template'  => 'home',
             'variables' => [
@@ -87,7 +82,7 @@ class SiteParserTest extends TestCase
             ],
         ]);
 
-        $adaptedPages = $siteParser->parseAdapters($page);
+        $adaptedPages = $pageParser->parseAdapters($page);
         $adaptedPage = reset($adaptedPages);
         $entries = $adaptedPage->getVariable('entries');
 
@@ -101,18 +96,18 @@ class SiteParserTest extends TestCase
     }
 
     public function test_parse_variables() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = $this->createPage();
 
-        $pages = $siteParser->parseAdapters($page);
-        $parsedPage = $siteParser->parseVariables($pages['/church-a']);
+        $pages = $pageParser->parseAdapters($page);
+        $parsedPage = $pageParser->parseVariables($pages['/church-a']);
 
         $this->assertTrue($parsedPage->isParsedVariable('church'));
         $this->assertTrue($parsedPage->isParsedVariable('intro'));
     }
 
     public function test_parse_variables_with_normal_array() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = new Page('/a', [
             'template'  => 'a',
             'variables' => [
@@ -123,7 +118,7 @@ class SiteParserTest extends TestCase
             ],
         ]);
 
-        $parsedPage = $siteParser->parseVariables($page);
+        $parsedPage = $pageParser->parseVariables($page);
 
         $variable = $parsedPage->getVariable('test');
         $this->assertTrue(isset($variable['title']));
@@ -131,7 +126,7 @@ class SiteParserTest extends TestCase
     }
 
     public function test_meta_compilers() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = new Page('/a', [
             'template'  => 'index',
             'variables' => [
@@ -141,8 +136,8 @@ class SiteParserTest extends TestCase
                 ],
             ],
         ]);
-        
-        $siteParser->parsePage($page);
+
+        $pageParser->parsePage($page);
         $meta = $page->meta->render();
 
         $this->assertContains('name="title" content="A"', $meta);
@@ -150,13 +145,13 @@ class SiteParserTest extends TestCase
     }
 
     public function test_header_compilers() {
-        $siteParser = $this->createSiteParser();
+        $pageParser = $this->createPageParser();
         $page = new Page('/a', [
             'template' => 'index',
         ]);
         $page->addHeader(Header::link('"</main.css>; rel=preload; as=style"'));
 
-        $siteParser->parsePage($page);
+        $pageParser->parsePage($page);
         /** @var Htaccess $htaccess */
         $htaccess = App::get('service.htaccess');
 
