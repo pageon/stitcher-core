@@ -2,10 +2,12 @@
 
 namespace Brendt\Stitcher;
 
+use Brendt\Stitcher\Plugin\Plugin;
 use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
 
@@ -65,72 +67,57 @@ class App
 
         $serviceLoader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
         $serviceLoader->load(__DIR__ . '/../../services.yml');
-        $pluginConfigurationCollection = self::loadPlugins($config);
-        self::loadPluginConfig($pluginConfigurationCollection);
-        self::loadPluginServices($serviceLoader, $pluginConfigurationCollection);
+        self::loadPlugins($config, $serviceLoader);
 
         return new self();
     }
 
-    /**
-     * @param array $config
-     *
-     * @return PluginConfiguration[]
-     */
-    public static function loadPlugins(array $config) : array {
+    public static function loadPlugins(array $config, YamlFileLoader $serviceLoader) {
         if (!isset($config['plugins'])) {
-            return [];
+            return;
         }
 
-        $pluginConfigurationCollection = [];
+        foreach ($config['plugins'] as $class) {
+            $pluginDefinition = new Definition($class);
+            $pluginDefinition->setAutowired(true);
 
-        foreach ($config['plugins'] as $pluginPath) {
-            $pluginConfiguration = new PluginConfiguration($pluginPath);
-
-            $pluginConfigurationCollection[] = $pluginConfiguration;
+            self::$container->setDefinition($class, $pluginDefinition);
         }
 
-        return $pluginConfigurationCollection;
+        foreach ($config['plugins'] as $class) {
+            /** @var Plugin $plugin */
+            $plugin = self::$container->get($class);
+            self::loadPluginConfig($plugin);
+            self::loadPluginServices($plugin, $serviceLoader);
+        }
     }
 
-    /**
-     * @param PluginConfiguration[] $pluginConfigurationCollection
-     */
-    public static function loadPluginConfig(array $pluginConfigurationCollection) {
-        foreach ($pluginConfigurationCollection as $pluginConfig) {
-            $flatPluginConfig = Config::flatten($pluginConfig->getConfig());
+    public static function loadPluginConfig(Plugin $plugin) {
+        $configFile = @file_get_contents($plugin->getConfigPath());
 
-            foreach ($flatPluginConfig as $key => $value) {
-                if (!self::$container->hasParameter($key)) {
-                    self::$container->setParameter($key, $value);
-                }
+        if (!$configFile) {
+            return;
+        }
+
+        $flatPluginConfig = Config::flatten(Yaml::parse($configFile));
+
+        foreach ($flatPluginConfig as $key => $value) {
+            if (!self::$container->hasParameter($key)) {
+                self::$container->setParameter($key, $value);
             }
         }
     }
 
-    /**
-     * @param YamlFileLoader        $serviceLoader
-     * @param PluginConfiguration[] $pluginConfigurationCollection
-     */
-    public static function loadPluginServices(YamlFileLoader $serviceLoader, array $pluginConfigurationCollection) {
-        foreach ($pluginConfigurationCollection as $pluginConfiguration) {
-            $servicePath = $pluginConfiguration->getServicePath();
+    public static function loadPluginServices(Plugin $plugin, YamlFileLoader $serviceLoader) {
+        $servicePath = $plugin->getServicesPath();
 
-            if (!$servicePath) {
-                continue;
-            }
-
-            $serviceLoader->load($servicePath);
-            $plugin = $pluginConfiguration->getPlugin();
-            $plugin->init();
+        if (!$servicePath) {
+            return;
         }
+
+        $serviceLoader->load($servicePath);
     }
 
-    /**
-     * @param string $id
-     *
-     * @return mixed
-     */
     public static function get(string $id) {
         return self::$container->get($id);
     }

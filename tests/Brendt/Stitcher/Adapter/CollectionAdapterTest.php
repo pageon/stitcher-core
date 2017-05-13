@@ -9,12 +9,14 @@ use PHPUnit\Framework\TestCase;
 
 class CollectionAdapterTest extends TestCase
 {
+    protected function setUp() {
+        App::init('./tests/config.yml');
+    }
+
     /**
      * @return CollectionAdapter
      */
-    private function createAdapter() {
-        App::init('./tests/config.yml');
-
+    private function createAdapter() : CollectionAdapter {
         return App::get('adapter.collection');
     }
 
@@ -27,6 +29,23 @@ class CollectionAdapterTest extends TestCase
             'adapters'  => [
                 'collection' => [
                     'variable' => 'church',
+                    'field'    => 'id',
+                ],
+            ],
+        ]);
+
+        return $page;
+    }
+    
+    private function createPageWithBigCollection() {
+        $page = new Page('/{id}', [
+            'template'  => 'home',
+            'variables' => [
+                'entry' => 'collection_big.yml',
+            ],
+            'adapters'  => [
+                'collection' => [
+                    'variable' => 'entry',
                     'field'    => 'id',
                 ],
             ],
@@ -115,6 +134,47 @@ class CollectionAdapterTest extends TestCase
 
         $this->assertContains('name="description" content="This is a church with the name A"', $meta);
         $this->assertContains('name="image" content="/img/green.jpg"', $meta);
+    }
+
+    public function test_browse() {
+        $page = $this->createPageWithBigCollection();
+        $adapter = $this->createAdapter();
+
+        $result = $adapter->transform($page);
+
+        $this->assertCount(10, $result);
+        $first = (reset($result))->getVariables();
+        $last = (end($result))->getVariables();
+
+        $this->assertArrayHasKey('browse', $first);
+        $this->assertArrayHasKey('browse', $last);
+        $this->assertFalse($first['browse']['prev']);
+
+        $this->assertEquals('b', $first['browse']['next']['id']);
+        $this->assertEquals('i', $last['browse']['prev']['id']);
+    }
+
+    public function test_browse_single() {
+        $page = new Page('/{id}', [
+            'template'  => 'home',
+            'variables' => [
+                'entry' => 'collection_single.yml',
+            ],
+            'adapters'  => [
+                'collection' => [
+                    'variable' => 'entry',
+                    'field'    => 'id',
+                ],
+            ],
+        ]);
+
+        $adapter = $this->createAdapter();
+        $result = $adapter->transform($page);
+
+        $this->assertCount(1, $result);
+        $first = (reset($result))->getVariables();
+        $this->assertFalse($first['browse']['prev']);
+        $this->assertFalse($first['browse']['next']);
     }
 
 }
