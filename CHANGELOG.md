@@ -4,6 +4,8 @@
 
 - Improved plugin initialisation support. The temporary `init` function isn't required anymore, the constructor can now be used.
 - Make the adapter factory extensible.
+- Improve the CollectionAdapter by adding the `browse` variable. This variable can be used to browse the detail pages. 
+ It has a `next` and `prev` key which contains the next and previous entry, if there are any.
 
 ## 1.0.0-alpha5 
 
