@@ -2,6 +2,7 @@
 
 ## 1.0.0-beta1
 
+- Add empty array fallback in `FilterAdapter` to prevent undefined index error.
 - Improved plugin initialisation support. The temporary `init` function isn't required anymore, the constructor can now be used.
 - Make the adapter factory extensible.
 - Improve the CollectionAdapter by adding the `browse` variable. This variable can be used to browse the detail pages. 
