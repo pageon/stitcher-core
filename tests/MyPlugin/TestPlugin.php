@@ -13,15 +13,15 @@ class TestPlugin implements Plugin
      */
     private $adapterFactory;
 
-    public function __construct() {
-        $this->adapterFactory = App::get('factory.adapter');
+    public function __construct(AdapterFactory $adapterFactory) {
+        $this->adapterFactory = $adapterFactory;
     }
 
-    public function getConfigPath() {
+    public static function getConfigPath() {
         return __DIR__ . '/plugin.config.yml';
     }
 
-    public function getServicesPath() {
+    public static function getServicesPath() {
         return __DIR__ . '/plugin.services.yml';
     }
 
