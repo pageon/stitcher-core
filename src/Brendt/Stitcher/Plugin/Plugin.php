@@ -9,12 +9,12 @@ interface Plugin
      *
      * @return null|string
      */
-    public function getConfigPath();
+    public static function getConfigPath();
 
     /**
      * Get the location of your plugin's `services.yml` file.
      *
      * @return null|string
      */
-    public function getServicesPath();
+    public static function getServicesPath();
 }
