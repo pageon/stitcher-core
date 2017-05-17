@@ -78,27 +78,27 @@ class App
         }
 
         foreach ($config['plugins'] as $class) {
+            self::loadPluginConfig(forward_static_call([$class, 'getConfigPath']));
+            self::loadPluginServices(forward_static_call([$class, 'getServicesPath']), $serviceLoader);
+
             $pluginDefinition = new Definition($class);
             $pluginDefinition->setAutowired(true);
-
             self::$container->setDefinition($class, $pluginDefinition);
         }
 
+        self::$container->compile();
+
         foreach ($config['plugins'] as $class) {
-            /** @var Plugin $plugin */
-            $plugin = self::$container->get($class);
-            self::loadPluginConfig($plugin);
-            self::loadPluginServices($plugin, $serviceLoader);
+            self::$container->get($class);
         }
     }
 
-    public static function loadPluginConfig(Plugin $plugin) {
-        $configFile = @file_get_contents($plugin->getConfigPath());
-
-        if (!$configFile) {
+    public static function loadPluginConfig($configFilePath) {
+        if (!$configFilePath) {
             return;
         }
 
+        $configFile = @file_get_contents((string) $configFilePath);
         $flatPluginConfig = Config::flatten(Yaml::parse($configFile));
 
         foreach ($flatPluginConfig as $key => $value) {
@@ -108,9 +108,7 @@ class App
         }
     }
 
-    public static function loadPluginServices(Plugin $plugin, YamlFileLoader $serviceLoader) {
-        $servicePath = $plugin->getServicesPath();
-
+    public static function loadPluginServices($servicePath, YamlFileLoader $serviceLoader) {
         if (!$servicePath) {
             return;
         }
