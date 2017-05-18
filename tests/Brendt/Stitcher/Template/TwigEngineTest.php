@@ -74,7 +74,6 @@ class TwigEngineTest extends TestCase
         foreach ($files as $template) {
             $html = $engine->renderTemplate($template);
             $this->assertContains('<meta', $html);
-            $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $html);
         }
     }
 
