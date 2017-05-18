@@ -9,6 +9,7 @@
  It has a `next` and `prev` key which contains the next and previous entry, if there are any.
 - Moved `Brendt\Stitcher\SiteParser` to `Brendt\Stitcher\Parser\Site\SiteParser` and refactored its service definition.
 - Added `Brendt\Stitcher\Parser\Site\PageParser` to parse a single page, which is no longer the responsibility of `SiteParser`.
+- Bugfix for general meta configuration overriding other meta values.
 
 ## 1.0.0-alpha5 
 
