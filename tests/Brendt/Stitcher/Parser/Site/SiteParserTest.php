@@ -29,4 +29,15 @@ class SiteParserTest extends TestCase
             $this->assertNotNull($page->getId());
         }
     }
+
+    public function test_general_meta() {
+        $siteParser = $this->createSiteParser();
+        $site = $siteParser->loadSite();
+        
+        foreach ($site as $page) {
+            $this->assertNotNull($page->meta);
+            $meta = $page->meta->render();
+            $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $meta);
+        }
+    }
 }

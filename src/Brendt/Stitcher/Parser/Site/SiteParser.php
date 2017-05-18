@@ -157,6 +157,10 @@ class SiteParser
     private function createMeta() : Meta {
         $meta = new Meta();
 
+        foreach ($this->metaConfig as $name => $value) {
+            $meta->name($name, $value);
+        }
+
         return $meta;
     }
 }
