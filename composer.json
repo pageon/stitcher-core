@@ -1,5 +1,5 @@
 {
-    "name" : "brendt/stitcher",
+    "name" : "pageon/stitcher-core",
     "homepage": "http://stitcher.pageon.be",
     "description" : "Create blazing fast websites with PHP, a template engine of your choice and YAML or JSON.",
     "keywords" : [
