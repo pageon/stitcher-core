@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta2 (WIP)
+
+- Add Parsedown extension to support classes on `<pre>` tags in fenced code blocks.
+
 ## 1.0.0-beta1
 
 - Add empty array fallback in `FilterAdapter` to prevent undefined index error.

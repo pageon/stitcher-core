@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
-use Parsedown;
+use Brendt\Stitcher\Lib\Parsedown;
 use Symfony\Component\Finder\Finder;
 
 /**
