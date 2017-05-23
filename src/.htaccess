@@ -1,4 +1,6 @@
 # Stitcher production htaccess
+Options -Indexes
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     DirectorySlash Off
