@@ -3,6 +3,7 @@
 ## 1.0.0-beta2 (WIP)
 
 - Add Parsedown extension to support classes on `<pre>` tags in fenced code blocks.
+- Disable directory listing via .htaccess.
 
 ## 1.0.0-beta1
 
