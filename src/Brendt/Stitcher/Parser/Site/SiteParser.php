@@ -6,6 +6,7 @@ use Brendt\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Exception\InvalidSiteException;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -21,6 +22,8 @@ class SiteParser
     const EVENT_PAGE_PARSING = 'page.parsing';
 
     const EVENT_PAGE_PARSED = 'page.parsed';
+
+    const TOKEN_REDIRECT = 'redirect';
 
     /**
      * @var string
@@ -38,11 +41,6 @@ class SiteParser
     private $metaConfig;
 
     /**
-     * @var SplFileInfo[]
-     */
-    private $templates;
-
-    /**
      * @var EventDispatcher
      */
     private $eventDispatcher;
@@ -53,22 +51,30 @@ class SiteParser
     private $pageParser;
 
     /**
+     * @var Htaccess
+     */
+    private $htaccess;
+
+    /**
      * SiteParser constructor.
      *
-     * @param string                $srcDir
-     * @param EventDispatcher       $eventDispatcher
-     * @param PageParser            $pageParser
-     * @param array                 $metaConfig
+     * @param string          $srcDir
+     * @param EventDispatcher $eventDispatcher
+     * @param PageParser      $pageParser
+     * @param Htaccess        $htaccess
+     * @param array           $metaConfig
      */
     public function __construct(
         string $srcDir,
         EventDispatcher $eventDispatcher,
         PageParser $pageParser,
+        Htaccess $htaccess,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
         $this->eventDispatcher = $eventDispatcher;
         $this->pageParser = $pageParser;
+        $this->htaccess = $htaccess;
         $this->metaConfig = $metaConfig;
     }
 
@@ -97,6 +103,12 @@ class SiteParser
 
             foreach ($fileContents as $route => $data) {
                 if (count($routes) && !in_array($route, $routes)) {
+                    continue;
+                }
+
+                if (isset($data[self::TOKEN_REDIRECT])) {
+                    $this->htaccess->addRedirect($route, $data[self::TOKEN_REDIRECT]);
+
                     continue;
                 }
 

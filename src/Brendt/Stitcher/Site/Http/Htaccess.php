@@ -230,6 +230,9 @@ class Htaccess
         $this->createConditionalRewrite($rewriteBlock, '%{HTTPS} off', '(.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]');
     }
 
+    /**
+     * Add custom rewrites
+     */
     private function rewriteCustomRedirects() {
         $rewriteBlock = $this->getRewriteBlock();
         $rewriteBlock->addLineBreak(1);
@@ -250,6 +253,11 @@ class Htaccess
         $this->createConditionalRewrite($rewriteBlock, '%{DOCUMENT_ROOT}/$1.html -f', '^(.+?)/?$ /$1.html [L]');
     }
 
+    /**
+     * @param Block  $rewriteBlock
+     * @param string $condition
+     * @param string $rule
+     */
     private function createConditionalRewrite(Block &$rewriteBlock, string $condition, string $rule) {
         $rewriteBlock->addLineBreak(1);
 
