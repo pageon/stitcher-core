@@ -8,6 +8,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Tivie\HtaccessParser\HtaccessContainer;
 use Tivie\HtaccessParser\Parser;
 use Tivie\HtaccessParser\Token\Block;
+use Tivie\HtaccessParser\Token\Directive;
 
 class Htaccess
 {
@@ -25,6 +26,21 @@ class Htaccess
      * @var array|\ArrayAccess|HtaccessContainer
      */
     private $contents;
+
+    /**
+     * @var bool
+     */
+    private $redirectHttps = false;
+
+    /**
+     * @var bool
+     */
+    private $redirectWww = false;
+
+    /**
+     * @var array
+     */
+    private $redirects = [];
 
     /**
      * Htaccess constructor.
@@ -46,11 +62,58 @@ class Htaccess
     }
 
     /**
+     * @param bool $redirectHttps
+     *
+     * @return Htaccess
+     */
+    public function setRedirectHttps(bool $redirectHttps = false) : Htaccess {
+        $this->redirectHttps = $redirectHttps;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $redirectWww
+     *
+     * @return Htaccess
+     */
+    public function setRedirectWww(bool $redirectWww = false) : Htaccess {
+        $this->redirectWww = $redirectWww;
+
+        return $this;
+    }
+
+    /**
+     * Add custom redirects handles by htaccess
+     *
+     * @param string $from
+     * @param string $to
+     *
+     * @return Htaccess
+     */
+    public function addRedirect(string $from, string $to) : Htaccess {
+        $this->redirects[$from] = $to;
+
+        return $this;
+    }
+
+    /**
      * Parse the modified .htaccess
      *
      * @return string
      */
     public function parse() : string {
+        if ($this->redirectWww) {
+            $this->rewriteWww();
+        }
+
+        if ($this->redirectHttps) {
+            $this->rewriteHttps();
+        }
+
+        $this->rewriteCustomRedirects();
+        $this->rewriteHtml();
+
         return (string) $this->contents;
     }
 
@@ -112,6 +175,26 @@ class Htaccess
     }
 
     /**
+     * Get or create the rewrite block
+     *
+     * @return Block
+     */
+    public function &getRewriteBlock() : Block {
+        $rewriteBlock = $this->findHeaderBlockByModName('mod_rewrite.c');
+
+        if (!$rewriteBlock) {
+            $rewriteBlock = new Block('ifmodule');
+            $rewriteBlock->addArgument('mod_rewrite.c');
+
+            if ($this->contents instanceof HtaccessContainer) {
+                $this->contents->append($rewriteBlock);
+            }
+        }
+
+        return $rewriteBlock;
+    }
+
+    /**
      * @param Block  $headerBlock
      * @param string $pageName
      *
@@ -127,6 +210,56 @@ class Htaccess
         }
 
         return null;
+    }
+
+    /**
+     * Add www rewrite
+     */
+    private function rewriteWww() {
+        $rewriteBlock = $this->getRewriteBlock();
+
+        $this->createConditionalRewrite($rewriteBlock, '%{HTTP_HOST} !^www\.', '^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]');
+    }
+
+    /**
+     * Add https rewrite
+     */
+    private function rewriteHttps() {
+        $rewriteBlock = $this->getRewriteBlock();
+
+        $this->createConditionalRewrite($rewriteBlock, '%{HTTPS} off', '(.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]');
+    }
+
+    private function rewriteCustomRedirects() {
+        $rewriteBlock = $this->getRewriteBlock();
+        $rewriteBlock->addLineBreak(1);
+
+        foreach ($this->redirects as $from => $to) {
+            $ruleLine = new Directive();
+            $ruleLine->setName("RewriteRule ^{$from}$ {$to} [R=301,QSA,L]");
+            $rewriteBlock->addChild($ruleLine);
+        }
+    }
+
+    /**
+     * Add .html rewrite
+     */
+    private function rewriteHtml() {
+        $rewriteBlock = $this->getRewriteBlock();
+
+        $this->createConditionalRewrite($rewriteBlock, '%{DOCUMENT_ROOT}/$1.html -f', '^(.+?)/?$ /$1.html [L]');
+    }
+
+    private function createConditionalRewrite(Block &$rewriteBlock, string $condition, string $rule) {
+        $rewriteBlock->addLineBreak(1);
+
+        $conditionLine = new Directive();
+        $conditionLine->setName("RewriteCond {$condition}");
+        $rewriteBlock->addChild($conditionLine);
+
+        $ruleLine = new Directive();
+        $ruleLine->setName("RewriteRule {$rule}");
+        $rewriteBlock->addChild($ruleLine);
     }
 
     /**

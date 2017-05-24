@@ -4,6 +4,7 @@
 
 - Add Parsedown extension to support classes on `<pre>` tags in fenced code blocks.
 - Disable directory listing via .htaccess.
+- Add `redirect.www` and `redirect.https` options. Allowing to automatically redirect non-www to www, and http to https.
 
 ## 1.0.0-beta1
 
