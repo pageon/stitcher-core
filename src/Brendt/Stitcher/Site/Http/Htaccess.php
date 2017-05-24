@@ -103,6 +103,8 @@ class Htaccess
      * @return string
      */
     public function parse() : string {
+        $this->clearRewriteBlock();
+
         if ($this->redirectWww) {
             $this->rewriteWww();
         }
@@ -170,6 +172,19 @@ class Htaccess
         foreach ($headerBlock as $content) {
             if ($content instanceof Block && strtolower($content->getName()) === 'filesmatch') {
                 $headerBlock->removeChild($content);
+            }
+        }
+    }
+
+    /**
+     * Clear all rewrites
+     */
+    public function clearRewriteBlock() {
+        $rewriteBlock = $this->getRewriteBlock();
+
+        foreach ($rewriteBlock as $content) {
+            if ($content instanceof Block) {
+                $rewriteBlock->removeChild($content);
             }
         }
     }

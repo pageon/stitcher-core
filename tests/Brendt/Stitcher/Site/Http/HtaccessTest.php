@@ -80,6 +80,18 @@ class HtaccessTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_default_rewrite_options() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteEngine On', $parsed);
+        $this->assertContains('DirectorySlash Off', $parsed);
+    }
+    
+    /**
+     * @test
+     */
     public function it_parses_www_rewrite_before_https() {
         $htaccess = new Htaccess('./tests/src/.htaccess');
         $htaccess->setRedirectWww(true);
