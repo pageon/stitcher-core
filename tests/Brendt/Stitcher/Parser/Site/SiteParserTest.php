@@ -40,4 +40,14 @@ class SiteParserTest extends TestCase
             $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $meta);
         }
     }
+
+    public function test_redirect() {
+        $siteParser = $this->createSiteParser();
+        $siteParser->loadSite();
+        $htaccess = App::get('service.htaccess');
+        
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteRule ^/redirect_test$ / [R=301,QSA,L]', $parsed);
+    }
 }

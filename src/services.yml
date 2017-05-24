@@ -163,6 +163,7 @@ services:
             - '%directories.src%'
             - '@service.event.dispatcher'
             - '@parser.page'
+            - '@service.htaccess'
             - '%meta%'
 
     parser.page:
