@@ -48,6 +48,6 @@ class SiteParserTest extends TestCase
         
         $parsed = $htaccess->parse();
 
-        $this->assertContains('RewriteRule ^/redirect_test$ / [R=301,QSA,L]', $parsed);
+        $this->assertContains('RedirectMatch 301 ^/redirect_test$ /', $parsed);
     }
 }
