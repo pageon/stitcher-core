@@ -1,11 +1,9 @@
 # Stitcher production htaccess
+Options -Indexes
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     DirectorySlash Off
-
-    # Hide HTML extension
-    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-    RewriteRule ^(.+?)/?$ /$1.html [L]
 </IfModule>
 
 # Set expire dates
