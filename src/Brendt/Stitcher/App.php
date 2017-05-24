@@ -36,6 +36,8 @@ class App
         'cdn'                  => [],
         'caches.image'         => true,
         'caches.cdn'           => true,
+        'redirect.www'         => false,
+        'redirect.https'       => false,
         'optimizer.options'    => [],
     ];
 

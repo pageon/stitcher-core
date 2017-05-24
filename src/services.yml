@@ -151,6 +151,9 @@ services:
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
         arguments: ['%directories.htaccess%']
+        calls:
+            - ['setRedirectWww', ['%redirect.www%']]
+            - ['setRedirectHttps', ['%redirect.https%']]
     service.event.dispatcher:
         class: Symfony\Component\EventDispatcher\EventDispatcher
 
