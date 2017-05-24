@@ -38,4 +38,68 @@ class HtaccessTest extends TestCase
 
         $this->assertNotContains('<FilesMatch', $htaccess->parse());
     }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_https_rewrite() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess->setRedirectHttps(true);
+        
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteCond %{HTTPS} off', $parsed);
+        $this->assertContains('RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]', $parsed);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_www_rewrite() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess->setRedirectWww(true);
+
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteCond %{HTTP_HOST} !^www\.', $parsed);
+        $this->assertContains('RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]', $parsed);
+    }
+
+    /**
+     * @test
+     */
+    public function it_always_parses_html_rewrite() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteCond %{DOCUMENT_ROOT}/$1.html -f', $parsed);
+        $this->assertContains('RewriteRule ^(.+?)/?$ /$1.html [L]', $parsed);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_default_rewrite_options() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteEngine On', $parsed);
+        $this->assertContains('DirectorySlash Off', $parsed);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_parses_www_rewrite_before_https() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess->setRedirectWww(true);
+        $htaccess->setRedirectHttps(true);
+
+        $parsed = $htaccess->parse();
+
+        $this->assertContains('RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+    RewriteCond %{HTTPS} off', $parsed);
+    }
 }
