@@ -9,6 +9,7 @@ use Tivie\HtaccessParser\HtaccessContainer;
 use Tivie\HtaccessParser\Parser;
 use Tivie\HtaccessParser\Token\Block;
 use Tivie\HtaccessParser\Token\Directive;
+use Tivie\HtaccessParser\Token\WhiteLine;
 
 class Htaccess
 {
@@ -183,7 +184,10 @@ class Htaccess
         $rewriteBlock = $this->getRewriteBlock();
 
         foreach ($rewriteBlock as $content) {
-            if ($content instanceof Block) {
+            if (
+                $content instanceof WhiteLine ||
+                ($content instanceof Directive && $content->getName() !== 'RewriteEngine' && $content->getName() !== 'DirectorySlash')
+            ) {
                 $rewriteBlock->removeChild($content);
             }
         }
@@ -254,7 +258,7 @@ class Htaccess
 
         foreach ($this->redirects as $from => $to) {
             $ruleLine = new Directive();
-            $ruleLine->setName("RewriteRule ^{$from}$ {$to} [R=301,QSA,L]");
+            $ruleLine->setName("RedirectMatch 301 ^{$from}$ {$to}");
             $rewriteBlock->addChild($ruleLine);
         }
     }
