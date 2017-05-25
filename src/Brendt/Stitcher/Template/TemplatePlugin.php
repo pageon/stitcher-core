@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Template;
 
-use Brendt\Html\Meta\Meta;
+use Pageon\Html\Meta\Meta;
 use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Site\Http\Header;
