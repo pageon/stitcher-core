@@ -31,6 +31,15 @@ class HtaccessTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_index_option() {
+        $htaccess = new Htaccess('./tests/src/.htaccess');
+
+        $this->assertContains('Options -Indexes', $htaccess->parse());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_clear_page_blocks() {
         $htaccess = new Htaccess('./tests/src/.htaccess');
 

@@ -104,6 +104,7 @@ class Htaccess
      * @return string
      */
     public function parse() : string {
+        $this->setupIndex();
         $this->clearRewriteBlock();
 
         if ($this->redirectWww) {
@@ -229,6 +230,16 @@ class Htaccess
         }
 
         return null;
+    }
+
+    private function setupIndex() {
+        foreach ($this->contents as $content) {
+            if ($content instanceof Directive && $content->getName() === 'Options') {
+                return;
+            }
+        }
+
+        $this->contents[] = new Directive('Options -Indexes');
     }
 
     /**

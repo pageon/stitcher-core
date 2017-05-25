@@ -80,3 +80,4 @@ foo_bar:
 ```
 
 You can read more about it on [the Stitcher website](https://www.stitcher.io).
+
