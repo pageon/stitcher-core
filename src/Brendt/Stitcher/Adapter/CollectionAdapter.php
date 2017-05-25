@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
-use Brendt\Html\Meta\Meta;
+use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Exception\IdFieldNotFoundException;
 use Brendt\Stitcher\Exception\VariableNotFoundException;

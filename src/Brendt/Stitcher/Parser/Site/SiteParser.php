@@ -2,7 +2,7 @@
 
 namespace Brendt\Stitcher\Parser\Site;
 
-use Brendt\Html\Meta\Meta;
+use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Exception\InvalidSiteException;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
