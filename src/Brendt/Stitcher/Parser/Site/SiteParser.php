@@ -101,23 +101,32 @@ class SiteParser
                 throw new InvalidSiteException("{$file->getRelativePathname()}: {$e->getMessage()}");
             }
 
-            foreach ($fileContents as $route => $data) {
+            foreach ($fileContents as $route => $config) {
                 if (count($routes) && !in_array($route, $routes)) {
                     continue;
                 }
 
-                if (isset($data[self::TOKEN_REDIRECT])) {
-                    $this->htaccess->addRedirect($route, $data[self::TOKEN_REDIRECT]);
-
-                    continue;
-                }
-
-                $page = new Page($route, $data, $this->createMeta());
-                $site->addPage($page);
+                $this->loadPage($site, $route, $config);
             }
         }
 
         return $site;
+    }
+
+    /**
+     * @param Site   $site
+     * @param string $route
+     * @param array  $config
+     */
+    private function loadPage(Site $site, string $route, array $config) {
+        if (isset($config[self::TOKEN_REDIRECT])) {
+            $this->htaccess->addRedirect($route, $config[self::TOKEN_REDIRECT]);
+
+            return;
+        }
+
+        $page = new Page($route, $config, $this->createMeta());
+        $site->addPage($page);
     }
 
     /**
