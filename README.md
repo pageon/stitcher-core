@@ -79,4 +79,4 @@ foo_bar:
 {% endblock %}
 ```
 
-You can read more about it on [the Stitcher website](http://stitcher.pageon.be).
+You can read more about it on [the Stitcher website](https://www.stitcher.io).
