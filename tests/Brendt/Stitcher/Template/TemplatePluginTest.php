@@ -2,10 +2,9 @@
 
 namespace Brendt\Stitcher\Template;
 
-use Brendt\Html\Meta\Meta;
+use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\Stitcher;
 use Brendt\Stitcher\Template\Smarty\SmartyEngine;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;

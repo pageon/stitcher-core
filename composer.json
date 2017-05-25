@@ -34,7 +34,7 @@
         "mrclay/minify" : "^2.3",
         "erusev/parsedown" : "^1.6",
         "symfony/config" : "^3.2",
-        "pageon/html-meta" : "^1.0",
+        "pageon/html-meta" : "^2.0",
         "tivie/htaccess-parser" : "^0.2@dev",
         "symfony/event-dispatcher": "^3.2"
     },
