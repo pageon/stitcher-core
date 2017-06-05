@@ -116,8 +116,7 @@ services:
     configurator.image:
         class: Brendt\Image\Config\DefaultConfigurator
         arguments:
-            config:
-                driver: '%engines.image%'
+              - driver: '%engines.image%'
                 publicPath: '%directories.public%'
                 sourcePath: '%directories.src%'
                 enableCache: '%caches.image%'
