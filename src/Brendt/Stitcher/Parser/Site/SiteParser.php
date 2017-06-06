@@ -9,6 +9,9 @@ use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
+use Pageon\Pcntl\Manager;
+use Pageon\Pcntl\PageRenderProcess;
+use Pageon\Pcntl\ThreadHandlerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -56,9 +59,21 @@ class SiteParser
     private $htaccess;
 
     /**
+     * @var string
+     */
+    private $publicDir;
+
+    /**
+     * @var bool
+     */
+    private $async;
+
+    /**
      * SiteParser constructor.
      *
      * @param string          $srcDir
+     * @param string          $publicDir
+     * @param bool            $async
      * @param EventDispatcher $eventDispatcher
      * @param PageParser      $pageParser
      * @param Htaccess        $htaccess
@@ -66,16 +81,20 @@ class SiteParser
      */
     public function __construct(
         string $srcDir,
+        string $publicDir,
+        bool $async,
         EventDispatcher $eventDispatcher,
         PageParser $pageParser,
         Htaccess $htaccess,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
+        $this->publicDir = $publicDir;
         $this->eventDispatcher = $eventDispatcher;
         $this->pageParser = $pageParser;
         $this->htaccess = $htaccess;
         $this->metaConfig = $metaConfig;
+        $this->async = $async;
     }
 
     /**
@@ -135,11 +154,11 @@ class SiteParser
      * @param array  $routes
      * @param string $filterValue
      *
-     * @return array|mixed
      * @throws TemplateNotFoundException
      */
-    public function parse($routes = [], string $filterValue = null) : array {
-        $blanket = [];
+    public function parse($routes = [], string $filterValue = null) {
+        $manager = extension_loaded('pcntl') && $this->async ? new Manager($this->eventDispatcher) : null;
+        $threadHandlerCollection = new ThreadHandlerCollection();
 
         $site = $this->loadSite((array) $routes);
         $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
@@ -147,18 +166,19 @@ class SiteParser
         foreach ($site as $page) {
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
 
-            $this->pageParser->validate($page);
-            $pages = $this->pageParser->parseAdapters($page, $filterValue);
+            $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
 
-            /** @var Page $entryPage */
-            foreach ($pages as $entryPage) {
-                $blanket[$entryPage->getId()] = $this->pageParser->parsePage($entryPage);
+            if ($manager) {
+                $threadHandlerCollection[] = $manager->async($pageRenderProcess);
+            } else {
+                $event = $pageRenderProcess->execute();
+                $this->eventDispatcher->dispatch($event->getEventHook(), $event);
             }
-
-            $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSED, Event::create(['page' => $page]));
         }
 
-        return $blanket;
+        if ($manager) {
+            $manager->wait($threadHandlerCollection);
+        }
     }
 
     /**
