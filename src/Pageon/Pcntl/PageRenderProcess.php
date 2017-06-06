@@ -30,6 +30,11 @@ class PageRenderProcess extends Process
      */
     private $publicDir;
 
+    /**
+     * @var bool
+     */
+    private $async = false;
+
     public function __construct(PageParser $pageParser, Page $page, string $publicDir, string $filterValue = null) {
         parent::__construct($page->getId());
 
@@ -39,10 +44,14 @@ class PageRenderProcess extends Process
         $this->publicDir = $publicDir;
     }
 
-    public function execute() : Event {
+    public function setAsync(bool $async = true) {
+        $this->async = $async;
+    }
+
+    public function execute() {
         $this->pageParser->validate($this->page);
         $pages = $this->pageParser->parseAdapters($this->page, $this->filterValue);
-
+        $blanket = [];
         $fs = new Filesystem();
 
         /** @var Page $page */
@@ -54,8 +63,14 @@ class PageRenderProcess extends Process
             }
 
             $fs->dumpFile($this->publicDir . "/{$path}.html", $this->pageParser->parsePage($page));
+
+            $blanket[$page->getId()] = $this->pageParser->parsePage($page);
         }
 
-        return Event::create(['pageId' => $this->page->getId()], SiteParser::EVENT_PAGE_PARSED);
+        if ($this->async) {
+            return Event::create(['pageId' => $this->page->getId()], SiteParser::EVENT_PAGE_PARSED);
+        } else {
+            return $blanket;
+        }
     }
 }

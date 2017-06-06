@@ -93,15 +93,6 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         if (!$site) {
             return;
         }
-
-        $amount = count($site->getPages());
-
-        $this->progress = new ProgressBar($this->output, $amount);
-        $this->progress->setBarWidth(40);
-        $this->progress->setFormatDefinition('custom', "%current%/%max% [%bar%] %message%\n");
-        $this->progress->setFormat('custom');
-        $this->progress->setMessage('');
-//        $this->progress->start();
     }
 
     public function onPageParsing(Event $event) {
@@ -111,8 +102,6 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         if (!$this->progress || !$page) {
             return;
         }
-
-//        $this->progress->setMessage($page->getId());
     }
 
     public function onPageParsed(Event $event) {
@@ -122,7 +111,5 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
         $pageId = $event->getData()['pageId'] ?? null;
         $this->output->writeln("<fg=green>✔</> {$pageId}");
-
-//        $this->progress->advance();
     }
 }

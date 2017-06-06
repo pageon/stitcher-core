@@ -154,9 +154,11 @@ class SiteParser
      * @param array  $routes
      * @param string $filterValue
      *
+     * @return array
      * @throws TemplateNotFoundException
      */
     public function parse($routes = [], string $filterValue = null) {
+        $blanket = [];
         $manager = extension_loaded('pcntl') && $this->async ? new Manager($this->eventDispatcher) : null;
         $threadHandlerCollection = new ThreadHandlerCollection();
 
@@ -169,16 +171,19 @@ class SiteParser
             $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
 
             if ($manager) {
+                $pageRenderProcess->setAsync();
                 $threadHandlerCollection[] = $manager->async($pageRenderProcess);
             } else {
-                $event = $pageRenderProcess->execute();
-                $this->eventDispatcher->dispatch($event->getEventHook(), $event);
+                $blanket += $pageRenderProcess->execute();
+                $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
             }
         }
 
         if ($manager) {
             $manager->wait($threadHandlerCollection);
         }
+
+        return $blanket;
     }
 
     /**
