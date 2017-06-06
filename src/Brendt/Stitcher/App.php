@@ -22,6 +22,7 @@ class App
      * @var array
      */
     protected static $configDefaults = [
+        'async'                => true,
         'environment'          => 'development',
         'directories.src'      => './src',
         'directories.public'   => './public',

@@ -160,6 +160,8 @@ services:
         class: Brendt\Stitcher\Parser\Site\SiteParser
         arguments:
             - '%directories.src%'
+            - '%directories.public%'
+            - '%async%'
             - '@service.event.dispatcher'
             - '@parser.page'
             - '@service.htaccess'
