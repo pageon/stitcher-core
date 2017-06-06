@@ -1,5 +1,7 @@
 environment: test
 
+async: false
+
 directories:
     src: ./tests/src
     public: ./tests/public
