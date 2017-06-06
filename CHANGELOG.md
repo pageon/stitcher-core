@@ -6,7 +6,8 @@
 - Disable directory listing via .htaccess.
 - Add `redirect.www` and `redirect.https` options. Allowing to automatically redirect non-www to www, and http to https.
 - Add `redirect` option in site config files to make a route redirect to another page.
-- Use `pageon/html-meta` ^2.0 from now on. Lots of tweaks to social meta tags were added. 
+- Use `pageon/html-meta` ^2.0 from now on. Lots of tweaks to social meta tags were added.
+- Add `async` option which, when `ext-pcntl` is installed, will enable asynchronous page rendering.
 
 ## 1.0.0-beta1
 
