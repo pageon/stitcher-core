@@ -64,14 +64,17 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $this->output = $output;
 
         $route = $input->getArgument(self::ROUTE);
-        $blanket = $this->stitcher->stitch($route);
-        $this->stitcher->save($blanket);
-        $this->progress->clear();
+
+        $startTime = microtime(true);
+        $this->stitcher->stitch($route);
+        $endTime = microtime(true);
+
+        $processTime = round($endTime - $startTime, 3);
 
         if ($route) {
-            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         } else {
-            $output->writeln("Site successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("Site successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         }
     }
 
@@ -98,7 +101,7 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $this->progress->setFormatDefinition('custom', "%current%/%max% [%bar%] %message%\n");
         $this->progress->setFormat('custom');
         $this->progress->setMessage('');
-        $this->progress->start();
+//        $this->progress->start();
     }
 
     public function onPageParsing(Event $event) {
@@ -109,14 +112,17 @@ class GenerateCommand extends Command implements EventSubscriberInterface
             return;
         }
 
-        $this->progress->setMessage($page->getId());
+//        $this->progress->setMessage($page->getId());
     }
 
-    public function onPageParsed() {
+    public function onPageParsed(Event $event) {
         if (!$this->progress) {
             return;
         }
 
-        $this->progress->advance();
+        $pageId = $event->getData()['pageId'] ?? null;
+        $this->output->writeln("<fg=green>✔</> {$pageId}");
+
+//        $this->progress->advance();
     }
 }
