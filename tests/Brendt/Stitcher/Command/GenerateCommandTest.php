@@ -30,8 +30,6 @@ class GenerateCommandTest extends CommandTestCase
         $this->assertTrue($fs->exists('./tests/public/churches/church-a.html'));
         $this->assertTrue($fs->exists('./tests/public/churches.html'));
         $this->assertTrue($fs->exists('./tests/public/.htaccess'));
-        $this->assertContains('-----', $output);
-        $this->assertContains('=====', $output);
         $this->assertContains('success', $output);
     }
 
