@@ -2,9 +2,7 @@
 
 namespace Pageon\Pcntl;
 
-use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Parser\Site\PageParser;
-use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Page;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -36,8 +34,7 @@ class PageRenderProcess extends Process
     private $async = false;
 
     public function __construct(PageParser $pageParser, Page $page, string $publicDir, string $filterValue = null) {
-        parent::__construct($page->getId());
-
+        $this->name = $page->getId();
         $this->pageParser = $pageParser;
         $this->page = $page;
         $this->filterValue = $filterValue;
@@ -68,7 +65,7 @@ class PageRenderProcess extends Process
         }
 
         if ($this->async) {
-            return Event::create(['pageId' => $this->page->getId()], SiteParser::EVENT_PAGE_PARSED);
+            return true;
         } else {
             return $blanket;
         }

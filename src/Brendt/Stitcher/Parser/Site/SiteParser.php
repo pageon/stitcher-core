@@ -11,6 +11,7 @@ use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Pageon\Pcntl\Manager;
 use Pageon\Pcntl\PageRenderProcess;
+use Pageon\Pcntl\ProcessCollection;
 use Pageon\Pcntl\ThreadHandlerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
@@ -160,27 +161,30 @@ class SiteParser
     public function parse($routes = [], string $filterValue = null) {
         $blanket = [];
         $manager = extension_loaded('pcntl') && $this->async ? new Manager($this->eventDispatcher) : null;
-        $threadHandlerCollection = new ThreadHandlerCollection();
+        $processCollection = new ProcessCollection();
 
         $site = $this->loadSite((array) $routes);
         $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
-
+        
         foreach ($site as $page) {
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
 
             $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
+            $pageRenderProcess->onSuccess(function () use ($page) {
+                $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
+            });
 
             if ($manager) {
                 $pageRenderProcess->setAsync();
-                $threadHandlerCollection[] = $manager->async($pageRenderProcess);
+                $processCollection[] = $manager->async($pageRenderProcess);
             } else {
                 $blanket += $pageRenderProcess->execute();
-                $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
+                $pageRenderProcess->triggerSuccess();
             }
         }
 
         if ($manager) {
-            $manager->wait($threadHandlerCollection);
+            $manager->wait($processCollection);
         }
 
         return $blanket;

@@ -6,7 +6,7 @@ use ArrayAccess;
 use InvalidArgumentException;
 use Iterator;
 
-class ThreadHandlerCollection implements Iterator, ArrayAccess
+class ProcessCollection implements Iterator, ArrayAccess
 {
     private $position;
 
@@ -16,7 +16,11 @@ class ThreadHandlerCollection implements Iterator, ArrayAccess
         $this->position = 0;
     }
 
-    public function current() {
+    public function isEmpty() : bool {
+        return count($this->array) === 0;
+    }
+
+    public function current() : ?Process {
         return $this->array[$this->position];
     }
 
@@ -40,13 +44,13 @@ class ThreadHandlerCollection implements Iterator, ArrayAccess
         return isset($this->array[$offset]);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset) : ?Process {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 
     public function offsetSet($offset, $value) {
-        if (!$value instanceof ThreadHandler) {
-            throw new InvalidArgumentException("value must be instance of ThreadHandler.");
+        if (!$value instanceof Process) {
+            throw new InvalidArgumentException("value must be instance of Process.");
         }
 
         if (is_null($offset)) {
@@ -58,5 +62,9 @@ class ThreadHandlerCollection implements Iterator, ArrayAccess
 
     public function offsetUnset($offset) {
         unset($this->array[$offset]);
+    }
+
+    public function toArray() {
+        return $this->array;
     }
 }
