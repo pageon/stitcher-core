@@ -89,26 +89,14 @@ class GenerateCommand extends Command implements EventSubscriberInterface
     public function onSiteParserInit(Event $event) {
         /** @var Site $site */
         $site = $event->getData()['site'] ?? null;
-
-        if (!$site) {
-            return;
-        }
     }
 
     public function onPageParsing(Event $event) {
         /** @var Page $page */
         $page = $event->getData()['page'] ?? null;
-
-        if (!$this->progress || !$page) {
-            return;
-        }
     }
 
     public function onPageParsed(Event $event) {
-        if (!$this->progress) {
-            return;
-        }
-
         $pageId = $event->getData()['pageId'] ?? null;
         $this->output->writeln("<fg=green>✔</> {$pageId}");
     }
