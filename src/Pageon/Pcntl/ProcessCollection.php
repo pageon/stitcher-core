@@ -20,7 +20,7 @@ class ProcessCollection implements Iterator, ArrayAccess
         return count($this->array) === 0;
     }
 
-    public function current() : ?Process {
+    public function current() {
         return $this->array[$this->position];
     }
 
@@ -44,7 +44,7 @@ class ProcessCollection implements Iterator, ArrayAccess
         return isset($this->array[$offset]);
     }
 
-    public function offsetGet($offset) : ?Process {
+    public function offsetGet($offset) {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 
