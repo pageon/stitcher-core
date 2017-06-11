@@ -50,7 +50,6 @@ class Manager
 
     public function wait(ProcessCollection $processCollection) {
         $output = [];
-        $passes = 1;
         $processes = $processCollection->toArray();
 
         while (count($processes)) {
@@ -58,37 +57,46 @@ class Manager
             foreach ($processes as $key => $process) {
                 $processStatus = pcntl_waitpid($process->getPid(), $status, WNOHANG | WUNTRACED);
 
-                if ($processStatus == $process->getPid()) {
-                    $output[] = unserialize(socket_read($process->getSocket(), 4096));
-                    socket_close($process->getSocket());
+                switch ($processStatus) {
+                    case $process->getPid():
+                        $this->handleProcessSuccess($process);
+                        unset($processes[$key]);
 
-                    $success = $process->getSuccess();
-                    if ($success) {
-                        call_user_func_array($success, [$process]);
-                    }
+                        break;
+                    case 0:
+                        if ($process->getStartTime() + $process->getMaxRunTime() < time() || pcntl_wifstopped($status)) {
+                            $this->handleProcessStop($process);
 
-                    unset($processes[$key]);
-                } else if ($processStatus == 0) {
-                    if ($process->getStartTime() + $process->getMaxRunTime() < time() || pcntl_wifstopped($status)) {
-                        if (!posix_kill($process->getPid(), SIGKILL)) {
-                            throw new \Exception('Failed to kill ' . $process->getPid() . ': ' . posix_strerror(posix_get_last_error()), E_USER_WARNING);
+                            unset($processes[$key]);
                         }
 
-                        unset($processes[$key]);
-                    }
-                } else {
-                    trigger_error('Something went terribly wrong with process ' . $process->getPid(), E_USER_WARNING);
+                        break;
+                    default:
+                        throw new \Exception("Could not reliably manage {$process->getPid()}");
                 }
             }
 
-            if (!count($processes)) {
-                break;
+            if (count($processes)) {
+                usleep(100000);
             }
-
-            ++$passes;
-            usleep(100000);
         }
 
         return $output;
+    }
+
+    private function handleProcessSuccess(Process $process) {
+        $output[] = unserialize(socket_read($process->getSocket(), 4096));
+        socket_close($process->getSocket());
+
+        $success = $process->getSuccess();
+        if ($success) {
+            call_user_func_array($success, [$process]);
+        }
+    }
+
+    private function handleProcessStop(Process $process) {
+        if (!posix_kill($process->getPid(), SIGKILL)) {
+            throw new \Exception('Failed to kill ' . $process->getPid() . ': ' . posix_strerror(posix_get_last_error()));
+        }
     }
 }
