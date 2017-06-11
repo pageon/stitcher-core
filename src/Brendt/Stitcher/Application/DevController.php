@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Application;
 
+use Brendt\Stitcher\App;
 use Brendt\Stitcher\Exception\StitcherException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Stitcher;
@@ -17,6 +18,8 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class DevController
 {
+
+    const ENVIRONMENT = 'development';
 
     /**
      * @var Stitcher

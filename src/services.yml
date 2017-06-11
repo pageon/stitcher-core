@@ -161,6 +161,7 @@ services:
         arguments:
             - '%directories.src%'
             - '%directories.public%'
+            - '%environment%'
             - '%async%'
             - '@service.event.dispatcher'
             - '@parser.page'
