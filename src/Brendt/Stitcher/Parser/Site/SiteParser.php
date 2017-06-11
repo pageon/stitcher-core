@@ -70,10 +70,16 @@ class SiteParser
     private $async;
 
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
      * SiteParser constructor.
      *
      * @param string          $srcDir
      * @param string          $publicDir
+     * @param string          $environment
      * @param bool            $async
      * @param EventDispatcher $eventDispatcher
      * @param PageParser      $pageParser
@@ -83,6 +89,7 @@ class SiteParser
     public function __construct(
         string $srcDir,
         string $publicDir,
+        string $environment,
         bool $async,
         EventDispatcher $eventDispatcher,
         PageParser $pageParser,
@@ -96,6 +103,7 @@ class SiteParser
         $this->htaccess = $htaccess;
         $this->metaConfig = $metaConfig;
         $this->async = $async;
+        $this->environment = $environment;
     }
 
     /**
@@ -170,6 +178,7 @@ class SiteParser
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
 
             $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
+            $pageRenderProcess->setEnvironment($this->environment);
             $pageRenderProcess->onSuccess(function () use ($page) {
                 $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
             });

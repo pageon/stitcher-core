@@ -16,4 +16,9 @@ class Parsedown extends LibParsedown
 
         return $block;
     }
+    
+    protected function inlineLink($Excerpt) {
+        $block = parent::inlineLink($Excerpt);
+        return $block;
+    }
 }
