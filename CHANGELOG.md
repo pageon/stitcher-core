@@ -8,6 +8,7 @@
 - Add `redirect` option in site config files to make a route redirect to another page.
 - Use `pageon/html-meta` ^2.0 from now on. Lots of tweaks to social meta tags were added.
 - Add `async` option which, when `ext-pcntl` is installed, will enable asynchronous page rendering.
+- Add Parsedown extension to support `target="_blank"` links by prefixing the URL with `*`.
 
 ## 1.0.0-beta1
 
