@@ -168,7 +168,7 @@ class SiteParser
      */
     public function parse($routes = [], string $filterValue = null) {
         $blanket = [];
-        $manager = extension_loaded('pcntl') && $this->async ? new Manager($this->eventDispatcher) : null;
+        $manager = extension_loaded('pcntl') && $this->async ? new Manager() : null;
         $processCollection = new ProcessCollection();
 
         $site = $this->loadSite((array) $routes);
