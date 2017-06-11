@@ -52,7 +52,7 @@ abstract class Process
         $this->success = $callback;
     }
 
-    public function getSuccess() : ?callable {
+    public function getSuccess() {
         return $this->success;
     }
 
