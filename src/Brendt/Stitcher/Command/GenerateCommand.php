@@ -25,11 +25,6 @@ class GenerateCommand extends Command implements EventSubscriberInterface
     private $stitcher;
 
     /**
-     * @var ProgressBar
-     */
-    private $progress;
-
-    /**
      * @var OutputInterface
      */
     private $output;
@@ -67,6 +62,8 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
         $startTime = microtime(true);
         $this->stitcher->stitch($route);
+        $this->stitcher->saveHtaccess();
+        $this->stitcher->saveSitemap();
         $endTime = microtime(true);
 
         $processTime = round($endTime - $startTime, 3);
@@ -80,20 +77,8 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
     public static function getSubscribedEvents() {
         return [
-            SiteParser::EVENT_PARSER_INIT => 'onSiteParserInit',
-            SiteParser::EVENT_PAGE_PARSING => 'onPageParsing',
             SiteParser::EVENT_PAGE_PARSED => 'onPageParsed',
         ];
-    }
-
-    public function onSiteParserInit(Event $event) {
-        /** @var Site $site */
-        $site = $event->getData()['site'] ?? null;
-    }
-
-    public function onPageParsing(Event $event) {
-        /** @var Page $page */
-        $page = $event->getData()['page'] ?? null;
     }
 
     public function onPageParsed(Event $event) {

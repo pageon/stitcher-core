@@ -153,12 +153,34 @@ class Stitcher
 
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
+    }
 
+    /**
+     * Save .htaccess
+     *
+     * @return Stitcher
+     */
+    public function saveHtaccess() : Stitcher {
+        $fs = new Filesystem();
         $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
 
-        if ($this->siteMap->isEnabled()) {
-            $fs->dumpFile("{$this->publicDir}/sitemap.xml", $this->siteMap->render());
+        return $this;
+    }
+
+    /**
+     * Save the sitemap if enabled
+     *
+     * @return Stitcher
+     */
+    public function saveSitemap() : Stitcher {
+        if (!$this->siteMap->isEnabled()) {
+            return $this;
         }
+
+        $fs = new Filesystem();
+        $fs->dumpFile("{$this->publicDir}/sitemap.xml", $this->siteMap->render());
+
+        return $this;
     }
 
     /**
