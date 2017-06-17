@@ -2,8 +2,6 @@
 
 namespace Pageon\Pcntl;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
 /**
  * This Manager is used to create and wait for forked processes which can be executed in parallel.
  * It's a wrapper around `ext-pcntl`.
@@ -34,7 +32,7 @@ class Manager
             exit;
         }
 
-        socket_close($parentSocket);
+        fclose($parentSocket);
 
         $process
             ->setStartTime(time())
