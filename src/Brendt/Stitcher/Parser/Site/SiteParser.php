@@ -213,12 +213,14 @@ class SiteParser
     private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess {
         $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
         $pageRenderProcess->setEnvironment($this->environment);
+        
+        $pageRenderProcess->onSuccess(function ($pageIds) use ($page) {
+            if ($this->siteMap->isEnabled()) {
+                foreach ($pageIds as $pageId) {
+                    $this->siteMap->addPath($pageId);
+                }
+            }
 
-        if ($this->siteMap->isEnabled()) {
-            $pageRenderProcess->setSiteMap($this->siteMap);
-        }
-
-        $pageRenderProcess->onSuccess(function () use ($page) {
             $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
         });
 
