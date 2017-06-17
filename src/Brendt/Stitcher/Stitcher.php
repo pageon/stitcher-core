@@ -5,6 +5,7 @@ namespace Brendt\Stitcher;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Http\Htaccess;
+use Brendt\Stitcher\Site\Seo\SiteMap;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -53,6 +54,11 @@ class Stitcher
     private $htaccess;
 
     /**
+     * @var SiteMap
+     */
+    private $siteMap;
+
+    /**
      * @param string     $srcDir
      * @param string     $publicDir
      * @param string     $templateDir
@@ -60,6 +66,7 @@ class Stitcher
      * @param bool       $cdnCache
      * @param SiteParser $siteParser
      * @param Htaccess   $htaccess
+     * @param SiteMap    $siteMap
      */
     public function __construct(
         $srcDir,
@@ -68,7 +75,8 @@ class Stitcher
         array $cdn,
         bool $cdnCache,
         SiteParser $siteParser,
-        Htaccess $htaccess
+        Htaccess $htaccess,
+        SiteMap $siteMap
     ) {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
@@ -77,6 +85,7 @@ class Stitcher
         $this->cdnCache = $cdnCache;
         $this->siteParser = $siteParser;
         $this->htaccess = $htaccess;
+        $this->siteMap = $siteMap;
     }
 
     /**
@@ -146,6 +155,10 @@ class Stitcher
         }
 
         $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
+
+        if ($this->siteMap->isEnabled()) {
+            $fs->dumpFile("{$this->publicDir}/sitemap.xml", $this->siteMap->render());
+        }
     }
 
     /**

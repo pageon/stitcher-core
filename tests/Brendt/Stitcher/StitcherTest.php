@@ -140,4 +140,15 @@ class StitcherTest extends TestCase
             $this->assertContains('Intro', $html);
         }
     }
+
+    public function test_sitemap_xml_save() {
+        $stitcher = $this->createStitcher(['sitemap.url' => 'https://www.stitcher.io']);
+        $blanket = $stitcher->stitch();
+        $stitcher->save($blanket);
+
+        $this->assertTrue(file_exists('./tests/public/sitemap.xml'));
+        $xml = file_get_contents('./tests/public/sitemap.xml');
+
+        $this->assertContains('<loc>https://www.stitcher.io/churches/church-b</loc>', $xml);
+    }
 }
