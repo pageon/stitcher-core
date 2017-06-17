@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser\Site;
 
+use Brendt\Stitcher\Site\Seo\SiteMap;
 use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Exception\InvalidSiteException;
@@ -74,6 +75,11 @@ class SiteParser
     private $environment;
 
     /**
+     * @var SiteMap
+     */
+    private $siteMap;
+
+    /**
      * SiteParser constructor.
      *
      * @param string          $srcDir
@@ -83,6 +89,7 @@ class SiteParser
      * @param EventDispatcher $eventDispatcher
      * @param PageParser      $pageParser
      * @param Htaccess        $htaccess
+     * @param SiteMap         $siteMap
      * @param array           $metaConfig
      */
     public function __construct(
@@ -93,6 +100,7 @@ class SiteParser
         EventDispatcher $eventDispatcher,
         PageParser $pageParser,
         Htaccess $htaccess,
+        SiteMap $siteMap,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
@@ -103,6 +111,7 @@ class SiteParser
         $this->metaConfig = $metaConfig;
         $this->async = $async;
         $this->environment = $environment;
+        $this->siteMap = $siteMap;
     }
 
     /**
@@ -174,13 +183,8 @@ class SiteParser
         $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
         
         foreach ($site as $page) {
+            $pageRenderProcess = $this->createPageRenderProcess($page, $filterValue);
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
-
-            $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
-            $pageRenderProcess->setEnvironment($this->environment);
-            $pageRenderProcess->onSuccess(function () use ($page) {
-                $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
-            });
 
             if ($manager) {
                 $pageRenderProcess->setAsync();
@@ -196,6 +200,29 @@ class SiteParser
         }
 
         return $blanket;
+    }
+
+    /**
+     * Create a page render process
+     *
+     * @param Page        $page
+     * @param string|null $filterValue
+     *
+     * @return PageRenderProcess
+     */
+    private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess {
+        $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
+        $pageRenderProcess->setEnvironment($this->environment);
+
+        if ($this->siteMap->isEnabled()) {
+            $pageRenderProcess->setSiteMap($this->siteMap);
+        }
+
+        $pageRenderProcess->onSuccess(function () use ($page) {
+            $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
+        });
+
+        return $pageRenderProcess;
     }
 
     /**

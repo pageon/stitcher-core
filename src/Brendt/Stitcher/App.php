@@ -40,6 +40,7 @@ class App
         'redirect.www'         => false,
         'redirect.https'       => false,
         'optimizer.options'    => [],
+        'sitemap.url'          => null,
     ];
 
     /**

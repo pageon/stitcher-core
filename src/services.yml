@@ -24,6 +24,7 @@ services:
             - '%caches.cdn%'
             - '@parser.site'
             - '@service.htaccess'
+            - '@service.sitemap'
 
     # Command
     command.generate:
@@ -155,6 +156,9 @@ services:
             - ['setRedirectHttps', ['%redirect.https%']]
     service.event.dispatcher:
         class: Symfony\Component\EventDispatcher\EventDispatcher
+    service.sitemap:
+        class: Brendt\Stitcher\Site\Seo\SiteMap
+        arguments: ['%sitemap.url%']
 
     parser.site:
         class: Brendt\Stitcher\Parser\Site\SiteParser
@@ -166,8 +170,8 @@ services:
             - '@service.event.dispatcher'
             - '@parser.page'
             - '@service.htaccess'
+            - '@service.sitemap'
             - '%meta%'
-
     parser.page:
         class: Brendt\Stitcher\Parser\Site\PageParser
         arguments:
