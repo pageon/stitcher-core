@@ -12,7 +12,6 @@ use Brendt\Stitcher\Site\Site;
 use Pageon\Pcntl\Manager;
 use Pageon\Pcntl\PageRenderProcess;
 use Pageon\Pcntl\ProcessCollection;
-use Pageon\Pcntl\ThreadHandlerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
