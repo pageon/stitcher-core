@@ -9,6 +9,7 @@
 - Use `pageon/html-meta` ^2.0 from now on. Lots of tweaks to social meta tags were added.
 - Add `async` option which, when `ext-pcntl` is installed, will enable asynchronous page rendering.
 - Add Parsedown extension to support `target="_blank"` links by prefixing the URL with `*`.
+- Add `sitemap.xml` support. When setting the `sitemap.url` variable, a `sitemap.xml` will be generated.
 
 ## 1.0.0-beta1
 
