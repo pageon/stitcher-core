@@ -205,6 +205,13 @@ class Stitcher
             }
         }
     }
+
+    /**
+     * @return SiteMap
+     */
+    public function getSiteMap() : SiteMap {
+        return $this->siteMap;
+    }
 }
 
 

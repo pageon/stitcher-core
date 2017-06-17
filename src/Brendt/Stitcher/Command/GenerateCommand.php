@@ -62,16 +62,18 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
         $startTime = microtime(true);
         $this->stitcher->stitch($route);
-        $this->stitcher->saveHtaccess();
-        $this->stitcher->saveSitemap();
-        $endTime = microtime(true);
 
+        if (!$route) {
+            $this->saveGeneralFiles();
+        }
+
+        $endTime = microtime(true);
         $processTime = round($endTime - $startTime, 3);
 
         if ($route) {
-            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
+            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         } else {
-            $output->writeln("Site successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
+            $output->writeln("\nSite successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         }
     }
 
@@ -84,5 +86,15 @@ class GenerateCommand extends Command implements EventSubscriberInterface
     public function onPageParsed(Event $event) {
         $pageId = $event->getData()['pageId'] ?? null;
         $this->output->writeln("<fg=green>✔</> {$pageId}");
+    }
+
+    private function saveGeneralFiles() {
+        $this->stitcher->saveHtaccess();
+        $this->output->writeln("\n<fg=green>✔</> .htaccess");
+
+        if ($this->stitcher->getSiteMap()->isEnabled()) {
+            $this->stitcher->saveSitemap();
+            $this->output->writeln("<fg=green>✔</> sitemap.xml");
+        }
     }
 }

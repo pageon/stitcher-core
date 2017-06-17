@@ -21,15 +21,15 @@ class Manager
      * @return Process The asynchronous process.
      */
     public function async(Process $process) : Process {
-        socket_create_pair(AF_UNIX, SOCK_STREAM, 0, $sockets);
+        $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 
         list($parentSocket, $childSocket) = $sockets;
 
         if (($pid = pcntl_fork()) == 0) {
-            socket_close($childSocket);
+            fclose($childSocket);
             $output = serialize($process->execute());
-            socket_write($parentSocket, substr($output, 0, 4095));
-            socket_close($parentSocket);
+            fwrite($parentSocket, $output);
+            fclose($parentSocket);
 
             exit;
         }
@@ -92,12 +92,15 @@ class Manager
      * @param Process $process
      */
     private function handleProcessSuccess(Process $process) {
-        $output[] = unserialize(socket_read($process->getSocket(), 4096));
-        socket_close($process->getSocket());
+        $output = '';
+        while (!feof($process->getSocket())) {
+            $output .= fgets($process->getSocket());
+        }
 
-        $success = $process->getSuccess();
-        if ($success) {
-            call_user_func_array($success, [$process]);
+        fclose($process->getSocket());
+
+        if ($success = $process->getSuccess()) {
+            call_user_func_array($success, [unserialize($output), $process]);
         }
     }
 

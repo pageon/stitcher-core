@@ -41,21 +41,12 @@ class PageRenderProcess extends Process
      */
     private $environment = null;
 
-    /**
-     * @var SiteMap
-     */
-    private $siteMap;
-
     public function __construct(PageParser $pageParser, Page $page, string $publicDir, string $filterValue = null) {
         $this->name = $page->getId();
         $this->pageParser = $pageParser;
         $this->page = $page;
         $this->filterValue = $filterValue;
         $this->publicDir = $publicDir;
-    }
-
-    public function setSiteMap(SiteMap $siteMap) {
-        $this->siteMap = $siteMap;
     }
 
     public function setAsync(bool $async = true) {
@@ -85,14 +76,10 @@ class PageRenderProcess extends Process
             }
 
             $blanket[$page->getId()] = $this->pageParser->parsePage($page);
-
-            if ($this->siteMap) {
-                $this->siteMap->addPath($page->getId());
-            }
         }
 
         if ($this->async) {
-            return true;
+            return array_keys($blanket);
         } else {
             return $blanket;
         }
