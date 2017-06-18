@@ -22,14 +22,10 @@ use Brendt\Stitcher\Site\Page;
  */
 class PaginationAdapter extends AbstractAdapter
 {
+    private $pageCount = null;
+    private $variable = null;
+    private $entries = [];
 
-    /**
-     * @param Page $page
-     * @param null $filter
-     *
-     * @return array|Page[]
-     * @throws VariableNotFoundException
-     */
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
 
@@ -37,66 +33,67 @@ class PaginationAdapter extends AbstractAdapter
             return [$page];
         }
 
-        $variable = $config['variable'];
+        $this->variable = $config['variable'];
 
-        if (!$source = $page->getVariable($variable)) {
-            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
+        if (!$source = $page->getVariable($this->variable)) {
+            throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
         $pageId = rtrim($page->getId(), '/');
-        $entries = $this->getData($source);
-        $entriesPerPage = isset($config['entriesPerPage']) ? $config['entriesPerPage'] : 10;
-        $pageCount = (int) ceil(count($entries) / $entriesPerPage);
+        $this->entries = $this->getData($source);
+        $entriesPerPage = (int) $config['entriesPerPage'] ?? 10;
+        $this->pageCount = (int) ceil(count($this->entries) / $entriesPerPage);
 
-        $i = 0;
+        $index = 0;
         $result = [];
 
-        while ($i < $pageCount) {
-            $pageEntries = array_splice($entries, 0, $entriesPerPage);
-            $pageIndex = $i + 1;
+        while ($index < $this->pageCount) {
+            $pageEntries = array_splice($this->entries, 0, $entriesPerPage);
+            $pageIndex = $index + 1;
 
-            if ($filter && $pageIndex !== (int) $filter) {
-                $i += 1;
-                continue;
+            if (!$filter || $pageIndex === (int) $filter) {
+                $paginatedPage = $this->createPage($page, $pageIndex, $pageEntries);
+                $result[$paginatedPage->getId()] = $paginatedPage;
             }
 
-            $url = "{$pageId}/page-{$pageIndex}";
-            $pagination = $this->createPagination($pageId, $pageIndex, $pageCount, $entries);
-            $entriesPage = clone $page;
-
-            $entriesPage
-                ->removeAdapter(AdapterFactory::PAGINATION_ADAPTER)
-                ->setVariableValue($variable, $pageEntries)
-                ->setVariableIsParsed($variable)
-                ->setVariableValue('pagination', $pagination)
-                ->setVariableIsParsed('pagination')
-                ->setId($url);
-
-            $result[$url] = $entriesPage;
-            $i += 1;
+            $index += 1;
         }
 
-        if ($firstPage = reset($result)) {
-            $mainPage = clone $firstPage;
-            $mainPage->setId($pageId);
-            $result[$pageId] = $mainPage;
-        }
+        $this->createMainPage($pageId, $result);
 
         return $result;
     }
 
-    /**
-     * Create a pagination array.
-     *
-     * @param $pageId
-     * @param $pageIndex
-     * @param $pageCount
-     * @param $entries
-     *
-     * @return array
-     */
-    protected function createPagination($pageId, $pageIndex, $pageCount, $entries) {
-        $next = count($entries) ? $pageIndex + 1 : null;
+    private function createPage(Page $page, int $pageIndex, array $pageEntries) : Page {
+        $url = "{$page->getId()}/page-{$pageIndex}";
+        $pagination = $this->createPagination($page->getId(), $pageIndex);
+        $paginatedPage = clone $page;
+
+        $paginatedPage
+            ->removeAdapter(AdapterFactory::PAGINATION_ADAPTER)
+            ->setVariableValue($this->variable, $pageEntries)
+            ->setVariableIsParsed($this->variable)
+            ->setVariableValue('pagination', $pagination)
+            ->setVariableIsParsed('pagination')
+            ->setId($url);
+
+        return $paginatedPage;
+    }
+
+    private function createMainPage(string $pageId, array &$result) {
+        $firstPage = reset($result);
+
+        if (!$firstPage) {
+            return;
+        }
+
+        $mainPage = clone $firstPage;
+        $mainPage->setId($pageId);
+        $result[$pageId] = $mainPage;
+    }
+
+    private function createPagination($pageId, $pageIndex) {
+        $next = count($this->entries) ? $pageIndex + 1 : null;
         $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
         $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
         $previousUrl = $previous ? "{$pageId}/page-{$previous}" : null;
@@ -111,7 +108,7 @@ class PaginationAdapter extends AbstractAdapter
                 'url'   => $nextUrl,
                 'index' => $next,
             ] : null,
-            'pages'    => $pageCount,
+            'pages'    => $this->pageCount,
         ];
     }
 }
