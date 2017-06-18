@@ -40,7 +40,7 @@ class PaginationAdapter extends AbstractAdapter
         }
 
         $pageId = rtrim($page->getId(), '/');
-        $this->entries = $this->getData($source);
+        $this->entries = (array) $this->getData($source);
         $entriesPerPage = (int) $config['entriesPerPage'] ?? 10;
         $this->pageCount = (int) ceil(count($this->entries) / $entriesPerPage);
 
@@ -51,7 +51,7 @@ class PaginationAdapter extends AbstractAdapter
             $pageEntries = array_splice($this->entries, 0, $entriesPerPage);
             $pageIndex = $index + 1;
 
-            if (!$filter || $pageIndex === (int) $filter) {
+            if ($filter === null || $pageIndex === (int) $filter) {
                 $paginatedPage = $this->createPaginatedPage($page, $pageIndex, $pageEntries);
                 $result[$paginatedPage->getId()] = $paginatedPage;
             }
