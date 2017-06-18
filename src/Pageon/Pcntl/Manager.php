@@ -68,6 +68,14 @@ class Manager
         return $output;
     }
 
+    /**
+     * @param         $processStatus
+     * @param Process $process
+     * @param array   $processes
+     * @param         $key
+     *
+     * @throws \Exception
+     */
     private function handleProcessStatus($processStatus, Process $process, array &$processes, $key) {
         switch ($processStatus) {
             case $process->getPid():

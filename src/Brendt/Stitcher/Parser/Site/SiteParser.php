@@ -190,8 +190,9 @@ class SiteParser
                 $pageRenderProcess->setAsync();
                 $processCollection[] = $manager->async($pageRenderProcess);
             } else {
-                $blanket += $pageRenderProcess->execute();
-                $pageRenderProcess->triggerSuccess();
+                $output = $pageRenderProcess->execute();
+                $blanket += $output;
+                $pageRenderProcess->triggerSuccess(array_keys($output));
             }
         }
 
