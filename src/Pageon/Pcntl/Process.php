@@ -76,11 +76,11 @@ abstract class Process
         return $this->maxRunTime;
     }
 
-    public function triggerSuccess() {
+    public function triggerSuccess($output) {
         if (!$this->success) {
             return null;
         }
 
-        return call_user_func_array($this->success, [$this]);
+        return call_user_func_array($this->success, [$output]);
     }
 }

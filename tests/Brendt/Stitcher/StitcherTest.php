@@ -159,4 +159,11 @@ class StitcherTest extends TestCase
 
         $this->assertTrue(file_exists('./tests/public/.htaccess'));
     }
+
+    public function test_async() {
+        $stitcher = $this->createStitcher(['async' => true]);
+        $blanket = $stitcher->stitch();
+        
+        $this->assertEmpty($blanket);
+    }
 }
