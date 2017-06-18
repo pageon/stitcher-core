@@ -122,16 +122,15 @@ class Stitcher
             $this->htaccess->clearPageBlocks();
         }
 
-        $this->prepareCdn();
+        $this->saveCdn();
 
         return $this->siteParser->parse((array) $routes, $filterValue);
     }
 
-    /**
-     * @param array $routes
-     *
-     * @return Site
-     */
+    public function getSiteMap() : SiteMap {
+        return $this->siteMap;
+    }
+
     public function loadSite(array $routes = []) : Site {
         return $this->siteParser->loadSite($routes);
     }
@@ -155,11 +154,6 @@ class Stitcher
         }
     }
 
-    /**
-     * Save .htaccess
-     *
-     * @return Stitcher
-     */
     public function saveHtaccess() : Stitcher {
         $fs = new Filesystem();
         $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
@@ -167,11 +161,6 @@ class Stitcher
         return $this;
     }
 
-    /**
-     * Save the sitemap if enabled
-     *
-     * @return Stitcher
-     */
     public function saveSitemap() : Stitcher {
         if (!$this->siteMap->isEnabled()) {
             return $this;
@@ -183,10 +172,7 @@ class Stitcher
         return $this;
     }
 
-    /**
-     * Parse CDN resources and libraries
-     */
-    public function prepareCdn() {
+    public function saveCdn() : Stitcher {
         $fs = new Filesystem();
 
         foreach ($this->cdn as $resource) {
@@ -198,19 +184,20 @@ class Stitcher
             }
 
             $sourceResourcePath = "{$this->srcDir}/{$resource}";
-            if (is_dir($sourceResourcePath)) {
-                $fs->mirror($sourceResourcePath, $publicResourcePath);
-            } else {
-                $fs->copy($sourceResourcePath, $publicResourcePath, true);
-            }
+            $this->copyCdnFiles($sourceResourcePath, $publicResourcePath);
         }
+
+        return $this;
     }
 
-    /**
-     * @return SiteMap
-     */
-    public function getSiteMap() : SiteMap {
-        return $this->siteMap;
+    private function copyCdnFiles($sourcePath, $publicPath) {
+        $fs = new Filesystem();
+
+        if (is_dir($sourcePath)) {
+            $fs->mirror($sourcePath, $publicPath);
+        } else {
+            $fs->copy($sourcePath, $publicPath, true);
+        }
     }
 }
 
