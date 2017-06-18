@@ -28,9 +28,6 @@ use Brendt\Stitcher\Site\Page;
  */
 class CollectionAdapter extends AbstractAdapter
 {
-    /**
-     * @var MetaCompiler
-     */
     private $metaCompiler;
     private $variable = null;
     private $field = null;
