@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Adapter;
 
+use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Exception\VariableNotFoundException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Site\Page;
@@ -28,19 +29,12 @@ class PaginationAdapter extends AbstractAdapter
 
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
+        $this->variable = $config['variable'] ?? null;
 
-        if (!isset($config['variable'])) {
-            return [$page];
-        }
-
-        $this->variable = $config['variable'];
-
-        if (!$source = $page->getVariable($this->variable)) {
-            throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
-        }
+        $this->validateConfig($config, $page);
 
         $pageId = rtrim($page->getId(), '/');
-        $this->entries = (array) $this->getData($source);
+        $this->entries = (array) $this->getData($page->getVariable($this->variable));
         $entriesPerPage = (int) $config['entriesPerPage'] ?? 10;
         $this->pageCount = (int) ceil(count($this->entries) / $entriesPerPage);
 
@@ -110,5 +104,15 @@ class PaginationAdapter extends AbstractAdapter
             ] : null,
             'pages'    => $this->pageCount,
         ];
+    }
+
+    private function validateConfig(array $config, Page $page) {
+        if (!isset($config['variable'])) {
+            throw new ConfigurationException('The configuration entry `variable` is required when using the Pagination adapter');
+        }
+
+        if (!$page->getVariable($this->variable)) {
+            throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
+        }
     }
 }
