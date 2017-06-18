@@ -25,24 +25,18 @@ class PaginationAdapter extends AbstractAdapter
 {
     private $pageCount = null;
     private $variable = null;
+    private $entriesPerPage = null;
     private $entries = [];
 
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
-        $this->variable = $config['variable'] ?? null;
-
-        $this->validateConfig($config, $page);
-
-        $pageId = rtrim($page->getId(), '/');
-        $this->entries = (array) $this->getData($page->getVariable($this->variable));
-        $entriesPerPage = (int) $config['entriesPerPage'] ?? 10;
-        $this->pageCount = (int) ceil(count($this->entries) / $entriesPerPage);
+        $this->loadConfig($config, $page);
 
         $index = 0;
         $result = [];
 
         while ($index < $this->pageCount) {
-            $pageEntries = array_splice($this->entries, 0, $entriesPerPage);
+            $pageEntries = array_splice($this->entries, 0, $this->entriesPerPage);
             $pageIndex = $index + 1;
 
             if ($filter === null || $pageIndex === (int) $filter) {
@@ -53,7 +47,8 @@ class PaginationAdapter extends AbstractAdapter
             $index += 1;
         }
 
-        $this->createMainPage($pageId, $result);
+
+        $this->createMainPage(rtrim($page->getId(), '/'), $result);
 
         return $result;
     }
@@ -106,13 +101,19 @@ class PaginationAdapter extends AbstractAdapter
         ];
     }
 
-    private function validateConfig(array $config, Page $page) {
+    private function loadConfig(array $config, Page $page) {
         if (!isset($config['variable'])) {
             throw new ConfigurationException('The configuration entry `variable` is required when using the Pagination adapter');
         }
 
+        $this->variable = $config['variable'] ?? null;
+        
         if (!$page->getVariable($this->variable)) {
             throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
+
+        $this->entries = (array) $this->getData($page->getVariable($this->variable));
+        $this->entriesPerPage = (int) $config['entriesPerPage'] ?? 10;
+        $this->pageCount = (int) ceil(count($this->entries) / $this->entriesPerPage);
     }
 }
