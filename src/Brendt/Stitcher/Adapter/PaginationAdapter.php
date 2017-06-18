@@ -29,8 +29,7 @@ class PaginationAdapter extends AbstractAdapter
     private $entries = [];
 
     public function transformPage(Page $page, $filter = null) : array {
-        $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
-        $this->loadConfig($config, $page);
+        $this->loadConfig($page);
 
         $index = 0;
         $result = [];
@@ -46,7 +45,6 @@ class PaginationAdapter extends AbstractAdapter
 
             $index += 1;
         }
-
 
         $this->createMainPage(rtrim($page->getId(), '/'), $result);
 
@@ -101,13 +99,15 @@ class PaginationAdapter extends AbstractAdapter
         ];
     }
 
-    private function loadConfig(array $config, Page $page) {
+    private function loadConfig(Page $page) {
+        $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
+
         if (!isset($config['variable'])) {
             throw new ConfigurationException('The configuration entry `variable` is required when using the Pagination adapter');
         }
 
         $this->variable = $config['variable'] ?? null;
-        
+
         if (!$page->getVariable($this->variable)) {
             throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
