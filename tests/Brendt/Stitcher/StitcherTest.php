@@ -162,7 +162,7 @@ class StitcherTest extends TestCase
 
     public function test_async() {
         $stitcher = $this->createStitcher(['async' => true]);
-        $blanket = $stitcher->stitch();
+        $blanket = $stitcher->stitch('/');
         
         $this->assertEmpty($blanket);
     }
