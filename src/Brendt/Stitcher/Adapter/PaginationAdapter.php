@@ -52,7 +52,7 @@ class PaginationAdapter extends AbstractAdapter
             $pageIndex = $index + 1;
 
             if (!$filter || $pageIndex === (int) $filter) {
-                $paginatedPage = $this->createPage($page, $pageIndex, $pageEntries);
+                $paginatedPage = $this->createPaginatedPage($page, $pageIndex, $pageEntries);
                 $result[$paginatedPage->getId()] = $paginatedPage;
             }
 
@@ -64,7 +64,7 @@ class PaginationAdapter extends AbstractAdapter
         return $result;
     }
 
-    private function createPage(Page $page, int $pageIndex, array $pageEntries) : Page {
+    private function createPaginatedPage(Page $page, int $pageIndex, array $pageEntries) : Page {
         $url = "{$page->getId()}/page-{$pageIndex}";
         $pagination = $this->createPagination($page->getId(), $pageIndex);
         $paginatedPage = clone $page;

@@ -32,6 +32,9 @@ class CollectionAdapter extends AbstractAdapter
      * @var MetaCompiler
      */
     private $metaCompiler;
+    private $variable = null;
+    private $field = null;
+    private $entries = [];
 
     public function __construct(ParserFactory $parserFactory, MetaCompiler $metaCompiler) {
         parent::__construct($parserFactory);
@@ -39,81 +42,75 @@ class CollectionAdapter extends AbstractAdapter
         $this->metaCompiler = $metaCompiler;
     }
 
-    /**
-     * @param Page $page
-     * @param null $filter
-     *
-     * @return Page[]
-     */
     public function transformPage(Page $page, $filter = null) : array {
         $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
         $this->validateConfig($config, $page);
 
-        $variable = $config['variable'];
-        $field = $config['field'];
-        $entries = $this->getData($page->getVariable($variable));
-        $pageId = $page->getId();
+        $this->variable = $config['variable'];
+        $this->field = $config['field'];
+        $this->entries = $this->getData($page->getVariable($this->variable));
 
-        reset($entries);
         $result = [];
-        while ($entry = current($entries)) {
-            if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
-                next($entries);
-
-                continue;
+        reset($this->entries);
+        while ($entry = current($this->entries)) {
+            if (isset($entry[$this->field]) && (!$filter || $entry[$this->field] === $filter)) {
+                $entryPage = $this->createEntryPage($page, $entry);
+                $result[$entryPage->getId()] = $entryPage;
             }
 
-            $fieldValue = $entry[$field];
-
-            $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
-            $entryPage = clone $page;
-            $entryPage->meta = new Meta();
-
-            foreach ($entry as $entryVariableName => $entryVariableValue) {
-                $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
-            }
-
-
-            $entryPage
-                ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
-                ->setVariableValue($variable, $entry)
-                ->setVariableIsParsed($variable)
-                ->setId($url);
-
-            $this->parseBrowseData($entryPage, $entries);
-            
-            $result[$url] = $entryPage;
+            next($this->entries);
         }
 
         return $result;
     }
 
+    private function createEntryPage(Page $page, array $entry) : Page {
+        $url = str_replace('{' . $this->field . '}', $entry[$this->field], $page->getId());
+        $entryPage = clone $page;
+        $entryPage->meta = new Meta();
+
+        foreach ($entry as $entryVariableName => $entryVariableValue) {
+            $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
+        }
+
+        $entryPage
+            ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
+            ->setVariableValue($this->variable, $entry)
+            ->setVariableIsParsed($this->variable)
+            ->setId($url);
+
+        $this->parseBrowseData($entryPage);
+
+        return $entryPage;
+    }
+
     /**
      * @param Page  $entryPage
-     * @param array $entries
      *
      * @return void
      */
-    private function parseBrowseData(Page $entryPage, array &$entries) {
+    private function parseBrowseData(Page $entryPage) {
         if ($entryPage->getVariable('browse')) {
             return;
         }
 
-        $prev = prev($entries);
+        $prev = prev($this->entries);
 
         if (!$prev) {
-            reset($entries);
+            reset($this->entries);
         } else {
-            next($entries);
+            next($this->entries);
         }
 
-        $next = next($entries);
+        $next = next($this->entries);
 
         $entryPage->setVariableValue('browse', [
             'prev' => $prev,
             'next' => $next,
         ])->setVariableIsParsed('browse');
+
+        prev($this->entries);
     }
 
     /**
