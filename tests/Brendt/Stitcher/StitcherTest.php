@@ -113,7 +113,7 @@ class StitcherTest extends TestCase
             ],
         ]);
 
-        $stitcher->prepareCdn();
+        $stitcher->saveCdn();
 
         $fs = new Filesystem();
         $this->assertTrue($fs->exists('./tests/public/lib/lib.js'));
