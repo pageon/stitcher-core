@@ -49,7 +49,7 @@ class CollectionAdapter extends AbstractAdapter
 
         $this->variable = $config['variable'];
         $this->field = $config['field'];
-        $this->entries = $this->getData($page->getVariable($this->variable));
+        $this->entries = (array) $this->getData($page->getVariable($this->variable));
 
         $result = [];
         reset($this->entries);
