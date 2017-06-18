@@ -43,16 +43,9 @@ class CollectionAdapter extends AbstractAdapter
     }
 
     public function transformPage(Page $page, $filter = null) : array {
-        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
-
-        $this->validateConfig($config, $page);
-
-        $this->variable = $config['variable'];
-        $this->field = $config['field'];
-        $this->entries = (array) $this->getData($page->getVariable($this->variable));
-
+        $this->loadConfig($page);
         $result = [];
-        reset($this->entries);
+
         while ($entry = current($this->entries)) {
             if (isset($entry[$this->field]) && (!$filter || $entry[$this->field] === $filter)) {
                 $entryPage = $this->createEntryPage($page, $entry);
@@ -85,11 +78,6 @@ class CollectionAdapter extends AbstractAdapter
         return $entryPage;
     }
 
-    /**
-     * @param Page  $entryPage
-     *
-     * @return void
-     */
     private function parseBrowseData(Page $entryPage) {
         if ($entryPage->getVariable('browse')) {
             return;
@@ -113,31 +101,26 @@ class CollectionAdapter extends AbstractAdapter
         prev($this->entries);
     }
 
-    /**
-     * @param array $config
-     * @param Page  $page
-     *
-     * @return void
-     * @throws ConfigurationException
-     * @throws IdFieldNotFoundException
-     * @throws VariableNotFoundException
-     */
-    protected function validateConfig(array $config, Page $page) {
+    protected function loadConfig(Page $page) {
+        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
+
         if (!isset($config['field'], $config['variable'])) {
             throw new ConfigurationException('Both the configuration entry `field` and `variable` are required when using the Collection adapter.');
         }
 
-        $variable = $config['variable'];
+        $this->variable = $config['variable'];
 
-        if (!$page->getVariable($variable)) {
-            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
+        if (!$page->getVariable($this->variable)) {
+            throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
-        $field = $config['field'];
-        $pageId = $page->getId();
+        $this->field = $config['field'];
 
-        if (strpos($pageId, '{' . $field . '}') === false) {
-            throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
+        if (strpos($page->getId(), '{' . $this->field . '}') === false) {
+            throw new IdFieldNotFoundException("The field \"{{$this->field}}\" was not found in the URL \"{$page->getId()}\"");
         }
+
+        $this->entries = (array) $this->getData($page->getVariable($this->variable));
+        reset($this->entries);
     }
 }
