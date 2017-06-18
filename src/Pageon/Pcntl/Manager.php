@@ -59,29 +59,33 @@ class Manager
 
             /** @var Process $process */
             foreach ($processes as $key => $process) {
-                $processStatus = pcntl_waitpid($process->getPid(), $status, WNOHANG | WUNTRACED);
+                $processStatus = pcntl_waitpid($process->getPid(), $processStatus, WNOHANG | WUNTRACED);
 
-                switch ($processStatus) {
-                    case $process->getPid():
-                        $this->handleProcessSuccess($process);
-                        unset($processes[$key]);
-
-                        break;
-                    case 0:
-                        if ($process->getStartTime() + $process->getMaxRunTime() < time() || pcntl_wifstopped($status)) {
-                            $this->handleProcessStop($process);
-
-                            unset($processes[$key]);
-                        }
-
-                        break;
-                    default:
-                        throw new \Exception("Could not reliably manage {$process->getPid()}");
-                }
+                $this->handleProcessStatus($processStatus, $process, $processes, $key);
             }
         } while (count($processes));
 
         return $output;
+    }
+
+    private function handleProcessStatus($processStatus, Process $process, array &$processes, $key) {
+        switch ($processStatus) {
+            case $process->getPid():
+                $this->handleProcessSuccess($process);
+                unset($processes[$key]);
+
+                break;
+            case 0:
+                if ($process->getStartTime() + $process->getMaxRunTime() < time() || pcntl_wifstopped($processStatus)) {
+                    $this->handleProcessStop($process);
+
+                    unset($processes[$key]);
+                }
+
+                break;
+            default:
+                throw new \Exception("Could not reliably manage {$process->getPid()}");
+        }
     }
 
     /**
