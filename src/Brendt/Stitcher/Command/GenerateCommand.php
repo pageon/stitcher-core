@@ -16,22 +16,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class GenerateCommand extends Command implements EventSubscriberInterface
 {
-
     const ROUTE = 'route';
 
-    /**
-     * @var Stitcher
-     */
     private $stitcher;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
-
-    /**
-     * @var string
-     */
     private $publicDir;
 
     public function __construct(string $publicDir, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
@@ -49,12 +37,6 @@ class GenerateCommand extends Command implements EventSubscriberInterface
             ->addArgument(self::ROUTE, null, 'Specify a route to render');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->output = $output;
 

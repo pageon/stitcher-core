@@ -2,8 +2,6 @@
 
 namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Plugin\Plugin;
-use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,14 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class App
 {
-    /**
-     * @var ContainerBuilder
-     */
     protected static $container;
-
-    /**
-     * @var array
-     */
     protected static $configDefaults = [
         'async'                => true,
         'environment'          => 'development',
@@ -43,12 +34,6 @@ class App
         'sitemap.url'          => null,
     ];
 
-    /**
-     * @param string $configPath
-     * @param array  $defaultConfig
-     *
-     * @return App
-     */
     public static function init(string $configPath = './config.yml', array $defaultConfig = []) : App {
         self::$container = new ContainerBuilder();
 
@@ -124,19 +109,10 @@ class App
         return self::$container->get($id);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
     public static function getParameter(string $key) {
         return self::$container->getParameter($key);
     }
 
-    /**
-     * @param string      $id
-     * @param Application $application
-     */
     public static function setApplication(string $id, Application $application) {
         self::$container->set($id, $application);
     }

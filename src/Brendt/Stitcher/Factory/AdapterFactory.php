@@ -14,18 +14,9 @@ class AdapterFactory
     const FILTER_ADAPTER = 'filter';
     const LIMIT_ADAPTER = 'limit';
 
-    /**
-     * @var ContainerInterface
-     */
     private $container;
-
     private $adapters = [];
 
-    /**
-     * AdapterFactory constructor.
-     *
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
 
@@ -50,21 +41,10 @@ class AdapterFactory
         });
     }
 
-    /**
-     * @param string   $adapterName
-     * @param callable $filter
-     */
     public function addAdapter(string $adapterName, callable $filter) {
         $this->adapters[$adapterName] = $filter;
     }
 
-    /**
-     * @param $type
-     *
-     * @return mixed
-     *
-     * @throws UnknownAdapterException
-     */
     public function getByType($type) : Adapter {
         if (!isset($this->adapters[$type])) {
             throw new UnknownAdapterException();
@@ -72,5 +52,4 @@ class AdapterFactory
 
         return $this->adapters[$type]($this->container);
     }
-
 }

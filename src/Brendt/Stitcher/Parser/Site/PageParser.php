@@ -16,35 +16,11 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class PageParser
 {
-
-    /**
-     * @var ParserFactory
-     */
     private $parserFactory;
-
-    /**
-     * @var MetaCompiler
-     */
     private $metaCompiler;
-
-    /**
-     * @var TemplatePlugin
-     */
     private $templatePlugin;
-
-    /**
-     * @var string
-     */
     private $templateDir;
-
-    /**
-     * @var AdapterFactory
-     */
     private $adapterFactory;
-
-    /**
-     * @var HeaderCompiler|null
-     */
     private $headerCompiler;
 
     public function __construct(
@@ -89,11 +65,6 @@ class PageParser
         return $templates;
     }
 
-    /**
-     * @param Page $page
-     *
-     * @return string
-     */
     public function parsePage(Page $page) : string {
         $entryPage = $this->parseVariables($page);
         $this->metaCompiler->compilePage($page);
@@ -173,11 +144,6 @@ class PageParser
         return $page;
     }
 
-    /**
-     * @param Page $page
-     *
-     * @throws TemplateNotFoundException
-     */
     public function validate(Page $page) {
         $templateIsset = isset($this->templates[$page->getTemplatePath()]);
 

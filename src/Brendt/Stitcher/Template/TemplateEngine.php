@@ -11,7 +11,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 interface TemplateEngine
 {
-
     /**
      * Render the template and return output HTML.
      *

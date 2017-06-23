@@ -4,6 +4,15 @@ namespace Brendt\Stitcher\Lib;
 
 use \Parsedown as LibParsedown;
 
+/**
+ * This class adds two extensions to the Parsedown library:
+ *
+ *  - Code block classes.
+ *  - External links with `target="_blank"`.
+ *
+ * Class Parsedown
+ * @package Brendt\Stitcher\Lib
+ */
 class Parsedown extends LibParsedown
 {
     protected function blockFencedCode($Line)

@@ -26,7 +26,6 @@ use Brendt\Stitcher\Site\Page;
  */
 class FilterAdapter extends AbstractAdapter
 {
-
     /**
      * @param Page        $page
      * @param string|null $filter
@@ -57,11 +56,6 @@ class FilterAdapter extends AbstractAdapter
         return $result;
     }
 
-    /**
-     * @param array $config
-     *
-     * @throws ConfigurationException
-     */
     private function validateConfig(array $config) {
         if (empty($config)) {
             throw new ConfigurationException('You need to specify at least one field to filter on when using the Filter Adapter.');

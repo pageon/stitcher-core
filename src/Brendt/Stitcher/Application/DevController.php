@@ -18,19 +18,10 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class DevController
 {
-
     const ENVIRONMENT = 'development';
 
-    /**
-     * @var Stitcher
-     */
     protected $stitcher;
 
-    /**
-     * Create a new developer controller with optional configuration path and -file.
-     *
-     * @param Stitcher $stitcher
-     */
     public function __construct(Stitcher $stitcher) {
         $this->stitcher = $stitcher;
     }
@@ -57,11 +48,6 @@ class DevController
         }
     }
 
-    /**
-     * Create the route container
-     *
-     * @return \Symfony\Component\Routing\RouteCollection
-     */
     protected function createRouteCollection() {
         $routeCollection = new RouteCollection();
         $site = $this->stitcher->loadSite();
@@ -80,11 +66,6 @@ class DevController
         return $routeCollection;
     }
 
-    /**
-     * @param $url
-     *
-     * @return mixed
-     */
     protected function getPage($url) {
         $routeCollection = $this->createRouteCollection();
         $matcher = new UrlMatcher($routeCollection, new RequestContext());
@@ -110,5 +91,4 @@ class DevController
 
         throw new ResourceNotFoundException();
     }
-
 }
