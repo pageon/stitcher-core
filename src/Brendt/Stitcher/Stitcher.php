@@ -18,56 +18,15 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Stitcher
 {
-    /**
-     * @var string
-     */
     private $srcDir;
-
-    /**
-     * @var string
-     */
     private $publicDir;
-
-    /**
-     * @var string
-     */
     private $templateDir;
-
-    /**
-     * @var array
-     */
     private $cdn;
-
-    /**
-     * @var bool
-     */
     private $cdnCache;
-
-    /**
-     * @var SiteParser
-     */
     private $siteParser;
-
-    /**
-     * @var Htaccess
-     */
     private $htaccess;
-
-    /**
-     * @var SiteMap
-     */
     private $siteMap;
 
-    /**
-     * @param string     $srcDir
-     * @param string     $publicDir
-     * @param string     $templateDir
-     * @param array      $cdn
-     * @param bool       $cdnCache
-     * @param SiteParser $siteParser
-     * @param Htaccess   $htaccess
-     * @param SiteMap    $siteMap
-     */
     public function __construct(
         $srcDir,
         $publicDir,

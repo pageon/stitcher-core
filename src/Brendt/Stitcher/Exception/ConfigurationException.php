@@ -4,13 +4,6 @@ namespace Brendt\Stitcher\Exception;
 
 class ConfigurationException extends StitcherException
 {
-
-    /**
-     * @param       $adapter
-     * @param array ...$fields
-     *
-     * @return ConfigurationException
-     */
     public static function requiredAdapterOptions($adapter, ...$fields) : ConfigurationException {
         $entries = count($fields) > 1 ? 'entries' : 'entry';
         $are = count($fields) > 1 ? 'are' : 'is';
@@ -19,11 +12,6 @@ class ConfigurationException extends StitcherException
         return new self("The configuration {$entries} `{$fields}` {$are} required when using the {$adapter} adapter.");
     }
 
-    /**
-     * @param $path
-     *
-     * @return ConfigurationException
-     */
     public static function fileNotFound($path) : ConfigurationException {
         return new self("Could not load file: `{$path}`.");
     }
@@ -31,5 +19,4 @@ class ConfigurationException extends StitcherException
     public static function pluginNotFound($path) : ConfigurationException {
         return new self("Could not find plugin in {$path}. Looking for a `*Plugin.php` file in this directory");
     }
-
 }

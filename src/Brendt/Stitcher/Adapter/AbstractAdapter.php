@@ -10,29 +10,12 @@ use Brendt\Stitcher\Site\Page;
  */
 abstract class AbstractAdapter implements Adapter
 {
-
-    /**
-     * @var ParserFactory
-     */
     protected $parserFactory;
 
-    /**
-     * Construct the adapter and set the parser factory variable.
-     *
-     * @param ParserFactory $parserFactory
-     *
-     * @see \Brendt\Stitcher\Factory\ParserFactory
-     */
     public function __construct(ParserFactory $parserFactory) {
         $this->parserFactory = $parserFactory;
     }
 
-    /**
-     * @param Page|Page[] $pages
-     * @param mixed  $filter
-     *
-     * @return Page[]
-     */
     public function transform($pages, $filter = null) : array {
         if (!is_array($pages)) {
             $pages = [$pages];
@@ -67,5 +50,4 @@ abstract class AbstractAdapter implements Adapter
 
         return $parser->parse($value);
     }
-
 }

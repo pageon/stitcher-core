@@ -12,29 +12,14 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class JsonParser extends AbstractArrayParser
 {
-    /**
-     * @var string
-     */
     private $srcDir;
 
-    /**
-     * JsonParser constructor.
-     *
-     * @param ParserFactory $parserFactory
-     * @param string        $srcDir
-     */
     public function __construct(ParserFactory $parserFactory, string $srcDir) {
         parent::__construct($parserFactory);
 
         $this->srcDir = $srcDir;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return array
-     * @throws ParserException
-     */
     public function parse($path = '*.json') {
         if (!strpos($path, '.json')) {
             $path .= '.json';
@@ -63,5 +48,4 @@ class JsonParser extends AbstractArrayParser
 
         return $data;
     }
-
 }

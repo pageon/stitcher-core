@@ -14,9 +14,6 @@ class RouterListCommand extends Command
 {
     const FILTER = 'filter';
 
-    /**
-     * @var Stitcher
-     */
     private $stitcher;
 
     public function __construct(Stitcher $stitcher) {
@@ -32,12 +29,6 @@ class RouterListCommand extends Command
             ->addArgument(self::FILTER, InputArgument::OPTIONAL, 'Specify a filter');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $site = $this->stitcher->loadSite();
         $filter = $input->getArgument(self::FILTER);

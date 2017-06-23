@@ -11,34 +11,15 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class SassParser implements Parser
 {
-
-    /**
-     * @var Compiler
-     */
     private $sass;
-
-    /**
-     * @var string
-     */
     private $srcDir;
 
-    /**
-     * SassParser constructor.
-     *
-     * @param Compiler $sass
-     * @param string   $srcDir
-     */
     public function __construct(Compiler $sass, string $srcDir) {
         $this->sass = $sass;
         $this->sass->addImportPath("{$srcDir}/css");
         $this->srcDir = $srcDir;
     }
 
-    /**
-     * @param $path
-     *
-     * @return string
-     */
     public function parse($path) {
         /** @var SplFileInfo[] $files */
         $files = Finder::create()->files()->in($this->srcDir)->path(trim($path, '/'));
@@ -50,5 +31,4 @@ class SassParser implements Parser
 
         return $data;
     }
-
 }

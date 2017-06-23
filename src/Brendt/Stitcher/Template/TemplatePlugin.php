@@ -18,40 +18,12 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class TemplatePlugin
 {
-
-    /**
-     * @var string
-     */
     private $publicDir;
-
-    /**
-     * @var string
-     */
     private $srcDir;
-
-    /**
-     * @var ParserFactory
-     */
     private $parserFactory;
-
-    /**
-     * @var ResponsiveFactory
-     */
     private $responsiveFactory;
-
-    /**
-     * @var CSSmin
-     */
     private $cssMinifier;
-
-    /**
-     * @var bool
-     */
     private $minify;
-
-    /**
-     * @var Page
-     */
     private $page;
 
     public function __construct(
@@ -70,11 +42,6 @@ class TemplatePlugin
         $this->minify = $minify;
     }
 
-    /**
-     * @param Page $page
-     *
-     * @return TemplatePlugin
-     */
     public function setPage(Page $page) : TemplatePlugin {
         $this->page = $page;
 

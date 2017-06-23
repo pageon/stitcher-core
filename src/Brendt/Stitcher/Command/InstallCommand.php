@@ -12,14 +12,10 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class InstallCommand extends Command
 {
-
     const DIRECTORY = 'dir';
 
     protected $fs;
 
-    /**
-     * InstallCommand constructor.
-     */
     public function __construct() {
         parent::__construct(null);
 
@@ -41,12 +37,6 @@ class InstallCommand extends Command
 ");
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $log = [];
 
@@ -144,5 +134,4 @@ class InstallCommand extends Command
 
         return true;
     }
-
 }

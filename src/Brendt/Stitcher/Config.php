@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -14,12 +13,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
-
-    /**
-     * @param array $config
-     *
-     * @return array
-     */
     public static function parseImports(array $config) : array {
         if (!isset($config['imports'])) {
             return $config;
@@ -38,11 +31,6 @@ class Config
         return $mergedConfig;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return null|SplFileInfo
-     */
     public static function getConfigFile(string $path) {
         $pathParts = explode('/', $path);
         $configFileName = array_pop($pathParts);
@@ -54,12 +42,6 @@ class Config
         return $configFiles->current();
     }
 
-    /**
-     * @param        $config
-     * @param string $prefix
-     *
-     * @return array
-     */
     public static function flatten(array $config, string $prefix = '') : array {
         $result = [];
 

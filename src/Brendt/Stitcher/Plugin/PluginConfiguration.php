@@ -10,19 +10,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginConfiguration
 {
-    /**
-     * @var Plugin
-     */
     private $plugin;
-
-    /**
-     * @var string
-     */
     private $servicePath;
-
-    /**
-     * @var array
-     */
     private $config = [];
 
     public function __construct(string $className) {
@@ -32,9 +21,6 @@ class PluginConfiguration
         $this->loadConfig($this->plugin);
     }
 
-    /**
-     * @param Plugin $plugin
-     */
     private function loadServices(Plugin $plugin) {
         $this->servicePath = $plugin->getServicesPath();
     }
@@ -49,25 +35,15 @@ class PluginConfiguration
         $this->config = Yaml::parse($configFile);
     }
 
-    /**
-     * @return Plugin
-     */
     public function getPlugin() : Plugin {
         return $this->plugin;
     }
 
-    /**
-     * @return null|string
-     */
     public function getServicePath() {
         return $this->servicePath;
     }
 
-    /**
-     * @return array
-     */
     public function getConfig() : array {
         return $this->config;
     }
-
 }
