@@ -10,6 +10,7 @@
 - Add `async` option which, when `ext-pcntl` is installed, will enable asynchronous page rendering.
 - Add Parsedown extension to support `target="_blank"` links by prefixing the URL with `*`.
 - Add `sitemap.xml` support. When setting the `sitemap.url` variable, a `sitemap.xml` will be generated.
+- Fix bug with Collection Adapters not copying meta tags from the base page for its sub-pages.
 
 ## 1.0.0-beta1
 
