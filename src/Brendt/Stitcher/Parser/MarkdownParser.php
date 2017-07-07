@@ -11,9 +11,11 @@ use Symfony\Component\Finder\Finder;
 class MarkdownParser implements Parser
 {
     private $srcDir;
+    private $parsedown;
 
-    public function __construct(string $srcDir) {
+    public function __construct(string $srcDir, Parsedown $parsedown) {
         $this->srcDir = $srcDir;
+        $this->parsedown = $parsedown;
     }
 
     public function parse($path) {
@@ -29,7 +31,7 @@ class MarkdownParser implements Parser
             return '';
         }
 
-        $html = Parsedown::instance()->parse($markdownFile->getContents());
+        $html = $this->parsedown->parse($markdownFile->getContents());
 
         return $html;
     }

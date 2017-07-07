@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Lib;
 
+use Brendt\Stitcher\Parser\ImageParser;
 use \Parsedown as LibParsedown;
 
 /**
@@ -9,14 +10,34 @@ use \Parsedown as LibParsedown;
  *
  *  - Code block classes.
  *  - External links with `target="_blank"`.
+ *  - Images are parsed with with the image parser
  *
  * Class Parsedown
  * @package Brendt\Stitcher\Lib
  */
 class Parsedown extends LibParsedown
 {
-    protected function blockFencedCode($Line)
-    {
+    private $imageParser;
+
+    public function __construct(ImageParser $imageParser) {
+        $this->imageParser = $imageParser;
+    }
+
+    protected function element(array $Element) {
+        $markup = parent::element($Element);
+
+        if (isset($Element['attributes']['href']) && strpos($Element['attributes']['href'], '*') === 0) {
+            return $this->parseBlankLink($Element);
+        }
+
+        if (isset($Element['attributes']['srcset'])) {
+            return $this->parseImageWithSrcset($Element);
+        }
+
+        return $markup;
+    }
+
+    protected function blockFencedCode($Line) {
         $block = parent::blockFencedCode($Line);
 
         if (isset($block['element']['text']['attributes']['class'])) {
@@ -26,20 +47,37 @@ class Parsedown extends LibParsedown
         return $block;
     }
 
-    protected function element(array $Element) {
-        $markup = parent::element($Element);
+    protected function inlineImage($Excerpt) {
+        $Inline = parent::inlineImage($Excerpt);
 
-        if (!isset($Element['attributes']['href'])) {
-            return $markup;
+        if (!isset($Inline['element']['attributes']['src'])) {
+            return $Inline;
         }
 
+        $src = $Inline['element']['attributes']['src'];
+
+        $responsiveImage = $this->imageParser->parse($src);
+
+        $Inline['element']['attributes']['srcset'] = $responsiveImage['srcset'] ?? null;
+        $Inline['element']['attributes']['sizes'] = $responsiveImage['sizes'] ?? null;
+        $Inline['element']['attributes']['alt'] = $responsiveImage['alt'] ?? null;
+
+        return $Inline;
+    }
+
+    private function parseBlankLink($Element): string {
         $href = $Element['attributes']['href'];
-        
-        if (strpos($href, '*') !== 0) {
-            return $markup;
-        }
-
         $href = substr($href, 1);
+
         return "<a href='$href' target='_blank' rel='noreferrer noopener'>{$Element['text']}</a>";
+    }
+
+    private function parseImageWithSrcset($Element): string {
+        $src = $Element['attributes']['src'];
+        $srcset = $Element['attributes']['srcset'];
+        $sizes = $Element['attributes']['sizes'];
+        $alt = $Element['attributes']['alt'];
+
+        return "<img src=\"{$src}\" srcset=\"{$srcset}\" sizes=\"{$sizes}\" alt=\"{$alt}\" />";
     }
 }
