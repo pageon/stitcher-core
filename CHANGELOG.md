@@ -16,6 +16,7 @@
     - `caches.cdn` becomes `cache.cdn`.
     - `caches.image` becomes `cache.images`.
     - `directories.htaccess` is removed.
+    - `minify` becomes `engines.minifier`
 - Support multiple extensions per template engine (#7).
 - Support nested conditions in the filter adapter (#1).
 - Remove unused `eninges.async` option.
