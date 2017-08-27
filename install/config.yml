@@ -41,8 +41,14 @@ directories:
 meta:
     viewport: width=device-width, initial-scale=1
 
-# Minify CSS and JavaScript
-minify: true
+# Add automatic www. redirect for all pages
+redirect.www: true
+
+# Add automatic https:// redirect for all pages
+redirect.https: true
+
+# When set to the host, a `sitemap.xml` file will be generated here
+# sitemap.url: https://www.stitcher.io
 
 # Configure engines
 engines:
@@ -54,6 +60,9 @@ engines:
 
     # Try to use several system image optimizers
     optimizer: true
+
+    # Enable CSS and JS minifier
+    minifier: true
 
 # A list of libraries and resources which should be delivered as-is, without parsing.
 cdn:

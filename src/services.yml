@@ -145,7 +145,7 @@ services:
             - '@service.minifier.css'
             - '%directories.public%'
             - '%directories.src%'
-            - '%minify%'
+            - '%engines.minifier%'
             - '%meta%'
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess

@@ -23,9 +23,9 @@ class Config
     const ENGINES_IMAGE = 'engines.image';
     const ENGINES_OPTIMIZER = 'engines.optimizer';
     const ENGINES_TEMPLATE = 'engines.template';
+    const ENGINES_MINIFIER = 'engines.minifier';
     const ENVIRONMENT = 'environment';
     const META = 'meta';
-    const MINIFY = 'minify';
     const OPTIMIZER_OPTIONS = 'optimizer.options';
     const REDIRECT_HTTPS = 'redirect.https';
     const REDIRECT_WWW = 'redirect.www';
@@ -33,13 +33,13 @@ class Config
 
     public static function getDefaults(): array {
         return [
-            self::ASYNC                => true,
+            self::ASYNC              => true,
             self::ENVIRONMENT        => 'development',
             self::DIRECTORIES_SRC    => './src',
             self::DIRECTORIES_PUBLIC => './public',
             self::DIRECTORIES_CACHE  => './.cache',
             self::META               => [],
-            self::MINIFY             => false,
+            self::ENGINES_MINIFIER   => false,
             self::ENGINES_TEMPLATE   => 'smarty',
             self::ENGINES_IMAGE      => 'gd',
             self::ENGINES_OPTIMIZER  => true,
