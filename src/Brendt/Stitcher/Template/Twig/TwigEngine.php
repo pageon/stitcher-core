@@ -61,7 +61,7 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
         return $this;
     }
 
-    public function getTemplateExtension() {
-        return 'html';
+    public function getTemplateExtensions(): array {
+        return ['html', 'twig'];
     }
 }
