@@ -20,7 +20,6 @@ class Config
     const DIRECTORIES_CACHE = 'directories.cache';
     const DIRECTORIES_PUBLIC = 'directories.public';
     const DIRECTORIES_SRC = 'directories.src';
-    const ENGINES_ASYNC = 'engines.async';
     const ENGINES_IMAGE = 'engines.image';
     const ENGINES_OPTIMIZER = 'engines.optimizer';
     const ENGINES_TEMPLATE = 'engines.template';
@@ -44,7 +43,6 @@ class Config
             self::ENGINES_TEMPLATE   => 'smarty',
             self::ENGINES_IMAGE      => 'gd',
             self::ENGINES_OPTIMIZER  => true,
-            self::ENGINES_ASYNC      => true,
             self::CDN                => [],
             self::CACHE_IMAGES       => true,
             self::CACHE_CDN          => true,

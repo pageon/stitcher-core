@@ -122,7 +122,6 @@ services:
                 sourcePath: '%directories.src%'
                 enableCache: '%cache.images%'
                 optimize: '%engines.optimizer%'
-                async: '%engines.async%'
                 optimizerOptions: '%optimizer.options%'
 
     # Service
