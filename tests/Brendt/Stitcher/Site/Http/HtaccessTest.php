@@ -11,7 +11,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_load_the_file() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $this->assertNotNull($htaccess);
     }
@@ -20,7 +20,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_create_a_page_block() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $page = new Page('/blog/read', ['template' => 'blog/overview']);
         $htaccess->getPageBlock($page);
@@ -32,7 +32,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_adds_index_option() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $this->assertContains('Options -Indexes', $htaccess->parse());
     }
@@ -41,7 +41,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_clear_page_blocks() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $htaccess->clearPageBlocks();
 
@@ -52,9 +52,9 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_parse_https_rewrite() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
         $htaccess->setRedirectHttps(true);
-        
+
         $parsed = $htaccess->parse();
 
         $this->assertContains('RewriteCond %{HTTPS} off', $parsed);
@@ -65,7 +65,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_parse_www_rewrite() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
         $htaccess->setRedirectWww(true);
 
         $parsed = $htaccess->parse();
@@ -78,7 +78,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_always_parses_html_rewrite() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $parsed = $htaccess->parse();
 
@@ -90,19 +90,19 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_keeps_default_rewrite_options() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
 
         $parsed = $htaccess->parse();
 
         $this->assertContains('RewriteEngine On', $parsed);
         $this->assertContains('DirectorySlash Off', $parsed);
     }
-    
+
     /**
      * @test
      */
     public function it_parses_www_rewrite_before_https() {
-        $htaccess = new Htaccess('./tests/src/.htaccess');
+        $htaccess = new Htaccess('./tests/src');
         $htaccess->setRedirectWww(true);
         $htaccess->setRedirectHttps(true);
 

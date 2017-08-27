@@ -13,7 +13,49 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
-    public static function parseImports(array $config) : array {
+    const ASYNC = 'async';
+    const CACHE_CDN = 'cache.cdn';
+    const CACHE_IMAGES = 'cache.images';
+    const CDN = 'cdn';
+    const DIRECTORIES_CACHE = 'directories.cache';
+    const DIRECTORIES_PUBLIC = 'directories.public';
+    const DIRECTORIES_SRC = 'directories.src';
+    const ENGINES_ASYNC = 'engines.async';
+    const ENGINES_IMAGE = 'engines.image';
+    const ENGINES_OPTIMIZER = 'engines.optimizer';
+    const ENGINES_TEMPLATE = 'engines.template';
+    const ENVIRONMENT = 'environment';
+    const META = 'meta';
+    const MINIFY = 'minify';
+    const OPTIMIZER_OPTIONS = 'optimizer.options';
+    const REDIRECT_HTTPS = 'redirect.https';
+    const REDIRECT_WWW = 'redirect.www';
+    const SITEMAP_URL = 'sitemap.url';
+
+    public static function getDefaults(): array {
+        return [
+            self::ASYNC                => true,
+            self::ENVIRONMENT        => 'development',
+            self::DIRECTORIES_SRC    => './src',
+            self::DIRECTORIES_PUBLIC => './public',
+            self::DIRECTORIES_CACHE  => './.cache',
+            self::META               => [],
+            self::MINIFY             => false,
+            self::ENGINES_TEMPLATE   => 'smarty',
+            self::ENGINES_IMAGE      => 'gd',
+            self::ENGINES_OPTIMIZER  => true,
+            self::ENGINES_ASYNC      => true,
+            self::CDN                => [],
+            self::CACHE_IMAGES       => true,
+            self::CACHE_CDN          => true,
+            self::REDIRECT_WWW       => false,
+            self::REDIRECT_HTTPS     => false,
+            self::OPTIMIZER_OPTIONS  => [],
+            self::SITEMAP_URL        => null,
+        ];
+    }
+
+    public static function parseImports(array $config): array {
         if (!isset($config['imports'])) {
             return $config;
         }
@@ -42,7 +84,7 @@ class Config
         return $configFiles->current();
     }
 
-    public static function flatten(array $config, string $prefix = '') : array {
+    public static function flatten(array $config, string $prefix = ''): array {
         $result = [];
 
         foreach ($config as $key => $value) {
