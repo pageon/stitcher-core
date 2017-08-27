@@ -17,6 +17,7 @@
     - `caches.image` becomes `cache.images`.
     - `directories.htaccess` is removed.
 - Support multiple extensions per template engine (#7).
+- Support nested conditions in the filter adapter (#1).
 
 ## 1.0.0-beta1
 

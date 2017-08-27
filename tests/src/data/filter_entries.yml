@@ -1,11 +1,21 @@
 entries:
     entry-a:
         highlight: true
+        category:
+            tag: foo
     entry-b:
         highlight: true
+        category:
+            tag: foo
     entry-c:
         highlight: false
+        category:
+            tag: bar
     entry-d:
         highlight: false
+        category:
+            tag: bar
     entry-e:
         highlight: false
+        category:
+            tag: bar
