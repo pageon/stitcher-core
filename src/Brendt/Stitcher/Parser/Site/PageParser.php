@@ -51,14 +51,15 @@ class PageParser
      * @return SplFileInfo[]
      */
     public function loadTemplates() {
-        $templateExtension = $this->templateEngine->getTemplateExtension();
+        $templateExtensions = $this->templateEngine->getTemplateExtensions();
+        $templateExtensionsRegex = '/\.(' . implode('|', $templateExtensions) . ')/';
 
         /** @var SplFileInfo[] $files */
-        $files = Finder::create()->files()->in($this->templateDir)->name("*.{$templateExtension}");
+        $files = Finder::create()->files()->in($this->templateDir)->name($templateExtensionsRegex);
         $templates = [];
 
         foreach ($files as $file) {
-            $id = str_replace(".{$templateExtension}", '', $file->getRelativePathname());
+            $id = preg_replace($templateExtensionsRegex, '', $file->getRelativePathname());
             $templates[$id] = $file;
         }
 
