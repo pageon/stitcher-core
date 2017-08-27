@@ -12,29 +12,8 @@ use Symfony\Component\Yaml\Yaml;
 class App
 {
     protected static $container;
-    protected static $configDefaults = [
-        'async'                => true,
-        'environment'          => 'development',
-        'directories.src'      => './src',
-        'directories.public'   => './public',
-        'directories.cache'    => './.cache',
-        'directories.htaccess' => './public/.htaccess',
-        'meta'                 => [],
-        'minify'               => false,
-        'engines.template'     => 'smarty',
-        'engines.image'        => 'gd',
-        'engines.optimizer'    => true,
-        'engines.async'        => true,
-        'cdn'                  => [],
-        'caches.image'         => true,
-        'caches.cdn'           => true,
-        'redirect.www'         => false,
-        'redirect.https'       => false,
-        'optimizer.options'    => [],
-        'sitemap.url'          => null,
-    ];
 
-    public static function init(string $configPath = './config.yml', array $defaultConfig = []) : App {
+    public static function init(string $configPath = './config.yml', array $runtimeConfig = []) : App {
         self::$container = new ContainerBuilder();
 
         $configFile = Config::getConfigFile($configPath);
@@ -42,10 +21,10 @@ class App
         $parsedImportConfig = Config::parseImports($parsedDefaultConfig);
 
         $config = array_merge(
-            self::$configDefaults,
+            Config::getDefaults(),
             $parsedImportConfig,
             Config::flatten($parsedImportConfig),
-            $defaultConfig
+            $runtimeConfig
         );
 
         $config['directories.template'] = $config['directories.template'] ?? $config['directories.src'];
