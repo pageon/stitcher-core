@@ -55,7 +55,7 @@ class SmartyEngine extends Smarty implements TemplateEngine
         return $this;
     }
 
-    public function getTemplateExtension() {
-        return 'tpl';
+    public function getTemplateExtensions(): array {
+        return ['html', 'tpl'];
     }
 }

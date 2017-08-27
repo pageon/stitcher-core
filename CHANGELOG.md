@@ -12,10 +12,11 @@
 - Add `sitemap.xml` support. When setting the `sitemap.url` variable, a `sitemap.xml` will be generated.
 - Fix bug with Collection Adapters not copying meta tags from the base page for its sub-pages.
 - Add responsive images support to markdown parser.
-- The following config parameters are changed:
+- The following config parameters are changed (#2):
     - `caches.cdn` becomes `cache.cdn`.
     - `caches.image` becomes `cache.images`.
     - `directories.htaccess` is removed.
+- Support multiple extensions per template engine (#7).
 
 ## 1.0.0-beta1
 
