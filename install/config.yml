@@ -60,9 +60,9 @@ cdn:
 #    - lib/js/file.js
 #    - lib/css/
 
-caches:
+cache:
     # Enable image caching while rendering
-    image: true
+    images: true
 
     # Cache CDN resources
     cdn: true

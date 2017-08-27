@@ -21,7 +21,7 @@ services:
             - '%directories.public%'
             - '%directories.template%'
             - '%cdn%'
-            - '%caches.cdn%'
+            - '%cache.cdn%'
             - '@parser.site'
             - '@service.htaccess'
             - '@service.sitemap'
@@ -120,7 +120,7 @@ services:
               - driver: '%engines.image%'
                 publicPath: '%directories.public%'
                 sourcePath: '%directories.src%'
-                enableCache: '%caches.image%'
+                enableCache: '%cache.images%'
                 optimize: '%engines.optimizer%'
                 async: '%engines.async%'
                 optimizerOptions: '%optimizer.options%'
@@ -150,7 +150,7 @@ services:
             - '%meta%'
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
-        arguments: ['%directories.htaccess%']
+        arguments: ['%directories.public%']
         calls:
             - ['setRedirectWww', ['%redirect.www%']]
             - ['setRedirectHttps', ['%redirect.https%']]

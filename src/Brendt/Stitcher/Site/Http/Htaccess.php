@@ -23,11 +23,13 @@ class Htaccess
     private $redirectWww = false;
     private $redirects = [];
 
-    public function __construct(string $path) {
+    public function __construct(string $publicDir) {
+        $path = "{$publicDir}/.htaccess";
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
-            $this->fs->dumpFile($path, file_get_contents(__DIR__ . '/../../../../.htaccess'));
+            $samplePath = __DIR__ . '/../../../../.htaccess';
+            $this->fs->dumpFile($path, file_get_contents($samplePath));
         }
 
         $this->parser = new Parser(new \SplFileObject($path));
