@@ -13,32 +13,14 @@ use Brendt\Stitcher\Stitcher;
  */
 class ImageParser implements Parser
 {
-    /**
-     * @var Stitcher
-     */
     private $stitcher;
-
-    /**
-     * @var ResponsiveFactory
-     */
     private $responsiveFactory;
 
-    /**
-     * AbstractParser constructor.
-     *
-     * @param Stitcher          $stitcher
-     * @param ResponsiveFactory $responsiveFactory
-     */
     public function __construct(Stitcher $stitcher, ResponsiveFactory $responsiveFactory) {
         $this->stitcher = $stitcher;
         $this->responsiveFactory = $responsiveFactory;
     }
 
-    /**
-     * @param $entry
-     *
-     * @return array
-     */
     public function parse($entry) {
         $data = [];
         $defaults = [];
@@ -71,5 +53,4 @@ class ImageParser implements Parser
 
         return $data + $defaults;
     }
-
 }

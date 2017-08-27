@@ -13,48 +13,23 @@ use Tivie\HtaccessParser\Token\WhiteLine;
 
 class Htaccess
 {
-    /**
-     * @var Filesystem
-     */
     private $fs;
-
-    /**
-     * @var Parser
-     */
     private $parser;
-
     /**
      * @var array|\ArrayAccess|HtaccessContainer
      */
     private $contents;
-
-    /**
-     * @var bool
-     */
     private $redirectHttps = false;
-
-    /**
-     * @var bool
-     */
     private $redirectWww = false;
-
-    /**
-     * @var array
-     */
     private $redirects = [];
 
-    /**
-     * Htaccess constructor.
-     *
-     * @param string $path
-     *
-     * @throws ConfigurationException
-     */
-    public function __construct(string $path) {
+    public function __construct(string $publicDir) {
+        $path = "{$publicDir}/.htaccess";
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
-            $this->fs->dumpFile($path, file_get_contents(__DIR__ . '/../../../../.htaccess'));
+            $samplePath = __DIR__ . '/../../../../.htaccess';
+            $this->fs->dumpFile($path, file_get_contents($samplePath));
         }
 
         $this->parser = new Parser(new \SplFileObject($path));
@@ -62,47 +37,24 @@ class Htaccess
         $this->contents = $this->parser->parse();
     }
 
-    /**
-     * @param bool $redirectHttps
-     *
-     * @return Htaccess
-     */
     public function setRedirectHttps(bool $redirectHttps = false) : Htaccess {
         $this->redirectHttps = $redirectHttps;
 
         return $this;
     }
 
-    /**
-     * @param bool $redirectWww
-     *
-     * @return Htaccess
-     */
     public function setRedirectWww(bool $redirectWww = false) : Htaccess {
         $this->redirectWww = $redirectWww;
 
         return $this;
     }
 
-    /**
-     * Add custom redirects handles by htaccess
-     *
-     * @param string $from
-     * @param string $to
-     *
-     * @return Htaccess
-     */
     public function addRedirect(string $from, string $to) : Htaccess {
         $this->redirects[$from] = $to;
 
         return $this;
     }
 
-    /**
-     * Parse the modified .htaccess
-     *
-     * @return string
-     */
     public function parse() : string {
         $this->setupIndex();
         $this->clearRewriteBlock();
@@ -166,35 +118,6 @@ class Htaccess
     }
 
     /**
-     * Clear all page header blocks
-     */
-    public function clearPageBlocks() {
-        $headerBlock = $this->getHeaderBlock();
-
-        foreach ($headerBlock as $content) {
-            if ($content instanceof Block && strtolower($content->getName()) === 'filesmatch') {
-                $headerBlock->removeChild($content);
-            }
-        }
-    }
-
-    /**
-     * Clear all rewrites
-     */
-    public function clearRewriteBlock() {
-        $rewriteBlock = $this->getRewriteBlock();
-
-        foreach ($rewriteBlock as $content) {
-            if (
-                $content instanceof WhiteLine ||
-                ($content instanceof Directive && $content->getName() !== 'RewriteEngine' && $content->getName() !== 'DirectorySlash')
-            ) {
-                $rewriteBlock->removeChild($content);
-            }
-        }
-    }
-
-    /**
      * Get or create the rewrite block
      *
      * @return Block
@@ -214,12 +137,29 @@ class Htaccess
         return $rewriteBlock;
     }
 
-    /**
-     * @param Block  $headerBlock
-     * @param string $pageName
-     *
-     * @return null|Block
-     */
+    public function clearPageBlocks() {
+        $headerBlock = $this->getHeaderBlock();
+
+        foreach ($headerBlock as $content) {
+            if ($content instanceof Block && strtolower($content->getName()) === 'filesmatch') {
+                $headerBlock->removeChild($content);
+            }
+        }
+    }
+
+    public function clearRewriteBlock() {
+        $rewriteBlock = $this->getRewriteBlock();
+
+        foreach ($rewriteBlock as $content) {
+            if (
+                $content instanceof WhiteLine ||
+                ($content instanceof Directive && $content->getName() !== 'RewriteEngine' && $content->getName() !== 'DirectorySlash')
+            ) {
+                $rewriteBlock->removeChild($content);
+            }
+        }
+    }
+
     private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) {
         foreach ($headerBlock as $content) {
             $arguments = $content->getArguments();
@@ -242,27 +182,18 @@ class Htaccess
         $this->contents[] = new Directive('Options -Indexes');
     }
 
-    /**
-     * Add www rewrite
-     */
     private function rewriteWww() {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{HTTP_HOST} !^www\.', '^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]');
     }
 
-    /**
-     * Add https rewrite
-     */
     private function rewriteHttps() {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{HTTPS} off', '(.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]');
     }
 
-    /**
-     * Add custom rewrites
-     */
     private function rewriteCustomRedirects() {
         $rewriteBlock = $this->getRewriteBlock();
         $rewriteBlock->addLineBreak(1);
@@ -274,20 +205,12 @@ class Htaccess
         }
     }
 
-    /**
-     * Add .html rewrite
-     */
     private function rewriteHtml() {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{DOCUMENT_ROOT}/$1.html -f', '^(.+?)/?$ /$1.html [L]');
     }
 
-    /**
-     * @param Block  $rewriteBlock
-     * @param string $condition
-     * @param string $rule
-     */
     private function createConditionalRewrite(Block &$rewriteBlock, string $condition, string $rule) {
         $rewriteBlock->addLineBreak(1);
 
@@ -300,11 +223,6 @@ class Htaccess
         $rewriteBlock->addChild($ruleLine);
     }
 
-    /**
-     * @param string $modName
-     *
-     * @return null|Block
-     */
     private function findHeaderBlockByModName(string $modName) {
         foreach ($this->contents as $content) {
             $arguments = $content->getArguments();

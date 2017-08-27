@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher;
 
-use Brendt\Stitcher\Plugin\PluginConfiguration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -14,13 +13,47 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
+    const ASYNC = 'async';
+    const CACHE_CDN = 'cache.cdn';
+    const CACHE_IMAGES = 'cache.images';
+    const CDN = 'cdn';
+    const DIRECTORIES_CACHE = 'directories.cache';
+    const DIRECTORIES_PUBLIC = 'directories.public';
+    const DIRECTORIES_SRC = 'directories.src';
+    const ENGINES_IMAGE = 'engines.image';
+    const ENGINES_OPTIMIZER = 'engines.optimizer';
+    const ENGINES_TEMPLATE = 'engines.template';
+    const ENGINES_MINIFIER = 'engines.minifier';
+    const ENVIRONMENT = 'environment';
+    const META = 'meta';
+    const OPTIMIZER_OPTIONS = 'optimizer.options';
+    const REDIRECT_HTTPS = 'redirect.https';
+    const REDIRECT_WWW = 'redirect.www';
+    const SITEMAP_URL = 'sitemap.url';
 
-    /**
-     * @param array $config
-     *
-     * @return array
-     */
-    public static function parseImports(array $config) : array {
+    public static function getDefaults(): array {
+        return [
+            self::ASYNC              => true,
+            self::ENVIRONMENT        => 'development',
+            self::DIRECTORIES_SRC    => './src',
+            self::DIRECTORIES_PUBLIC => './public',
+            self::DIRECTORIES_CACHE  => './.cache',
+            self::META               => [],
+            self::ENGINES_MINIFIER   => false,
+            self::ENGINES_TEMPLATE   => 'smarty',
+            self::ENGINES_IMAGE      => 'gd',
+            self::ENGINES_OPTIMIZER  => true,
+            self::CDN                => [],
+            self::CACHE_IMAGES       => true,
+            self::CACHE_CDN          => true,
+            self::REDIRECT_WWW       => false,
+            self::REDIRECT_HTTPS     => false,
+            self::OPTIMIZER_OPTIONS  => [],
+            self::SITEMAP_URL        => null,
+        ];
+    }
+
+    public static function parseImports(array $config): array {
         if (!isset($config['imports'])) {
             return $config;
         }
@@ -38,11 +71,6 @@ class Config
         return $mergedConfig;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return null|SplFileInfo
-     */
     public static function getConfigFile(string $path) {
         $pathParts = explode('/', $path);
         $configFileName = array_pop($pathParts);
@@ -54,13 +82,7 @@ class Config
         return $configFiles->current();
     }
 
-    /**
-     * @param        $config
-     * @param string $prefix
-     *
-     * @return array
-     */
-    public static function flatten(array $config, string $prefix = '') : array {
+    public static function flatten(array $config, string $prefix = ''): array {
         $result = [];
 
         foreach ($config as $key => $value) {

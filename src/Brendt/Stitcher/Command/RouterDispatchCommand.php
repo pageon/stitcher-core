@@ -15,12 +15,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouterDispatchCommand extends Command
 {
-
     const URL = 'url';
 
-    /**
-     * @var Stitcher
-     */
     private $stitcher;
 
     public function __construct(Stitcher $stitcher) {
@@ -36,12 +32,6 @@ class RouterDispatchCommand extends Command
             ->addArgument(self::URL, InputArgument::REQUIRED);
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $site = $this->stitcher->loadSite();
 

@@ -16,9 +16,6 @@ class CleanCommand extends Command
 {
     const FORCE = 'force';
 
-    /**
-     * @var Filesystem
-     */
     private $fs;
 
     protected function configure() {
@@ -30,12 +27,6 @@ class CleanCommand extends Command
         $this->fs = new Filesystem();
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $force = $input->getOption(self::FORCE);
         $publicDir = App::getParameter('directories.public');
@@ -57,13 +48,6 @@ class CleanCommand extends Command
         $output->writeln("\nRun <fg=green>site:generate</> to generate these files again.");
     }
 
-    /**
-     * @param bool            $force
-     * @param string          $publicDir
-     * @param string          $cacheDir
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     private function checkForcedClean($force = false, string $publicDir, string $cacheDir, InputInterface $input, OutputInterface $output) {
         if ($force) {
             return;
@@ -77,11 +61,6 @@ class CleanCommand extends Command
         }
     }
 
-    /**
-     * @param string $publicDir
-     *
-     * @return null|string
-     */
     private function cleanPublicDir(string $publicDir) : string {
         if (!$this->fs->exists($publicDir)) {
             return '';
@@ -107,11 +86,6 @@ class CleanCommand extends Command
         return "Cleaned the public directory: {$publicDir}";
     }
 
-    /**
-     * @param string $cacheDir
-     *
-     * @return null|string
-     */
     private function cleanCacheDir(string $cacheDir) {
         if (!$this->fs->exists($cacheDir)) {
             return '';

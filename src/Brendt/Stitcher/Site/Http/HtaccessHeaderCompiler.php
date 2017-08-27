@@ -7,23 +7,12 @@ use Tivie\HtaccessParser\Token\Directive;
 
 class HtaccessHeaderCompiler implements HeaderCompiler
 {
-    /**
-     * @var Htaccess
-     */
     private $htaccess;
 
-    /**
-     * HtaccessHeaderCompiler constructor.
-     *
-     * @param Htaccess $htaccess
-     */
     public function __construct(Htaccess $htaccess) {
         $this->htaccess = $htaccess;
     }
 
-    /**
-     * @param Page $page
-     */
     public function compilePage(Page $page) {
         $headers = $page->getHeaders();
         if (!count($headers)) {

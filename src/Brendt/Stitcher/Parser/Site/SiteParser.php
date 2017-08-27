@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser\Site;
 
+use Brendt\Stitcher\Site\Seo\SiteMap;
 use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Exception\InvalidSiteException;
@@ -9,6 +10,9 @@ use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
+use Pageon\Pcntl\Manager;
+use Pageon\Pcntl\PageRenderProcess;
+use Pageon\Pcntl\ProcessCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -56,26 +60,58 @@ class SiteParser
     private $htaccess;
 
     /**
+     * @var string
+     */
+    private $publicDir;
+
+    /**
+     * @var bool
+     */
+    private $async;
+
+    /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * @var SiteMap
+     */
+    private $siteMap;
+
+    /**
      * SiteParser constructor.
      *
      * @param string          $srcDir
+     * @param string          $publicDir
+     * @param string          $environment
+     * @param bool            $async
      * @param EventDispatcher $eventDispatcher
      * @param PageParser      $pageParser
      * @param Htaccess        $htaccess
+     * @param SiteMap         $siteMap
      * @param array           $metaConfig
      */
     public function __construct(
         string $srcDir,
+        string $publicDir,
+        string $environment,
+        bool $async,
         EventDispatcher $eventDispatcher,
         PageParser $pageParser,
         Htaccess $htaccess,
+        SiteMap $siteMap,
         array $metaConfig = []
     ) {
         $this->srcDir = $srcDir;
+        $this->publicDir = $publicDir;
         $this->eventDispatcher = $eventDispatcher;
         $this->pageParser = $pageParser;
         $this->htaccess = $htaccess;
         $this->metaConfig = $metaConfig;
+        $this->async = $async;
+        $this->environment = $environment;
+        $this->siteMap = $siteMap;
     }
 
     /**
@@ -135,30 +171,61 @@ class SiteParser
      * @param array  $routes
      * @param string $filterValue
      *
-     * @return array|mixed
+     * @return array
      * @throws TemplateNotFoundException
      */
-    public function parse($routes = [], string $filterValue = null) : array {
+    public function parse($routes = [], string $filterValue = null) {
         $blanket = [];
+        $manager = extension_loaded('pcntl') && $this->async ? new Manager() : null;
+        $processCollection = new ProcessCollection();
 
         $site = $this->loadSite((array) $routes);
         $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
-
+        
         foreach ($site as $page) {
+            $pageRenderProcess = $this->createPageRenderProcess($page, $filterValue);
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
 
-            $this->pageParser->validate($page);
-            $pages = $this->pageParser->parseAdapters($page, $filterValue);
-
-            /** @var Page $entryPage */
-            foreach ($pages as $entryPage) {
-                $blanket[$entryPage->getId()] = $this->pageParser->parsePage($entryPage);
+            if ($manager) {
+                $pageRenderProcess->setAsync();
+                $processCollection[] = $manager->async($pageRenderProcess);
+            } else {
+                $output = $pageRenderProcess->execute();
+                $blanket += $output;
+                $pageRenderProcess->triggerSuccess(array_keys($output));
             }
+        }
 
-            $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSED, Event::create(['page' => $page]));
+        if ($manager) {
+            $manager->wait($processCollection);
         }
 
         return $blanket;
+    }
+
+    /**
+     * Create a page render process
+     *
+     * @param Page        $page
+     * @param string|null $filterValue
+     *
+     * @return PageRenderProcess
+     */
+    private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess {
+        $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
+        $pageRenderProcess->setEnvironment($this->environment);
+        
+        $pageRenderProcess->onSuccess(function ($pageIds) use ($page) {
+            if ($this->siteMap->isEnabled()) {
+                foreach ($pageIds as $pageId) {
+                    $this->siteMap->addPath($pageId);
+                }
+            }
+
+            $this->eventDispatcher->dispatch(SiteParser::EVENT_PAGE_PARSED, Event::create(['pageId' => $page->getId()]));
+        });
+
+        return $pageRenderProcess;
     }
 
     /**

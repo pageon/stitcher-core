@@ -16,27 +16,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class GenerateCommand extends Command implements EventSubscriberInterface
 {
-
     const ROUTE = 'route';
 
-    /**
-     * @var Stitcher
-     */
     private $stitcher;
-
-    /**
-     * @var ProgressBar
-     */
-    private $progress;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
-
-    /**
-     * @var string
-     */
     private $publicDir;
 
     public function __construct(string $publicDir, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
@@ -54,69 +37,46 @@ class GenerateCommand extends Command implements EventSubscriberInterface
             ->addArgument(self::ROUTE, null, 'Specify a route to render');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->output = $output;
 
         $route = $input->getArgument(self::ROUTE);
-        $blanket = $this->stitcher->stitch($route);
-        $this->stitcher->save($blanket);
-        $this->progress->clear();
+
+        $startTime = microtime(true);
+        $this->stitcher->stitch($route);
+
+        if (!$route) {
+            $this->saveGeneralFiles();
+        }
+
+        $endTime = microtime(true);
+        $processTime = round($endTime - $startTime, 3);
 
         if ($route) {
-            $output->writeln("<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         } else {
-            $output->writeln("Site successfully generated in <fg=green>{$this->publicDir}</>.");
+            $output->writeln("\nSite successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
         }
     }
 
     public static function getSubscribedEvents() {
         return [
-            SiteParser::EVENT_PARSER_INIT => 'onSiteParserInit',
-            SiteParser::EVENT_PAGE_PARSING => 'onPageParsing',
             SiteParser::EVENT_PAGE_PARSED => 'onPageParsed',
         ];
     }
 
-    public function onSiteParserInit(Event $event) {
-        /** @var Site $site */
-        $site = $event->getData()['site'] ?? null;
-
-        if (!$site) {
-            return;
-        }
-
-        $amount = count($site->getPages());
-
-        $this->progress = new ProgressBar($this->output, $amount);
-        $this->progress->setBarWidth(40);
-        $this->progress->setFormatDefinition('custom', "%current%/%max% [%bar%] %message%\n");
-        $this->progress->setFormat('custom');
-        $this->progress->setMessage('');
-        $this->progress->start();
+    public function onPageParsed(Event $event) {
+        $pageId = $event->getData()['pageId'] ?? null;
+        $this->output->writeln("<fg=green>✔</> {$pageId}");
     }
 
-    public function onPageParsing(Event $event) {
-        /** @var Page $page */
-        $page = $event->getData()['page'] ?? null;
+    private function saveGeneralFiles() {
+        $this->stitcher->saveHtaccess();
+        $this->output->writeln("\n<fg=green>✔</> .htaccess");
 
-        if (!$this->progress || !$page) {
-            return;
+        if ($this->stitcher->getSiteMap()->isEnabled()) {
+            $this->stitcher->saveSitemap();
+            $this->output->writeln("<fg=green>✔</> sitemap.xml");
         }
-
-        $this->progress->setMessage($page->getId());
-    }
-
-    public function onPageParsed() {
-        if (!$this->progress) {
-            return;
-        }
-
-        $this->progress->advance();
     }
 }

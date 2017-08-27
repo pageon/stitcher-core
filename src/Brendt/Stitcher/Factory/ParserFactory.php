@@ -20,21 +20,10 @@ class ParserFactory
     const EXTENSION_SCSS = 'sass';
     const PARSER_DEFAULT = 'default';
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var array
-     */
     private static $typeFilters = [];
 
-    /**
-     * ParserFactory constructor.
-     *
-     * @param ContainerInterface $container
-     */
+    private $container;
+
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
 
@@ -71,19 +60,10 @@ class ParserFactory
         });
     }
 
-    /**
-     * @param string   $type
-     * @param callable $filter
-     */
     public static function addTypeFilter(string $type, callable $filter) {
         self::$typeFilters[$type][] = $filter;
     }
 
-    /**
-     * @param $fileName
-     *
-     * @return Parser|null
-     */
     public function getByFileName($fileName) {
         if (!is_string($fileName)) {
             return null;
@@ -107,12 +87,6 @@ class ParserFactory
         return $this->getByType($type);
     }
 
-    /**
-     * @param string $type
-     *
-     * @return Parser|mixed
-     * @throws ParserException
-     */
     public function getByType($type) : Parser {
         $key = "parser.{$type}";
 
@@ -122,5 +96,4 @@ class ParserFactory
 
         return $this->container->get($key);
     }
-
 }

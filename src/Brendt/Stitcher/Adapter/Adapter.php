@@ -9,7 +9,6 @@ use Brendt\Stitcher\Site\Page;
  */
 interface Adapter
 {
-
     /**
      * @param Page|Page[]       $pages
      * @param string|null $filter
@@ -25,5 +24,4 @@ interface Adapter
      * @return Page[]
      */
     public function transformPage(Page $page, $filter = null) : array;
-
 }

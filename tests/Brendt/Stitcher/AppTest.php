@@ -24,4 +24,8 @@ class AppTest extends TestCase
         $this->assertInstanceOf(TestPlugin::class, $plugin);
         $this->assertInstanceOf(AdapterFactory::class, $plugin->getAdapterFactory());
     }
+
+    public function test_async_false() {
+        $this->assertFalse(App::getParameter('async'));
+    }
 }

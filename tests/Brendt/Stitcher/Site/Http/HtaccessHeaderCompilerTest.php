@@ -14,7 +14,7 @@ class HtaccessHeaderCompilerTest extends TestCase
     private $htaccess;
 
     public function setUp() {
-        $this->htaccess = new Htaccess('./tests/public/.htaccess');
+        $this->htaccess = new Htaccess('./tests/public');
     }
 
     /**

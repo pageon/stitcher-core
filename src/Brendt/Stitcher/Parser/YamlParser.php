@@ -16,29 +16,14 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlParser extends AbstractArrayParser
 {
-    /**
-     * @var string
-     */
     private $srcDir;
 
-    /**
-     * JsonParser constructor.
-     *
-     * @param ParserFactory $parserFactory
-     * @param string        $srcDir
-     */
     public function __construct(ParserFactory $parserFactory, string $srcDir) {
         parent::__construct($parserFactory);
 
         $this->srcDir = $srcDir;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return mixed
-     * @throws ParserException
-     */
     public function parse($path = '*.yml') {
         if (!strpos($path, '.yml')) {
             $path .= '.yml';
@@ -67,5 +52,4 @@ class YamlParser extends AbstractArrayParser
 
         return $parsedEntries;
     }
-
 }

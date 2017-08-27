@@ -10,26 +10,14 @@ use Symfony\Component\Finder\Finder;
  */
 class MarkdownParser implements Parser
 {
-
-    /**
-     * @var string
-     */
     private $srcDir;
+    private $parsedown;
 
-    /**
-     * MarkdownParser constructor.
-     *
-     * @param string $srcDir
-     */
-    public function __construct(string $srcDir) {
+    public function __construct(string $srcDir, Parsedown $parsedown) {
         $this->srcDir = $srcDir;
+        $this->parsedown = $parsedown;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
     public function parse($path) {
         if (!strpos($path, '.md')) {
             $path .= '.md';
@@ -43,9 +31,8 @@ class MarkdownParser implements Parser
             return '';
         }
 
-        $html = Parsedown::instance()->parse($markdownFile->getContents());
+        $html = $this->parsedown->parse($markdownFile->getContents());
 
         return $html;
     }
-
 }
