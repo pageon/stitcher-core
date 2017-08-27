@@ -42,8 +42,32 @@ class FilterAdapterTest extends TestCase
 
         $adaptedPages = $adapter->transform($page);
         $adaptedPage = reset($adaptedPages);
-        
+
         $entries = $adaptedPage->getVariable('entries');
+
+        $this->assertCount(2, $entries);
+    }
+
+    public function test_nested_filter_condition() {
+        $page = new Page('/entries', [
+            'template'  => 'home',
+            'variables' => [
+                'entries' => 'filter_entries.yml',
+            ],
+            'adapters'  => [
+                'filter' => [
+                    'entries' => [
+                        'category.tag' => 'foo',
+                    ]
+                ],
+            ],
+        ]);
+
+        $adapter = $this->createAdapter();
+
+        $filteredPages = $adapter->transform($page);
+        $filteredPage = reset($filteredPages);
+        $entries = $filteredPage->getVariable('entries');
 
         $this->assertCount(2, $entries);
     }
