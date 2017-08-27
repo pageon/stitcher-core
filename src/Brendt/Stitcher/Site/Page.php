@@ -27,64 +27,15 @@ use Brendt\Stitcher\Site\Http\Header;
  */
 class Page
 {
-    /**
-     * @var Meta
-     */
     public $meta;
-
-    /**
-     * The page's ID.
-     *
-     * @var string
-     */
     protected $id;
-
-    /**
-     * The template path of this page.
-     *
-     * @var string
-     */
     protected $templatePath;
-
-    /**
-     * The variables of this page, which will be available in the rendered template.
-     *
-     * @var array
-     */
     protected $variables = [];
-
-    /**
-     * The adapters of this page.
-     * Adapters will transform a page's variables and/or the page itself into one or more pages.
-     *
-     * @var array
-     */
     protected $adapters;
-
-    /**
-     * An array containing a list of parsed variables.
-     *
-     * @see setVariableIsParsed
-     *
-     * @var array
-     */
     protected $parsedVariables = [];
-
-    /**
-     * @var Header[]
-     */
+    /** @var Header[] */
     private $headers = [];
 
-    /**
-     * Construct a new page
-     *
-     * @param string    $id
-     * @param array     $data
-     *
-     * @param Meta|null $meta
-     *
-     * @throws TemplateNotFoundException
-     */
     public function __construct($id, array $data = [], Meta $meta = null) {
         if (!isset($data['template'])) {
             throw new TemplateNotFoundException("No template was set for page {$id}");
@@ -139,47 +90,18 @@ class Page
         return isset($this->parsedVariables[$name]);
     }
 
-    /**
-     * Get the ID of this page
-     *
-     * @return string
-     *
-     * @see \Brendt\Stitcher\Stitcher::stitch
-     */
     public function getId() {
         return $this->id;
     }
 
-    /**
-     * Get the template path of this page.
-     *
-     * @return string
-     *
-     * @see \Brendt\Stitcher\Stitcher::stitch
-     */
     public function getTemplatePath() {
         return $this->templatePath;
     }
 
-    /**
-     * Get the variables of this page.
-     *
-     * @return array
-     *
-     * @see \Brendt\Stitcher\Stitcher::stitch
-     * @see \Brendt\Stitcher\Stitcher::parseVariables
-     */
     public function getVariables() {
         return $this->variables;
     }
 
-    /**
-     * Get the adapters of this page.
-     *
-     * @return array
-     *
-     * @see \Brendt\Stitcher\Stitcher::parseAdapters
-     */
     public function getAdapters() {
         return $this->adapters;
     }
@@ -274,9 +196,6 @@ class Page
         return $this;
     }
 
-    /**
-     * @param Header $header
-     */
     public function addHeader(Header $header) {
         $this->headers[] = $header;
     }

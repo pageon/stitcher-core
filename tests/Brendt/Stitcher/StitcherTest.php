@@ -113,7 +113,7 @@ class StitcherTest extends TestCase
             ],
         ]);
 
-        $stitcher->prepareCdn();
+        $stitcher->saveCdn();
 
         $fs = new Filesystem();
         $this->assertTrue($fs->exists('./tests/public/lib/lib.js'));
@@ -139,5 +139,31 @@ class StitcherTest extends TestCase
             $this->assertContains('Church', $html);
             $this->assertContains('Intro', $html);
         }
+    }
+
+    public function test_sitemap_xml_save() {
+        $stitcher = $this->createStitcher(['sitemap.url' => 'https://www.stitcher.io']);
+        $stitcher->stitch();
+        $stitcher->saveSitemap();
+
+        $this->assertTrue(file_exists('./tests/public/sitemap.xml'));
+        $xml = file_get_contents('./tests/public/sitemap.xml');
+
+        $this->assertContains('<loc>https://www.stitcher.io/churches/church-b</loc>', $xml);
+    }
+
+    public function test_htaccess_save() {
+        $stitcher = $this->createStitcher(['sitemap.url' => 'https://www.stitcher.io']);
+        $stitcher->stitch();
+        $stitcher->saveHtaccess();
+
+        $this->assertTrue(file_exists('./tests/public/.htaccess'));
+    }
+
+    public function test_async() {
+        $stitcher = $this->createStitcher(['async' => true]);
+        $blanket = $stitcher->stitch('/');
+        
+        $this->assertEmpty($blanket);
     }
 }

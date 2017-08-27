@@ -28,10 +28,10 @@ use Brendt\Stitcher\Site\Page;
  */
 class CollectionAdapter extends AbstractAdapter
 {
-    /**
-     * @var MetaCompiler
-     */
     private $metaCompiler;
+    private $variable = null;
+    private $field = null;
+    private $entries = [];
 
     public function __construct(ParserFactory $parserFactory, MetaCompiler $metaCompiler) {
         parent::__construct($parserFactory);
@@ -39,108 +39,85 @@ class CollectionAdapter extends AbstractAdapter
         $this->metaCompiler = $metaCompiler;
     }
 
-    /**
-     * @param Page $page
-     * @param null $filter
-     *
-     * @return Page[]
-     */
     public function transformPage(Page $page, $filter = null) : array {
-        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
-
-        $this->validateConfig($config, $page);
-
-        $variable = $config['variable'];
-        $field = $config['field'];
-        $entries = $this->getData($page->getVariable($variable));
-        $pageId = $page->getId();
-
-        reset($entries);
+        $this->loadConfig($page);
         $result = [];
-        while ($entry = current($entries)) {
-            if (!isset($entry[$field]) || ($filter && $entry[$field] !== $filter)) {
-                next($entries);
 
-                continue;
+        while ($entry = current($this->entries)) {
+            if (isset($entry[$this->field]) && (!$filter || $entry[$this->field] === $filter)) {
+                $entryPage = $this->createEntryPage($page, $entry);
+                $result[$entryPage->getId()] = $entryPage;
             }
 
-            $fieldValue = $entry[$field];
-
-            $url = str_replace('{' . $field . '}', $fieldValue, $pageId);
-            $entryPage = clone $page;
-            $entryPage->meta = new Meta();
-
-            foreach ($entry as $entryVariableName => $entryVariableValue) {
-                $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
-            }
-
-
-            $entryPage
-                ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
-                ->setVariableValue($variable, $entry)
-                ->setVariableIsParsed($variable)
-                ->setId($url);
-
-            $this->parseBrowseData($entryPage, $entries);
-            
-            $result[$url] = $entryPage;
+            next($this->entries);
         }
 
         return $result;
     }
 
-    /**
-     * @param Page  $entryPage
-     * @param array $entries
-     *
-     * @return void
-     */
-    private function parseBrowseData(Page $entryPage, array &$entries) {
+    private function createEntryPage(Page $page, array $entry) : Page {
+        $url = str_replace('{' . $this->field . '}', $entry[$this->field], $page->getId());
+        $entryPage = clone $page;
+        $entryPage->meta = clone $page->meta;
+
+        foreach ($entry as $entryVariableName => $entryVariableValue) {
+            $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
+        }
+
+        $entryPage
+            ->removeAdapter(AdapterFactory::COLLECTION_ADAPTER)
+            ->setVariableValue($this->variable, $entry)
+            ->setVariableIsParsed($this->variable)
+            ->setId($url);
+
+        $this->parseBrowseData($entryPage);
+
+        return $entryPage;
+    }
+
+    private function parseBrowseData(Page $entryPage) {
         if ($entryPage->getVariable('browse')) {
             return;
         }
 
-        $prev = prev($entries);
+        $prev = prev($this->entries);
 
         if (!$prev) {
-            reset($entries);
+            reset($this->entries);
         } else {
-            next($entries);
+            next($this->entries);
         }
 
-        $next = next($entries);
+        $next = next($this->entries);
 
         $entryPage->setVariableValue('browse', [
             'prev' => $prev,
             'next' => $next,
         ])->setVariableIsParsed('browse');
+
+        prev($this->entries);
     }
 
-    /**
-     * @param array $config
-     * @param Page  $page
-     *
-     * @return void
-     * @throws ConfigurationException
-     * @throws IdFieldNotFoundException
-     * @throws VariableNotFoundException
-     */
-    protected function validateConfig(array $config, Page $page) {
+    protected function loadConfig(Page $page) {
+        $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
+
         if (!isset($config['field'], $config['variable'])) {
             throw new ConfigurationException('Both the configuration entry `field` and `variable` are required when using the Collection adapter.');
         }
 
-        $variable = $config['variable'];
+        $this->variable = $config['variable'];
 
-        if (!$page->getVariable($variable)) {
-            throw new VariableNotFoundException("Variable \"{$variable}\" was not set as a data variable for page \"{$page->getId()}\"");
+        if (!$page->getVariable($this->variable)) {
+            throw new VariableNotFoundException("Variable \"{$this->variable}\" was not set as a data variable for page \"{$page->getId()}\"");
         }
 
-        $field = $config['field'];
-        $pageId = $page->getId();
+        $this->field = $config['field'];
 
-        if (strpos($pageId, '{' . $field . '}') === false) {
-            throw new IdFieldNotFoundException("The field \"{{$field}}\" was not found in the URL \"{$page->getId()}\"");
+        if (strpos($page->getId(), '{' . $this->field . '}') === false) {
+            throw new IdFieldNotFoundException("The field \"{{$this->field}}\" was not found in the URL \"{$page->getId()}\"");
         }
+
+        $this->entries = (array) $this->getData($page->getVariable($this->variable));
+        reset($this->entries);
     }
 }

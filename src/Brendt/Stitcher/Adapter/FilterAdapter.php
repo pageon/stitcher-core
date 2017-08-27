@@ -4,6 +4,7 @@ namespace Brendt\Stitcher\Adapter;
 
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Factory\AdapterFactory;
+use Brendt\Stitcher\Lib\WalkableArray;
 use Brendt\Stitcher\Site\Page;
 
 /**
@@ -26,7 +27,6 @@ use Brendt\Stitcher\Site\Page;
  */
 class FilterAdapter extends AbstractAdapter
 {
-
     /**
      * @param Page        $page
      * @param string|null $filter
@@ -41,10 +41,10 @@ class FilterAdapter extends AbstractAdapter
         foreach ($config as $variable => $filters) {
             $entries = $this->getData($page->getVariable($variable)) ?? [];
 
-            foreach ($filters as $field => $value) {
-                $entries = array_filter($entries, function ($entry) use ($field, $value) {
-                    return isset($entry[$field]) && $entry[$field] == $value;
-                });
+            foreach ($entries as $key => $entry) {
+                if (!$this->applyFilters($filters, $entry)) {
+                    unset($entries[$key]);
+                }
             }
 
             $page->setVariableValue($variable, $entries)
@@ -57,11 +57,20 @@ class FilterAdapter extends AbstractAdapter
         return $result;
     }
 
-    /**
-     * @param array $config
-     *
-     * @throws ConfigurationException
-     */
+    private function applyFilters(array $filters, array $entry): bool {
+        $entry = new WalkableArray($entry);
+
+        foreach ($filters as $field => $value) {
+            $match = $entry[$field] === $value;
+
+            if (!$match) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function validateConfig(array $config) {
         if (empty($config)) {
             throw new ConfigurationException('You need to specify at least one field to filter on when using the Filter Adapter.');

@@ -13,17 +13,8 @@ use Brendt\Stitcher\Factory\ParserFactory;
  */
 abstract class AbstractArrayParser implements Parser
 {
-
-    /**
-     * @var ParserFactory
-     */
     protected $parserFactory;
 
-    /**
-     * AbstractParser constructor.
-     *
-     * @param ParserFactory $parserFactory
-     */
     public function __construct(ParserFactory $parserFactory) {
         $this->parserFactory = $parserFactory;
     }
@@ -83,5 +74,4 @@ abstract class AbstractArrayParser implements Parser
 
         return $entry;
     }
-
 }

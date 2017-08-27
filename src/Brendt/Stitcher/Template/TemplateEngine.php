@@ -11,7 +11,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 interface TemplateEngine
 {
-
     /**
      * Render the template and return output HTML.
      *
@@ -65,12 +64,5 @@ interface TemplateEngine
      */
     public function clearTemplateVariable($variable);
 
-    /**
-     * Get the template extension for the template engine.
-     *
-     * @return string
-     *
-     * @see \Brendt\Stitcher\Stitcher::loadTemplates()
-     */
-    public function getTemplateExtension();
+    public function getTemplateExtensions(): array;
 }

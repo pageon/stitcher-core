@@ -7,27 +7,22 @@ use \Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 class Event extends SymfonyEvent
 {
     private $data;
+    private $eventHook;
 
-    /**
-     * Event constructor.
-     *
-     * @param array $data
-     */
-    public function __construct($data = []) {
+    public function __construct($data = [], string $eventHook = null) {
         $this->data = $data;
+        $this->eventHook = $eventHook;
     }
 
-    /**
-     * @param array $data
-     *
-     * @return Event
-     */
-    public static function create($data = []) : Event {
-        return new self($data);
+    public static function create($data = [], string $eventHook = null) : Event {
+        return new self($data, $eventHook);
     }
 
     public function getData() {
         return $this->data;
     }
 
+    public function getEventHook() : string {
+        return $this->eventHook;
+    }
 }

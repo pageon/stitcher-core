@@ -13,9 +13,6 @@ class CollectionAdapterTest extends TestCase
         App::init('./tests/config.yml');
     }
 
-    /**
-     * @return CollectionAdapter
-     */
     private function createAdapter() : CollectionAdapter {
         return App::get('adapter.collection');
     }
@@ -36,7 +33,7 @@ class CollectionAdapterTest extends TestCase
 
         return $page;
     }
-    
+
     private function createPageWithBigCollection() {
         $page = new Page('/{id}', [
             'template'  => 'home',
@@ -134,6 +131,19 @@ class CollectionAdapterTest extends TestCase
 
         $this->assertContains('name="description" content="This is a church with the name A"', $meta);
         $this->assertContains('name="image" content="/img/green.jpg"', $meta);
+    }
+
+    /** @test */
+    public function collection_adapter_keeps_page_meta_when_parsing_pages() {
+        $page = $this->createPage();
+        $page->meta->name('test', 'test');
+        $adapter = $this->createAdapter();
+
+        $result = $adapter->transform($page, 'church-a');
+        $entryPage = $result['/church-a'];
+        $meta = $entryPage->meta->render();
+
+        $this->assertContains('name="test" content="test"', $meta);
     }
 
     public function test_browse() {

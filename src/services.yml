@@ -21,9 +21,10 @@ services:
             - '%directories.public%'
             - '%directories.template%'
             - '%cdn%'
-            - '%caches.cdn%'
+            - '%cache.cdn%'
             - '@parser.site'
             - '@service.htaccess'
+            - '@service.sitemap'
 
     # Command
     command.generate:
@@ -74,7 +75,7 @@ services:
         arguments: ['@factory.parser', '%directories.src%']
     parser.markdown:
         class: Brendt\Stitcher\Parser\MarkdownParser
-        arguments: ['%directories.src%']
+        arguments: ['%directories.src%', '@service.parsedown']
     parser.sass:
         class: Brendt\Stitcher\Parser\SassParser
         arguments: ['@service.sass', '%directories.src%']
@@ -116,13 +117,11 @@ services:
     configurator.image:
         class: Brendt\Image\Config\DefaultConfigurator
         arguments:
-            config:
-                driver: '%engines.image%'
+              - driver: '%engines.image%'
                 publicPath: '%directories.public%'
                 sourcePath: '%directories.src%'
-                enableCache: '%caches.image%'
+                enableCache: '%cache.images%'
                 optimize: '%engines.optimizer%'
-                async: '%engines.async%'
                 optimizerOptions: '%optimizer.options%'
 
     # Service
@@ -146,26 +145,35 @@ services:
             - '@service.minifier.css'
             - '%directories.public%'
             - '%directories.src%'
-            - '%minify%'
+            - '%engines.minifier%'
             - '%meta%'
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
-        arguments: ['%directories.htaccess%']
+        arguments: ['%directories.public%']
         calls:
             - ['setRedirectWww', ['%redirect.www%']]
             - ['setRedirectHttps', ['%redirect.https%']]
     service.event.dispatcher:
         class: Symfony\Component\EventDispatcher\EventDispatcher
+    service.sitemap:
+        class: Brendt\Stitcher\Site\Seo\SiteMap
+        arguments: ['%sitemap.url%']
+    service.parsedown:
+        class: Brendt\Stitcher\Lib\Parsedown
+        arguments: ['@parser.image']
 
     parser.site:
         class: Brendt\Stitcher\Parser\Site\SiteParser
         arguments:
             - '%directories.src%'
+            - '%directories.public%'
+            - '%environment%'
+            - '%async%'
             - '@service.event.dispatcher'
             - '@parser.page'
             - '@service.htaccess'
+            - '@service.sitemap'
             - '%meta%'
-
     parser.page:
         class: Brendt\Stitcher\Parser\Site\PageParser
         arguments:

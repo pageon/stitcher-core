@@ -5,6 +5,7 @@ namespace Brendt\Stitcher;
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Http\Htaccess;
+use Brendt\Stitcher\Site\Seo\SiteMap;
 use Brendt\Stitcher\Site\Site;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -17,50 +18,15 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Stitcher
 {
-    /**
-     * @var string
-     */
     private $srcDir;
-
-    /**
-     * @var string
-     */
     private $publicDir;
-
-    /**
-     * @var string
-     */
     private $templateDir;
-
-    /**
-     * @var array
-     */
     private $cdn;
-
-    /**
-     * @var bool
-     */
     private $cdnCache;
-
-    /**
-     * @var SiteParser
-     */
     private $siteParser;
-
-    /**
-     * @var Htaccess
-     */
     private $htaccess;
+    private $siteMap;
 
-    /**
-     * @param string     $srcDir
-     * @param string     $publicDir
-     * @param string     $templateDir
-     * @param array      $cdn
-     * @param bool       $cdnCache
-     * @param SiteParser $siteParser
-     * @param Htaccess   $htaccess
-     */
     public function __construct(
         $srcDir,
         $publicDir,
@@ -68,7 +34,8 @@ class Stitcher
         array $cdn,
         bool $cdnCache,
         SiteParser $siteParser,
-        Htaccess $htaccess
+        Htaccess $htaccess,
+        SiteMap $siteMap
     ) {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
@@ -77,6 +44,7 @@ class Stitcher
         $this->cdnCache = $cdnCache;
         $this->siteParser = $siteParser;
         $this->htaccess = $htaccess;
+        $this->siteMap = $siteMap;
     }
 
     /**
@@ -113,16 +81,15 @@ class Stitcher
             $this->htaccess->clearPageBlocks();
         }
 
-        $this->prepareCdn();
+        $this->saveCdn();
 
         return $this->siteParser->parse((array) $routes, $filterValue);
     }
 
-    /**
-     * @param array $routes
-     *
-     * @return Site
-     */
+    public function getSiteMap() : SiteMap {
+        return $this->siteMap;
+    }
+
     public function loadSite(array $routes = []) : Site {
         return $this->siteParser->loadSite($routes);
     }
@@ -144,14 +111,27 @@ class Stitcher
 
             $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
         }
-
-        $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
     }
 
-    /**
-     * Parse CDN resources and libraries
-     */
-    public function prepareCdn() {
+    public function saveHtaccess() : Stitcher {
+        $fs = new Filesystem();
+        $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
+
+        return $this;
+    }
+
+    public function saveSitemap() : Stitcher {
+        if (!$this->siteMap->isEnabled()) {
+            return $this;
+        }
+
+        $fs = new Filesystem();
+        $fs->dumpFile("{$this->publicDir}/sitemap.xml", $this->siteMap->render());
+
+        return $this;
+    }
+
+    public function saveCdn() : Stitcher {
         $fs = new Filesystem();
 
         foreach ($this->cdn as $resource) {
@@ -163,11 +143,19 @@ class Stitcher
             }
 
             $sourceResourcePath = "{$this->srcDir}/{$resource}";
-            if (is_dir($sourceResourcePath)) {
-                $fs->mirror($sourceResourcePath, $publicResourcePath);
-            } else {
-                $fs->copy($sourceResourcePath, $publicResourcePath, true);
-            }
+            $this->copyCdnFiles($sourceResourcePath, $publicResourcePath);
+        }
+
+        return $this;
+    }
+
+    private function copyCdnFiles($sourcePath, $publicPath) {
+        $fs = new Filesystem();
+
+        if (is_dir($sourcePath)) {
+            $fs->mirror($sourcePath, $publicPath);
+        } else {
+            $fs->copy($sourcePath, $publicPath, true);
         }
     }
 }

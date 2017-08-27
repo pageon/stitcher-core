@@ -1,68 +1,82 @@
-# The production config uses a few different paths to load files.
-# There are also only some image dimensions specified by default.
+## Please refer to https://www.stitcher.io/guide/setting-up for a complete guide on setting up a Stitcher project.
 
-# This production environment should be accessed via a separate virtual host.
-# An Apache example of such host configuration could be:
-#
-# <VirtualHost *:80>
-#     DocumentRoot "<path_to_project>/public"
-#     ServerName stitcher.local
-#     ErrorLog "<log_path>/error.log"
-#     CustomLog "<log_path>/access.log" common
-#
-#     <Directory "<path_to_project>/public">
-#         AllowOverride All
-#         Require all granted
-#     </Directory>
-# </VirtualHost>
+##################
+# CONFIG OPTIONS
+##################
 
-# Set the environment. Can be `production` or `development`
+## Import other config files. Properties can be overridden of the parent config.
+# imports:
+#    - ./my_main_config.yml
+
+## Enable plugins by referencing their namespace here.
+## More info can be found here: https://www.stitcher.io/guide/basic-plugin
+# plugins:
+#    - My\Plugin\Namespace\MyPlugin
+
+################
+# CORE OPTIONS
+################
+
+## Set the environment. Can be `production` or `development`
 environment: production
 
-# Configure the paths of several directories
+## Render pages asynchronously, usually resulting in better performance.
+## This only works when `ext-pcntl` is enabled. Run `php -i | grep pcntl` for more info.
+async: false
+
+## Configure the paths of several directories
 directories:
-    # The source directory
+    ## The source directory
     src: ./src
 
-    # The public directory in which the site is generated
+    ## The public directory in which the site is generated
     public: ./public
 
-    # The cache directory
+    ## The cache directory
     cache: ./cache
 
-    # Template directory
+    ## Template directory
     template: ./src/template
 
-# Configure meta tags
+## Configure engines
+engines:
+    ## Choose the template engine. Available options: smarty, twig
+    template: smarty
+
+    ## Use gd as image engine. Possible configurations: `gd` or `imagick`.
+    image: gd
+
+    ## Try to use several system image optimizers
+    optimizer: true
+
+    ## Enable CSS and JS minifier
+    minifier: true
+
+cache:
+    ## Enable image caching while rendering
+    images: true
+
+    ## Cache CDN resources
+    cdn: true
+
+#####################
+# RENDERING OPTIONS
+#####################
+
+## Configure default meta tags
 meta:
     viewport: width=device-width, initial-scale=1
 
-# Minify CSS and JavaScript
-minify: true
+## Add automatic www. redirect for all pages
+redirect.www: true
 
-# Configure engines
-engines:
-    # Choose the template engine. Available options: smarty, twig
-    template: smarty
+## Add automatic https:// redirect for all pages
+redirect.https: true
 
-    # Use gd as image engine. Possible configurations: `gd` or `imagick`.
-    image: gd
+## When set to the host, a `sitemap.xml` file will be generated here
+# sitemap.url: https://www.stitcher.io
 
-    # Try to use several image optimizers
-    optimizer: true
-
-    # Use asynchronous processes to render resource-intensive stuff. Currently: images.
-    # NOTE: When using async rendering, the current image library in use might not be able to render very large images.
-    async: true
-
-# A list of libraries and resources which should be delivered as-is, without parsing.
-cdn:
+## A list of libraries and resources which should be delivered as-is, without parsing.
+# cdn:
 #    - lib/js/file.js
 #    - lib/css/
-
-caches:
-    # Enable image caching while rendering
-    image: true
-
-    # Cache CDN resources
-    cdn: true
