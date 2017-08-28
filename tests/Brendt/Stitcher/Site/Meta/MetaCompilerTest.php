@@ -21,6 +21,17 @@ class MetaCompilerTest extends TestCase
         return $page;
     }
 
+    public function test_setting_default_meta() {
+        $compiler = new MetaCompiler(['test' => 'test']);
+        $page = $this->createPage();
+        $pageMeta = $page->getMeta();
+        $compiler->setDefaultMeta($pageMeta);
+
+        $meta = $pageMeta->render();
+
+        $this->assertContains('name="test" content="test"', $meta);
+    }
+
     public function test_general_page_compiling() {
         $compiler = new MetaCompiler();
         $page = $this->createPage([
@@ -31,7 +42,7 @@ class MetaCompilerTest extends TestCase
         ]);
 
         $compiler->compilePage($page);
-        $meta = $page->meta->render();
+        $meta = $page->getMeta()->render();
 
         $this->assertContains('name="title" content="A"', $meta);
         $this->assertContains('name="description" content="B"', $meta);
@@ -52,7 +63,7 @@ class MetaCompilerTest extends TestCase
         ]);
 
         $compiler->compilePage($page);
-        $meta = $page->meta->render();
+        $meta = $page->getMeta()->render();
 
         $this->assertContains('name="title" content="AA"', $meta);
         $this->assertContains('name="description" content="B"', $meta);
@@ -74,7 +85,7 @@ class MetaCompilerTest extends TestCase
         ]);
 
         $compiler->compilePage($page);
-        $meta = $page->meta->render();
+        $meta = $page->getMeta()->render();
 
         $this->assertContains('rel="next" href="ABC"', $meta);
         $this->assertContains('rel="prev" href="DEF"', $meta);
