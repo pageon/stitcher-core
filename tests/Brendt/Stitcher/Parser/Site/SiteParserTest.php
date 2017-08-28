@@ -33,10 +33,10 @@ class SiteParserTest extends TestCase
     public function test_general_meta() {
         $siteParser = $this->createSiteParser();
         $site = $siteParser->loadSite();
-        
+
         foreach ($site as $page) {
-            $this->assertNotNull($page->meta);
-            $meta = $page->meta->render();
+            $this->assertNotNull($page->getMeta());
+            $meta = $page->getMeta()->render();
             $this->assertContains('<meta name="viewport" content="width=device-width, initial-scale=1">', $meta);
         }
     }
@@ -45,7 +45,7 @@ class SiteParserTest extends TestCase
         $siteParser = $this->createSiteParser();
         $siteParser->loadSite();
         $htaccess = App::get('service.htaccess');
-        
+
         $parsed = $htaccess->parse();
 
         $this->assertContains('RedirectMatch 301 ^/redirect_test$ /', $parsed);
