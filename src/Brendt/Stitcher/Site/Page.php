@@ -27,7 +27,8 @@ use Brendt\Stitcher\Site\Http\Header;
  */
 class Page
 {
-    public $meta;
+    protected $meta;
+    protected $data;
     protected $id;
     protected $templatePath;
     protected $variables = [];
@@ -42,6 +43,7 @@ class Page
         }
 
         $this->id = $id;
+        $this->data = $data;
         $this->templatePath = $data['template'];
         $this->meta = $meta ?? new Meta();
 
@@ -54,6 +56,10 @@ class Page
                 $this->adapters[$type] = $adapterConfig;
             }
         }
+    }
+
+    public static function copy(Page $page): Page {
+        return new Page($page->id, $page->data);
     }
 
     /**
@@ -207,4 +213,7 @@ class Page
         return $this->headers;
     }
 
+    public function getMeta(): Meta {
+        return $this->meta;
+    }
 }

@@ -24,6 +24,7 @@ class TemplatePlugin
     private $responsiveFactory;
     private $cssMinifier;
     private $minify;
+    /** @var Page */
     private $page;
 
     public function __construct(
@@ -56,7 +57,7 @@ class TemplatePlugin
      * @return string
      */
     public function meta(array $extra = []) : string {
-        $meta = $this->page ? $this->page->meta : new Meta();
+        $meta = $this->page ? $this->page->getMeta() : new Meta();
         foreach ($extra as $name => $content) {
             $meta->name($name, $content);
         }

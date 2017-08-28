@@ -51,14 +51,14 @@ class CollectionAdapter extends AbstractAdapter
 
             next($this->entries);
         }
-
         return $result;
     }
 
     private function createEntryPage(Page $page, array $entry) : Page {
         $url = str_replace('{' . $this->field . '}', $entry[$this->field], $page->getId());
-        $entryPage = clone $page;
-        $entryPage->meta = clone $page->meta;
+        $entryPage = Page::copy($page);
+        $entryPageMeta = $entryPage->getMeta();
+        $this->metaCompiler->setDefaultMeta($entryPageMeta);
 
         foreach ($entry as $entryVariableName => $entryVariableValue) {
             $this->metaCompiler->compilePageVariable($entryPage, $entryVariableName, $entryVariableValue);
