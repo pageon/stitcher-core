@@ -138,7 +138,7 @@ class PageParserTest extends TestCase
         ]);
 
         $pageParser->parsePage($page);
-        $meta = $page->meta->render();
+        $meta = $page->getMeta()->render();
 
         $this->assertContains('name="title" content="A"', $meta);
         $this->assertContains('name="description" content="B"', $meta);
