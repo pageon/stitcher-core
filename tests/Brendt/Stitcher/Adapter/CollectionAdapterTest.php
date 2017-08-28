@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Adapter;
 
 use Brendt\Stitcher\App;
+use Brendt\Stitcher\Site\Meta\MetaCompiler;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +14,7 @@ class CollectionAdapterTest extends TestCase
         App::init('./tests/config.yml');
     }
 
-    private function createAdapter() : CollectionAdapter {
+    private function createAdapter(): CollectionAdapter {
         return App::get('adapter.collection');
     }
 
@@ -127,23 +128,52 @@ class CollectionAdapterTest extends TestCase
 
         $result = $adapter->transform($page, 'church-a');
         $page = $result['/church-a'];
-        $meta = $page->meta->render();
+        $meta = $page->getMeta()->render();
 
         $this->assertContains('name="description" content="This is a church with the name A"', $meta);
         $this->assertContains('name="image" content="/img/green.jpg"', $meta);
     }
 
     /** @test */
-    public function collection_adapter_keeps_page_meta_when_parsing_pages() {
+    public function collection_adapter_keeps_default_meta_when_parsing_pages() {
         $page = $this->createPage();
-        $page->meta->name('test', 'test');
         $adapter = $this->createAdapter();
 
         $result = $adapter->transform($page, 'church-a');
+        /** @var Page $entryPage */
         $entryPage = $result['/church-a'];
-        $meta = $entryPage->meta->render();
+        $meta = $entryPage->getMeta()->render();
 
-        $this->assertContains('name="test" content="test"', $meta);
+        $this->assertContains('name="viewport"', $meta);
+    }
+
+    /** @test */
+    public function meta_is_parsed_for_every_individual_page() {
+        $parserFactory = App::init('./tests/config.yml')::get('factory.parser');
+        $compiler = new MetaCompiler();
+        $page = new Page('/entries/{title}', [
+            'template'  => 'home',
+            'variables' => [
+                'entries' => 'collection_big.yml',
+            ],
+            'adapters'  => [
+                'collection' => [
+                    'field'    => 'title',
+                    'variable' => 'entries',
+                ],
+            ],
+        ]);
+        /** @var CollectionAdapter $collectionAdapter */
+        $collectionAdapter = new CollectionAdapter($parserFactory, $compiler);
+
+        $pages = $collectionAdapter->transformPage($page);
+        /** @var Page $page */
+        $page = $pages['/entries/i'];
+        $meta = $page->getMeta()->render();
+
+        $this->assertContains('name="twitter:title" content="i"', $meta);
+        $this->assertContains('name="title" content="i"', $meta);
+        $this->assertContains('property="og:title" content="i"', $meta);
     }
 
     public function test_browse() {

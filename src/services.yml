@@ -91,6 +91,7 @@ services:
         arguments: ['@service.htaccess']
     compiler.meta:
         class: Brendt\Stitcher\Site\Meta\MetaCompiler
+        arguments: ['%meta%']
 
     # Factory
     factory.parser:
