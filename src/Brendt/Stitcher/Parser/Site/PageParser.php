@@ -8,11 +8,9 @@ use Brendt\Stitcher\Factory\HeaderCompilerFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
 use Brendt\Stitcher\Lib\Browser;
-use Brendt\Stitcher\Site\Http\HeaderCompiler;
 use Brendt\Stitcher\Site\Meta\MetaCompiler;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Template\TemplatePlugin;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 class PageParser
