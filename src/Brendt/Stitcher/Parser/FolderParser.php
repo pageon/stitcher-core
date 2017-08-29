@@ -4,7 +4,6 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Lib\Browser;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
