@@ -83,7 +83,7 @@ services:
         arguments: ['@browser', '@service.parsedown']
     parser.sass:
         class: Brendt\Stitcher\Parser\SassParser
-        arguments: ['@service.sass', '%directories.src%']
+        arguments: ['@browser', '@service.sass']
     parser.yaml:
         class: Brendt\Stitcher\Parser\YamlParser
         arguments: ['@factory.parser', '%directories.src%']
