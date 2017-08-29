@@ -15,7 +15,7 @@ class JsonParser extends AbstractArrayParser
 {
     private $browser;
 
-    public function __construct(ParserFactory $parserFactory, Browser $browser) {
+    public function __construct(Browser $browser, ParserFactory $parserFactory) {
         parent::__construct($parserFactory);
 
         $this->browser = $browser;

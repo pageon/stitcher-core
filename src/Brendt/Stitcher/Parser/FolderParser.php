@@ -13,12 +13,12 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class FolderParser implements Parser
 {
-    private $parserFactory;
     private $browser;
+    private $parserFactory;
 
-    public function __construct(ParserFactory $parserFactory, Browser $browser) {
-        $this->parserFactory = $parserFactory;
+    public function __construct(Browser $browser, ParserFactory $parserFactory) {
         $this->browser = $browser;
+        $this->parserFactory = $parserFactory;
     }
 
     public function parse($path) {

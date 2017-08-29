@@ -71,13 +71,13 @@ services:
         arguments: ['@browser']
     parser.folder:
         class: Brendt\Stitcher\Parser\FolderParser
-        arguments: ['@factory.parser', '@browser']
+        arguments: ['@browser', '@factory.parser']
     parser.image:
         class: Brendt\Stitcher\Parser\ImageParser
         arguments: ['@stitcher', '@factory.image']
     parser.json:
         class: Brendt\Stitcher\Parser\JsonParser
-        arguments: ['@factory.parser', '@browser']
+        arguments: ['@browser', '@factory.parser']
     parser.markdown:
         class: Brendt\Stitcher\Parser\MarkdownParser
         arguments: ['@browser', '@service.parsedown']
