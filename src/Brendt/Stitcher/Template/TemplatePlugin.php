@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Stitcher\Lib\Browser;
 use Pageon\Html\Meta\Meta;
 use Brendt\Image\ResponsiveFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
@@ -18,8 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class TemplatePlugin
 {
-    private $publicDir;
-    private $srcDir;
+    private $browser;
     private $parserFactory;
     private $responsiveFactory;
     private $cssMinifier;
@@ -28,18 +28,16 @@ class TemplatePlugin
     private $page;
 
     public function __construct(
+        Browser $browser,
         ParserFactory $parserFactory,
         ResponsiveFactory $responsiveFactory,
         CSSmin $cssMinifier,
-        string $publicDir,
-        string $srcDir,
         bool $minify
     ) {
+        $this->browser = $browser;
         $this->parserFactory = $parserFactory;
         $this->responsiveFactory = $responsiveFactory;
         $this->cssMinifier = $cssMinifier;
-        $this->publicDir = $publicDir;
-        $this->srcDir = $srcDir;
         $this->minify = $minify;
     }
 
@@ -94,7 +92,7 @@ class TemplatePlugin
         }
         $srcParsed = preg_replace('/\.scss|\.sass/', '.css', $src);
         $fs = new Filesystem();
-        $dst = "{$this->publicDir}/$srcParsed";
+        $dst = "{$this->browser->getPublicDir()}/$srcParsed";
 
         if ($push) {
             $this->page->addHeader(Header::link("\"</{$srcParsed}>; rel=preload; as=style\""));
@@ -137,7 +135,7 @@ class TemplatePlugin
         }
 
         $fs = new Filesystem();
-        $dst = "{$this->publicDir}/$src";
+        $dst = "{$this->browser->getPublicDir()}/$src";
 
         if ($push) {
             $this->page->addHeader(Header::link("\"</{$src}>; rel=preload; as=script\""));
@@ -197,7 +195,7 @@ class TemplatePlugin
      */
     public function file($src, bool $push = false) {
         $src = trim($src, '/');
-        $files = Finder::create()->in($this->srcDir)->path($src)->getIterator();
+        $files = $this->browser->src()->path($src)->files()->getIterator();
         $files->rewind();
         /** @var SplFileInfo $file */
         $file = $files->current();
@@ -207,7 +205,7 @@ class TemplatePlugin
         }
 
         $fs = new Filesystem();
-        $dst = "{$this->publicDir}/{$src}";
+        $dst = "{$this->browser->getPublicDir()}/{$src}";
 
         if ($push) {
             $this->page->addHeader(Header::link("\"</{$src}>; rel=preload; as=document\""));

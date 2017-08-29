@@ -147,11 +147,10 @@ services:
     service.template.plugin:
         class: Brendt\Stitcher\Template\TemplatePlugin
         arguments:
+            - '@browser'
             - '@factory.parser'
             - '@factory.image'
             - '@service.minifier.css'
-            - '%directories.public%'
-            - '%directories.src%'
             - '%engines.minifier%'
             - '%meta%'
     service.htaccess:
