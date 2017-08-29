@@ -77,7 +77,7 @@ services:
         arguments: ['@stitcher', '@factory.image']
     parser.json:
         class: Brendt\Stitcher\Parser\JsonParser
-        arguments: ['@factory.parser', '%directories.src%']
+        arguments: ['@factory.parser', '@browser']
     parser.markdown:
         class: Brendt\Stitcher\Parser\MarkdownParser
         arguments: ['%directories.src%', '@service.parsedown']
