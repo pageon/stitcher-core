@@ -2,16 +2,21 @@
 
 namespace Brendt\Stitcher\Site\Http;
 
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Page;
 use PHPUnit\Framework\TestCase;
 
 class HtaccessTest extends TestCase
 {
+    private function getBrowser() : Browser {
+        return new Browser('./tests/src', './tests/public', './tests/src/template', './tests/.cache');
+    }
+
     /**
      * @test
      */
     public function it_can_load_the_file() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $this->assertNotNull($htaccess);
     }
@@ -20,7 +25,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_create_a_page_block() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $page = new Page('/blog/read', ['template' => 'blog/overview']);
         $htaccess->getPageBlock($page);
@@ -32,7 +37,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_adds_index_option() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $this->assertContains('Options -Indexes', $htaccess->parse());
     }
@@ -41,7 +46,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_clear_page_blocks() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $htaccess->clearPageBlocks();
 
@@ -52,7 +57,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_parse_https_rewrite() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
         $htaccess->setRedirectHttps(true);
 
         $parsed = $htaccess->parse();
@@ -65,7 +70,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_can_parse_www_rewrite() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
         $htaccess->setRedirectWww(true);
 
         $parsed = $htaccess->parse();
@@ -78,7 +83,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_always_parses_html_rewrite() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $parsed = $htaccess->parse();
 
@@ -90,7 +95,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_keeps_default_rewrite_options() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
 
         $parsed = $htaccess->parse();
 
@@ -102,7 +107,7 @@ class HtaccessTest extends TestCase
      * @test
      */
     public function it_parses_www_rewrite_before_https() {
-        $htaccess = new Htaccess('./tests/src');
+        $htaccess = new Htaccess($this->getBrowser());
         $htaccess->setRedirectWww(true);
         $htaccess->setRedirectHttps(true);
 

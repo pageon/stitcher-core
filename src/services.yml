@@ -155,7 +155,7 @@ services:
             - '%meta%'
     service.htaccess:
         class: Brendt\Stitcher\Site\Http\Htaccess
-        arguments: ['%directories.public%']
+        arguments: ['@browser']
         calls:
             - ['setRedirectWww', ['%redirect.www%']]
             - ['setRedirectHttps', ['%redirect.https%']]
