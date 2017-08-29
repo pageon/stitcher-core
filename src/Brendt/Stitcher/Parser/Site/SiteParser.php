@@ -15,7 +15,6 @@ use Pageon\Pcntl\Manager;
 use Pageon\Pcntl\PageRenderProcess;
 use Pageon\Pcntl\ProcessCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
