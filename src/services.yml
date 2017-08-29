@@ -171,8 +171,7 @@ services:
     parser.site:
         class: Brendt\Stitcher\Parser\Site\SiteParser
         arguments:
-            - '%directories.src%'
-            - '%directories.public%'
+            - '@browser'
             - '%environment%'
             - '%async%'
             - '@service.event.dispatcher'
