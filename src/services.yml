@@ -34,7 +34,7 @@ services:
     # Command
     command.generate:
         class: Brendt\Stitcher\Command\GenerateCommand
-        arguments: ['%directories.public%', '@stitcher', '@service.event.dispatcher']
+        arguments: ['@browser', '@stitcher', '@service.event.dispatcher']
     command.clean:
         class: Brendt\Stitcher\Command\CleanCommand
     command.install:

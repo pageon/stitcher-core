@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Command;
 
 use Brendt\Stitcher\Event\Event;
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Parser\Site\SiteParser;
@@ -18,14 +19,14 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 {
     const ROUTE = 'route';
 
+    private $browser;
     private $stitcher;
     private $output;
-    private $publicDir;
 
-    public function __construct(string $publicDir, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
+    public function __construct(Browser $browser, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
         parent::__construct();
 
-        $this->publicDir = $publicDir;
+        $this->browser = $browser;
         $this->stitcher = $stitcher;
         $eventDispatcher->addSubscriber($this);
     }
@@ -53,9 +54,9 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $processTime = round($endTime - $startTime, 3);
 
         if ($route) {
-            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
+            $output->writeln("\n<fg=green>{$route}</> successfully generated in <fg=green>{$this->browser->getPublicDir()}</>. ({$processTime}s)");
         } else {
-            $output->writeln("\nSite successfully generated in <fg=green>{$this->publicDir}</>. ({$processTime}s)");
+            $output->writeln("\nSite successfully generated in <fg=green>{$this->browser->getPublicDir()}</>. ({$processTime}s)");
         }
     }
 
