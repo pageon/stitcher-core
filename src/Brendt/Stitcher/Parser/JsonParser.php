@@ -4,7 +4,7 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Exception\ParserException;
 use Brendt\Stitcher\Factory\ParserFactory;
-use Symfony\Component\Finder\Finder;
+use Brendt\Stitcher\Lib\Browser;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -12,12 +12,12 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class JsonParser extends AbstractArrayParser
 {
-    private $srcDir;
+    private $browser;
 
-    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+    public function __construct(Browser $browser, ParserFactory $parserFactory) {
         parent::__construct($parserFactory);
 
-        $this->srcDir = $srcDir;
+        $this->browser = $browser;
     }
 
     public function parse($path = '*.json') {
@@ -27,7 +27,7 @@ class JsonParser extends AbstractArrayParser
 
         $data = [];
         /** @var SplFileInfo[] $files */
-        $files = Finder::create()->files()->in($this->srcDir)->path($path);
+        $files = $this->browser->src()->path($path)->files();
 
         foreach ($files as $file) {
             $parsed = json_decode($file->getContents(), true);

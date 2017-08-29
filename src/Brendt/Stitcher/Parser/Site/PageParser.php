@@ -7,24 +7,23 @@ use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Factory\HeaderCompilerFactory;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Factory\TemplateEngineFactory;
-use Brendt\Stitcher\Site\Http\HeaderCompiler;
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Meta\MetaCompiler;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Template\TemplatePlugin;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 class PageParser
 {
+    private $browser;
     private $parserFactory;
     private $metaCompiler;
     private $templatePlugin;
-    private $templateDir;
     private $adapterFactory;
     private $headerCompiler;
 
     public function __construct(
-        string $templateDir,
+        Browser $browser,
         AdapterFactory $adapterFactory,
         ParserFactory $parserFactory,
         HeaderCompilerFactory $headerCompilerFactory,
@@ -32,8 +31,7 @@ class PageParser
         TemplatePlugin $templatePlugin,
         MetaCompiler $metaCompiler
     ) {
-        $this->templateDir = $templateDir;
-
+        $this->browser = $browser;
         $this->adapterFactory = $adapterFactory;
         $this->parserFactory = $parserFactory;
         $this->metaCompiler = $metaCompiler;
@@ -55,7 +53,7 @@ class PageParser
         $templateExtensionsRegex = '/\.(' . implode('|', $templateExtensions) . ')/';
 
         /** @var SplFileInfo[] $files */
-        $files = Finder::create()->files()->in($this->templateDir)->name($templateExtensionsRegex);
+        $files = $this->browser->template()->name($templateExtensionsRegex)->files();
         $templates = [];
 
         foreach ($files as $file) {
