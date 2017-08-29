@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser\Site;
 
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Seo\SiteMap;
 use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Event\Event;
@@ -14,7 +15,6 @@ use Pageon\Pcntl\Manager;
 use Pageon\Pcntl\PageRenderProcess;
 use Pageon\Pcntl\ProcessCollection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -22,79 +22,22 @@ use Symfony\Component\Yaml\Yaml;
 class SiteParser
 {
     const EVENT_PARSER_INIT = 'parser.initialised';
-
     const EVENT_PAGE_PARSING = 'page.parsing';
-
     const EVENT_PAGE_PARSED = 'page.parsed';
-
     const TOKEN_REDIRECT = 'redirect';
 
-    /**
-     * @var string
-     */
+    private $browser;
     private $filter;
-
-    /**
-     * @var string
-     */
-    private $srcDir;
-
-    /**
-     * @var array
-     */
     private $metaConfig;
-
-    /**
-     * @var EventDispatcher
-     */
     private $eventDispatcher;
-
-    /**
-     * @var PageParser
-     */
     private $pageParser;
-
-    /**
-     * @var Htaccess
-     */
     private $htaccess;
-
-    /**
-     * @var string
-     */
-    private $publicDir;
-
-    /**
-     * @var bool
-     */
     private $async;
-
-    /**
-     * @var string
-     */
     private $environment;
-
-    /**
-     * @var SiteMap
-     */
     private $siteMap;
 
-    /**
-     * SiteParser constructor.
-     *
-     * @param string          $srcDir
-     * @param string          $publicDir
-     * @param string          $environment
-     * @param bool            $async
-     * @param EventDispatcher $eventDispatcher
-     * @param PageParser      $pageParser
-     * @param Htaccess        $htaccess
-     * @param SiteMap         $siteMap
-     * @param array           $metaConfig
-     */
     public function __construct(
-        string $srcDir,
-        string $publicDir,
+        Browser $browser,
         string $environment,
         bool $async,
         EventDispatcher $eventDispatcher,
@@ -103,8 +46,7 @@ class SiteParser
         SiteMap $siteMap,
         array $metaConfig = []
     ) {
-        $this->srcDir = $srcDir;
-        $this->publicDir = $publicDir;
+        $this->browser = $browser;
         $this->eventDispatcher = $eventDispatcher;
         $this->pageParser = $pageParser;
         $this->htaccess = $htaccess;
@@ -127,7 +69,7 @@ class SiteParser
      */
     public function loadSite(array $routes = []) : Site {
         /** @var SplFileInfo[] $files */
-        $files = Finder::create()->files()->in("{$this->srcDir}/site")->name('*.yml');
+        $files = $this->browser->src()->path('site')->name('*.yml')->files();
         $site = new Site();
 
         foreach ($files as $file) {
@@ -181,7 +123,7 @@ class SiteParser
 
         $site = $this->loadSite((array) $routes);
         $this->eventDispatcher->dispatch(self::EVENT_PARSER_INIT, Event::create(['site' => $site]));
-        
+
         foreach ($site as $page) {
             $pageRenderProcess = $this->createPageRenderProcess($page, $filterValue);
             $this->eventDispatcher->dispatch(self::EVENT_PAGE_PARSING, Event::create(['page' => $page]));
@@ -212,9 +154,9 @@ class SiteParser
      * @return PageRenderProcess
      */
     private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess {
-        $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->publicDir, $filterValue);
+        $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->browser->getPublicDir(), $filterValue);
         $pageRenderProcess->setEnvironment($this->environment);
-        
+
         $pageRenderProcess->onSuccess(function ($pageIds) use ($page) {
             if ($this->siteMap->isEnabled()) {
                 foreach ($pageIds as $pageId) {

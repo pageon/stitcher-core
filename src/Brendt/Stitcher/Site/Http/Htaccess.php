@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Site\Http;
 
 use Brendt\Stitcher\Exception\ConfigurationException;
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Page;
 use Symfony\Component\Filesystem\Filesystem;
 use Tivie\HtaccessParser\HtaccessContainer;
@@ -23,8 +24,8 @@ class Htaccess
     private $redirectWww = false;
     private $redirects = [];
 
-    public function __construct(string $publicDir) {
-        $path = "{$publicDir}/.htaccess";
+    public function __construct(Browser $browser) {
+        $path = "{$browser->getPublicDir()}/.htaccess";
         $this->fs = new Filesystem();
 
         if (!$this->fs->exists($path)) {
