@@ -17,15 +17,15 @@ class Browser
     }
 
     public function src() : Finder {
-        return Finder::create()->path($this->srcDir);
+        return Finder::create()->in($this->srcDir);
     }
 
     public function public(): Finder {
-        return Finder::create()->path($this->publicDir);
+        return Finder::create()->in($this->publicDir);
     }
 
     public function template(): Finder {
-        return Finder::create()->path($this->templateDir);
+        return Finder::create()->in($this->templateDir);
     }
 
     public function getSrcDir() : string {
