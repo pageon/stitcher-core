@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template\Smarty;
 
+use Brendt\Stitcher\Lib\Browser;
 use \Smarty;
 use Brendt\Stitcher\Template\TemplateEngine;
 use Symfony\Component\Finder\SplFileInfo;
@@ -11,11 +12,11 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class SmartyEngine extends Smarty implements TemplateEngine
 {
-    public function __construct($templateDir = './src', $cacheDir = './.cache') {
+    public function __construct(Browser $browser) {
         parent::__construct();
 
-        $this->addTemplateDir($templateDir);
-        $this->setCompileDir($cacheDir);
+        $this->addTemplateDir($browser->getTemplateDir());
+        $this->setCompileDir($browser->getCacheDir());
         $this->addPluginsDir([__DIR__]);
 
         $this->caching = false;

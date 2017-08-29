@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template;
 
+use Brendt\Stitcher\Lib\Browser;
 use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
@@ -24,11 +25,10 @@ class TemplatePluginTest extends TestCase
         return App::get('service.template.plugin');
     }
 
-    /**
-     * @return SmartyEngine
-     */
-    private function createSmarty() {
-        return new SmartyEngine('./tests/src/template', './tests/.cache');
+    private function createSmarty(): SmartyEngine {
+        $browser = new Browser('./tests/src', './tests/public', './tests/src/template', './tests/.cache');
+
+        return new SmartyEngine($browser);
     }
 
     public function test_css_normal() {
@@ -173,7 +173,7 @@ class TemplatePluginTest extends TestCase
         }
 
         $templatePlugin->setPage(new Page('index', ['template' => 'index'], $meta));
-        
+
         $engine->addTemplateDir('./tests/src/template');
         $result = $engine->fetch('index.tpl');
 
