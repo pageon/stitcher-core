@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Factory\ParserFactory;
+use Brendt\Stitcher\Lib\Browser;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -13,17 +14,17 @@ use Symfony\Component\Finder\SplFileInfo;
 class FolderParser implements Parser
 {
     private $parserFactory;
-    private $srcDir;
+    private $browser;
 
-    public function __construct(ParserFactory $parserFactory, string $srcDir) {
+    public function __construct(ParserFactory $parserFactory, Browser $browser) {
         $this->parserFactory = $parserFactory;
-        $this->srcDir = $srcDir;
+        $this->browser = $browser;
     }
 
     public function parse($path) {
         $path = trim($path, '/');
         /** @var SplFileInfo[] $files */
-        $files = Finder::create()->files()->in("{$this->srcDir}/data/{$path}")->name('*.*');
+        $files = $this->browser->src()->files()->path("data/{$path}")->name('*.*');
         $data = [];
 
         foreach ($files as $file) {
