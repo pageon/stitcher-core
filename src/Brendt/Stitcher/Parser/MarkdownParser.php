@@ -4,7 +4,6 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Lib\Parsedown;
-use Symfony\Component\Finder\Finder;
 
 /**
  * The MarkDownParser takes a path to a markdown file and will parse it to HTML.
