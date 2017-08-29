@@ -3,6 +3,7 @@
 namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Seo\SiteMap;
@@ -18,9 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class Stitcher
 {
-    private $srcDir;
-    private $publicDir;
-    private $templateDir;
+    private $browser;
     private $cdn;
     private $cdnCache;
     private $siteParser;
@@ -28,18 +27,14 @@ class Stitcher
     private $siteMap;
 
     public function __construct(
-        $srcDir,
-        $publicDir,
-        $templateDir,
+        Browser $browser,
         array $cdn,
         bool $cdnCache,
         SiteParser $siteParser,
         Htaccess $htaccess,
         SiteMap $siteMap
     ) {
-        $this->srcDir = $srcDir;
-        $this->publicDir = $publicDir;
-        $this->templateDir = $templateDir;
+        $this->browser = $browser;
         $this->cdn = $cdn;
         $this->cdnCache = $cdnCache;
         $this->siteParser = $siteParser;
@@ -109,13 +104,13 @@ class Stitcher
                 $path = 'index';
             }
 
-            $fs->dumpFile($this->publicDir . "/{$path}.html", $page);
+            $fs->dumpFile($this->browser->getPublicDir() . "/{$path}.html", $page);
         }
     }
 
     public function saveHtaccess() : Stitcher {
         $fs = new Filesystem();
-        $fs->dumpFile("{$this->publicDir}/.htaccess", $this->htaccess->parse());
+        $fs->dumpFile("{$this->browser->getPublicDir()}/.htaccess", $this->htaccess->parse());
 
         return $this;
     }
@@ -126,7 +121,7 @@ class Stitcher
         }
 
         $fs = new Filesystem();
-        $fs->dumpFile("{$this->publicDir}/sitemap.xml", $this->siteMap->render());
+        $fs->dumpFile("{$this->browser->getPublicDir()}/sitemap.xml", $this->siteMap->render());
 
         return $this;
     }
@@ -136,13 +131,13 @@ class Stitcher
 
         foreach ($this->cdn as $resource) {
             $resource = trim($resource, '/');
-            $publicResourcePath = "{$this->publicDir}/{$resource}";
+            $publicResourcePath = "{$this->browser->getPublicDir()}/{$resource}";
 
             if ($this->cdnCache && $fs->exists($publicResourcePath)) {
                 continue;
             }
 
-            $sourceResourcePath = "{$this->srcDir}/{$resource}";
+            $sourceResourcePath = "{$this->browser->getSrcDir()}/{$resource}";
             $this->copyCdnFiles($sourceResourcePath, $publicResourcePath);
         }
 
