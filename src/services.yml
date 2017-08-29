@@ -71,7 +71,7 @@ services:
         arguments: ['@browser']
     parser.folder:
         class: Brendt\Stitcher\Parser\FolderParser
-        arguments: ['@factory.parser', '%directories.src%']
+        arguments: ['@factory.parser', '@browser']
     parser.image:
         class: Brendt\Stitcher\Parser\ImageParser
         arguments: ['@stitcher', '@factory.image']
