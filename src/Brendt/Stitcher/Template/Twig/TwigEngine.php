@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Template\Twig;
 
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Template\TemplateEngine;
 use Brendt\Stitcher\Template\TemplatePlugin;
 use Symfony\Component\Finder\SplFileInfo;
@@ -15,8 +16,8 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
 {
     private $variables = [];
 
-    public function __construct(string $templateDir, TemplatePlugin $templatePlugin) {
-        $loader = new Twig_Loader_Filesystem($templateDir);
+    public function __construct(Browser $browser, TemplatePlugin $templatePlugin) {
+        $loader = new Twig_Loader_Filesystem($browser->getTemplateDir());
 
         parent::__construct($loader, [
             'cache' => false,
