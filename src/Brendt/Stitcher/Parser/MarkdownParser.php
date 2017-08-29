@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Lib\Parsedown;
 use Symfony\Component\Finder\Finder;
 
@@ -10,11 +11,11 @@ use Symfony\Component\Finder\Finder;
  */
 class MarkdownParser implements Parser
 {
-    private $srcDir;
+    private $browser;
     private $parsedown;
 
-    public function __construct(string $srcDir, Parsedown $parsedown) {
-        $this->srcDir = $srcDir;
+    public function __construct(Browser $browser, Parsedown $parsedown) {
+        $this->browser = $browser;
         $this->parsedown = $parsedown;
     }
 
@@ -23,7 +24,7 @@ class MarkdownParser implements Parser
             $path .= '.md';
         }
 
-        $files = Finder::create()->files()->in($this->srcDir)->path($path)->getIterator();
+        $files = $this->browser->src()->path($path)->files()->getIterator();
         $files->rewind();
         $markdownFile = $files->current();
 
