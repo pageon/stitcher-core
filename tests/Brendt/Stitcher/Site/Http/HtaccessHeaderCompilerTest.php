@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Site\Http;
 
+use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Page;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +15,9 @@ class HtaccessHeaderCompilerTest extends TestCase
     private $htaccess;
 
     public function setUp() {
-        $this->htaccess = new Htaccess('./tests/public');
+        $browser = new Browser('./tests/src', './tests/public', './tests/src/template', './tests/.cache');
+
+        $this->htaccess = new Htaccess($browser);
     }
 
     /**
