@@ -2,6 +2,7 @@
 
 namespace Brendt\Stitcher\Parser;
 
+use Brendt\Stitcher\Lib\Browser;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -9,14 +10,14 @@ use Symfony\Component\Finder\Finder;
  */
 class FileParser implements Parser
 {
-    private $srcDir;
+    private $browser;
 
-    public function __construct($srcDir) {
-        $this->srcDir = $srcDir;
+    public function __construct(Browser $browser) {
+        $this->browser = $browser;
     }
 
     public function parse($path) {
-        $files = Finder::create()->files()->in($this->srcDir)->path(trim($path, '/'))->getIterator();
+        $files = $this->browser->src()->files()->path(trim($path, '/'))->getIterator();
         $files->rewind();
         $file = $files->current();
 

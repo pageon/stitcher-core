@@ -68,7 +68,7 @@ services:
         class: Brendt\Stitcher\Parser\DefaultParser
     parser.file:
         class: Brendt\Stitcher\Parser\FileParser
-        arguments: ['%directories.src%']
+        arguments: ['@browser']
     parser.folder:
         class: Brendt\Stitcher\Parser\FolderParser
         arguments: ['@factory.parser', '%directories.src%']
