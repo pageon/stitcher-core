@@ -17,14 +17,19 @@ services:
     stitcher:
         class: Brendt\Stitcher\Stitcher
         arguments:
-            - '%directories.src%'
-            - '%directories.public%'
-            - '%directories.template%'
+            - '@browser'
             - '%cdn%'
             - '%cache.cdn%'
             - '@parser.site'
             - '@service.htaccess'
             - '@service.sitemap'
+
+    browser:
+        class: Brendt\Stitcher\Lib\Browser
+        arguments:
+            - '%directories.src%'
+            - '%directories.public%'
+            - '%directories.template%'
 
     # Command
     command.generate:
