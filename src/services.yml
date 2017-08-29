@@ -139,7 +139,7 @@ services:
         class: \CSSmin
     service.twig:
         class: Brendt\Stitcher\Template\Twig\TwigEngine
-        arguments: ['%directories.template%', '@service.template.plugin']
+        arguments: ['@browser', '@service.template.plugin']
     service.smarty:
         class: Brendt\Stitcher\Template\Smarty\SmartyEngine
         arguments: ['%directories.template%', '%directories.cache%']
