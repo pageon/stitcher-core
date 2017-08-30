@@ -26,7 +26,7 @@ class YamlParser extends AbstractArrayParser
     }
 
     public function parse($path = '*.yml') {
-        if (!strpos($path, '.yml')) {
+        if (!strpos($path, '.yml') && !strpos($path, '.yaml')) {
             $path .= '.yml';
         }
 
