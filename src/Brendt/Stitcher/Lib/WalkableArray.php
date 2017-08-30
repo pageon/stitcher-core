@@ -5,7 +5,6 @@ namespace Brendt\Stitcher\Lib;
 class WalkableArray implements \ArrayAccess, \Iterator
 {
     const TOKEN_NESTING = '.';
-    const TOKEN_REPETITION = '*';
 
     private $array = [];
     private $position = 0;
@@ -18,27 +17,14 @@ class WalkableArray implements \ArrayAccess, \Iterator
         return new self($array);
     }
 
-    public function get($pathParts, array $element = null) {
+    public function get($pathParts) {
         if (!is_array($pathParts)) {
             $pathParts = explode(self::TOKEN_NESTING, $pathParts);
         }
 
-        if (!$element) {
-            $element = $this->array;
-        }
+        $element = $this->array;
 
         foreach ($pathParts as $key => $pathPart) {
-            if ($pathPart === self::TOKEN_REPETITION && is_array($element)) {
-                $result = new self();
-                $partialPath = array_splice($pathParts, $key + 1);
-
-                foreach ($element as $items) {
-                    $result[] = $this->get($partialPath, $items);
-                }
-
-                return $result;
-            }
-
             if (!isset($element[$pathPart])) {
                 return null;
             }
@@ -49,7 +35,7 @@ class WalkableArray implements \ArrayAccess, \Iterator
         return $element;
     }
 
-    public function set($pathParts, $value, &$element = null, array $callbackArguments = []): WalkableArray {
+    public function set($pathParts, $value, array $callbackArguments = []): WalkableArray {
         if (!is_array($pathParts)) {
             $pathParts = explode(self::TOKEN_NESTING, $pathParts);
         }
@@ -58,21 +44,9 @@ class WalkableArray implements \ArrayAccess, \Iterator
         $lastPathKey = key($pathParts);
         reset($pathParts);
 
-        if (!$element) {
-            $element = &$this->array;
-        }
+        $element = &$this->array;
 
         foreach ($pathParts as $key => $pathPart) {
-            if ($pathPart === self::TOKEN_REPETITION && is_array($element)) {
-                $partialPath = array_splice($pathParts, $key + 1);
-
-                foreach ($element as $itemKey => &$item) {
-                    $this->set($partialPath, $value, $item, [new self($item), $itemKey]);
-                }
-
-                return $this;
-            }
-
             if (!isset($element[$pathPart])) {
                 $element[$pathPart] = $key === $lastPathKey ? null : [];
             }
