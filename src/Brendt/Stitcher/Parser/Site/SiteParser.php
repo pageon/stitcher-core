@@ -69,7 +69,7 @@ class SiteParser
      */
     public function loadSite(array $routes = []) : Site {
         /** @var SplFileInfo[] $files */
-        $files = $this->browser->src()->path('site')->name('*.yml')->files();
+        $files = $this->browser->src()->path('site')->name('/.*\.yml|.*\.yaml/')->files();
         $site = new Site();
 
         foreach ($files as $file) {
