@@ -4,6 +4,7 @@ namespace Brendt\Stitcher;
 
 use Brendt\Stitcher\Exception\TemplateNotFoundException;
 use Brendt\Stitcher\Lib\Browser;
+use Brendt\Stitcher\Lib\Cdn;
 use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Site\Http\Htaccess;
 use Brendt\Stitcher\Site\Seo\SiteMap;
@@ -21,22 +22,19 @@ class Stitcher
 {
     private $browser;
     private $cdn;
-    private $cdnCache;
     private $siteParser;
     private $htaccess;
     private $siteMap;
 
     public function __construct(
         Browser $browser,
-        array $cdn,
-        bool $cdnCache,
+        Cdn $cdn,
         SiteParser $siteParser,
         Htaccess $htaccess,
         SiteMap $siteMap
     ) {
         $this->browser = $browser;
         $this->cdn = $cdn;
-        $this->cdnCache = $cdnCache;
         $this->siteParser = $siteParser;
         $this->htaccess = $htaccess;
         $this->siteMap = $siteMap;
@@ -76,7 +74,7 @@ class Stitcher
             $this->htaccess->clearPageBlocks();
         }
 
-        $this->saveCdn();
+        $this->cdn->save();
 
         return $this->siteParser->parse((array) $routes, $filterValue);
     }
@@ -124,34 +122,6 @@ class Stitcher
         $fs->dumpFile("{$this->browser->getPublicDir()}/sitemap.xml", $this->siteMap->render());
 
         return $this;
-    }
-
-    public function saveCdn() : Stitcher {
-        $fs = new Filesystem();
-
-        foreach ($this->cdn as $resource) {
-            $resource = trim($resource, '/');
-            $publicResourcePath = "{$this->browser->getPublicDir()}/{$resource}";
-
-            if ($this->cdnCache && $fs->exists($publicResourcePath)) {
-                continue;
-            }
-
-            $sourceResourcePath = "{$this->browser->getSrcDir()}/{$resource}";
-            $this->copyCdnFiles($sourceResourcePath, $publicResourcePath);
-        }
-
-        return $this;
-    }
-
-    private function copyCdnFiles($sourcePath, $publicPath) {
-        $fs = new Filesystem();
-
-        if (is_dir($sourcePath)) {
-            $fs->mirror($sourcePath, $publicPath);
-        } else {
-            $fs->copy($sourcePath, $publicPath, true);
-        }
     }
 }
 
