@@ -18,8 +18,7 @@ services:
         class: Brendt\Stitcher\Stitcher
         arguments:
             - '@browser'
-            - '%cdn%'
-            - '%cache.cdn%'
+            - '@cdn'
             - '@parser.site'
             - '@service.htaccess'
             - '@service.sitemap'
@@ -31,6 +30,13 @@ services:
             - '%directories.public%'
             - '%directories.template%'
             - '%directories.cache%'
+
+    cdn:
+        class: Brendt\Stitcher\Lib\Cdn
+        arguments:
+            - '@browser'
+            - '%cdn%'
+            - '%cache.cdn%'
 
     # Command
     command.generate:

@@ -104,22 +104,6 @@ class StitcherTest extends TestCase
         $this->assertArrayNotHasKey('/', $blanket);
     }
 
-    public function test_cdn_parser() {
-        $stitcher = $this->createStitcher([
-            'caches.cdn' => true,
-            'cdn' => [
-                'lib/lib.js',
-                'lib/img/logo.png',
-            ],
-        ]);
-
-        $stitcher->saveCdn();
-
-        $fs = new Filesystem();
-        $this->assertTrue($fs->exists('./tests/public/lib/lib.js'));
-        $this->assertTrue($fs->exists('./tests/public/lib/img/logo.png'));
-    }
-
     public function test_stitch_route_multiple() {
         $stitcher = $this->createStitcher();
         $blanket = $stitcher->stitch('/');
@@ -163,7 +147,7 @@ class StitcherTest extends TestCase
     public function test_async() {
         $stitcher = $this->createStitcher(['async' => true]);
         $blanket = $stitcher->stitch('/');
-        
+
         $this->assertEmpty($blanket);
     }
 }
