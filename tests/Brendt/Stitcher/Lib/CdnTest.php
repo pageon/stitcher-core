@@ -8,7 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class CdnTest extends TestCase
 {
     public function test_cdn_parser() {
-
         $browser = new Browser('./tests/src', './tests/public', './tests/src/template', './tests/.cache');
         $cdn = new Cdn($browser, [
             'lib/lib.js',
