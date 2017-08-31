@@ -59,7 +59,17 @@ class Page
     }
 
     public static function copy(Page $page): Page {
-        return new Page($page->id, $page->data);
+        $copy = new Page($page->id, $page->data);
+
+        foreach ($page->variables as $key => $value) {
+            $copy->setVariableValue($key, $value);
+
+            if ($page->isParsedVariable($key)) {
+                $copy->setVariableIsParsed($key);
+            }
+        }
+
+        return $copy;
     }
 
     /**
