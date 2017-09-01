@@ -23,9 +23,7 @@ class Parsedown extends LibParsedown
         $this->imageParser = $imageParser;
     }
 
-    protected function element(array $Element) {
-        $markup = parent::element($Element);
-
+    public function element(array $Element) {
         if (isset($Element['attributes']['href']) && strpos($Element['attributes']['href'], '*') === 0) {
             return $this->parseBlankLink($Element);
         }
@@ -34,7 +32,7 @@ class Parsedown extends LibParsedown
             return $this->parseImageWithSrcset($Element);
         }
 
-        return $markup;
+        return parent::element($Element);
     }
 
     protected function blockFencedCode($Line) {
@@ -60,7 +58,7 @@ class Parsedown extends LibParsedown
 
         $Inline['element']['attributes']['srcset'] = $responsiveImage['srcset'] ?? null;
         $Inline['element']['attributes']['sizes'] = $responsiveImage['sizes'] ?? null;
-        $Inline['element']['attributes']['alt'] = $responsiveImage['alt'] ?? null;
+        $Inline['element']['attributes']['alt'] = $Inline['element']['attributes']['alt'] ?? null;
 
         return $Inline;
     }
@@ -69,7 +67,7 @@ class Parsedown extends LibParsedown
         $href = $Element['attributes']['href'];
         $href = substr($href, 1);
 
-        return "<a href='$href' target='_blank' rel='noreferrer noopener'>{$Element['text']}</a>";
+        return "<a href=\"$href\" target=\"_blank\" rel=\"noreferrer noopener\">{$Element['text']}</a>";
     }
 
     private function parseImageWithSrcset($Element): string {
