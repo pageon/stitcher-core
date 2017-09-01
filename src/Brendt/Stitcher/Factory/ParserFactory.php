@@ -24,7 +24,8 @@ class ParserFactory
 
     private $container;
 
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
 
         self::addTypeFilter(self::EXTENSION_FOLDER, function ($fileName) {
@@ -60,11 +61,13 @@ class ParserFactory
         });
     }
 
-    public static function addTypeFilter(string $type, callable $filter) {
+    public static function addTypeFilter(string $type, callable $filter)
+    {
         self::$typeFilters[$type][] = $filter;
     }
 
-    public function getByFileName($fileName) {
+    public function getByFileName($fileName)
+    {
         if (!is_string($fileName)) {
             return null;
         }
@@ -87,7 +90,8 @@ class ParserFactory
         return $this->getByType($type);
     }
 
-    public function getByType($type) : Parser {
+    public function getByType($type) : Parser
+    {
         $key = "parser.{$type}";
 
         if (!$this->container->has($key)) {

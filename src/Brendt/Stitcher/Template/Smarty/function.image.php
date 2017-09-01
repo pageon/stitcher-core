@@ -11,7 +11,8 @@ use Brendt\Stitcher\Template\TemplatePlugin;
  *
  * @see \Brendt\Stitcher\Template\EnginePlugin::image()
  */
-function smarty_function_image(array $params, Smarty_Internal_Template $template) {
+function smarty_function_image(array $params, Smarty_Internal_Template $template)
+{
     /** @var TemplatePlugin $plugin */
     $plugin = App::get('service.template.plugin');
 

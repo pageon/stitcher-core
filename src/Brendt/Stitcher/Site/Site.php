@@ -12,40 +12,49 @@ class Site implements Iterator
     /** @var int */
     private $position = 0;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->position = 0;
     }
 
-    public function getPages() : array {
+    public function getPages() : array
+    {
         return $this->pages;
     }
 
-    public function setPages(array $pages) {
+    public function setPages(array $pages)
+    {
         $this->pages = $pages;
         $this->rewind();
     }
 
-    public function addPage(Page $page) {
+    public function addPage(Page $page)
+    {
         $this->pages[] = $page;
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         $this->position = 0;
     }
 
-    public function current() {
+    public function current()
+    {
         return $this->pages[$this->position];
     }
 
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
-    public function next() {
+    public function next()
+    {
         ++$this->position;
     }
 
-    public function valid() {
+    public function valid()
+    {
         return isset($this->pages[$this->position]);
     }
 }

@@ -14,12 +14,14 @@ class TemplateEngineFactory
     private $container;
     private $templateEngine;
 
-    public function __construct(ContainerInterface $container, string $templateEngine) {
+    public function __construct(ContainerInterface $container, string $templateEngine)
+    {
         $this->container = $container;
         $this->templateEngine = $templateEngine;
     }
 
-    public function getByType($type) : TemplateEngine {
+    public function getByType($type) : TemplateEngine
+    {
         switch ($type) {
             case self::TWIG_ENGINE:
                 return $this->container->get('service.twig');
@@ -30,7 +32,8 @@ class TemplateEngineFactory
         }
     }
 
-    public function getDefault() : TemplateEngine {
+    public function getDefault() : TemplateEngine
+    {
         return $this->getByType($this->templateEngine);
     }
 }

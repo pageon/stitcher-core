@@ -12,7 +12,8 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class SmartyEngine extends Smarty implements TemplateEngine
 {
-    public function __construct(Browser $browser) {
+    public function __construct(Browser $browser)
+    {
         parent::__construct();
 
         $this->addTemplateDir($browser->getTemplateDir());
@@ -22,11 +23,13 @@ class SmartyEngine extends Smarty implements TemplateEngine
         $this->caching = false;
     }
 
-    public function renderTemplate(SplFileInfo $template) {
+    public function renderTemplate(SplFileInfo $template)
+    {
         return $this->fetch($template->getRealPath());
     }
 
-    public function addTemplateVariables(array $variables) {
+    public function addTemplateVariables(array $variables)
+    {
         foreach ($variables as $name => $variable) {
             $this->assign($name, $variable);
         }
@@ -34,29 +37,34 @@ class SmartyEngine extends Smarty implements TemplateEngine
         return $this;
     }
 
-    public function clearTemplateVariables() {
+    public function clearTemplateVariables()
+    {
         $this->clearAllAssign();
 
         return $this;
     }
 
-    public function addTemplateVariable($name, $value) {
+    public function addTemplateVariable($name, $value)
+    {
         $this->assign($name, $value);
 
         return $this;
     }
 
-    public function hasTemplateVariable(string $name) : bool {
+    public function hasTemplateVariable(string $name) : bool
+    {
         return $this->getTemplateVars($name) != null;
     }
 
-    public function clearTemplateVariable($variable) {
+    public function clearTemplateVariable($variable)
+    {
         $this->clearAssign($variable);
 
         return $this;
     }
 
-    public function getTemplateExtensions(): array {
+    public function getTemplateExtensions() : array
+    {
         return ['tpl'];
     }
 }

@@ -28,7 +28,8 @@ class PaginationAdapter extends AbstractAdapter
     private $entriesPerPage = null;
     private $entries = [];
 
-    public function transformPage(Page $page, $filter = null) : array {
+    public function transformPage(Page $page, $filter = null) : array
+    {
         $this->loadConfig($page);
 
         $index = 0;
@@ -51,7 +52,8 @@ class PaginationAdapter extends AbstractAdapter
         return $result;
     }
 
-    private function createPaginatedPage(Page $page, int $pageIndex, array $pageEntries) : Page {
+    private function createPaginatedPage(Page $page, int $pageIndex, array $pageEntries) : Page
+    {
         $url = "{$page->getId()}/page-{$pageIndex}";
         $pagination = $this->createPagination($page->getId(), $pageIndex);
         $paginatedPage = clone $page;
@@ -67,7 +69,8 @@ class PaginationAdapter extends AbstractAdapter
         return $paginatedPage;
     }
 
-    private function createMainPage(string $pageId, array &$result) {
+    private function createMainPage(string $pageId, array &$result)
+    {
         $firstPage = reset($result);
 
         if (!$firstPage) {
@@ -79,7 +82,8 @@ class PaginationAdapter extends AbstractAdapter
         $result[$pageId] = $mainPage;
     }
 
-    private function createPagination($pageId, $pageIndex) {
+    private function createPagination($pageId, $pageIndex)
+    {
         $next = count($this->entries) ? $pageIndex + 1 : null;
         $nextUrl = $next ? "{$pageId}/page-{$next}" : null;
         $previous = $pageIndex > 1 ? $pageIndex - 1 : null;
@@ -99,7 +103,8 @@ class PaginationAdapter extends AbstractAdapter
         ];
     }
 
-    private function loadConfig(Page $page) {
+    private function loadConfig(Page $page)
+    {
         $config = $page->getAdapterConfig(AdapterFactory::PAGINATION_ADAPTER);
 
         if (!isset($config['variable'])) {

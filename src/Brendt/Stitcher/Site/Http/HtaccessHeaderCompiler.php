@@ -9,11 +9,13 @@ class HtaccessHeaderCompiler implements HeaderCompiler
 {
     private $htaccess;
 
-    public function __construct(Htaccess $htaccess) {
+    public function __construct(Htaccess $htaccess)
+    {
         $this->htaccess = $htaccess;
     }
 
-    public function compilePage(Page $page) {
+    public function compilePage(Page $page)
+    {
         $headers = $page->getHeaders();
         if (!count($headers)) {
             return;

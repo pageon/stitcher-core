@@ -9,15 +9,18 @@ class WalkableArray implements \ArrayAccess, \Iterator
     private $array = [];
     private $position = 0;
 
-    public function __construct(array $array = []) {
+    public function __construct(array $array = [])
+    {
         $this->array = $array;
     }
 
-    public static function fromArray(array $array): WalkableArray {
+    public static function fromArray(array $array) : WalkableArray
+    {
         return new self($array);
     }
 
-    public function get($pathParts) {
+    public function get($pathParts)
+    {
         if (!is_array($pathParts)) {
             $pathParts = explode(self::TOKEN_NESTING, $pathParts);
         }
@@ -35,7 +38,8 @@ class WalkableArray implements \ArrayAccess, \Iterator
         return $element;
     }
 
-    public function set($pathParts, $value, array $callbackArguments = []): WalkableArray {
+    public function set($pathParts, $value, array $callbackArguments = []) : WalkableArray
+    {
         if (!is_array($pathParts)) {
             $pathParts = explode(self::TOKEN_NESTING, $pathParts);
         }
@@ -65,22 +69,26 @@ class WalkableArray implements \ArrayAccess, \Iterator
         return $this;
     }
 
-    public function toArray(): array {
+    public function toArray() : array
+    {
         $array = $this->array;
         reset($array);
 
         return $array;
     }
 
-    public function current() {
+    public function current()
+    {
         return current($this->array);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->array[$offset]) ? $this->array[$offset] : $this->get($offset);
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         if (is_null($offset)) {
             $this->array[] = $value;
         } elseif (isset($this->array[$offset])) {
@@ -90,27 +98,33 @@ class WalkableArray implements \ArrayAccess, \Iterator
         }
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->array[$offset]) || $this->get($offset) !== null;
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->array[$offset]);
     }
 
-    public function next() {
+    public function next()
+    {
         ++$this->position;
     }
 
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
-    public function valid() {
+    public function valid()
+    {
         return isset($this->array[$this->position]);
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         $this->position = 0;
     }
 }

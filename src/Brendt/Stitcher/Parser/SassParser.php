@@ -4,7 +4,6 @@ namespace Brendt\Stitcher\Parser;
 
 use Brendt\Stitcher\Lib\Browser;
 use Leafo\ScssPhp\Compiler;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -15,13 +14,15 @@ class SassParser implements Parser
     private $browser;
     private $sass;
 
-    public function __construct(Browser $browser, Compiler $sass) {
+    public function __construct(Browser $browser, Compiler $sass)
+    {
         $this->sass = $sass;
         $this->browser = $browser;
         $this->sass->addImportPath("{$this->browser->getSrcDir()}/css");
     }
 
-    public function parse($path) {
+    public function parse($path)
+    {
         /** @var SplFileInfo[] $files */
         $files = $this->browser->src()->path(trim($path, '/'))->files();
         $data = '';

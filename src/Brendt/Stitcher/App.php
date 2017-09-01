@@ -13,7 +13,8 @@ class App
 {
     protected static $container;
 
-    public static function init(string $configPath = './config.yml', array $runtimeConfig = []) : App {
+    public static function init(string $configPath = './config.yml', array $runtimeConfig = []) : App
+    {
         self::$container = new ContainerBuilder();
 
         $configFile = Config::getConfigFile($configPath);
@@ -40,7 +41,8 @@ class App
         return new self();
     }
 
-    public static function loadPlugins(array $config, YamlFileLoader $serviceLoader) {
+    public static function loadPlugins(array $config, YamlFileLoader $serviceLoader)
+    {
         if (!isset($config['plugins'])) {
             return;
         }
@@ -61,7 +63,8 @@ class App
         }
     }
 
-    public static function loadPluginConfig($configFilePath) {
+    public static function loadPluginConfig($configFilePath)
+    {
         if (!$configFilePath) {
             return;
         }
@@ -76,7 +79,8 @@ class App
         }
     }
 
-    public static function loadPluginServices($servicePath, YamlFileLoader $serviceLoader) {
+    public static function loadPluginServices($servicePath, YamlFileLoader $serviceLoader)
+    {
         if (!$servicePath) {
             return;
         }
@@ -84,15 +88,18 @@ class App
         $serviceLoader->load($servicePath);
     }
 
-    public static function get(string $id) {
+    public static function get(string $id)
+    {
         return self::$container->get($id);
     }
 
-    public static function getParameter(string $key) {
+    public static function getParameter(string $key)
+    {
         return self::$container->getParameter($key);
     }
 
-    public static function setApplication(string $id, Application $application) {
+    public static function setApplication(string $id, Application $application)
+    {
         self::$container->set($id, $application);
     }
 }

@@ -13,7 +13,8 @@ class MetaCompiler
     private $compilers = [];
     private $metaConfig;
 
-    public function __construct(array $metaConfig = []) {
+    public function __construct(array $metaConfig = [])
+    {
         $this->metaConfig = $metaConfig;
 
         $this->addCompiler('title', [$this, 'compileTitle']);
@@ -24,19 +25,22 @@ class MetaCompiler
         $this->addCompiler('_name', [$this, 'compileNamedMeta']);
     }
 
-    public function setDefaultMeta(Meta &$meta) {
+    public function setDefaultMeta(Meta &$meta)
+    {
         foreach ($this->metaConfig as $name => $value) {
             $meta->name($name, $value);
         }
     }
 
-    public function addCompiler(string $name, callable $callback) : MetaCompiler {
+    public function addCompiler(string $name, callable $callback) : MetaCompiler
+    {
         $this->compilers[$name] = $callback;
 
         return $this;
     }
 
-    public function compilePage(Page $page) {
+    public function compilePage(Page $page)
+    {
         $variables = $page->getVariables();
 
         foreach ($variables as $name => $data) {
@@ -48,7 +52,8 @@ class MetaCompiler
         }
     }
 
-    public function compilePageVariable(Page $page, string $name, $data, bool $force = false) {
+    public function compilePageVariable(Page $page, string $name, $data, bool $force = false)
+    {
         $isCustomCompiler = isset($this->compilers[$name]);
 
         if (!$isCustomCompiler && !$force) {
@@ -62,15 +67,18 @@ class MetaCompiler
         $compileCallable($page, $data, $name);
     }
 
-    private function compileTitle(Page $page, string $data) {
+    private function compileTitle(Page $page, string $data)
+    {
         $page->getMeta()->title($data);
     }
 
-    private function compileDescription(Page $page, string $data) {
+    private function compileDescription(Page $page, string $data)
+    {
         $page->getMeta()->description($data);
     }
 
-    private function compileImage(Page $page, $data) {
+    private function compileImage(Page $page, $data)
+    {
         if (is_array($data) && isset($data['src'])) {
             $page->getMeta()->image($data['src']);
         } else if (is_string($data)) {
@@ -78,7 +86,8 @@ class MetaCompiler
         }
     }
 
-    private function compilePagination(Page $page, array $pagination) {
+    private function compilePagination(Page $page, array $pagination)
+    {
         if (isset($pagination['next']['url'])) {
             $page->getMeta()->link('next', $pagination['next']['url']);
         }
@@ -88,13 +97,15 @@ class MetaCompiler
         }
     }
 
-    private function compileMeta(Page $page, array $data) {
+    private function compileMeta(Page $page, array $data)
+    {
         foreach ($data as $name => $item) {
             $this->compilePageVariable($page, $name, $item, true);
         }
     }
 
-    private function compileNamedMeta(Page $page, $data, string $name) {
+    private function compileNamedMeta(Page $page, $data, string $name)
+    {
         $page->getMeta()->name($name, $data);
     }
 }

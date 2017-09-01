@@ -40,7 +40,8 @@ class OrderAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transformPage(Page $page, $filter = null) : array {
+    public function transformPage(Page $page, $filter = null) : array
+    {
         $config = $page->getAdapterConfig(AdapterFactory::ORDER_ADAPTER);
         $config = isset($config['variable']) ? [$config['variable'] => $config] : $config;
 
@@ -70,7 +71,8 @@ class OrderAdapter extends AbstractAdapter
         return $result;
     }
 
-    private function validateConfig(array $config = []) {
+    private function validateConfig(array $config = [])
+    {
         if (!isset($config['field'])) {
             throw ConfigurationException::requiredAdapterOptions(AdapterFactory::ORDER_ADAPTER, 'field');
         }

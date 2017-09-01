@@ -16,7 +16,8 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
 {
     private $variables = [];
 
-    public function __construct(Browser $browser, TemplatePlugin $templatePlugin) {
+    public function __construct(Browser $browser, TemplatePlugin $templatePlugin)
+    {
         $loader = new Twig_Loader_Filesystem($browser->getTemplateDir());
 
         parent::__construct($loader, [
@@ -30,39 +31,46 @@ class TwigEngine extends Twig_Environment implements TemplateEngine
         $this->addFunction(new \Twig_SimpleFunction('file', [$templatePlugin, 'file']));
     }
 
-    public function renderTemplate(SplFileInfo $template) {
+    public function renderTemplate(SplFileInfo $template)
+    {
         return $this->render($template->getRelativePathname(), $this->variables);
     }
 
-    public function addTemplateVariables(array $variables) {
+    public function addTemplateVariables(array $variables)
+    {
         $this->variables += $variables;
 
         return $this;
     }
 
-    public function hasTemplateVariable(string $name) : bool {
+    public function hasTemplateVariable(string $name) : bool
+    {
         return isset($this->variables[$name]);
     }
 
-    public function clearTemplateVariables() {
+    public function clearTemplateVariables()
+    {
         $this->variables = [];
 
         return $this;
     }
 
-    public function addTemplateVariable($name, $value) {
+    public function addTemplateVariable($name, $value)
+    {
         $this->variables[$name] = $value;
 
         return $this;
     }
 
-    public function clearTemplateVariable($variable) {
+    public function clearTemplateVariable($variable)
+    {
         unset($this->variables[$variable]);
 
         return $this;
     }
 
-    public function getTemplateExtensions(): array {
+    public function getTemplateExtensions() : array
+    {
         return ['html', 'twig'];
     }
 }

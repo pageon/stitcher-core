@@ -11,42 +11,51 @@ class Browser
     private $templateDir;
     private $cacheDir;
 
-    public function __construct(string $srcDir, string $publicDir, string $templateDir, string $cacheDir) {
+    public function __construct(string $srcDir, string $publicDir, string $templateDir, string $cacheDir)
+    {
         $this->srcDir = $srcDir;
         $this->publicDir = $publicDir;
         $this->templateDir = $templateDir;
         $this->cacheDir = $cacheDir;
     }
 
-    public function src() : Finder {
+    public function src() : Finder
+    {
         return Finder::create()->in($this->srcDir);
     }
 
-    public function public () : Finder {
+    public function public () : Finder
+    {
         return Finder::create()->in($this->publicDir);
     }
 
-    public function template() : Finder {
+    public function template() : Finder
+    {
         return Finder::create()->in($this->templateDir);
     }
 
-    public function cache() : Finder {
+    public function cache() : Finder
+    {
         return Finder::create()->in($this->cacheDir);
     }
 
-    public function getSrcDir() : string {
+    public function getSrcDir() : string
+    {
         return $this->srcDir;
     }
 
-    public function getPublicDir() : string {
+    public function getPublicDir() : string
+    {
         return $this->publicDir;
     }
 
-    public function getTemplateDir() : string {
+    public function getTemplateDir() : string
+    {
         return $this->templateDir;
     }
 
-    public function getCacheDir() : string {
+    public function getCacheDir() : string
+    {
         return $this->cacheDir;
     }
 }

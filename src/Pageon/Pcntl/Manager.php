@@ -18,7 +18,8 @@ class Manager
      *
      * @return Process The asynchronous process.
      */
-    public function async(Process $process) : Process {
+    public function async(Process $process) : Process
+    {
         $sockets = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 
         list($parentSocket, $childSocket) = $sockets;
@@ -50,7 +51,8 @@ class Manager
      * @return array
      * @throws \Exception
      */
-    public function wait(ProcessCollection $processCollection) {
+    public function wait(ProcessCollection $processCollection)
+    {
         $output = [];
         $processes = $processCollection->toArray();
 
@@ -76,7 +78,8 @@ class Manager
      *
      * @throws \Exception
      */
-    private function handleProcessStatus($processStatus, Process $process, array &$processes, $key) {
+    private function handleProcessStatus($processStatus, Process $process, array &$processes, $key)
+    {
         switch ($processStatus) {
             case $process->getPid():
                 $this->handleProcessSuccess($process);
@@ -101,7 +104,8 @@ class Manager
      *
      * @param Process $process
      */
-    private function handleProcessSuccess(Process $process) {
+    private function handleProcessSuccess(Process $process)
+    {
         $output = '';
         while (!feof($process->getSocket())) {
             $output .= fgets($process->getSocket());
@@ -121,7 +125,8 @@ class Manager
      *
      * @throws \Exception
      */
-    private function handleProcessStop(Process $process) {
+    private function handleProcessStop(Process $process)
+    {
         if (!posix_kill($process->getPid(), SIGKILL)) {
             throw new \Exception('Failed to kill ' . $process->getPid() . ': ' . posix_strerror(posix_get_last_error()));
         }

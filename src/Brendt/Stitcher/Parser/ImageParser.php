@@ -16,12 +16,14 @@ class ImageParser implements Parser
     private $stitcher;
     private $responsiveFactory;
 
-    public function __construct(Stitcher $stitcher, ResponsiveFactory $responsiveFactory) {
+    public function __construct(Stitcher $stitcher, ResponsiveFactory $responsiveFactory)
+    {
         $this->stitcher = $stitcher;
         $this->responsiveFactory = $responsiveFactory;
     }
 
-    public function parse($entry) {
+    public function parse($entry)
+    {
         $data = [];
         $defaults = [];
         $path = null;

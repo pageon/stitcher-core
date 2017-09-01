@@ -10,13 +10,15 @@ class Cdn
     private $files;
     private $enableCache;
 
-    public function __construct(Browser $browser, array $files, bool $enableCache) {
+    public function __construct(Browser $browser, array $files, bool $enableCache)
+    {
         $this->browser = $browser;
         $this->files = $files;
         $this->enableCache = $enableCache;
     }
 
-    public function save() {
+    public function save()
+    {
         foreach ($this->files as $resource) {
             $resource = trim($resource, '/');
             $publicResourcePath = "{$this->browser->getPublicDir()}/{$resource}";
@@ -30,7 +32,8 @@ class Cdn
         }
     }
 
-    private function copyCdnFiles(string $sourcePath, string $publicPath) {
+    private function copyCdnFiles(string $sourcePath, string $publicPath)
+    {
         $fs = new Filesystem();
 
         if (is_dir($sourcePath)) {

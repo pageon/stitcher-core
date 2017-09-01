@@ -4,12 +4,9 @@ namespace Brendt\Stitcher\Command;
 
 use Brendt\Stitcher\Event\Event;
 use Brendt\Stitcher\Lib\Browser;
-use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\Site\Site;
 use Brendt\Stitcher\Parser\Site\SiteParser;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -23,7 +20,8 @@ class GenerateCommand extends Command implements EventSubscriberInterface
     private $stitcher;
     private $output;
 
-    public function __construct(Browser $browser, Stitcher $stitcher, EventDispatcher $eventDispatcher) {
+    public function __construct(Browser $browser, Stitcher $stitcher, EventDispatcher $eventDispatcher)
+    {
         parent::__construct();
 
         $this->browser = $browser;
@@ -31,14 +29,16 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         $eventDispatcher->addSubscriber($this);
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('site:generate')
             ->setDescription('Generate the website')
             ->setHelp("This command generates the website based on the data in the src/ folder.")
             ->addArgument(self::ROUTE, null, 'Specify a route to render');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $this->output = $output;
 
         $route = $input->getArgument(self::ROUTE);
@@ -60,18 +60,21 @@ class GenerateCommand extends Command implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return [
             SiteParser::EVENT_PAGE_PARSED => 'onPageParsed',
         ];
     }
 
-    public function onPageParsed(Event $event) {
+    public function onPageParsed(Event $event)
+    {
         $pageId = $event->getData()['pageId'] ?? null;
         $this->output->writeln("<fg=green>✔</> {$pageId}");
     }
 
-    private function saveGeneralFiles() {
+    private function saveGeneralFiles()
+    {
         $this->stitcher->saveHtaccess();
         $this->output->writeln("\n<fg=green>✔</> .htaccess");
 

@@ -13,7 +13,8 @@ class LimitAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transformPage(Page $page, $filter = null) : array {
+    public function transformPage(Page $page, $filter = null) : array
+    {
         $config = $page->getAdapterConfig(AdapterFactory::LIMIT_ADAPTER);
         $config = isset($config['variable']) ? [$config['variable'] => $config] : $config;
 

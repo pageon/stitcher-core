@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Application;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Exception\StitcherException;
 use Brendt\Stitcher\Factory\AdapterFactory;
 use Brendt\Stitcher\Stitcher;
@@ -22,7 +21,8 @@ class DevController
 
     protected $stitcher;
 
-    public function __construct(Stitcher $stitcher) {
+    public function __construct(Stitcher $stitcher)
+    {
         $this->stitcher = $stitcher;
     }
 
@@ -33,7 +33,8 @@ class DevController
      *
      * @return string
      */
-    public function run($url = null) {
+    public function run($url = null)
+    {
         if ($url === null) {
             $request = explode('?', $_SERVER['REQUEST_URI']);
             $url = reset($request);
@@ -48,7 +49,8 @@ class DevController
         }
     }
 
-    protected function createRouteCollection() {
+    protected function createRouteCollection()
+    {
         $routeCollection = new RouteCollection();
         $site = $this->stitcher->loadSite();
 
@@ -66,7 +68,8 @@ class DevController
         return $routeCollection;
     }
 
-    protected function getPage($url) {
+    protected function getPage($url)
+    {
         $routeCollection = $this->createRouteCollection();
         $matcher = new UrlMatcher($routeCollection, new RequestContext());
         $routeResult = $matcher->match($url);

@@ -2,11 +2,9 @@
 
 namespace Pageon\Pcntl;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Application\DevController;
 use Brendt\Stitcher\Parser\Site\PageParser;
 use Brendt\Stitcher\Site\Page;
-use Brendt\Stitcher\Site\Seo\SiteMap;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PageRenderProcess extends Process

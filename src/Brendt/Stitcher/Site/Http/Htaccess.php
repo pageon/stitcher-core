@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Site\Http;
 
-use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Lib\Browser;
 use Brendt\Stitcher\Site\Page;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +23,8 @@ class Htaccess
     private $redirectWww = false;
     private $redirects = [];
 
-    public function __construct(Browser $browser) {
+    public function __construct(Browser $browser)
+    {
         $path = "{$browser->getPublicDir()}/.htaccess";
         $this->fs = new Filesystem();
 
@@ -38,25 +38,29 @@ class Htaccess
         $this->contents = $this->parser->parse();
     }
 
-    public function setRedirectHttps(bool $redirectHttps = false) : Htaccess {
+    public function setRedirectHttps(bool $redirectHttps = false) : Htaccess
+    {
         $this->redirectHttps = $redirectHttps;
 
         return $this;
     }
 
-    public function setRedirectWww(bool $redirectWww = false) : Htaccess {
+    public function setRedirectWww(bool $redirectWww = false) : Htaccess
+    {
         $this->redirectWww = $redirectWww;
 
         return $this;
     }
 
-    public function addRedirect(string $from, string $to) : Htaccess {
+    public function addRedirect(string $from, string $to) : Htaccess
+    {
         $this->redirects[$from] = $to;
 
         return $this;
     }
 
-    public function parse() : string {
+    public function parse() : string
+    {
         $this->setupIndex();
         $this->clearRewriteBlock();
 
@@ -79,7 +83,8 @@ class Htaccess
      *
      * @return Block
      */
-    public function &getHeaderBlock() : Block {
+    public function &getHeaderBlock() : Block
+    {
         $headerBlock = $this->findHeaderBlockByModName('mod_headers.c');
 
         if (!$headerBlock) {
@@ -101,7 +106,8 @@ class Htaccess
      *
      * @return Block
      */
-    public function &getPageBlock(Page $page) : Block {
+    public function &getPageBlock(Page $page) : Block
+    {
         $headerBlock = $this->getHeaderBlock();
         $pageId = trim($page->getId(), '/') ?? 'index';
         $pageId = pathinfo($pageId !== '' ? "{$pageId}" : 'index', PATHINFO_BASENAME);
@@ -123,7 +129,8 @@ class Htaccess
      *
      * @return Block
      */
-    public function &getRewriteBlock() : Block {
+    public function &getRewriteBlock() : Block
+    {
         $rewriteBlock = $this->findHeaderBlockByModName('mod_rewrite.c');
 
         if (!$rewriteBlock) {
@@ -138,7 +145,8 @@ class Htaccess
         return $rewriteBlock;
     }
 
-    public function clearPageBlocks() {
+    public function clearPageBlocks()
+    {
         $headerBlock = $this->getHeaderBlock();
 
         foreach ($headerBlock as $content) {
@@ -148,7 +156,8 @@ class Htaccess
         }
     }
 
-    public function clearRewriteBlock() {
+    public function clearRewriteBlock()
+    {
         $rewriteBlock = $this->getRewriteBlock();
 
         foreach ($rewriteBlock as $content) {
@@ -161,7 +170,8 @@ class Htaccess
         }
     }
 
-    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName) {
+    private function findPageBlockByParentAndName(Block $headerBlock, string $pageName)
+    {
         foreach ($headerBlock as $content) {
             $arguments = $content->getArguments();
 
@@ -173,7 +183,8 @@ class Htaccess
         return null;
     }
 
-    private function setupIndex() {
+    private function setupIndex()
+    {
         foreach ($this->contents as $content) {
             if ($content instanceof Directive && $content->getName() === 'Options') {
                 return;
@@ -183,19 +194,22 @@ class Htaccess
         $this->contents[] = new Directive('Options -Indexes');
     }
 
-    private function rewriteWww() {
+    private function rewriteWww()
+    {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{HTTP_HOST} !^www\.', '^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]');
     }
 
-    private function rewriteHttps() {
+    private function rewriteHttps()
+    {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{HTTPS} off', '(.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]');
     }
 
-    private function rewriteCustomRedirects() {
+    private function rewriteCustomRedirects()
+    {
         $rewriteBlock = $this->getRewriteBlock();
         $rewriteBlock->addLineBreak(1);
 
@@ -206,13 +220,15 @@ class Htaccess
         }
     }
 
-    private function rewriteHtml() {
+    private function rewriteHtml()
+    {
         $rewriteBlock = $this->getRewriteBlock();
 
         $this->createConditionalRewrite($rewriteBlock, '%{DOCUMENT_ROOT}/$1.html -f', '^(.+?)/?$ /$1.html [L]');
     }
 
-    private function createConditionalRewrite(Block &$rewriteBlock, string $condition, string $rule) {
+    private function createConditionalRewrite(Block &$rewriteBlock, string $condition, string $rule)
+    {
         $rewriteBlock->addLineBreak(1);
 
         $conditionLine = new Directive();
@@ -224,7 +240,8 @@ class Htaccess
         $rewriteBlock->addChild($ruleLine);
     }
 
-    private function findHeaderBlockByModName(string $modName) {
+    private function findHeaderBlockByModName(string $modName)
+    {
         foreach ($this->contents as $content) {
             $arguments = $content->getArguments();
             if (reset($arguments) === $modName) {

@@ -67,7 +67,8 @@ class SiteParser
      * @see \Brendt\Stitcher\Site\Page
      * @see \Brendt\Stitcher\Site\Site
      */
-    public function loadSite(array $routes = []) : Site {
+    public function loadSite(array $routes = []) : Site
+    {
         /** @var SplFileInfo[] $files */
         $files = $this->browser->src()->path('site')->name('/.*\.yml|.*\.yaml/')->files();
         $site = new Site();
@@ -96,7 +97,8 @@ class SiteParser
      * @param string $route
      * @param array  $config
      */
-    private function loadPage(Site $site, string $route, array $config) {
+    private function loadPage(Site $site, string $route, array $config)
+    {
         if (isset($config[self::TOKEN_REDIRECT])) {
             $this->htaccess->addRedirect($route, $config[self::TOKEN_REDIRECT]);
 
@@ -116,7 +118,8 @@ class SiteParser
      * @return array
      * @throws TemplateNotFoundException
      */
-    public function parse($routes = [], string $filterValue = null) {
+    public function parse($routes = [], string $filterValue = null)
+    {
         $blanket = [];
         $manager = extension_loaded('pcntl') && $this->async ? new Manager() : null;
         $processCollection = new ProcessCollection();
@@ -153,7 +156,8 @@ class SiteParser
      *
      * @return PageRenderProcess
      */
-    private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess {
+    private function createPageRenderProcess(Page $page, string $filterValue = null) : PageRenderProcess
+    {
         $pageRenderProcess = new PageRenderProcess($this->pageParser, $page, $this->browser->getPublicDir(), $filterValue);
         $pageRenderProcess->setEnvironment($this->environment);
 
@@ -175,7 +179,8 @@ class SiteParser
      *
      * @return SiteParser
      */
-    public function setFilter(string $filter) : SiteParser {
+    public function setFilter(string $filter) : SiteParser
+    {
         $this->filter = $filter;
 
         return $this;
@@ -184,7 +189,8 @@ class SiteParser
     /**
      * @return Meta
      */
-    private function createMeta() : Meta {
+    private function createMeta() : Meta
+    {
         $meta = new Meta();
 
         foreach ($this->metaConfig as $name => $value) {

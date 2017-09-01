@@ -16,13 +16,15 @@ class InstallCommand extends Command
 
     protected $fs;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(null);
 
         $this->fs = new Filesystem();
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('install')
             ->setAliases(['site:install'])
             ->setDescription('Setup a new Stitcher installation')
@@ -37,7 +39,8 @@ class InstallCommand extends Command
 ");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $log = [];
 
         $srcDir = './src';
@@ -93,7 +96,8 @@ class InstallCommand extends Command
         }
     }
 
-    protected function copyFolder($src, $dst) {
+    protected function copyFolder($src, $dst)
+    {
         $finder = new Finder();
         /** @var SplFileInfo[] $srcFiles */
         $srcFiles = $finder->files()->in($src)->ignoreDotFiles(false);
@@ -116,7 +120,8 @@ class InstallCommand extends Command
         }
     }
 
-    protected function checkContinue(InputInterface $input, OutputInterface $output) {
+    protected function checkContinue(InputInterface $input, OutputInterface $output)
+    {
         $srcDir = App::getParameter('directory.src');
 
         if ($this->fs->exists($srcDir)) {

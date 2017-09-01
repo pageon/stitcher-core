@@ -3,7 +3,6 @@
 namespace Brendt\Stitcher;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -31,7 +30,8 @@ class Config
     const REDIRECT_WWW = 'redirect.www';
     const SITEMAP_URL = 'sitemap.url';
 
-    public static function getDefaults(): array {
+    public static function getDefaults() : array
+    {
         return [
             self::ASYNC              => true,
             self::ENVIRONMENT        => 'development',
@@ -53,7 +53,8 @@ class Config
         ];
     }
 
-    public static function parseImports(array $config): array {
+    public static function parseImports(array $config) : array
+    {
         if (!isset($config['imports'])) {
             return $config;
         }
@@ -71,7 +72,8 @@ class Config
         return $mergedConfig;
     }
 
-    public static function getConfigFile(string $path) {
+    public static function getConfigFile(string $path)
+    {
         $pathParts = explode('/', $path);
         $configFileName = array_pop($pathParts);
         $configPath = implode('/', $pathParts) . '/';
@@ -82,7 +84,8 @@ class Config
         return $configFiles->current();
     }
 
-    public static function flatten(array $config, string $prefix = ''): array {
+    public static function flatten(array $config, string $prefix = '') : array
+    {
         $result = [];
 
         foreach ($config as $key => $value) {

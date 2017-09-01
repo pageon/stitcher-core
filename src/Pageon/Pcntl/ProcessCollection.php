@@ -15,43 +15,53 @@ class ProcessCollection implements Iterator, ArrayAccess
 
     private $array = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->position = 0;
     }
 
-    public function isEmpty() : bool {
+    public function isEmpty() : bool
+    {
         return count($this->array) === 0;
     }
 
-    public function current() {
+    public function current()
+    {
         return $this->array[$this->position];
     }
 
-    public function next() {
+    public function next()
+    {
         ++$this->position;
     }
 
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
-    public function valid() {
+    public function valid()
+    {
         return isset($this->array[$this->position]);
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         $this->position = 0;
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->array[$offset]);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         if (!$value instanceof Process) {
             throw new InvalidArgumentException("value must be instance of Process.");
         }
@@ -63,11 +73,13 @@ class ProcessCollection implements Iterator, ArrayAccess
         }
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->array[$offset]);
     }
 
-    public function toArray() {
+    public function toArray()
+    {
         return $this->array;
     }
 }

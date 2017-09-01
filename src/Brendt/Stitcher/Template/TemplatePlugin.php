@@ -11,7 +11,6 @@ use Brendt\Stitcher\Site\Page;
 use CSSmin;
 use JSMin;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -41,7 +40,8 @@ class TemplatePlugin
         $this->minify = $minify;
     }
 
-    public function setPage(Page $page) : TemplatePlugin {
+    public function setPage(Page $page) : TemplatePlugin
+    {
         $this->page = $page;
 
         return $this;
@@ -54,7 +54,8 @@ class TemplatePlugin
      *
      * @return string
      */
-    public function meta(array $extra = []) : string {
+    public function meta(array $extra = []) : string
+    {
         $meta = $this->page ? $this->page->getMeta() : new Meta();
         foreach ($extra as $name => $content) {
             $meta->name($name, $content);
@@ -79,7 +80,8 @@ class TemplatePlugin
      *
      * @return string
      */
-    public function css(string $src, bool $inline = false, bool $push = false) : string {
+    public function css(string $src, bool $inline = false, bool $push = false) : string
+    {
         $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
@@ -122,7 +124,8 @@ class TemplatePlugin
      *
      * @return string
      */
-    public function js(string $src, bool $inline = false, bool $async = false, bool $push = false) : string {
+    public function js(string $src, bool $inline = false, bool $async = false, bool $push = false) : string
+    {
         $parser = $this->parserFactory->getByFileName($src);
         $data = $parser->parse($src);
 
@@ -167,7 +170,8 @@ class TemplatePlugin
      *
      * @see \Brendt\Image\ResponsiveFactory
      */
-    public function image(string $src, bool $push = false) : array {
+    public function image(string $src, bool $push = false) : array
+    {
         $image = $this->responsiveFactory->create($src);
 
         if (!$image) {
@@ -193,7 +197,8 @@ class TemplatePlugin
      *
      * @return null|string
      */
-    public function file($src, bool $push = false) {
+    public function file($src, bool $push = false)
+    {
         $src = trim($src, '/');
         $files = $this->browser->src()->path($src)->files()->getIterator();
         $files->rewind();

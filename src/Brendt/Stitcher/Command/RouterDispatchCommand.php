@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
@@ -19,20 +18,23 @@ class RouterDispatchCommand extends Command
 
     private $stitcher;
 
-    public function __construct(Stitcher $stitcher) {
+    public function __construct(Stitcher $stitcher)
+    {
         parent::__construct();
 
         $this->stitcher = $stitcher;
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('router:dispatch')
             ->setDescription('Simulate routing of an URL')
             ->setHelp("Simulate routing of an URL.")
             ->addArgument(self::URL, InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $site = $this->stitcher->loadSite();
 
         $url = $input->getArgument(self::URL);

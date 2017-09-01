@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Adapter;
 
-use Pageon\Html\Meta\Meta;
 use Brendt\Stitcher\Exception\ConfigurationException;
 use Brendt\Stitcher\Exception\IdFieldNotFoundException;
 use Brendt\Stitcher\Exception\VariableNotFoundException;
@@ -33,13 +32,15 @@ class CollectionAdapter extends AbstractAdapter
     private $field = null;
     private $entries = [];
 
-    public function __construct(ParserFactory $parserFactory, MetaCompiler $metaCompiler) {
+    public function __construct(ParserFactory $parserFactory, MetaCompiler $metaCompiler)
+    {
         parent::__construct($parserFactory);
 
         $this->metaCompiler = $metaCompiler;
     }
 
-    public function transformPage(Page $page, $filter = null) : array {
+    public function transformPage(Page $page, $filter = null) : array
+    {
         $this->loadConfig($page);
         $result = [];
 
@@ -51,10 +52,12 @@ class CollectionAdapter extends AbstractAdapter
 
             next($this->entries);
         }
+
         return $result;
     }
 
-    private function createEntryPage(Page $page, array $entry) : Page {
+    private function createEntryPage(Page $page, array $entry) : Page
+    {
         $url = str_replace('{' . $this->field . '}', $entry[$this->field], $page->getId());
         $entryPage = Page::copy($page);
         $entryPageMeta = $entryPage->getMeta();
@@ -75,7 +78,8 @@ class CollectionAdapter extends AbstractAdapter
         return $entryPage;
     }
 
-    private function parseBrowseData(Page $entryPage) {
+    private function parseBrowseData(Page $entryPage)
+    {
         if ($entryPage->getVariable('browse')) {
             return;
         }
@@ -98,7 +102,8 @@ class CollectionAdapter extends AbstractAdapter
         prev($this->entries);
     }
 
-    protected function loadConfig(Page $page) {
+    protected function loadConfig(Page $page)
+    {
         $config = $page->getAdapterConfig(AdapterFactory::COLLECTION_ADAPTER);
 
         if (!isset($config['field'], $config['variable'])) {

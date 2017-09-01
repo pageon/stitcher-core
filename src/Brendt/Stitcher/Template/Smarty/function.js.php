@@ -10,7 +10,8 @@ use Brendt\Stitcher\Template\TemplatePlugin;
  *
  * @see \Brendt\Stitcher\Template\EnginePlugin::js()
  */
-function smarty_function_js($params) {
+function smarty_function_js($params)
+{
     /** @var TemplatePlugin $plugin */
     $plugin = App::get('service.template.plugin');
 

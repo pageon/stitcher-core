@@ -69,7 +69,8 @@ class Stitcher
      * @see \Brendt\Stitcher\Application\DevController::run()
      * @see \Brendt\Stitcher\Adapter\CollectionAdapter::transform()
      */
-    public function stitch($routes = [], string $filterValue = null) : array {
+    public function stitch($routes = [], string $filterValue = null) : array
+    {
         if ($filterValue === null) {
             $this->htaccess->clearPageBlocks();
         }
@@ -79,11 +80,13 @@ class Stitcher
         return $this->siteParser->parse((array) $routes, $filterValue);
     }
 
-    public function getSiteMap() : SiteMap {
+    public function getSiteMap() : SiteMap
+    {
         return $this->siteMap;
     }
 
-    public function loadSite(array $routes = []) : Site {
+    public function loadSite(array $routes = []) : Site
+    {
         return $this->siteParser->loadSite($routes);
     }
 
@@ -94,7 +97,8 @@ class Stitcher
      *
      * @see \Brendt\Stitcher\Stitcher::stitch()
      */
-    public function save(array $blanket) {
+    public function save(array $blanket)
+    {
         $fs = new Filesystem();
 
         foreach ($blanket as $path => $page) {
@@ -106,14 +110,16 @@ class Stitcher
         }
     }
 
-    public function saveHtaccess() : Stitcher {
+    public function saveHtaccess() : Stitcher
+    {
         $fs = new Filesystem();
         $fs->dumpFile("{$this->browser->getPublicDir()}/.htaccess", $this->htaccess->parse());
 
         return $this;
     }
 
-    public function saveSitemap() : Stitcher {
+    public function saveSitemap() : Stitcher
+    {
         if (!$this->siteMap->isEnabled()) {
             return $this;
         }

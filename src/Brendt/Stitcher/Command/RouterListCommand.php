@@ -2,7 +2,6 @@
 
 namespace Brendt\Stitcher\Command;
 
-use Brendt\Stitcher\App;
 use Brendt\Stitcher\Site\Page;
 use Brendt\Stitcher\Stitcher;
 use Symfony\Component\Console\Command\Command;
@@ -16,20 +15,23 @@ class RouterListCommand extends Command
 
     private $stitcher;
 
-    public function __construct(Stitcher $stitcher) {
+    public function __construct(Stitcher $stitcher)
+    {
         parent::__construct();
 
         $this->stitcher = $stitcher;
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('router:list')
             ->setDescription('Show the available routes')
             ->setHelp("This command shows the available routes.")
             ->addArgument(self::FILTER, InputArgument::OPTIONAL, 'Specify a filter');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $site = $this->stitcher->loadSite();
         $filter = $input->getArgument(self::FILTER);
 
@@ -37,7 +39,7 @@ class RouterListCommand extends Command
 
         /**
          * @var string $route
-         * @var Page $page
+         * @var Page   $page
          */
         foreach ($site as $route => $page) {
             if ($filter && strpos($page->getId(), $filter) === false) {

@@ -64,5 +64,5 @@ interface TemplateEngine
      */
     public function clearTemplateVariable($variable);
 
-    public function getTemplateExtensions(): array;
+    public function getTemplateExtensions() : array;
 }

@@ -5,7 +5,6 @@ namespace Brendt\Stitcher\Parser;
 use Brendt\Stitcher\Exception\ParserException;
 use Brendt\Stitcher\Factory\ParserFactory;
 use Brendt\Stitcher\Lib\Browser;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -19,13 +18,15 @@ class YamlParser extends AbstractArrayParser
 {
     private $browser;
 
-    public function __construct(Browser $browser, ParserFactory $parserFactory) {
+    public function __construct(Browser $browser, ParserFactory $parserFactory)
+    {
         parent::__construct($parserFactory);
 
         $this->browser = $browser;
     }
 
-    public function parse($path) {
+    public function parse($path)
+    {
         if (!strpos($path, '.yml') && !strpos($path, '.yaml')) {
             $path .= '.yml';
         }

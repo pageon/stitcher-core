@@ -33,7 +33,8 @@ class FilterAdapter extends AbstractAdapter
      *
      * @return Page[]
      */
-    public function transformPage(Page $page, $filter = null) : array {
+    public function transformPage(Page $page, $filter = null) : array
+    {
         $config = $page->getAdapterConfig(AdapterFactory::FILTER_ADAPTER);
 
         $this->validateConfig($config);
@@ -57,7 +58,8 @@ class FilterAdapter extends AbstractAdapter
         return $result;
     }
 
-    private function applyFilters(array $filters, array $entry): bool {
+    private function applyFilters(array $filters, array $entry) : bool
+    {
         $entry = new WalkableArray($entry);
 
         foreach ($filters as $field => $value) {
@@ -71,7 +73,8 @@ class FilterAdapter extends AbstractAdapter
         return true;
     }
 
-    private function validateConfig(array $config) {
+    private function validateConfig(array $config)
+    {
         if (empty($config)) {
             throw new ConfigurationException('You need to specify at least one field to filter on when using the Filter Adapter.');
         }

@@ -14,13 +14,15 @@ class JsonParser extends AbstractArrayParser
 {
     private $browser;
 
-    public function __construct(Browser $browser, ParserFactory $parserFactory) {
+    public function __construct(Browser $browser, ParserFactory $parserFactory)
+    {
         parent::__construct($parserFactory);
 
         $this->browser = $browser;
     }
 
-    public function parse($path = '*.json') {
+    public function parse($path = '*.json')
+    {
         if (!strpos($path, '.json')) {
             $path .= '.json';
         }

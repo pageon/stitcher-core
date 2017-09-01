@@ -9,7 +9,8 @@ use Brendt\Stitcher\Template\TemplatePlugin;
  * @return mixed
  * @see \Brendt\Stitcher\Template\EnginePlugin::meta()
  */
-function smarty_function_meta(array $params) {
+function smarty_function_meta(array $params)
+{
     /** @var TemplatePlugin $plugin */
     $plugin = App::get('service.template.plugin');
 

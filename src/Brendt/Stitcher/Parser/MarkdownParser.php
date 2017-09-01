@@ -13,12 +13,14 @@ class MarkdownParser implements Parser
     private $browser;
     private $parsedown;
 
-    public function __construct(Browser $browser, Parsedown $parsedown) {
+    public function __construct(Browser $browser, Parsedown $parsedown)
+    {
         $this->browser = $browser;
         $this->parsedown = $parsedown;
     }
 
-    public function parse($path) {
+    public function parse($path)
+    {
         if (!strpos($path, '.md')) {
             $path .= '.md';
         }

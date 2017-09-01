@@ -17,7 +17,8 @@ class AdapterFactory
     private $container;
     private $adapters = [];
 
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
 
         $this->addAdapter(self::COLLECTION_ADAPTER, function () {
@@ -41,11 +42,13 @@ class AdapterFactory
         });
     }
 
-    public function addAdapter(string $adapterName, callable $filter) {
+    public function addAdapter(string $adapterName, callable $filter)
+    {
         $this->adapters[$adapterName] = $filter;
     }
 
-    public function getByType($type) : Adapter {
+    public function getByType($type) : Adapter
+    {
         if (!isset($this->adapters[$type])) {
             throw new UnknownAdapterException();
         }

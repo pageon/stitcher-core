@@ -15,12 +15,14 @@ class FolderParser implements Parser
     private $browser;
     private $parserFactory;
 
-    public function __construct(Browser $browser, ParserFactory $parserFactory) {
+    public function __construct(Browser $browser, ParserFactory $parserFactory)
+    {
         $this->browser = $browser;
         $this->parserFactory = $parserFactory;
     }
 
-    public function parse($path) {
+    public function parse($path)
+    {
         $path = trim($path, '/');
         /** @var SplFileInfo[] $files */
         $files = $this->browser->src()->files()->path("data/{$path}")->name('*.*');

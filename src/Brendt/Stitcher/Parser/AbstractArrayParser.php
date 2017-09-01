@@ -15,7 +15,8 @@ abstract class AbstractArrayParser implements Parser
 {
     protected $parserFactory;
 
-    public function __construct(ParserFactory $parserFactory) {
+    public function __construct(ParserFactory $parserFactory)
+    {
         $this->parserFactory = $parserFactory;
     }
 
@@ -29,7 +30,8 @@ abstract class AbstractArrayParser implements Parser
      * @see \Brendt\Stitcher\Parser\YamlParser
      * @see \Brendt\Stitcher\Parser\JsonParser
      */
-    protected function parseArrayData(array $data) {
+    protected function parseArrayData(array $data)
+    {
         $result = [];
 
         foreach ($data as $id => $entry) {
@@ -54,7 +56,8 @@ abstract class AbstractArrayParser implements Parser
      *
      * @see \Brendt\Stitcher\Factory\ParserFactory
      */
-    protected function parseEntryData($id, $entry) {
+    protected function parseEntryData($id, $entry)
+    {
         $entry = (array) $entry;
 
         foreach ($entry as $field => $value) {

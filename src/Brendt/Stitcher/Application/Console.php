@@ -6,7 +6,8 @@ use Symfony\Component\Console\Application;
 
 class Console extends Application
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('Stitcher Console');
     }
 }

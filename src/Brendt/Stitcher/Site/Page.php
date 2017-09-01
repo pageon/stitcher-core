@@ -37,7 +37,8 @@ class Page
     /** @var Header[] */
     private $headers = [];
 
-    public function __construct($id, array $data = [], Meta $meta = null) {
+    public function __construct($id, array $data = [], Meta $meta = null)
+    {
         if (!isset($data['template'])) {
             throw new TemplateNotFoundException("No template was set for page {$id}");
         }
@@ -58,7 +59,8 @@ class Page
         }
     }
 
-    public static function copy(Page $page): Page {
+    public static function copy(Page $page) : Page
+    {
         $copy = new Page($page->id, $page->data);
 
         foreach ($page->variables as $key => $value) {
@@ -86,7 +88,8 @@ class Page
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
-    public function setVariableIsParsed($name) {
+    public function setVariableIsParsed($name)
+    {
         $this->parsedVariables[$name] = true;
 
         return $this;
@@ -102,23 +105,28 @@ class Page
      *
      * @see \Brendt\Stitcher\Stitcher::parseVariables
      */
-    public function isParsedVariable($name) {
+    public function isParsedVariable($name)
+    {
         return isset($this->parsedVariables[$name]);
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getTemplatePath() {
+    public function getTemplatePath()
+    {
         return $this->templatePath;
     }
 
-    public function getVariables() {
+    public function getVariables()
+    {
         return $this->variables;
     }
 
-    public function getAdapters() {
+    public function getAdapters()
+    {
         return $this->adapters;
     }
 
@@ -133,7 +141,8 @@ class Page
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      * @see \Brendt\Stitcher\Application\DevController::run
      */
-    public function getAdapterConfig($name) {
+    public function getAdapterConfig($name)
+    {
         if (!isset($this->adapters[$name])) {
             return [];
         }
@@ -151,7 +160,8 @@ class Page
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
-    public function getVariable($name) {
+    public function getVariable($name)
+    {
         if (!isset($this->variables[$name])) {
             return null;
         }
@@ -171,7 +181,8 @@ class Page
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      * @see \Brendt\Stitcher\Stitcher::parseVariables
      */
-    public function setVariableValue($name, $value) {
+    public function setVariableValue($name, $value)
+    {
         $this->variables[$name] = $value;
 
         return $this;
@@ -187,7 +198,8 @@ class Page
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
-    public function removeAdapter($name) {
+    public function removeAdapter($name)
+    {
         if (isset($this->adapters[$name])) {
             unset($this->adapters[$name]);
         }
@@ -206,24 +218,28 @@ class Page
      * @see \Brendt\Stitcher\adapter\CollectionAdapter::transform
      * @see \Brendt\Stitcher\adapter\PagincationAdapter::transform
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
 
         return $this;
     }
 
-    public function addHeader(Header $header) {
+    public function addHeader(Header $header)
+    {
         $this->headers[] = $header;
     }
 
     /**
      * @return Header[]
      */
-    public function getHeaders() : array {
+    public function getHeaders() : array
+    {
         return $this->headers;
     }
 
-    public function getMeta(): Meta {
+    public function getMeta() : Meta
+    {
         return $this->meta;
     }
 }
