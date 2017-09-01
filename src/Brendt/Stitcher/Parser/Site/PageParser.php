@@ -21,6 +21,8 @@ class PageParser
     private $templatePlugin;
     private $adapterFactory;
     private $headerCompiler;
+    private $templateEngine;
+    private $templates;
 
     public function __construct(
         Browser $browser,
@@ -48,7 +50,8 @@ class PageParser
      *
      * @return SplFileInfo[]
      */
-    public function loadTemplates() {
+    public function loadTemplates()
+    {
         $templateExtensions = $this->templateEngine->getTemplateExtensions();
         $templateExtensionsRegex = '/\.(' . implode('|', $templateExtensions) . ')/';
 
@@ -64,7 +67,8 @@ class PageParser
         return $templates;
     }
 
-    public function parsePage(Page $page) : string {
+    public function parsePage(Page $page) : string
+    {
         $entryPage = $this->parseVariables($page);
         $this->metaCompiler->compilePage($page);
 
@@ -97,7 +101,8 @@ class PageParser
      * @see  \Brendt\Stitcher\Adapter\Adapter::transform()
      * @see  \Brendt\Stitcher\Application\DevController::run()
      */
-    public function parseAdapters(Page $page, $entryId = null) {
+    public function parseAdapters(Page $page, $entryId = null)
+    {
         if (!$page->getAdapters()) {
             return [$page->getId() => $page];
         }
@@ -129,7 +134,8 @@ class PageParser
      * @see \Brendt\Stitcher\Parser\Parser
      * @see \Brendt\Stitcher\Site\Page::isParsedVariable()
      */
-    public function parseVariables(Page $page) {
+    public function parseVariables(Page $page)
+    {
         foreach ($page->getVariables() as $name => $value) {
             if ($page->isParsedVariable($name)) {
                 continue;
@@ -143,7 +149,8 @@ class PageParser
         return $page;
     }
 
-    public function validate(Page $page) {
+    public function validate(Page $page)
+    {
         $templateIsset = isset($this->templates[$page->getTemplatePath()]);
 
         if (!$templateIsset) {
@@ -165,7 +172,8 @@ class PageParser
      *
      * @see \Brendt\Stitcher\Factory\ParserFactory
      */
-    private function getData($value) {
+    private function getData($value)
+    {
         $parser = $this->parserFactory->getByFileName($value);
 
         if (!$parser) {
