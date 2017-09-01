@@ -32,7 +32,6 @@ class CleanCommand extends Command
         $publicDir = App::getParameter('directories.public');
         $cacheDir = App::getParameter('directories.cache');
 
-
         $this->checkForcedClean($force, $publicDir, $cacheDir, $input, $output);
 
         $log = [];
