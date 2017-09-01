@@ -6,6 +6,9 @@ use ArrayAccess;
 use InvalidArgumentException;
 use Iterator;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProcessCollection implements Iterator, ArrayAccess
 {
     private $position;
