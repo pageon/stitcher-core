@@ -69,6 +69,10 @@ class GenerateCommand extends Command implements EventSubscriberInterface
 
     public function onPageParsed(Event $event)
     {
+        if (!$this->output) {
+            return;
+        }
+
         $pageId = $event->getData()['pageId'] ?? null;
         $this->output->writeln("<fg=green>✔</> {$pageId}");
     }
