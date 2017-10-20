@@ -1,8 +1,0 @@
-imports:
-    - ./tests/config.yml
-
-directories:
-    template: ./tests/src/template_twig
-
-engines:
-    template: twig

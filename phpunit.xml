@@ -1,13 +1,12 @@
 <phpunit
         backupGlobals="false"
         backupStaticAttributes="false"
-        bootstrap="tests/Bootstrap.php"
         colors="true"
         testsuite="default"
 >
     <testsuites>
         <testsuite name="default">
-            <directory>tests/Brendt</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
