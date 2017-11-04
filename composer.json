@@ -6,7 +6,9 @@
         "symfony/filesystem" : "^3.3",
         "twig/twig" : "^2.4",
         "intervention/image" : "^2.4",
-        "tightenco/collect" : "^5.5"
+        "vlucas/phpdotenv" : "^2.4",
+        "symfony/finder": "^3.3",
+        "illuminate/support": "^5.5"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",
@@ -23,6 +25,9 @@
         "psr-4" : {
             "Stitcher\\Test\\" : "tests",
             "Pageon\\Test\\" : "tests"
-        }
+        },
+        "files": [
+            "src/Pageon/helpers.php"
+        ]
     }
 }
