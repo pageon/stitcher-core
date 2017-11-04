@@ -1,6 +1,6 @@
 <?php
 
-namespace Pageon\Stitcher\Command;
+namespace Stitcher\Command;
 
 use Stitcher\Command;
 use Stitcher\File;

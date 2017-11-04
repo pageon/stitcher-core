@@ -2,7 +2,7 @@
 
 namespace Pageon\Test\Integration;
 
-use Pageon\Stitcher\Command\Parse;
+use Stitcher\Command\Parse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\CreateStitcherFiles;

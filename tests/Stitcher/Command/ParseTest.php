@@ -1,8 +1,8 @@
 <?php
 
-namespace Pageon\Test\Stitcher\Command;
+namespace Stitcher\Test\Stitcher\Command;
 
-use Pageon\Stitcher\Command\Parse;
+use Stitcher\Command\Parse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\CreateStitcherFiles;
