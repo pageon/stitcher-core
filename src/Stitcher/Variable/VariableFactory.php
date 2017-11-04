@@ -122,10 +122,8 @@ class VariableFactory extends DynamicFactory
 
             $extension = pathinfo($srcPath, PATHINFO_EXTENSION);
 
-            // TODO: Let ImageVariable take a config array, and let it parse that array itself.
-
             if (in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
-                return ImageVariable::make($srcPath, $this->imageParser, $value['alt'] ?? null);
+                return ImageVariable::make($value, $this->imageParser);
             }
 
             return null;

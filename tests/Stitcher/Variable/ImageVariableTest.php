@@ -27,7 +27,13 @@ class ImageVariableTest extends StitcherTest
     /** @test */
     public function it_can_be_parsed_with_alt()
     {
-        $variable = ImageVariable::make('/resources/green.jpg', $this->createImageFactory(), 'test')->parse();
+        $variable = ImageVariable::make(
+            [
+                'src' => '/resources/green.jpg',
+                'alt' => 'test',
+            ],
+            $this->createImageFactory()
+        )->parse();
 
         $parsed = $variable->parsed();
         $this->assertArrayHasKey('alt', $parsed, '`alt not found in parsed image.`');

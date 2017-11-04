@@ -7,29 +7,30 @@ use Pageon\Html\Image\ImageFactory;
 class ImageVariable extends AbstractVariable
 {
     private $imageFactory;
-    private $alt;
 
-    public function __construct(string $src, ImageFactory $imageFactory, ?string $alt = '')
+    public function __construct($attributes, ImageFactory $imageFactory)
     {
-        parent::__construct($src);
+        parent::__construct($attributes);
 
         $this->imageFactory = $imageFactory;
-        $this->alt = $alt;
     }
 
-    public static function make(string $value, ImageFactory $imageFactory, ?string $alt = '') : ImageVariable
+    public static function make($attributes, ImageFactory $imageFactory) : ImageVariable
     {
-        return new self($value, $imageFactory, $alt);
+        return new self($attributes, $imageFactory);
     }
 
     public function parse() : AbstractVariable
     {
-        $image = $this->imageFactory->create($this->unparsed);
+        $src = $this->unparsed['src'] ?? $this->unparsed;
+        $alt = $this->unparsed['alt'] ?? null;
+
+        $image = $this->imageFactory->create($src);
 
         $this->parsed = [
             'src'    => $image->src(),
             'srcset' => $image->srcset(),
-            'alt'    => $this->alt,
+            'alt'    => $alt,
         ];
 
         return $this;
