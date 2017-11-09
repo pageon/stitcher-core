@@ -3,7 +3,6 @@
 namespace Stitcher\Test;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Stitcher\File;
