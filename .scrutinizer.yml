@@ -9,7 +9,6 @@ build:
                 coverage:
                     file: 'coverage.xml'
                     format: 'clover'
-                idle_timeout: 5
 checks:
     php:
         code_rating: true

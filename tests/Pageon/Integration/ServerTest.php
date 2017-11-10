@@ -13,20 +13,6 @@ class ServerTest extends StitcherTest
     use CreateStitcherFiles;
     use CreateStitcherObjects;
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->startServer();
-    }
-
-    protected function tearDown()
-    {
-        $this->stopServer();
-
-        parent::tearDown();
-    }
-
     /** @test */
     public function get_index()
     {
