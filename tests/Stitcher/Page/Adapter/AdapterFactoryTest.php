@@ -16,6 +16,6 @@ class AdapterFactoryTest extends StitcherTest
 
         $this->assertInstanceOf(CollectionAdapter::class, $factory->create('collection', ['variable' => 'test', 'parameter' => 'id']));
         $this->assertInstanceOf(FilterAdapter::class, $factory->create('filter', ['entries' => ['name' => 'A']]));
-        $this->assertInstanceOf(PaginationAdapter::class, $factory->create('pagination', ['variable' => 'entries']));
+        $this->assertInstanceOf(PaginationAdapter::class, $factory->create('pagination', ['variable' => 'entries', 'parameter' => 'page']));
     }
 }

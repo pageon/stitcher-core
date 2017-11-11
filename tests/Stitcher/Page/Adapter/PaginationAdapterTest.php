@@ -75,7 +75,7 @@ EOT
         );
 
         $pageConfiguration = [
-            'id'        => '/',
+            'id'        => '/{page}',
             'template'  => 'index.twig',
             'variables' => [
                 'entries' => 'entries.yaml',
@@ -84,6 +84,7 @@ EOT
                 'pagination' => [
                     'variable' => 'entries',
                     'perPage'  => 1,
+                    'parameter' => 'page',
                 ],
             ],
         ];

@@ -24,21 +24,7 @@ class ServerTest extends StitcherTest
     /** @test */
     public function it_serves_static_html_pages()
     {
-        $configurationFile = File::path('config/site.yaml');
-
-        $this->createAllTemplates();
-        $this->createSiteConfiguration($configurationFile);
-        $this->createDataFile();
-        $this->createImageFiles();
-
-        $command = Parse::make(
-            File::path('public'),
-            $configurationFile,
-            $this->createPageParser(),
-            $this->createPageRenderer()
-        );
-
-        $command->execute();
+        $this->parseAll();
 
         $body = (string) $this->get('/')->getBody();
         $this->assertContains('<html>', $body);

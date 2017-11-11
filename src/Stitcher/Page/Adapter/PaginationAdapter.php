@@ -9,17 +9,19 @@ use Stitcher\Variable\VariableParser;
 
 class PaginationAdapter implements Adapter, Validatory
 {
-    private $variableParser;
-    private $variable;
-    private $perPage;
+    protected $variableParser;
+    protected $variable;
+    protected $perPage;
+    protected $parameter;
 
     public function __construct(array $adapterConfiguration, VariableParser $variableParser)
     {
         if (! $this->isValid($adapterConfiguration)) {
-            throw InvalidConfiguration::invalidAdapterConfiguration('pagination', '`variable`, `perPage`');
+            throw InvalidConfiguration::invalidAdapterConfiguration('pagination', '`variable`, `parameter`, `perPage`');
         }
 
         $this->variable = $adapterConfiguration['variable'];
+        $this->parameter = $adapterConfiguration['parameter'];
         $this->perPage = $adapterConfiguration['perPage'] ?? 12;
         $this->variableParser = $variableParser;
     }
@@ -53,7 +55,7 @@ class PaginationAdapter implements Adapter, Validatory
 
     public function isValid($subject): bool
     {
-        return is_array($subject) && isset($subject['variable']);
+        return is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
     }
 
     protected function getEntries(array $pageConfiguration): ?array
@@ -73,7 +75,7 @@ class PaginationAdapter implements Adapter, Validatory
         int $pageCount
     ): array {
         $pageId = rtrim($entryConfiguration['id'], '/');
-        $paginatedId = "{$pageId}/page-{$pageIndex}";
+        $paginatedId = $this->createPaginatedUrl($pageId, $pageIndex);
 
         $entryConfiguration['id'] = $paginatedId;
         $entryConfiguration['variables'][$this->variable] = $entriesForPage;
@@ -105,7 +107,7 @@ class PaginationAdapter implements Adapter, Validatory
         $previous = $pageIndex - 1;
 
         return [
-            'url'   => "{$pageId}/page-{$previous}",
+            'url'   => $this->createPaginatedUrl($pageId, $previous),
             'index' => $previous,
         ];
     }
@@ -119,8 +121,13 @@ class PaginationAdapter implements Adapter, Validatory
         $next = $pageIndex + 1;
 
         return [
-            'url'   => "{$pageId}/page-{$next}",
+            'url'   => $this->createPaginatedUrl($pageId, $next),
             'index' => $next,
         ];
+    }
+
+    protected function createPaginatedUrl(string $pageId, int $index): string
+    {
+        return str_replace('{' .$this->parameter. '}', "page-{$index}", $pageId);
     }
 }

@@ -40,7 +40,7 @@ class YamlVariable extends AbstractVariable
             $parsedValue = $unparsedValue->parsed();
 
             if (is_array($parsedValue)) {
-                foreach ($parsedValue as &$property) {
+                foreach ($parsedValue as $key => &$property) {
                     $property = $this->parseRecursive($property);
                 }
             }

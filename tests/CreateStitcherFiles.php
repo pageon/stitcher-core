@@ -2,6 +2,7 @@
 
 namespace Stitcher\Test;
 
+use Stitcher\Command\Parse;
 use Stitcher\File;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -45,5 +46,24 @@ trait CreateStitcherFiles
         $configurationPath = $configurationPath ?? File::path('config/site.yaml');
 
         $fs->copy(__DIR__ . '/resources/config/site.yaml', $configurationPath);
+    }
+
+    protected function parseAll(): void
+    {
+        $configurationFile = File::path('config/site.yaml');
+
+        $this->createAllTemplates();
+        $this->createSiteConfiguration($configurationFile);
+        $this->createDataFile();
+        $this->createImageFiles();
+
+        $command = Parse::make(
+            File::path('public'),
+            $configurationFile,
+            $this->createPageParser(),
+            $this->createPageRenderer()
+        );
+
+        $command->execute();
     }
 }

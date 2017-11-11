@@ -7,7 +7,7 @@
             variable: entry
             parameter: id
 
-/entries-paginated:
+/entries-paginated/{page}:
     template: overview.twig
     variables:
         entries: data/entries.yaml
@@ -15,6 +15,7 @@
         pagination:
             variable: entries
             perPage: 2
+            parameter: page
 
 /entries:
     template: overview.twig
