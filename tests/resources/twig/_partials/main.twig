@@ -1,0 +1,10 @@
+<html>
+<head>
+    {% if _meta is defined %}
+        {{ _meta.render()|raw }}
+    {% endif %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

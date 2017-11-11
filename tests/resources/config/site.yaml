@@ -1,0 +1,29 @@
+/entries/{id}:
+    template: detail.twig
+    variables:
+        entry: data/entries.yaml
+    config:
+        collection:
+            variable: entry
+            parameter: id
+
+/entries-paginated/{page}:
+    template: overview.twig
+    variables:
+        entries: data/entries.yaml
+    config:
+        pagination:
+            variable: entries
+            perPage: 2
+            parameter: page
+
+/entries:
+    template: overview.twig
+    variables:
+        entries: data/entries.yaml
+
+/:
+    template: index.twig
+    variables:
+        title: Hello World
+        description: Description

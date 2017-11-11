@@ -1,0 +1,15 @@
+{% extends '_partials/main.twig' %}
+
+{% block content %}
+
+    <div>
+        <h1>{{ entry.title }}</h1>
+
+        {% if entry.image is defined %}
+            <img src="{{ entry.image.src }}"
+                 srcset="{{ entry.image.srcset }}"
+                 alt="{{ entry.image.alt }}"/>
+        {% endif %}
+    </div>
+
+{% endblock %}
