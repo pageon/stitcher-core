@@ -38,7 +38,7 @@ class DevelopmentServerTest extends StitcherTest
     /** @test */
     public function it_serves_static_html()
     {
-        $server = DevelopmentServer::make($this->command, __DIR__ .'/../../../data/public', '/entries');
+        $server = DevelopmentServer::make($this->command, __DIR__ . '/../../../data/public', '/entries');
 
         $html = $server->run();
 
@@ -48,7 +48,7 @@ class DevelopmentServerTest extends StitcherTest
     /** @test */
     public function it_serves_static_html_from_index()
     {
-        $server = DevelopmentServer::make($this->command, __DIR__ .'/../../../data/public', '/');
+        $server = DevelopmentServer::make($this->command, __DIR__ . '/../../../data/public', '/');
 
         $html = $server->run();
 
