@@ -1,0 +1,72 @@
+services:
+
+    variableFactory:
+        class: Stitcher\Variable\VariableFactory
+    variableParser:
+        class: Stitcher\Variable\VariableParser
+        arguments:
+            - '@variableFactory'
+
+    imageScaler:
+        class: Pageon\Html\Image\FixedWidthScaler
+        arguments:
+            - [200]
+    imageFactory:
+        class: Pageon\Html\Image\ImageFactory
+        arguments:
+            - %sourceDirectory%
+            - %publicDirectory%
+            - '@imageScaler'
+
+    adapterFactory:
+        class: Stitcher\Page\Adapter\AdapterFactory
+        arguments:
+            - '@variableParser'
+
+    rendererFactory:
+        class: Stitcher\Renderer\RendererFactory
+        arguments:
+            - %templateDirectory%
+    renderer:
+        class: Stitcher\Renderer\TwigRenderer
+        arguments:
+            - %templateDirectory%
+
+    pageFactory:
+        class: Stitcher\Page\PageFactory
+        arguments:
+            - '@variableParser'
+    pageParser:
+        class: Stitcher\Page\PageParser
+        arguments:
+            - '@pageFactory'
+            - '@adapterFactory'
+    pageRenderer:
+        class: Stitcher\Page\PageRenderer
+        arguments:
+            - '@renderer'
+
+    parse:
+        class: Stitcher\Command\Parse
+        arguments:
+            - %publicDirectory%
+            - %configurationFile%
+            - '@pageParser'
+            - '@pageRenderer'
+    parsePartial:
+        class: Stitcher\Command\PartialParse
+        arguments:
+            - %publicDirectory%
+            - %configurationFile%
+            - '@pageParser'
+            - '@pageRenderer'
+
+    developmentServer:
+        class: Stitcher\Application\DevelopmentServer
+        arguments:
+            - %publicDirectory%
+            - '@parsePartial'
+    productionServer:
+        class: Stitcher\Application\ProductionServer
+        arguments:
+            - %publicDirectory%

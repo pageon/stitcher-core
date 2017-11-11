@@ -10,7 +10,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Config
 {
     protected static $env;
-    protected static $loadedConfig;
+    protected static $loadedConfig = [];
 
     public static function init(string $basePath)
     {
@@ -39,5 +39,10 @@ class Config
     public static function get(string $key)
     {
         return self::$loadedConfig[$key] ?? null;
+    }
+
+    public static function all(): array
+    {
+        return self::$loadedConfig;
     }
 }

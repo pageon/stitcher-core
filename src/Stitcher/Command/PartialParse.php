@@ -22,7 +22,7 @@ class PartialParse extends AbstractParse
 
     public function execute(): void
     {
-        $parsedConfiguration = Yaml::parse(File::read($this->configurationFile));
+        $parsedConfiguration = (array) Yaml::parse(File::read($this->configurationFile));
 
         $routeCollection = $this->createRouteCollection($parsedConfiguration);
         $matcher = new UrlMatcher($routeCollection, new RequestContext());

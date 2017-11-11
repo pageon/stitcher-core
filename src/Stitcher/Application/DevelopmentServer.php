@@ -6,34 +6,38 @@ use Stitcher\Command\PartialParse;
 
 class DevelopmentServer
 {
-    private $html;
+    protected $rootDirectory;
+    protected $uri = null;
+    protected $partialParse;
 
     public function __construct(
-        PartialParse $partialParse,
         string $rootDirectory,
+        PartialParse $partialParse,
         string $uri = null
     ) {
-        $uri = $uri ?? $_SERVER['SCRIPT_NAME'];
-
-        $partialParse->setFilter($uri);
-        $partialParse->execute();
-
-        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
-
-        $this->html = @file_get_contents("{$rootDirectory}/{$filename}");
+        $this->rootDirectory = $rootDirectory;
+        $this->uri = $uri;
+        $this->partialParse = $partialParse;
     }
 
     public static function make(
-        PartialParse $partialParse,
         string $rootDirectory,
+        PartialParse $partialParse,
         string $uri = null
     ): DevelopmentServer
     {
-        return new self($partialParse, $rootDirectory, $uri);
+        return new self($rootDirectory, $partialParse, $uri);
     }
 
     public function run(): string
     {
-        return $this->html;
+        $uri = $this->uri ?? $_SERVER['SCRIPT_NAME'];
+
+        $this->partialParse->setFilter($uri);
+        $this->partialParse->execute();
+
+        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+
+        return @file_get_contents("{$this->rootDirectory}/{$filename}");
     }
 }

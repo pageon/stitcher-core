@@ -9,7 +9,9 @@
         "vlucas/phpdotenv" : "^2.4",
         "symfony/finder": "^3.3",
         "illuminate/support": "^5.5",
-        "symfony/routing": "^3.3"
+        "symfony/routing": "^3.3",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/config": "^3.3"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

@@ -4,14 +4,13 @@ namespace Stitcher\Application;
 
 class ProductionServer
 {
-    protected $html;
+    protected $rootDirectory;
+    protected $uri;
 
     public function __construct(string $rootDirectory, string $uri = null)
     {
-        $uri = $uri ?? $_SERVER['SCRIPT_NAME'];
-        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
-
-        $this->html = @file_get_contents("{$rootDirectory}/{$filename}");
+        $this->rootDirectory = $rootDirectory;
+        $this->uri = $uri;
     }
 
     public static function make(string $rootDirectory, string $uri = null): ProductionServer
@@ -21,6 +20,9 @@ class ProductionServer
 
     public function run(): string
     {
-        return $this->html;
+        $uri = $this->uri ?? $_SERVER['SCRIPT_NAME'];
+        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+
+        return @file_get_contents("{$this->rootDirectory}/{$filename}");
     }
 }
