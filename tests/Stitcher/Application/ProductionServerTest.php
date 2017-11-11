@@ -2,6 +2,7 @@
 
 namespace Stitcher\Application;
 
+use Stitcher\File;
 use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\StitcherTest;
@@ -16,7 +17,7 @@ class ProductionServerTest extends StitcherTest
     {
         $this->parseAll();
 
-        $server = ProductionServer::make(__DIR__ .'/../../../data/public', '/entries');
+        $server = ProductionServer::make(File::path('public'), '/entries');
 
         $html = $server->run();
 
@@ -28,7 +29,7 @@ class ProductionServerTest extends StitcherTest
     {
         $this->parseAll();
 
-        $server = ProductionServer::make(__DIR__ .'/../../../data/public', '/');
+        $server = ProductionServer::make(File::path('public'), '/');
 
         $html = $server->run();
 
