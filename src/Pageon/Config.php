@@ -6,6 +6,7 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Illuminate\Support\Arr;
 use Stitcher\Exception\InvalidConfiguration;
+use Stitcher\File;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -14,18 +15,17 @@ class Config
     protected static $env;
     protected static $loadedConfig = [];
 
-    public static function init(string $basePath)
+    public static function init()
     {
-        $basePath = rtrim($basePath, '/');
-        self::$env = new Dotenv($basePath);
+        self::$env = new Dotenv(File::path());
 
         try {
             self::$env->load();
         } catch (InvalidPathException $e) {
-            throw InvalidConfiguration::dotEnvNotFound($basePath);
+            throw InvalidConfiguration::dotEnvNotFound(File::path());
         }
 
-        $configFiles = Finder::create()->files()->in($basePath . '/config')->name('*.php');
+        $configFiles = Finder::create()->files()->in(File::path('config'))->name('*.php');
 
         $unparsedConfig = [];
 

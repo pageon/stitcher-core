@@ -19,7 +19,8 @@ class App
 
     public static function init(string $basePath)
     {
-        Config::init($basePath);
+        File::base($basePath);
+        Config::init();
 
         self::$container = new ContainerBuilder();
 
