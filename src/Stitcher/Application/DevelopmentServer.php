@@ -3,6 +3,8 @@
 namespace Stitcher\Application;
 
 use Stitcher\Command\PartialParse;
+use Stitcher\Exception\Http;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class DevelopmentServer
 {
@@ -31,13 +33,18 @@ class DevelopmentServer
 
     public function run(): string
     {
-        $uri = $this->uri ?? $_SERVER['SCRIPT_NAME'];
+        $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
 
         $this->partialParse->setFilter($uri);
-        $this->partialParse->execute();
 
-        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+        try {
+            $this->partialParse->execute();
 
-        return @file_get_contents("{$this->rootDirectory}/{$filename}");
+            $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+
+            return @file_get_contents("{$this->rootDirectory}/{$filename}");
+        } catch (ResourceNotFoundException $e) {
+            throw Http::notFound($uri);
+        }
     }
 }

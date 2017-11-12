@@ -18,4 +18,14 @@ class InvalidConfiguration extends \Exception
     {
         return new self("The {$adapter} adapter requires following configuration: {$fields}");
     }
+
+    public static function dotEnvNotFound(string $directory): InvalidConfiguration
+    {
+        return new self("Could not find `.env` file. Looked in {$directory}");
+    }
+
+    public static function missingParameter(string $parameter): InvalidConfiguration
+    {
+        return new self("Missing parameter `{$parameter}`, did you add it in your config file?");
+    }
 }

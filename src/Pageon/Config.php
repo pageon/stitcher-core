@@ -3,7 +3,9 @@
 namespace Pageon;
 
 use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use Illuminate\Support\Arr;
+use Stitcher\Exception\InvalidConfiguration;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -16,7 +18,12 @@ class Config
     {
         $basePath = rtrim($basePath, '/');
         self::$env = new Dotenv($basePath);
-        self::$env->load();
+
+        try {
+            self::$env->load();
+        } catch (InvalidPathException $e) {
+            throw InvalidConfiguration::dotEnvNotFound($basePath);
+        }
 
         $configFiles = Finder::create()->files()->in($basePath . '/config')->name('*.php');
 

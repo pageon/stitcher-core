@@ -20,7 +20,7 @@ class ProductionServer
 
     public function run(): string
     {
-        $uri = $this->uri ?? $_SERVER['SCRIPT_NAME'];
+        $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
         $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
 
         return @file_get_contents("{$this->rootDirectory}/{$filename}");
