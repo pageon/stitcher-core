@@ -21,13 +21,14 @@ class PageParser
         return new self($factory, $adapterFactory);
     }
 
-    public function parse($inputConfiguration): Collection
+    public function parse($pageConfiguration): Collection
     {
         $result = [];
-        $adaptedInputConfiguration = $this->parseAdapterConfiguration($inputConfiguration);
 
-        foreach ($adaptedInputConfiguration as $adaptedPageConfiguration) {
-            $page = $this->parsePage($adaptedPageConfiguration);
+        $pageEntries = $this->parseAdapterConfiguration($pageConfiguration);
+
+        foreach ($pageEntries as $pageEntry) {
+            $page = $this->parsePage($pageEntry);
 
             $result[$page->id()] = $page;
         }
@@ -37,21 +38,23 @@ class PageParser
 
     private function parseAdapterConfiguration(array $pageConfiguration): array
     {
-        $result = [$pageConfiguration];
+        $pageEntries = [$pageConfiguration];
+
         $adapterConfigurations = $pageConfiguration['config'] ?? $pageConfiguration['adapters'] ?? [];
 
         foreach ($adapterConfigurations as $adapterType => $adapterConfiguration) {
             $adapter = $this->adapterFactory->create($adapterType, $adapterConfiguration);
-            $transformedPages = [];
 
-            foreach ($result as $pageToTransform) {
-                $transformedPages = array_merge($transformedPages, $adapter->transform($pageToTransform));
+            $adaptedPageEntries = [];
+
+            foreach ($pageEntries as $pageToTransform) {
+                $adaptedPageEntries = array_merge($adaptedPageEntries, $adapter->transform($pageToTransform));
             }
 
-            $result = $transformedPages;
+            $pageEntries = $adaptedPageEntries;
         }
 
-        return $result;
+        return $pageEntries;
     }
 
     private function parsePage($inputConfiguration): Page
