@@ -13,7 +13,8 @@
         "illuminate/support": "^5.5",
         "symfony/routing": "^3.3",
         "symfony/dependency-injection": "^3.3",
-        "symfony/config": "^3.3"
+        "symfony/config": "^3.3",
+        "leafo/scssphp": "^0.7.1"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

@@ -19,12 +19,7 @@ abstract class StitcherTest extends TestCase
     {
         parent::setUp();
 
-        File::base(__DIR__ . '/../data');
-
-        $fs = new Filesystem();
-
-        $fs->copy(__DIR__ . '/resources/.env', File::path('.env'));
-        $fs->mirror(__DIR__ . '/resources/config', File::path('config'));
+        SetUp::run();
     }
 
     protected function tearDown()

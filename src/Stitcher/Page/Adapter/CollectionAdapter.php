@@ -48,12 +48,11 @@ class CollectionAdapter implements Adapter, Validatory
         return is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
     }
 
-    protected function getEntries($pageConfiguration): array
+    protected function getEntries($pageConfiguration): ?array
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
-        $entries = $this->variableParser->parse($variable)
-            ?? $variable;
+        $entries = $this->variableParser->parse($variable) ?? $variable;
 
         return $entries;
     }

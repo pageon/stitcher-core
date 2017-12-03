@@ -80,6 +80,7 @@ class ImageFactory
     private function copySourceImageToDestination(string $srcPath): void
     {
         $fs = new Filesystem();
+
         $fs->copy("{$this->sourceDirectory}/{$srcPath}", "{$this->publicDirectory}/{$srcPath}");
     }
 }

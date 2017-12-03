@@ -14,14 +14,14 @@ class ImageVariableTest extends StitcherTest
     public function it_can_be_parsed()
     {
         $variable = ImageVariable::make(
-            '/resources/green.jpg',
+            '/resources/images/green.jpg',
             $this->createImageFactory()
         )->parse();
 
         $parsed = $variable->parsed();
         $this->assertArrayHasKey('src', $parsed, '`src` not found in parsed image.');
         $this->assertArrayHasKey('srcset', $parsed, '`srcset not found in parsed image.`');
-        $this->assertEquals('/resources/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');
+        $this->assertEquals('/resources/images/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');
     }
 
     /** @test */
@@ -29,7 +29,7 @@ class ImageVariableTest extends StitcherTest
     {
         $variable = ImageVariable::make(
             [
-                'src' => '/resources/green.jpg',
+                'src' => '/resources/images/green.jpg',
                 'alt' => 'test',
             ],
             $this->createImageFactory()
@@ -38,6 +38,6 @@ class ImageVariableTest extends StitcherTest
         $parsed = $variable->parsed();
         $this->assertArrayHasKey('alt', $parsed, '`alt not found in parsed image.`');
         $this->assertEquals('test', $parsed['alt'], '`alt` does not match expected value in parsed image.');
-        $this->assertEquals('/resources/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');
+        $this->assertEquals('/resources/images/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');
     }
 }

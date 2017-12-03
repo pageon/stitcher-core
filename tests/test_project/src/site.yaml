@@ -1,7 +1,7 @@
 /entries/{id}:
     template: detail.twig
     variables:
-        entry: data/entries.yaml
+        entry: src/entries.yaml
     config:
         collection:
             variable: entry
@@ -10,7 +10,7 @@
 /entries-paginated/{page}:
     template: overview.twig
     variables:
-        entries: data/entries.yaml
+        entries: src/entries.yaml
     config:
         pagination:
             variable: entries
@@ -20,7 +20,7 @@
 /entries:
     template: overview.twig
     variables:
-        entries: data/entries.yaml
+        entries: src/entries.yaml
 
 /:
     template: index.twig

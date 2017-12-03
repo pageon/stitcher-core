@@ -5,23 +5,16 @@ namespace Pageon\Test\Integration;
 use Stitcher\Command\Parse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
-use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\StitcherTest;
 
 class FullSiteParseTest extends StitcherTest
 {
-    use CreateStitcherFiles;
     use CreateStitcherObjects;
 
     /** @test */
     public function parse_test()
     {
-        $configurationFile = File::path('config/site.yaml');
-
-        $this->createAllTemplates();
-        $this->createSiteConfiguration($configurationFile);
-        $this->createDataFile();
-        $this->createImageFiles();
+        $configurationFile = File::path('src/site.yaml');
 
         $command = Parse::make(
             File::path('public'),
@@ -91,8 +84,8 @@ class FullSiteParseTest extends StitcherTest
     {
         $detail = File::read('public/entries/a.html');
 
-        $this->assertContains('<img src="/images/green.jpg"', $detail);
-        $this->assertContains('srcset="/images/green.jpg 250w', $detail);
+        $this->assertContains('<img src="/resources/images/green.jpg"', $detail);
+        $this->assertContains('srcset="/resources/images/green.jpg 250w', $detail);
         $this->assertContains('alt="test"', $detail);
     }
 }

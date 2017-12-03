@@ -20,7 +20,7 @@ trait CreateStitcherObjects
     protected function createPageRenderer() : PageRenderer
     {
         return PageRenderer::make(
-            TwigRenderer::make(File::path('/template'))
+            TwigRenderer::make(File::path('/resources/view'))
         );
     }
 
@@ -56,7 +56,7 @@ trait CreateStitcherObjects
 
     protected function createImageFactory($sourceDirectory = null): ImageFactory
     {
-        $sourceDirectory = $sourceDirectory ?? __DIR__ . '/';
+        $sourceDirectory = $sourceDirectory ?? File::path();
         $publicPath = File::path('public');
 
         return ImageFactory::make($sourceDirectory, $publicPath, FixedWidthScaler::make([

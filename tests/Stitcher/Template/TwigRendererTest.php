@@ -13,7 +13,7 @@ class TwigRendererTest extends StitcherTest
     /** @test */
     public function it_can_render_a_template()
     {
-        $renderer = TwigRenderer::make(File::path('template'));
+        $renderer = TwigRenderer::make(File::path('resources/view'));
         $this->createAllTemplates();
 
         $html = $renderer->renderTemplate('index.twig', [

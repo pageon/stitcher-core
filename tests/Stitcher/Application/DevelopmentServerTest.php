@@ -20,7 +20,7 @@ class DevelopmentServerTest extends StitcherTest
     {
         parent::setUp();
 
-        $configurationFile = File::path('config/site.yaml');
+        $configurationFile = File::path('src/site.yaml');
 
         $this->createAllTemplates();
         $this->createSiteConfiguration($configurationFile);

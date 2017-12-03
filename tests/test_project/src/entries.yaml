@@ -1,7 +1,7 @@
 a:
     title: A
     image:
-        src: images/green.jpg
+        src: resources/images/green.jpg
         alt: test
 b:
     title: B

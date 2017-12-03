@@ -14,15 +14,15 @@ class ImageFactoryTest extends StitcherTest
     {
         $public = File::path('public');
 
-        $factory = ImageFactory::make(__DIR__ . '/../../../', $public, FixedWidthScaler::make([
+        $factory = ImageFactory::make(File::path(), $public, FixedWidthScaler::make([
             300, 500,
         ]));
 
-        $factory->create('resources/green_large.jpg');
+        $factory->create('resources/images/green_large.jpg');
 
-        $this->assertNotNull(File::read('public/resources/green_large.jpg'));
-        $this->assertNotNull(File::read('public/resources/green_large-500x500.jpg'));
-        $this->assertNotNull(File::read('public/resources/green_large-300x300.jpg'));
+        $this->assertNotNull(File::read('public/resources/images/green_large.jpg'));
+        $this->assertNotNull(File::read('public/resources/images/green_large-500x500.jpg'));
+        $this->assertNotNull(File::read('public/resources/images/green_large-300x300.jpg'));
     }
 
     /** @test */
@@ -30,15 +30,15 @@ class ImageFactoryTest extends StitcherTest
     {
         $public = File::path('public');
 
-        $factory = ImageFactory::make(__DIR__ . '/../../../', $public, FixedWidthScaler::make([
+        $factory = ImageFactory::make(File::path(), $public, FixedWidthScaler::make([
             300, 500,
         ]));
 
-        $image = $factory->create('resources/green_large.jpg');
+        $image = $factory->create('resources/images/green_large.jpg');
         $srcset = $image->srcset();
 
-        $this->assertContains('/resources/green_large.jpg 2500w', $srcset);
-        $this->assertContains('/resources/green_large-500x500.jpg 500w', $srcset);
-        $this->assertContains('/resources/green_large-300x300.jpg 300w', $srcset);
+        $this->assertContains('/resources/images/green_large.jpg 2500w', $srcset);
+        $this->assertContains('/resources/images/green_large-500x500.jpg 500w', $srcset);
+        $this->assertContains('/resources/images/green_large-300x300.jpg 300w', $srcset);
     }
 }

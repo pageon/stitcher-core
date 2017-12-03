@@ -2,15 +2,19 @@
 
 namespace Stitcher\Test;
 
+use Stitcher\File;
 use Symfony\Component\Process\Process;
 
-class StitcherTestBootstrap {
+class StitcherTestBootstrap
+{
     /** @var Process */
     protected static $serverProcess = null;
     public static $host = 'localhost:8181';
 
     public function __construct()
     {
+        SetUp::run();
+
         register_shutdown_function(function () {
             $this->stopServer();
         });
@@ -25,7 +29,7 @@ class StitcherTestBootstrap {
         }
 
         $host = self::$host;
-        $documentRoot = __DIR__.'/public';
+        $documentRoot = File::path('public');
         $router = "{$documentRoot}/index.php";
 
         self::$serverProcess = new Process("php -S {$host} {$router} >/dev/null 2>&1 & echo $!");
@@ -34,7 +38,7 @@ class StitcherTestBootstrap {
 
     protected function stopServer()
     {
-        if (!self::$serverProcess) {
+        if (! self::$serverProcess) {
             return;
         }
 
