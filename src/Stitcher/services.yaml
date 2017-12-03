@@ -4,6 +4,8 @@ services:
         class: Symfony\Component\Yaml\Yaml
     markdownParser:
         class: \Parsedown
+    sassParser:
+        class: Leafo\ScssPhp\Compiler
 
     imageScaler:
         class: Pageon\Html\Image\FixedWidthScaler
@@ -32,11 +34,19 @@ services:
         arguments:
             - '@variableParser'
 
+    cssExtension:
+        class: Stitcher\Renderer\Extension\Css
+        arguments:
+            - %sourceDirectory%
+            - %publicDirectory%
+            - '@sassParser'
     rendererFactory:
         class: Stitcher\Renderer\RendererFactory
         arguments:
             - %templateDirectory%
             - %templateRenderer%
+        calls:
+            - ['addExtension', ['@cssExtension']]
     renderer:
         factory: 'Stitcher\Renderer\RendererFactory:create'
         arguments:

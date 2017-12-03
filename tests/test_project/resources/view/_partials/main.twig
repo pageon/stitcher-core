@@ -3,6 +3,8 @@
     {% if _meta is defined %}
         {{ _meta.render()|raw }}
     {% endif %}
+
+    {% block head %}{% endblock %}
 </head>
 <body>
     {% block content %}{% endblock %}

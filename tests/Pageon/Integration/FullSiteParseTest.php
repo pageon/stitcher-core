@@ -30,6 +30,7 @@ class FullSiteParseTest extends StitcherTest
         $this->assertOverviewPaginatedPageParsed();
         $this->assertDetailPageParsed();
         $this->assertImageParsed();
+        $this->assertCss();
     }
 
     private function assertIndexPageParsed(): void
@@ -87,5 +88,15 @@ class FullSiteParseTest extends StitcherTest
         $this->assertContains('<img src="/resources/images/green.jpg"', $detail);
         $this->assertContains('srcset="/resources/images/green.jpg 250w', $detail);
         $this->assertContains('alt="test"', $detail);
+    }
+
+    private function assertCss()
+    {
+        $detail = File::read('public/index.html');
+
+        $this->assertContains('<link rel="stylesheet" href="/resources/css/scss_file.css" />', $detail);
+        $this->assertContains('<style>', $detail);
+        $this->assertContains('</style>', $detail);
+        $this->assertContains('body {', $detail);
     }
 }

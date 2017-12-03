@@ -7,13 +7,14 @@ use Stitcher\Renderer;
 
 class RendererFactory extends DynamicFactory
 {
-    private $templateDirectory;
-    private $renderer;
+    protected $templateDirectory;
+    protected $rendererConfiguration;
+    protected $extensions = [];
 
-    public function __construct(string $templateDirectory, ?string $renderer = 'twig')
+    public function __construct(string $templateDirectory, ?string $rendererConfiguration = 'twig')
     {
         $this->templateDirectory = $templateDirectory;
-        $this->renderer = $renderer;
+        $this->rendererConfiguration = $rendererConfiguration;
 
         $this->setTwigRule();
     }
@@ -23,17 +24,31 @@ class RendererFactory extends DynamicFactory
         return new self($templateDirectory, $renderer);
     }
 
+    public function addExtension(Extension $extension)
+    {
+        $this->extensions[$extension->name()] = $extension;
+    }
+
     public function create(): ?Renderer
     {
         foreach ($this->getRules() as $rule) {
-            $templateRenderer = $rule($this->renderer);
+            $templateRenderer = $rule($this->rendererConfiguration);
 
             if ($templateRenderer) {
+                $this->loadExtensions($templateRenderer);
+
                 return $templateRenderer;
             }
         }
 
         return null;
+    }
+
+    protected function loadExtensions(Renderer $renderer)
+    {
+        foreach ($this->extensions as $extension) {
+            $renderer->customExtension($extension);
+        }
     }
 
     private function setTwigRule(): void

@@ -5,7 +5,6 @@ namespace Stitcher\Renderer;
 use Stitcher\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig_Environment;
-use Twig_Function;
 
 class TwigRenderer extends Twig_Environment implements Renderer
 {
@@ -31,8 +30,8 @@ class TwigRenderer extends Twig_Environment implements Renderer
         return $this->render($path, $variables);
     }
 
-    public function customExtension(string $name, callable $function): void
+    public function customExtension(Extension $extension): void
     {
-        $this->addFunction(new Twig_Function($name, $function));
+        $this->addGlobal($extension->name(), $extension);
     }
 }

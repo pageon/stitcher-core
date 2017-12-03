@@ -2,6 +2,7 @@
 
 namespace Stitcher\Test;
 
+use Leafo\ScssPhp\Compiler;
 use Pageon\Html\Image\FixedWidthScaler;
 use Pageon\Html\Image\ImageFactory;
 use Parsedown;
@@ -10,6 +11,7 @@ use Stitcher\Page\Adapter\AdapterFactory;
 use Stitcher\Page\PageFactory;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
+use Stitcher\Renderer\Extension\Css;
 use Stitcher\Renderer\TwigRenderer;
 use Stitcher\Variable\VariableFactory;
 use Stitcher\Variable\VariableParser;
@@ -19,8 +21,12 @@ trait CreateStitcherObjects
 {
     protected function createPageRenderer() : PageRenderer
     {
+        $renderer = TwigRenderer::make(File::path('/resources/view'));
+
+        $renderer->customExtension(new Css(File::path(), File::path('public'), new Compiler()));
+
         return PageRenderer::make(
-            TwigRenderer::make(File::path('/resources/view'))
+            $renderer
         );
     }
 

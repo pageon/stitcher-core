@@ -1,9 +1,12 @@
 {% extends '_partials/main.twig' %}
 
-{% block content %}
+{% block head %}
+    {{ css.href('/resources/css/scss_file.scss')|raw }}
+    {{ css.inline('/resources/css/normal.css')|raw }}
+{% endblock %}
 
+{% block content %}
     {% if variable is defined %}
         {{ variable }}
     {% endif %}
-
 {% endblock %}
