@@ -6,6 +6,7 @@ use Pageon\Html\Image\ImageFactory;
 use Parsedown;
 use Stitcher\DynamicFactory;
 use Symfony\Component\Yaml\Yaml;
+use TypeError;
 
 class VariableFactory extends DynamicFactory
 {
@@ -60,7 +61,7 @@ class VariableFactory extends DynamicFactory
         foreach ($this->getRules() as $rule) {
             try {
                 $variable = $rule($value);
-            } catch (\TypeError $e) {
+            } catch (TypeError $e) {
                 continue;
             }
 
