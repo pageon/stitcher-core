@@ -55,15 +55,20 @@ class Css implements Extension
             $extension = 'css';
         }
 
-        $url = "{$dirname}/{$filename}.{$extension}";
+        $path = "{$dirname}/{$filename}.{$extension}";
 
+        $this->saveCss($path, $content);
+
+        return ["/{$path}", $content];
+    }
+
+    protected function saveCss(string $path, string $content): void
+    {
         $fs = new Filesystem();
 
         $fs->dumpFile(
-            File::path("{$this->publicDirectory}/{$url}"),
+            File::path("{$this->publicDirectory}/{$path}"),
             $content
         );
-
-        return ["/{$url}", $content];
     }
 }
