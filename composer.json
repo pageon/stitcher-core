@@ -1,4 +1,6 @@
 {
+    "name" : "pageon/stitcher-core",
+    "description" : "Static website generator in PHP",
     "prefer-stable" : true,
     "require" : {
         "symfony/yaml" : "^3.3",
