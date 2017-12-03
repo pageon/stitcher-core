@@ -35,7 +35,6 @@ class AppTest extends StitcherTest
             AdapterFactory::class,
             PageFactory::class,
             RendererFactory::class,
-            TwigRenderer::class,
             PageParser::class,
             PageRenderer::class,
             Parse::class,
@@ -46,6 +45,8 @@ class AppTest extends StitcherTest
         foreach ($servicesToTest as $class) {
             $this->assertServiceRegistered($class);
         }
+
+        $this->assertInstanceOf(Renderer::class, App::get('renderer'));
     }
 
     private function assertServiceRegistered(string $class)

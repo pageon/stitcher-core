@@ -36,8 +36,9 @@ services:
         class: Stitcher\Renderer\RendererFactory
         arguments:
             - %templateDirectory%
+            - %templateRenderer%
     renderer:
-        class: Stitcher\Renderer\TwigRenderer
+        factory: 'Stitcher\Renderer\RendererFactory:create'
         arguments:
             - %templateDirectory%
 

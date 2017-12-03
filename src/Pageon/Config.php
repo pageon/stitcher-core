@@ -13,7 +13,9 @@ use Symfony\Component\Finder\Finder;
 class Config
 {
     protected static $env;
-    protected static $loadedConfigfiguration = [];
+    protected static $loadedConfiguration = [
+        'templateRenderer' => 'twig',
+    ];
 
     public static function init()
     {
@@ -29,17 +31,17 @@ class Config
 
         $loadedConfiguration = self::load($configurationFiles);
 
-        self::$loadedConfigfiguration = Arr::dot($loadedConfiguration);
+        self::$loadedConfiguration = array_merge(self::$loadedConfiguration, Arr::dot($loadedConfiguration));
     }
 
     public static function get(string $key)
     {
-        return self::$loadedConfigfiguration[$key] ?? null;
+        return self::$loadedConfiguration[$key] ?? null;
     }
 
     public static function all(): array
     {
-        return self::$loadedConfigfiguration;
+        return self::$loadedConfiguration;
     }
 
     protected static function load(Iterator $configurationFiles): array

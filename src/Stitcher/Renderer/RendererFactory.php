@@ -8,23 +8,25 @@ use Stitcher\Renderer;
 class RendererFactory extends DynamicFactory
 {
     private $templateDirectory;
+    private $renderer;
 
-    public function __construct(string $templateDirectory)
+    public function __construct(string $templateDirectory, ?string $renderer = 'twig')
     {
         $this->templateDirectory = $templateDirectory;
+        $this->renderer = $renderer;
 
         $this->setTwigRule();
     }
 
-    public static function make(string $templateDirectory): RendererFactory
+    public static function make(string $templateDirectory, ?string $renderer = 'twig'): RendererFactory
     {
-        return new self($templateDirectory);
+        return new self($templateDirectory, $renderer);
     }
 
-    public function create($value): ?Renderer
+    public function create(): ?Renderer
     {
         foreach ($this->getRules() as $rule) {
-            $templateRenderer = $rule($value);
+            $templateRenderer = $rule($this->renderer);
 
             if ($templateRenderer) {
                 return $templateRenderer;
