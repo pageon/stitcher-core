@@ -1,6 +1,6 @@
 <?php
 
-namespace Pageon\Integration;
+namespace Stitcher\Test\Integration;
 
 use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\CreateStitcherObjects;

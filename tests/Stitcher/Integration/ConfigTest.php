@@ -1,6 +1,6 @@
 <?php
 
-namespace Pageon\Integration;
+namespace Stitcher\Test\Integration;
 
 use Pageon\Config;
 use Stitcher\Test\StitcherTest;

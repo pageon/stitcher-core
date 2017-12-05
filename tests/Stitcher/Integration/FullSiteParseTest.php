@@ -1,12 +1,9 @@
 <?php
 
-namespace Pageon\Test\Integration;
+namespace Stitcher\Test\Integration;
 
-use Pageon\Config;
 use Stitcher\App;
-use Stitcher\Command\Parse;
 use Stitcher\File;
-use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\StitcherTest;
 
 class FullSiteParseTest extends StitcherTest

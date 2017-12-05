@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher\Test\Stitcher\Integration;
+namespace Stitcher\Test\Integration;
 
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\StitcherTest;
