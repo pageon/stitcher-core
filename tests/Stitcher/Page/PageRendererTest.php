@@ -2,7 +2,6 @@
 
 namespace Stitcher\Page;
 
-use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\StitcherTest;
