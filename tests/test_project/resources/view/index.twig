@@ -1,7 +1,7 @@
 {% extends '_partials/main.twig' %}
 
 {% block head %}
-    {{ css.href('/resources/css/scss_file.scss')|raw }}
+    {{ css.link('/resources/css/scss_file.scss')|raw }}
     {{ css.inline('/resources/css/normal.css')|raw }}
 {% endblock %}
 

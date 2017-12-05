@@ -2,44 +2,69 @@
 
 namespace Stitcher\Renderer\Extension;
 
-use Leafo\ScssPhp\Compiler as Sass;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Css implements Extension
+class Js implements Extension
 {
     protected $sourceDirectory;
     protected $publicDirectory;
-    protected $sass;
+
+    protected $defer = false;
+    protected $async = false;
 
     public function __construct(
         string $sourceDirectory,
-        string $publicDirectory,
-        Sass $sass
+        string $publicDirectory
     ) {
         $this->sourceDirectory = $sourceDirectory;
         $this->publicDirectory = $publicDirectory;
-        $this->sass = $sass;
     }
 
     public function name(): string
     {
-        return 'css';
+        return 'js';
     }
 
     public function link(string $src): string
     {
         [$url, $content] = $this->parseSource($src);
 
-        return "<link rel=\"stylesheet\" href=\"{$url}\" />";
+        $script = "<script src=\"{$url}\"";
+
+        if ($this->defer) {
+            $script .= ' defer';
+        }
+
+        if ($this->async) {
+            $script .= ' async';
+        }
+
+        $script .= "></script>";
+
+        return $script;
     }
 
     public function inline(string $src): string
     {
         [$url, $content] = $this->parseSource($src);
 
-        return '<style>' . $content . '</style>';
+        return '<script>' . $content . '</script>';
+    }
+
+    public function defer(): Js
+    {
+        $this->defer = true;
+
+        return $this;
+    }
+
+    public function async(): Js
+    {
+        $this->async = true;
+
+        return $this;
     }
 
     public function parseSource(string $src): array
@@ -49,11 +74,6 @@ class Css implements Extension
         ['dirname' => $dirname, 'filename' => $filename, 'extension' => $extension] = pathinfo($src);
 
         $content = File::read("{$this->sourceDirectory}/{$src}");
-
-        if (in_array($extension, ['scss', 'sass'])) {
-            $content = $this->sass->compile($content);
-            $extension = 'css';
-        }
 
         $path = "{$dirname}/{$filename}.{$extension}";
 
