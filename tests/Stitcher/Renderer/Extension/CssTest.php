@@ -56,7 +56,6 @@ class CssTest extends StitcherTest
     private function createExtension(): Css
     {
         return new Css(
-            File::path(),
             File::path('public'),
             new Sass()
         );

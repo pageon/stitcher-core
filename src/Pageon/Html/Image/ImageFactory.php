@@ -4,6 +4,7 @@ namespace Pageon\Html\Image;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Image as ScaleableImage;
+use Stitcher\File;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ImageFactory
@@ -81,6 +82,6 @@ class ImageFactory
     {
         $fs = new Filesystem();
 
-        $fs->copy("{$this->sourceDirectory}/{$srcPath}", "{$this->publicDirectory}/{$srcPath}");
+        $fs->copy(File::path($srcPath), "{$this->publicDirectory}/{$srcPath}");
     }
 }

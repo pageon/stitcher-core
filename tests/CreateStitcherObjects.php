@@ -12,6 +12,7 @@ use Stitcher\Page\PageFactory;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
 use Stitcher\Renderer\Extension\Css;
+use Stitcher\Renderer\Extension\Js;
 use Stitcher\Renderer\TwigRenderer;
 use Stitcher\Variable\VariableFactory;
 use Stitcher\Variable\VariableParser;
@@ -22,8 +23,6 @@ trait CreateStitcherObjects
     protected function createPageRenderer() : PageRenderer
     {
         $renderer = TwigRenderer::make(File::path('/resources/view'));
-
-        $renderer->customExtension(new Css(File::path(), File::path('public'), new Compiler()));
 
         return PageRenderer::make(
             $renderer

@@ -11,6 +11,7 @@ class TwigRenderer extends Twig_Environment implements Renderer
     public function __construct(string $templateDirectory)
     {
         $fs = new Filesystem();
+
         if (! $fs->exists($templateDirectory)) {
             $fs->mkdir($templateDirectory);
         }

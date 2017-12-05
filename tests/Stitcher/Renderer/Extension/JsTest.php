@@ -64,7 +64,6 @@ class JsTest extends StitcherTest
     private function createExtension(): Js
     {
         return new Js(
-            File::path(),
             File::path('public')
         );
     }

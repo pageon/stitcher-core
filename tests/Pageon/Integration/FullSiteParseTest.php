@@ -2,6 +2,8 @@
 
 namespace Pageon\Test\Integration;
 
+use Pageon\Config;
+use Stitcher\App;
 use Stitcher\Command\Parse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
@@ -9,19 +11,12 @@ use Stitcher\Test\StitcherTest;
 
 class FullSiteParseTest extends StitcherTest
 {
-    use CreateStitcherObjects;
-
     /** @test */
     public function parse_test()
     {
-        $configurationFile = File::path('src/site.yaml');
+        App::init();
 
-        $command = Parse::make(
-            File::path('public'),
-            $configurationFile,
-            $this->createPageParser(),
-            $this->createPageRenderer()
-        );
+        $command = App::get('parse');
 
         $command->execute();
 
@@ -31,6 +26,7 @@ class FullSiteParseTest extends StitcherTest
         $this->assertDetailPageParsed();
         $this->assertImageParsed();
         $this->assertCss();
+        $this->assertJs();
     }
 
     private function assertIndexPageParsed(): void
@@ -98,5 +94,12 @@ class FullSiteParseTest extends StitcherTest
         $this->assertContains('<style>', $detail);
         $this->assertContains('</style>', $detail);
         $this->assertContains('body {', $detail);
+    }
+
+    private function assertJs()
+    {
+        $detail = File::read('public/index.html');
+
+        $this->assertContains('<script src="/resources/js/main.js" defer></script>', $detail);
     }
 }

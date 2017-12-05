@@ -8,17 +8,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Js implements Extension
 {
-    protected $sourceDirectory;
     protected $publicDirectory;
 
     protected $defer = false;
     protected $async = false;
 
     public function __construct(
-        string $sourceDirectory,
         string $publicDirectory
     ) {
-        $this->sourceDirectory = $sourceDirectory;
         $this->publicDirectory = $publicDirectory;
     }
 
@@ -73,7 +70,7 @@ class Js implements Extension
 
         ['dirname' => $dirname, 'filename' => $filename, 'extension' => $extension] = pathinfo($src);
 
-        $content = File::read("{$this->sourceDirectory}/{$src}");
+        $content = File::read($src);
 
         $path = "{$dirname}/{$filename}.{$extension}";
 

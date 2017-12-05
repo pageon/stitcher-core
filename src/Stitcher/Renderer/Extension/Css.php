@@ -9,16 +9,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Css implements Extension
 {
-    protected $sourceDirectory;
     protected $publicDirectory;
     protected $sass;
 
     public function __construct(
-        string $sourceDirectory,
         string $publicDirectory,
         Sass $sass
     ) {
-        $this->sourceDirectory = $sourceDirectory;
         $this->publicDirectory = $publicDirectory;
         $this->sass = $sass;
     }
@@ -48,7 +45,7 @@ class Css implements Extension
 
         ['dirname' => $dirname, 'filename' => $filename, 'extension' => $extension] = pathinfo($src);
 
-        $content = File::read("{$this->sourceDirectory}/{$src}");
+        $content = File::read($src);
 
         if (in_array($extension, ['scss', 'sass'])) {
             $content = $this->sass->compile($content);

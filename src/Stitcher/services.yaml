@@ -37,9 +37,12 @@ services:
     cssExtension:
         class: Stitcher\Renderer\Extension\Css
         arguments:
-            - %sourceDirectory%
             - %publicDirectory%
             - '@sassParser'
+    jsExtension:
+        class: Stitcher\Renderer\Extension\Js
+        arguments:
+            - %publicDirectory%
     rendererFactory:
         class: Stitcher\Renderer\RendererFactory
         arguments:
@@ -47,6 +50,7 @@ services:
             - %templateRenderer%
         calls:
             - ['addExtension', ['@cssExtension']]
+            - ['addExtension', ['@jsExtension']]
     renderer:
         factory: 'Stitcher\Renderer\RendererFactory:create'
         arguments:
