@@ -2,6 +2,7 @@
 
 namespace Stitcher\Renderer\Extension;
 
+use Pageon\Html\Source;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,9 +27,9 @@ class Js implements Extension
 
     public function link(string $src): string
     {
-        [$url, $content] = $this->parseSource($src);
+        $source = $this->parseSource($src);
 
-        $script = "<script src=\"{$url}\"";
+        $script = "<script src=\"{$source->url()}\"";
 
         if ($this->defer) {
             $script .= ' defer';
@@ -45,9 +46,9 @@ class Js implements Extension
 
     public function inline(string $src): string
     {
-        [$url, $content] = $this->parseSource($src);
+        $source = $this->parseSource($src);
 
-        return '<script>' . $content . '</script>';
+        return '<script>' . $source->content() . '</script>';
     }
 
     public function defer(): Js
@@ -64,7 +65,7 @@ class Js implements Extension
         return $this;
     }
 
-    public function parseSource(string $src): array
+    public function parseSource(string $src): Source
     {
         $src = ltrim($src, '/');
 
@@ -76,7 +77,7 @@ class Js implements Extension
 
         $this->saveFile($path, $content);
 
-        return ["/{$path}", $content];
+        return new Source("/{$path}", $content);
     }
 
     protected function saveFile(string $path, string $content): void

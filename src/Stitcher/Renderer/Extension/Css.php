@@ -3,6 +3,7 @@
 namespace Stitcher\Renderer\Extension;
 
 use Leafo\ScssPhp\Compiler as Sass;
+use Pageon\Html\Source;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,19 +28,19 @@ class Css implements Extension
 
     public function link(string $src): string
     {
-        [$url, $content] = $this->parseSource($src);
+        $source = $this->parseSource($src);
 
-        return "<link rel=\"stylesheet\" href=\"{$url}\" />";
+        return "<link rel=\"stylesheet\" href=\"{$source->url()}\" />";
     }
 
     public function inline(string $src): string
     {
-        [$url, $content] = $this->parseSource($src);
+        $source = $this->parseSource($src);
 
-        return '<style>' . $content . '</style>';
+        return '<style>' . $source->content() . '</style>';
     }
 
-    public function parseSource(string $src): array
+    public function parseSource(string $src): Source
     {
         $src = ltrim($src, '/');
 
@@ -56,7 +57,7 @@ class Css implements Extension
 
         $this->saveFile($path, $content);
 
-        return ["/{$path}", $content];
+        return new Source("/{$path}", $content);
     }
 
     protected function saveFile(string $path, string $content): void
