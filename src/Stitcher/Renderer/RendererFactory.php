@@ -3,7 +3,6 @@
 namespace Stitcher\Renderer;
 
 use Stitcher\DynamicFactory;
-use Stitcher\Renderer;
 
 class RendererFactory extends DynamicFactory
 {

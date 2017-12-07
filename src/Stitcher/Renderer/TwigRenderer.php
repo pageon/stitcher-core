@@ -2,7 +2,6 @@
 
 namespace Stitcher\Renderer;
 
-use Stitcher\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig_Environment;
 

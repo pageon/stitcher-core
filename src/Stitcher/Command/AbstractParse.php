@@ -2,7 +2,6 @@
 
 namespace Stitcher\Command;
 
-use Stitcher\Command;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;

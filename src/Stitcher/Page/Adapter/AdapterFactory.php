@@ -2,7 +2,7 @@
 
 namespace Stitcher\Page\Adapter;
 
-use Stitcher\Adapter;
+use Stitcher\Page\Adapter;
 use Stitcher\DynamicFactory;
 use Stitcher\Variable\VariableParser;
 

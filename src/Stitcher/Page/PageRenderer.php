@@ -2,7 +2,7 @@
 
 namespace Stitcher\Page;
 
-use Stitcher\Renderer;
+use Stitcher\Renderer\Renderer;
 
 class PageRenderer
 {

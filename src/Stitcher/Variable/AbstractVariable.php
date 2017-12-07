@@ -2,9 +2,7 @@
 
 namespace Stitcher\Variable;
 
-use Stitcher\Parseable;
-
-abstract class AbstractVariable implements Parseable
+abstract class AbstractVariable
 {
     protected $unparsed;
     protected $parsed = null;

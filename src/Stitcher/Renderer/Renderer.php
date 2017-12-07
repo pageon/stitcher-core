@@ -1,8 +1,6 @@
 <?php
 
-namespace Stitcher;
-
-use Stitcher\Renderer\Extension;
+namespace Stitcher\Renderer;
 
 interface Renderer
 {

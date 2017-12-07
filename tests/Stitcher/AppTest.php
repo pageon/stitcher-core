@@ -11,6 +11,7 @@ use Stitcher\Page\Adapter\AdapterFactory;
 use Stitcher\Page\PageFactory;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
+use Stitcher\Renderer\Renderer;
 use Stitcher\Renderer\RendererFactory;
 use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\StitcherTest;

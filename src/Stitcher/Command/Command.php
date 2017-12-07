@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher;
+namespace Stitcher\Command;
 
 interface Command
 {

@@ -2,12 +2,12 @@
 
 namespace Stitcher\Page\Adapter;
 
-use Stitcher\Adapter;
+use Stitcher\Page\Adapter;
 use Stitcher\Exception\InvalidConfiguration;
-use Stitcher\Validatory;
+use Stitcher\Configureable;
 use Stitcher\Variable\VariableParser;
 
-class CollectionAdapter implements Adapter, Validatory
+class CollectionAdapter implements Adapter, Configureable
 {
     private $parameter;
     private $variable;
@@ -15,7 +15,7 @@ class CollectionAdapter implements Adapter, Validatory
 
     public function __construct(array $adapterConfiguration, VariableParser $variableParser)
     {
-        if (! $this->isValid($adapterConfiguration)) {
+        if (! $this->isValidConfiguration($adapterConfiguration)) {
             throw InvalidConfiguration::invalidAdapterConfiguration('collection', '`variable` and `parameter`');
         }
 
@@ -43,7 +43,7 @@ class CollectionAdapter implements Adapter, Validatory
         return $collectionPageConfiguration;
     }
 
-    public function isValid($subject): bool
+    public function isValidConfiguration($subject): bool
     {
         return is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
     }
