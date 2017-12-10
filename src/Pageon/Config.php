@@ -13,9 +13,7 @@ use Symfony\Component\Finder\Finder;
 class Config
 {
     protected static $env;
-    protected static $loadedConfiguration = [
-        'templateRenderer' => 'twig',
-    ];
+    protected static $loadedConfiguration = [];
 
     public static function init()
     {
@@ -28,6 +26,8 @@ class Config
         }
 
         $configurationFiles = Finder::create()->files()->in(File::path('config'))->name('*.php')->getIterator();
+
+        self::loadDefaults();
 
         $loadedConfiguration = self::load($configurationFiles);
 
@@ -42,6 +42,12 @@ class Config
     public static function all(): array
     {
         return self::$loadedConfiguration;
+    }
+
+    protected static function loadDefaults(): void
+    {
+        self::$loadedConfiguration['rootDirectory'] = File::path();
+        self::$loadedConfiguration['templateRenderer'] = 'twig';
     }
 
     protected static function load(Iterator $configurationFiles): array

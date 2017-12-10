@@ -6,6 +6,8 @@ services:
         class: \Parsedown
     sassParser:
         class: Leafo\ScssPhp\Compiler
+        calls:
+            - [addImportPath, ['%rootDirectory%']]
 
     imageScaler:
         class: Pageon\Html\Image\FixedWidthScaler
