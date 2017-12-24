@@ -16,8 +16,8 @@ services:
     imageFactory:
         class: Pageon\Html\Image\ImageFactory
         arguments:
-            - %sourceDirectory%
-            - %publicDirectory%
+            - '%sourceDirectory%'
+            - '%publicDirectory%'
             - '@imageScaler'
 
     variableFactory:
@@ -39,24 +39,24 @@ services:
     cssExtension:
         class: Stitcher\Renderer\Extension\Css
         arguments:
-            - %publicDirectory%
+            - '%publicDirectory%'
             - '@sassParser'
     jsExtension:
         class: Stitcher\Renderer\Extension\Js
         arguments:
-            - %publicDirectory%
+            - '%publicDirectory%'
     rendererFactory:
         class: Stitcher\Renderer\RendererFactory
         arguments:
-            - %templateDirectory%
-            - %templateRenderer%
+            - '%templateDirectory%'
+            - '%templateRenderer%'
         calls:
             - ['addExtension', ['@cssExtension']]
             - ['addExtension', ['@jsExtension']]
     renderer:
         factory: 'Stitcher\Renderer\RendererFactory:create'
         arguments:
-            - %templateDirectory%
+            - '%templateDirectory%'
 
     pageFactory:
         class: Stitcher\Page\PageFactory
@@ -75,24 +75,24 @@ services:
     parse:
         class: Stitcher\Command\Parse
         arguments:
-            - %publicDirectory%
-            - %configurationFile%
+            - '%publicDirectory%'
+            - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
     parsePartial:
         class: Stitcher\Command\PartialParse
         arguments:
-            - %publicDirectory%
-            - %configurationFile%
+            - '%publicDirectory%'
+            - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
 
     developmentServer:
         class: Stitcher\Application\DevelopmentServer
         arguments:
-            - %publicDirectory%
+            - '%publicDirectory%'
             - '@parsePartial'
     productionServer:
         class: Stitcher\Application\ProductionServer
         arguments:
-            - %publicDirectory%
+            - '%publicDirectory%'
