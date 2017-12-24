@@ -3,9 +3,11 @@
 namespace Stitcher\Command;
 
 use Spatie\Async\Pool;
+use Stitcher\File;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
+use Stitcher\Task\RenderPage;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractParse implements Command
@@ -59,6 +61,7 @@ abstract class AbstractParse implements Command
 
     protected function renderPages($pages): void
     {
+        $path = File::path();
         $pool = Pool::create()
             ->autoload(__DIR__ . '/../../../vendor/autoload.php');
 
@@ -67,20 +70,11 @@ abstract class AbstractParse implements Command
          * @var Page   $page
          */
         foreach ($pages as $pageId => $page) {
-            $pool[] = async(function () use ($pageId, $page) {
-                $fileName = $pageId === '/' ? 'index' : $pageId;
-                $renderedPage = $this->pageRenderer->render($page);
-
-                $fs = new Filesystem();
-
-                $fs->dumpFile("{$this->outputDirectory}/{$fileName}.html", $renderedPage);
-
-            })->then(function ($output) {
+            $pool[] = async(function () use ($path, $pageId, $page) {
+                RenderPage::execute($path, $pageId, $page);
             });
         }
 
         await($pool);
-
-        dd($pool->getFinished());
     }
 }
