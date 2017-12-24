@@ -14,7 +14,8 @@
         "symfony/routing": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/config": "^4.0",
-        "leafo/scssphp": "^0.7.1"
+        "leafo/scssphp": "^0.7.1",
+        "spatie/async": "dev-symfony-process"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

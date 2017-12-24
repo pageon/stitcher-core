@@ -2,6 +2,7 @@
 
 namespace Stitcher\Command;
 
+use Spatie\Async\Pool;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
@@ -58,17 +59,28 @@ abstract class AbstractParse implements Command
 
     protected function renderPages($pages): void
     {
-        $fs = new Filesystem();
+        $pool = Pool::create()
+            ->autoload(__DIR__ . '/../../../vendor/autoload.php');
 
         /**
          * @var string $pageId
          * @var Page   $page
          */
         foreach ($pages as $pageId => $page) {
-            $fileName = $pageId === '/' ? 'index' : $pageId;
-            $renderedPage = $this->pageRenderer->render($page);
+            $pool[] = async(function () use ($pageId, $page) {
+                $fileName = $pageId === '/' ? 'index' : $pageId;
+                $renderedPage = $this->pageRenderer->render($page);
 
-            $fs->dumpFile("{$this->outputDirectory}/{$fileName}.html", $renderedPage);
+                $fs = new Filesystem();
+
+                $fs->dumpFile("{$this->outputDirectory}/{$fileName}.html", $renderedPage);
+
+            })->then(function ($output) {
+            });
         }
+
+        await($pool);
+
+        dd($pool->getFinished());
     }
 }
