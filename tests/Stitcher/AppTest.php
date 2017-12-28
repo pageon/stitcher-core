@@ -5,6 +5,7 @@ namespace Stitcher;
 use Pageon\Html\Image\FixedWidthScaler;
 use Pageon\Html\Image\ImageFactory;
 use Stitcher\Application\DevelopmentServer;
+use Stitcher\Application\ProductionServer;
 use Stitcher\Command\Parse;
 use Stitcher\Command\PartialParse;
 use Stitcher\Page\Adapter\AdapterFactory;
@@ -47,6 +48,22 @@ class AppTest extends StitcherTest
         }
 
         $this->assertInstanceOf(Renderer::class, App::get('renderer'));
+    }
+
+    /** @test */
+    public function it_can_get_the_development_server()
+    {
+        App::init();
+
+        $this->assertInstanceOf(DevelopmentServer::class, App::developmentServer());
+    }
+
+    /** @test */
+    public function it_can_get_the_production_server()
+    {
+        App::init();
+
+        $this->assertInstanceOf(ProductionServer::class, App::productionServer());
     }
 
     private function assertServiceRegistered(string $class)
