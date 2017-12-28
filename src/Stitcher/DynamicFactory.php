@@ -13,15 +13,6 @@ abstract class DynamicFactory
         return $this;
     }
 
-    public function removeRule(string $class): DynamicFactory
-    {
-        if (isset($this->rules[$class])) {
-            unset($this->rules[$class]);
-        }
-
-        return $this;
-    }
-
     protected function getRules(): array
     {
         return $this->rules;
