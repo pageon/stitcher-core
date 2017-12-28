@@ -61,20 +61,18 @@ abstract class AbstractParse implements Command
 
     protected function renderPages($pages): void
     {
-        $path = File::path();
-        $pool = Pool::create()
-            ->autoload(__DIR__ . '/../../../vendor/autoload.php');
+        $fs = new Filesystem();
 
         /**
          * @var string $pageId
          * @var Page   $page
          */
         foreach ($pages as $pageId => $page) {
-            $pool[] = async(function () use ($path, $pageId, $page) {
-                RenderPage::execute($path, $pageId, $page);
-            });
-        }
+            $fileName = $pageId === '/' ? 'index' : $pageId;
 
-        await($pool);
+            $renderedPage = $this->pageRenderer->render($page);
+
+            $fs->dumpFile("{$this->outputDirectory}/{$fileName}.html", $renderedPage);
+        }
     }
 }
