@@ -2,10 +2,12 @@
 
 namespace Stitcher;
 
+use Illuminate\Support\Arr;
 use Pageon\Config;
 use Stitcher\Application\DevelopmentServer;
 use Stitcher\Application\ProductionServer;
 use Stitcher\Exception\InvalidConfiguration;
+use Stitcher\Exception\InvalidPlugin;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -23,8 +25,11 @@ class App
 
         self::$container = new ContainerBuilder();
 
-        self::loadConfig();
-        self::loadServices();
+        self::loadConfig(Config::all());
+
+        self::loadServices('services.yaml');
+
+        self::loadPlugins();
     }
 
     public static function get(string $id)
@@ -56,21 +61,82 @@ class App
         }
     }
 
-    protected static function loadConfig()
+    protected static function loadConfig(array $config): void
     {
-        foreach (Config::all() as $key => $value) {
+        foreach ($config as $key => $value) {
             self::$container->setParameter($key, $value);
         }
     }
 
-    protected static function loadServices()
+    protected static function loadServices(string $servicesPath): void
     {
         $loader = new YamlFileLoader(self::$container, new FileLocator(__DIR__));
-        $loader->load('services.yaml');
+
+        $loader->load($servicesPath);
 
         /** @var Definition $definition */
         foreach (self::$container->getDefinitions() as $id => $definition) {
             self::$container->setAlias($definition->getClass(), $id);
         }
+    }
+
+    protected static function loadPlugins(): void
+    {
+        foreach (Config::plugins() as $pluginClass) {
+            if (!class_implements($pluginClass, Plugin::class)) {
+                throw InvalidPlugin::doesntImplementPluginInterface($pluginClass);
+            }
+
+            self::loadPluginConfiguration($pluginClass);
+
+            self::loadPluginServices($pluginClass);
+
+            self::registerPluginDefinition($pluginClass);
+        }
+    }
+
+    protected static function loadPluginConfiguration(string $pluginClass): void
+    {
+        $configurationPath = forward_static_call([$pluginClass, 'getConfigurationPath']);
+
+        if (!$configurationPath) {
+            return;
+        }
+
+        if (!file_exists($configurationPath)) {
+            throw InvalidPlugin::configurationFileNotFound($pluginClass, $configurationPath);
+        }
+
+        $pluginConfiguration = require $configurationPath;
+
+        if (!is_array($pluginConfiguration)) {
+            throw InvalidPlugin::configurationMustBeArray($pluginClass, $configurationPath);
+        }
+
+        self::loadConfig(Arr::dot($pluginConfiguration));
+    }
+
+    protected static function loadPluginServices(string $pluginClass): void
+    {
+        $servicesPath = forward_static_call([$pluginClass, 'getServicesPath']);
+
+        if (!$servicesPath) {
+            return;
+        }
+
+        if (!file_exists($servicesPath)) {
+            throw InvalidPlugin::serviceFileNotFound($pluginClass, $servicesPath);
+        }
+
+        self::loadServices($servicesPath);
+    }
+
+    protected static function registerPluginDefinition(string $pluginClass): void
+    {
+        $definition = new Definition($pluginClass);
+
+        $definition->setAutowired(true);
+
+        self::$container->setDefinition($pluginClass, $definition);
     }
 }

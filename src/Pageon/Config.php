@@ -14,6 +14,7 @@ class Config
 {
     protected static $env;
     protected static $loadedConfiguration = [];
+    protected static $plugins = [];
 
     public static function init()
     {
@@ -27,11 +28,11 @@ class Config
 
         $configurationFiles = Finder::create()->files()->in(File::path('config'))->name('*.php')->getIterator();
 
-        self::loadDefaults();
-
         $loadedConfiguration = self::load($configurationFiles);
 
-        self::$loadedConfiguration = array_merge(self::$loadedConfiguration, Arr::dot($loadedConfiguration));
+        self::registerPlugins($loadedConfiguration);
+
+        self::registerConfiguration($loadedConfiguration);
     }
 
     public static function get(string $key)
@@ -44,10 +45,17 @@ class Config
         return self::$loadedConfiguration;
     }
 
-    protected static function loadDefaults(): void
+    public static function plugins(): array
     {
-        self::$loadedConfiguration['rootDirectory'] = File::path();
-        self::$loadedConfiguration['templateRenderer'] = 'twig';
+        return self::$plugins;
+    }
+
+    protected static function defaults(): array
+    {
+        return [
+            'rootDirectory' => File::path(),
+            'templateRenderer' => 'twig',
+        ];
     }
 
     protected static function load(Iterator $configurationFiles): array
@@ -65,5 +73,15 @@ class Config
         }
 
         return $loadedConfiguration;
+    }
+
+    protected static function registerPlugins(array $loadedConfiguration): void
+    {
+        self::$plugins = $loadedConfiguration['plugins'] ?? [];
+    }
+
+    protected static function registerConfiguration(array $loadedConfiguration): void
+    {
+        self::$loadedConfiguration = array_merge(self::defaults(), Arr::dot($loadedConfiguration));
     }
 }

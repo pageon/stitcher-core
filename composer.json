@@ -32,6 +32,7 @@
     "autoload-dev" : {
         "psr-4" : {
             "Stitcher\\Test\\" : "tests",
+            "Stitcher\\Test\\Plugin\\" : "tests/test_project/src",
             "Pageon\\Test\\" : "tests"
         },
         "files": [
