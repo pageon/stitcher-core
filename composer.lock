@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2abe7e06e59c90ff3bbfd1e5cf83f825",
+    "content-hash": "ed174e35f419e514111fee082b689a70",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -460,63 +460,6 @@
             "time": "2017-01-16T07:55:07+00:00"
         },
         {
-            "name": "opis/closure",
-            "version": "3.0.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/opis/closure.git",
-                "reference": "6391299446c6120bd3e49cb1cc64b1a131616120"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/6391299446c6120bd3e49cb1cc64b1a131616120",
-                "reference": "6391299446c6120bd3e49cb1cc64b1a131616120",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "jeremeamia/superclosure": "^2.0",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Opis\\Closure\\": "src/"
-                },
-                "files": [
-                    "functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marius Sarca",
-                    "email": "marius.sarca@gmail.com"
-                }
-            ],
-            "description": "A library that can be used to serialize closures (anonymous functions) and arbitrary objects.",
-            "homepage": "http://www.opis.io/closure",
-            "keywords": [
-                "anonymous functions",
-                "closure",
-                "function",
-                "serializable",
-                "serialization",
-                "serialize"
-            ],
-            "time": "2017-12-17T23:52:03+00:00"
-        },
-        {
             "name": "psr/container",
             "version": "1.0.0",
             "source": {
@@ -662,58 +605,6 @@
                 "simple-cache"
             ],
             "time": "2017-01-02T13:31:39+00:00"
-        },
-        {
-            "name": "spatie/async",
-            "version": "dev-symfony-process",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/async.git",
-                "reference": "5da7c8b035ba6a54e96495b3f461c3ba4a01974e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/async/zipball/5da7c8b035ba6a54e96495b3f461c3ba4a01974e",
-                "reference": "5da7c8b035ba6a54e96495b3f461c3ba4a01974e",
-                "shasum": ""
-            },
-            "require": {
-                "opis/closure": "^3.0",
-                "php": "^7.1",
-                "symfony/process": "^4.0"
-            },
-            "require-dev": {
-                "larapack/dd": "^1.1",
-                "phpunit/phpunit": "^6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Spatie\\Async\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brent Roose",
-                    "email": "brent@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Asynchronous and parallel PHP with the PCNTL extension",
-            "homepage": "https://github.com/spatie/async",
-            "keywords": [
-                "async",
-                "spatie"
-            ],
-            "time": "2017-12-24T10:46:49+00:00"
         },
         {
             "name": "symfony/config",
@@ -1002,55 +893,6 @@
                 "shim"
             ],
             "time": "2017-10-11T12:05:26+00:00"
-        },
-        {
-            "name": "symfony/process",
-            "version": "v4.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "18d1953068e72262830bad593f0366fa62c93fb7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/18d1953068e72262830bad593f0366fa62c93fb7",
-                "reference": "18d1953068e72262830bad593f0366fa62c93fb7",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Process Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-12-14T19:48:22+00:00"
         },
         {
             "name": "symfony/routing",
@@ -2949,6 +2791,55 @@
             "time": "2017-10-11T12:05:26+00:00"
         },
         {
+            "name": "symfony/process",
+            "version": "v4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "18d1953068e72262830bad593f0366fa62c93fb7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/18d1953068e72262830bad593f0366fa62c93fb7",
+                "reference": "18d1953068e72262830bad593f0366fa62c93fb7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-12-14T19:48:22+00:00"
+        },
+        {
             "name": "symfony/var-dumper",
             "version": "v4.0.2",
             "source": {
@@ -3110,9 +3001,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "spatie/async": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
