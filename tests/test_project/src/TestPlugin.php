@@ -8,11 +8,11 @@ class TestPlugin implements Plugin
 {
     public static function getConfigurationPath(): ?string
     {
-        return null;
+        return __DIR__ . '/../config/testPlugin/config.php';
     }
 
     public static function getServicesPath(): ?string
     {
-        return null;
+        return __DIR__ . '/../config/testPlugin/services.yaml';
     }
 }

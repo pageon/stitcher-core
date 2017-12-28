@@ -1,0 +1,6 @@
+services:
+
+    testPluginService:
+        class: Stitcher\Test\Plugin\TestPluginService
+        arguments:
+            - '%test.plugin.item%'
