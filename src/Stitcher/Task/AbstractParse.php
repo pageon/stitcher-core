@@ -5,6 +5,7 @@ namespace Stitcher\Task;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
+use Stitcher\Task;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractParse implements Task

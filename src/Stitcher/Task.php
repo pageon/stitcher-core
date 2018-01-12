@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher\Task;
+namespace Stitcher;
 
 interface Task
 {
