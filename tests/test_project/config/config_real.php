@@ -11,4 +11,9 @@ return [
     'sourceDirectory' => File::path('src'),
     'templateDirectory' => File::path('resources/view'),
     'configurationFile' => File::path('src/site.yaml'),
+
+    'staticFiles' => [
+        'static/file.html',
+        'static/sub-dir/',
+    ],
 ];

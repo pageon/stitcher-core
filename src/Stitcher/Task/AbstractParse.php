@@ -10,38 +10,52 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractParse implements Task
 {
-    protected $outputDirectory;
+    protected $publicDirectory;
     protected $configurationFile;
     protected $pageParser;
     protected $pageRenderer;
+    /** @var Task[] */
+    protected $tasks = [];
 
     public function __construct(
-        string $outputDirectory,
+        string $publicDirectory,
         string $configurationFile,
         PageParser $pageParser,
         PageRenderer $pageRenderer
     ) {
-        $this->outputDirectory = rtrim($outputDirectory, '/');
+        $this->publicDirectory = rtrim($publicDirectory, '/');
         $this->configurationFile = $configurationFile;
         $this->pageParser = $pageParser;
         $this->pageRenderer = $pageRenderer;
     }
 
     /**
-     * @param string                      $outputDirectory
-     * @param string                      $configurationFile
-     * @param \Stitcher\Page\PageParser   $pageParser
-     * @param \Stitcher\Page\PageRenderer $pageRenderer
+     * @param string                         $publicDirectory
+     * @param string                         $configurationFile
+     * @param \Stitcher\Page\PageParser      $pageParser
+     * @param \Stitcher\Page\PageRenderer    $pageRenderer
      *
      * @return static
      */
     public static function make(
-        string $outputDirectory,
+        string $publicDirectory,
         string $configurationFile,
         PageParser $pageParser,
         PageRenderer $pageRenderer
     ) {
-        return new static($outputDirectory, $configurationFile, $pageParser, $pageRenderer);
+        return new static(
+            $publicDirectory,
+            $configurationFile,
+            $pageParser,
+            $pageRenderer
+        );
+    }
+
+    public function addSubTask(Task $task)
+    {
+        $this->tasks[] = $task;
+
+        return $this;
     }
 
     protected function parsePageConfiguration($config): array
@@ -70,7 +84,14 @@ abstract class AbstractParse implements Task
 
             $renderedPage = $this->pageRenderer->render($page);
 
-            $fs->dumpFile("{$this->outputDirectory}/{$fileName}.html", $renderedPage);
+            $fs->dumpFile("{$this->publicDirectory}/{$fileName}.html", $renderedPage);
+        }
+    }
+
+    protected function executeSubTasks(): void
+    {
+        foreach ($this->tasks as $task) {
+            $task->execute();
         }
     }
 }

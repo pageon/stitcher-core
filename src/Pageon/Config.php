@@ -55,6 +55,8 @@ class Config
         return [
             'rootDirectory' => File::path(),
             'templateRenderer' => 'twig',
+            'staticFiles' => [],
+            'cacheStaticFiles' => false,
         ];
     }
 
@@ -65,7 +67,7 @@ class Config
         foreach ($configurationFiles as $configurationFile) {
             $loadedFileConfiguration = require $configurationFile;
 
-            if (!is_array($loadedFileConfiguration)) {
+            if (! is_array($loadedFileConfiguration)) {
                 continue;
             }
 
@@ -82,6 +84,10 @@ class Config
 
     protected static function registerConfiguration(array $loadedConfiguration): void
     {
-        self::$loadedConfiguration = array_merge(self::defaults(), Arr::dot($loadedConfiguration));
+        self::$loadedConfiguration = array_merge(
+            self::defaults(),
+            $loadedConfiguration,
+            Arr::dot($loadedConfiguration)
+        );
     }
 }

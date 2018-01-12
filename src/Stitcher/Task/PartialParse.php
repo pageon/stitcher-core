@@ -35,6 +35,8 @@ class PartialParse extends AbstractParse
         $pages = $this->parsePageConfiguration($filteredConfiguration);
 
         $this->renderPages($pages);
+
+        $this->executeSubTasks();
     }
 
     private function createRouteCollection(array $configuration): RouteCollection

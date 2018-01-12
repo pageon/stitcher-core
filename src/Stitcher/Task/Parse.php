@@ -14,5 +14,7 @@ class Parse extends AbstractParse
         $pages = $this->parsePageConfiguration($parsedConfiguration);
 
         $this->renderPages($pages);
+
+        $this->executeSubTasks();
     }
 }

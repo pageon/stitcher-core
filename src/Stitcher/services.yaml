@@ -79,6 +79,8 @@ services:
             - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
+        calls:
+            - ['addSubTask', ['@copyStaticFiles']]
     parsePartial:
         class: Stitcher\Task\PartialParse
         arguments:
@@ -86,6 +88,15 @@ services:
             - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
+            - '@copyStaticFiles'
+        calls:
+            - ['addSubTask', ['@copyStaticFiles']]
+    copyStaticFiles:
+        class: Stitcher\Task\CopyStaticFiles
+        arguments:
+            - '%publicDirectory%'
+            - '%staticFiles%'
+            - '%cacheStaticFiles%'
 
     developmentServer:
         class: Stitcher\Application\DevelopmentServer
