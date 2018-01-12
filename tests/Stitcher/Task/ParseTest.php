@@ -2,7 +2,7 @@
 
 namespace Stitcher\Test\Stitcher\Command;
 
-use Stitcher\Command\Parse;
+use Stitcher\Task\Parse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\CreateStitcherFiles;

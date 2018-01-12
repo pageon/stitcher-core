@@ -13,9 +13,9 @@ class FullSiteParseTest extends StitcherTest
     {
         App::init();
 
-        $command = App::get('parse');
+        $task = App::get('parse');
 
-        $command->execute();
+        $task->execute();
 
         $this->assertIndexPageParsed();
         $this->assertOverviewPageParsed();

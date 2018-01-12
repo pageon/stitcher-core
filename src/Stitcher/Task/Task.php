@@ -1,8 +1,8 @@
 <?php
 
-namespace Stitcher\Command;
+namespace Stitcher\Task;
 
-interface Command
+interface Task
 {
     public function execute(): void;
 }

@@ -2,7 +2,7 @@
 
 namespace Stitcher\Application;
 
-use Stitcher\Command\PartialParse;
+use Stitcher\Task\PartialParse;
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\CreateStitcherObjects;
@@ -13,7 +13,7 @@ class DevelopmentServerTest extends StitcherTest
     use CreateStitcherFiles;
     use CreateStitcherObjects;
 
-    /** @var \Stitcher\Command\PartialParse */
+    /** @var \Stitcher\Task\PartialParse */
     private $command;
 
     protected function setUp()

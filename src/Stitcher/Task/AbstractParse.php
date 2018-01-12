@@ -1,16 +1,13 @@
 <?php
 
-namespace Stitcher\Command;
+namespace Stitcher\Task;
 
-use Spatie\Async\Pool;
-use Stitcher\File;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
-use Stitcher\Task\RenderPage;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractParse implements Command
+abstract class AbstractParse implements Task
 {
     protected $outputDirectory;
     protected $configurationFile;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher\Command;
+namespace Stitcher\Task;
 
 use Stitcher\File;
 use Symfony\Component\Yaml\Yaml;

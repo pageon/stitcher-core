@@ -2,7 +2,7 @@
 
 namespace Stitcher\Test;
 
-use Stitcher\Command\Parse;
+use Stitcher\Task\Parse;
 use Stitcher\File;
 
 trait CreateStitcherFiles

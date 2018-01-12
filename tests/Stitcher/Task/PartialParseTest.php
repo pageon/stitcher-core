@@ -1,6 +1,6 @@
 <?php
 
-namespace Stitcher\Command;
+namespace Stitcher\Task;
 
 use Stitcher\File;
 use Stitcher\Test\CreateStitcherFiles;
@@ -12,7 +12,7 @@ class PartialParseTest extends StitcherTest
     use CreateStitcherObjects;
     use CreateStitcherFiles;
 
-    /** @var \Stitcher\Command\PartialParse */
+    /** @var \Stitcher\Task\PartialParse */
     private $command;
 
     protected function setUp()

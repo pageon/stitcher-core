@@ -2,7 +2,7 @@
 
 namespace Stitcher\Application;
 
-use Stitcher\Command\PartialParse;
+use Stitcher\Task\PartialParse;
 use Stitcher\Exception\Http;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 

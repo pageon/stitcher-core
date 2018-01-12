@@ -73,14 +73,14 @@ services:
             - '@renderer'
 
     parse:
-        class: Stitcher\Command\Parse
+        class: Stitcher\Task\Parse
         arguments:
             - '%publicDirectory%'
             - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
     parsePartial:
-        class: Stitcher\Command\PartialParse
+        class: Stitcher\Task\PartialParse
         arguments:
             - '%publicDirectory%'
             - '%configurationFile%'
