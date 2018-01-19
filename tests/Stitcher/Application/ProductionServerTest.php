@@ -17,7 +17,7 @@ class ProductionServerTest extends StitcherTest
     {
         $this->parseAll();
 
-        $server = ProductionServer::make(File::path('public'), '/entries');
+        $server = ProductionServer::make(File::path('public'));
 
         $html = $server->run();
 
@@ -29,7 +29,7 @@ class ProductionServerTest extends StitcherTest
     {
         $this->parseAll();
 
-        $server = ProductionServer::make(File::path('public'), '/');
+        $server = ProductionServer::make(File::path('public'));
 
         $html = $server->run();
 

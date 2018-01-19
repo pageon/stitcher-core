@@ -5,17 +5,15 @@ namespace Stitcher\Application;
 class ProductionServer extends Server
 {
     protected $rootDirectory;
-    protected $uri;
 
-    public function __construct(string $rootDirectory, string $uri = null)
+    public function __construct(string $rootDirectory)
     {
         $this->rootDirectory = $rootDirectory;
-        $this->uri = $uri;
     }
 
-    public static function make(string $rootDirectory, string $uri = null): ProductionServer
+    public static function make(string $rootDirectory): ProductionServer
     {
-        return new self($rootDirectory, $uri);
+        return new self($rootDirectory);
     }
 
     protected function handleStaticRoute(): ?string
