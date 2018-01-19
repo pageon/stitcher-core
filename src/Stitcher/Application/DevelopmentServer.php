@@ -44,6 +44,10 @@ class DevelopmentServer extends Server
 
             $body = @file_get_contents("{$this->rootDirectory}/{$filename}");
 
+            if (! $body) {
+                return null;
+            }
+
             return new Response(200, [], $body);
         } catch (ResourceNotFoundException $e) {
             return null;

@@ -27,6 +27,16 @@ class YamlVariable extends AbstractVariable
     {
         $this->parsed = $this->parser->parse(File::read($this->unparsed));
 
+        foreach ($this->parsed as $id => $parsedItem) {
+            if (isset($parsedItem['id'])) {
+                continue;
+            }
+
+            $parsedItem['id'] = $id;
+
+            $this->parsed[$id] = $parsedItem;
+        }
+
         $this->parsed = $this->parseRecursive($this->parsed);
 
         return $this;

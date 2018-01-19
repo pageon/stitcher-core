@@ -28,5 +28,7 @@ EOT
 
         $this->assertTrue(is_array($variable->parsed()));
         $this->assertTrue(isset($variable->parsed()['root']['entry']));
+        $this->assertTrue(isset($variable->parsed()['root']['id']));
+        $this->assertEquals('root', $variable->parsed()['root']['id']);
     }
 }
