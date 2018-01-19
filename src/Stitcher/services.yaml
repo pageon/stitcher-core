@@ -107,6 +107,8 @@ services:
         class: Stitcher\Application\ProductionServer
         arguments:
             - '%publicDirectory%'
+        calls:
+            - ['setRouter', ['@router']]
 
     router:
         class: Stitcher\Application\Router

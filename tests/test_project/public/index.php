@@ -1,9 +1,11 @@
 <?php
 
-use Stitcher\Application\ProductionServer;
-
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$server = ProductionServer::make(__DIR__);
+\Stitcher\File::base(__DIR__ . '/../');
+
+\Stitcher\App::init();
+
+$server = \Stitcher\App::productionServer();
 
 die($server->run());

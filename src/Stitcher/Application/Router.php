@@ -33,29 +33,23 @@ class Router
         return $this;
     }
 
-    public function dispatch(Request $request): Response
+    public function dispatch(Request $request): ?Response
     {
         $dispatcher = new GroupCountBased($this->routeCollector->getData());
 
         $routeInfo = $dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        switch ($routeInfo[0]) {
-            case Dispatcher::FOUND:
-                $handler = $this->resolveHandler($routeInfo[1]);
-                $parameters = $routeInfo[2];
-
-                return call_user_func_array(
-                    $handler,
-                    array_merge($parameters, [$request])
-                );
-
-            case Dispatcher::NOT_FOUND:
-                return new Response(404);
-
-            case Dispatcher::METHOD_NOT_ALLOWED:
-            default:
-                return new Response(405);
+        if ($routeInfo[0] !== Dispatcher::FOUND) {
+            return null;
         }
+
+        $handler = $this->resolveHandler($routeInfo[1]);
+        $parameters = $routeInfo[2];
+
+        return call_user_func_array(
+            $handler,
+            array_merge($parameters, [$request])
+        );
     }
 
     protected function resolveHandler(array $callback): array

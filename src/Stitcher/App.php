@@ -31,6 +31,8 @@ class App
         self::loadServices('services.yaml');
 
         self::loadPlugins();
+
+        self::loadRoutes();
     }
 
     public static function get(string $id)
@@ -147,5 +149,16 @@ class App
         $definition->setAutowired(true);
 
         self::$container->setDefinition($pluginClass, $definition);
+    }
+
+    protected static function loadRoutes(): void
+    {
+        $routeFile = File::path('src/routes.php');
+
+        if (! file_exists($routeFile)) {
+            return;
+        }
+
+        require_once $routeFile;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Stitcher\Application;
 
-class ProductionServer
+class ProductionServer extends Server
 {
     protected $rootDirectory;
     protected $uri;
@@ -20,6 +20,10 @@ class ProductionServer
 
     public function run(): string
     {
+        if ($response = $this->handleDynamicRoute()) {
+            return $response->getBody()->getContents();
+        }
+
         $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
 
         $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
