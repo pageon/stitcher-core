@@ -8,8 +8,14 @@ use Symfony\Component\Process\Process;
 class StitcherTestBootstrap
 {
     /** @var Process */
-    protected static $serverProcess = null;
-    public static $host = 'localhost:8181';
+    protected static $productionServerProcess = null;
+
+    /** @var Process */
+    protected static $developmentServerProcess = null;
+
+    public static $productionHost = 'localhost:8181';
+
+    public static $developmentHost = 'localhost:8282';
 
     public function __construct()
     {
@@ -24,25 +30,61 @@ class StitcherTestBootstrap
 
     protected function startServer()
     {
-        if (self::$serverProcess) {
-            self::$serverProcess->stop();
-        }
-
-        $host = self::$host;
-        $documentRoot = File::path('public');
-        $router = "{$documentRoot}/index.php";
-
-        self::$serverProcess = new Process("php -S {$host} {$router} >/dev/null 2>&1 & echo $!");
-        self::$serverProcess->start();
+        $this->startProductionServer();
+        $this->startDevelopmentServer();
     }
 
     protected function stopServer()
     {
-        if (! self::$serverProcess) {
+        $this->stopProductionServer();
+        $this->stopDevelopmentServer();
+    }
+
+    protected function startProductionServer()
+    {
+        if (self::$productionServerProcess) {
+            self::$productionServerProcess->stop();
+        }
+
+        $host = self::$productionHost;
+        $documentRoot = File::path('public');
+        $router = "{$documentRoot}/index.php";
+
+        self::$productionServerProcess = new Process("php -S {$host} {$router} >/dev/null 2>&1 & echo $!");
+        self::$productionServerProcess->start();
+    }
+
+    protected function startDevelopmentServer()
+    {
+        if (self::$developmentServerProcess) {
+            self::$developmentServerProcess->stop();
+        }
+
+        $host = self::$developmentHost;
+        $documentRoot = File::path('public');
+        $router = "{$documentRoot}/index.php";
+
+        self::$developmentServerProcess = new Process("ENV=\"development\" php -S {$host} {$router} >/dev/null 2>&1 & echo $!");
+        self::$developmentServerProcess->start();
+    }
+
+    protected function stopProductionServer()
+    {
+        if (! self::$productionServerProcess) {
             return;
         }
 
-        self::$serverProcess->stop();
-        self::$serverProcess = null;
+        self::$productionServerProcess->stop();
+        self::$productionServerProcess = null;
+    }
+
+    protected function stopDevelopmentServer()
+    {
+        if (! self::$developmentServerProcess) {
+            return;
+        }
+
+        self::$developmentServerProcess->stop();
+        self::$developmentServerProcess = null;
     }
 }

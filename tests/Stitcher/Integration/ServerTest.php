@@ -14,29 +14,51 @@ class ServerTest extends StitcherTest
     /** @test */
     public function get_index()
     {
-        $response = $this->get('/');
+        $response = $this->getProductionPage('/');
 
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     /** @test */
-    public function it_serves_static_html_pages()
+    public function it_serves_static_html_pages_on_the_production_server()
     {
         $this->parseAll();
 
-        $body = (string) $this->get('/')->getBody();
+        $body = (string) $this->getProductionPage('/')->getBody();
         $this->assertContains('<html>', $body);
 
-        $body = (string) $this->get('/entries/a')->getBody();
+        $body = (string) $this->getProductionPage('/entries/a')->getBody();
         $this->assertContains('<html>', $body);
     }
 
     /** @test */
-    public function it_serves_dynamic_pages()
+    public function it_serves_static_html_pages_on_the_development_server()
     {
         $this->parseAll();
 
-        $body = (string) $this->get('/test/1/abc')->getBody();
+        $body = (string) $this->getDevelopmentPage('/')->getBody();
+        $this->assertContains('<html>', $body);
+
+        $body = (string) $this->getDevelopmentPage('/entries/a')->getBody();
+        $this->assertContains('<html>', $body);
+    }
+
+    /** @test */
+    public function it_serves_dynamic_pages_on_the_production_server()
+    {
+        $this->parseAll();
+
+        $body = (string) $this->getProductionPage('/test/1/abc')->getBody();
+
+        $this->assertContains('test 1 abc', $body);
+    }
+
+    /** @test */
+    public function it_serves_dynamic_pages_on_the_development_server()
+    {
+        $this->parseAll();
+
+        $body = (string) $this->getDevelopmentPage('/test/1/abc')->getBody();
 
         $this->assertContains('test 1 abc', $body);
     }

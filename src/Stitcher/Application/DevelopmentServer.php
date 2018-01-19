@@ -6,7 +6,7 @@ use Stitcher\Task\PartialParse;
 use Stitcher\Exception\Http;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class DevelopmentServer
+class DevelopmentServer extends Server
 {
     protected $rootDirectory;
     protected $uri = null;
@@ -33,6 +33,10 @@ class DevelopmentServer
 
     public function run(): string
     {
+        if ($response = $this->handleDynamicRoute()) {
+            return $response->getBody()->getContents();
+        }
+
         $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
 
         $this->partialParse->setFilter($uri);

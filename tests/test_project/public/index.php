@@ -6,6 +6,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 \Stitcher\App::init();
 
-$server = \Stitcher\App::productionServer();
+if (getenv('ENV') === 'development') {
+    $server = \Stitcher\App::developmentServer();
+} else {
+    $server = \Stitcher\App::productionServer();
+}
 
 die($server->run());

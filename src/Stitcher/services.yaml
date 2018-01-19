@@ -103,6 +103,8 @@ services:
         arguments:
             - '%publicDirectory%'
             - '@parsePartial'
+        calls:
+            - ['setRouter', ['@router']]
     productionServer:
         class: Stitcher\Application\ProductionServer
         arguments:

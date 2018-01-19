@@ -36,13 +36,24 @@ abstract class StitcherTest extends TestCase
         File::base(null);
     }
 
-    protected function get(string $url): Response
+    protected function getProductionPage(string $url): Response
     {
         $url = ltrim($url, '/');
 
         $client = new Client();
 
-        $host = StitcherTestBootstrap::$host;
+        $host = StitcherTestBootstrap::$productionHost;
+
+        return $client->request('GET', "{$host}/{$url}");
+    }
+
+    protected function getDevelopmentPage(string $url): Response
+    {
+        $url = ltrim($url, '/');
+
+        $client = new Client();
+
+        $host = StitcherTestBootstrap::$developmentHost;
 
         return $client->request('GET', "{$host}/{$url}");
     }
