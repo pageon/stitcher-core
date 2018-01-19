@@ -6,7 +6,7 @@ use Stitcher\Test\CreateStitcherFiles;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\StitcherTest;
 
-class ServerTest extends StitcherTest
+class ProductionServerTest extends StitcherTest
 {
     use CreateStitcherFiles;
     use CreateStitcherObjects;
@@ -32,33 +32,11 @@ class ServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_static_html_pages_on_the_development_server()
-    {
-        $this->parseAll();
-
-        $body = (string) $this->getDevelopmentPage('/')->getBody();
-        $this->assertContains('<html>', $body);
-
-        $body = (string) $this->getDevelopmentPage('/entries/a')->getBody();
-        $this->assertContains('<html>', $body);
-    }
-
-    /** @test */
     public function it_serves_dynamic_pages_on_the_production_server()
     {
         $this->parseAll();
 
         $body = (string) $this->getProductionPage('/test/1/abc')->getBody();
-
-        $this->assertContains('test 1 abc', $body);
-    }
-
-    /** @test */
-    public function it_serves_dynamic_pages_on_the_development_server()
-    {
-        $this->parseAll();
-
-        $body = (string) $this->getDevelopmentPage('/test/1/abc')->getBody();
 
         $this->assertContains('test 1 abc', $body);
     }
