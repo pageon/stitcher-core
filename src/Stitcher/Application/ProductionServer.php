@@ -2,6 +2,8 @@
 
 namespace Stitcher\Application;
 
+use Stitcher\Exception\Http;
+
 class ProductionServer extends Server
 {
     protected $rootDirectory;
@@ -20,13 +22,22 @@ class ProductionServer extends Server
 
     public function run(): string
     {
+        if ($html = $this->handleStaticRoute()) {
+            return $html;
+        }
+
         if ($response = $this->handleDynamicRoute()) {
             return $response->getBody()->getContents();
         }
 
-        $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
+        throw Http::notFound($this->getRequest()->getUri());
+    }
 
-        $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+    protected function handleStaticRoute(): ?string
+    {
+        $path = $this->getCurrentPath();
+
+        $filename = ltrim($path === '/' ? 'index.html' : "{$path}.html", '/');
 
         return @file_get_contents("{$this->rootDirectory}/{$filename}");
     }

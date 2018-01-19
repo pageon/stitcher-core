@@ -10,6 +10,8 @@ abstract class Server
 {
     /** @var Router */
     protected $router;
+    /** @var Request */
+    protected $request;
 
     abstract public function run(): string;
 
@@ -20,12 +22,20 @@ abstract class Server
         return $this;
     }
 
-    public function createRequest(): Request
+    public function getRequest(): Request
     {
-        /** @var Request $request */
-        $request = ServerRequest::fromGlobals();
+        if (!$this->request) {
+            $this->request = ServerRequest::fromGlobals();
+        }
 
-        return $request;
+        return $this->request;
+    }
+
+    public function getCurrentPath(): ?string
+    {
+        $path = $this->getRequest()->getUri()->getPath();
+
+        return $path === '' ? '/' : $path;
     }
 
     protected function handleDynamicRoute(): ?Response
@@ -34,6 +44,6 @@ abstract class Server
             return null;
         }
 
-        return $this->router->dispatch($this->createRequest());
+        return $this->router->dispatch($this->getRequest());
     }
 }

@@ -9,26 +9,26 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 class DevelopmentServer extends Server
 {
     protected $rootDirectory;
-    protected $uri = null;
+    protected $path = null;
     protected $partialParse;
 
     public function __construct(
         string $rootDirectory,
         PartialParse $partialParse,
-        string $uri = null
+        string $path = null
     ) {
         $this->rootDirectory = $rootDirectory;
-        $this->uri = $uri;
+        $this->path = $path;
         $this->partialParse = $partialParse;
     }
 
     public static function make(
         string $rootDirectory,
         PartialParse $partialParse,
-        string $uri = null
+        string $path = null
     ): DevelopmentServer
     {
-        return new self($rootDirectory, $partialParse, $uri);
+        return new self($rootDirectory, $partialParse, $path);
     }
 
     public function run(): string
@@ -37,18 +37,23 @@ class DevelopmentServer extends Server
             return $response->getBody()->getContents();
         }
 
-        $uri = $this->uri ?? $_SERVER['REQUEST_URI'];
+        return $this->handleStaticRoute();
+    }
 
-        $this->partialParse->setFilter($uri);
+    protected function handleStaticRoute(): ?string
+    {
+        $path = $this->path ?? $this->getCurrentPath();
+
+        $this->partialParse->setFilter($path);
 
         try {
             $this->partialParse->execute();
 
-            $filename = ltrim($uri === '/' ? 'index.html' : "{$uri}.html", '/');
+            $filename = ltrim($path === '/' ? 'index.html' : "{$path}.html", '/');
 
-            return @file_get_contents("{$this->rootDirectory}/{$filename}");
+            return (string) @file_get_contents("{$this->rootDirectory}/{$filename}");
         } catch (ResourceNotFoundException $e) {
-            throw Http::notFound($uri);
+            throw Http::notFound($path);
         }
     }
 }
