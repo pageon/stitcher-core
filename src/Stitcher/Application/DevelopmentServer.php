@@ -2,6 +2,7 @@
 
 namespace Stitcher\Application;
 
+use GuzzleHttp\Psr7\Response;
 use Stitcher\Task\PartialParse;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -30,7 +31,7 @@ class DevelopmentServer extends Server
         return new self($rootDirectory, $partialParse, $path);
     }
 
-    protected function handleStaticRoute(): ?string
+    protected function handleStaticRoute(): ?Response
     {
         $path = $this->path ?? $this->getCurrentPath();
 
@@ -41,7 +42,9 @@ class DevelopmentServer extends Server
 
             $filename = ltrim($path === '/' ? 'index.html' : "{$path}.html", '/');
 
-            return (string) @file_get_contents("{$this->rootDirectory}/{$filename}");
+            $body = @file_get_contents("{$this->rootDirectory}/{$filename}");
+
+            return new Response(200, [], $body);
         } catch (ResourceNotFoundException $e) {
             return null;
         }

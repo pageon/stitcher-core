@@ -2,6 +2,8 @@
 
 namespace Stitcher\Application;
 
+use GuzzleHttp\Psr7\Response;
+
 class ProductionServer extends Server
 {
     protected $rootDirectory;
@@ -16,12 +18,18 @@ class ProductionServer extends Server
         return new self($rootDirectory);
     }
 
-    protected function handleStaticRoute(): ?string
+    protected function handleStaticRoute(): ?Response
     {
         $path = $this->getCurrentPath();
 
         $filename = ltrim($path === '/' ? 'index.html' : "{$path}.html", '/');
 
-        return @file_get_contents("{$this->rootDirectory}/{$filename}");
+        $body = @file_get_contents("{$this->rootDirectory}/{$filename}");
+
+        if (!$body) {
+            return null;
+        }
+
+        return new Response(200, [], $body);
     }
 }

@@ -11,21 +11,9 @@ abstract class Server
 {
     /** @var Router */
     protected $router;
+
     /** @var Request */
     protected $request;
-
-    public function run(): string
-    {
-        if ($html = $this->handleStaticRoute()) {
-            return $html;
-        }
-
-        if ($response = $this->handleDynamicRoute()) {
-            return $response->getBody()->getContents();
-        }
-
-        throw Http::notFound($this->getCurrentPath());
-    }
 
     public function setRouter(Router $router): Server
     {
@@ -34,7 +22,22 @@ abstract class Server
         return $this;
     }
 
-    public function getRequest(): Request
+    public function run(): string
+    {
+        $response = $this->handleStaticRoute();
+
+        if (!$response) {
+            $response = $this->handleDynamicRoute();
+        }
+
+        if (!$response) {
+            throw Http::notFound($this->getCurrentPath());
+        }
+
+        return $response->getBody()->getContents();
+    }
+
+    protected function getRequest(): Request
     {
         if (!$this->request) {
             $this->request = ServerRequest::fromGlobals();
@@ -43,14 +46,14 @@ abstract class Server
         return $this->request;
     }
 
-    public function getCurrentPath(): ?string
+    protected function getCurrentPath(): string
     {
         $path = $this->getRequest()->getUri()->getPath();
 
         return $path === '' ? '/' : $path;
     }
 
-    abstract protected function handleStaticRoute(): ?string;
+    abstract protected function handleStaticRoute(): ?Response;
 
     protected function handleDynamicRoute(): ?Response
     {
