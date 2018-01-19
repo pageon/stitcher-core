@@ -26,9 +26,30 @@ class Router
         return $this;
     }
 
+    public function put(string $url, string $controller): Router
+    {
+        $this->routeCollector->addRoute('PUT', $url, [$controller, 'handle']);
+
+        return $this;
+    }
+
     public function post(string $url, string $controller): Router
     {
         $this->routeCollector->addRoute('POST', $url, [$controller, 'handle']);
+
+        return $this;
+    }
+
+    public function patch(string $url, string $controller): Router
+    {
+        $this->routeCollector->addRoute('PATCH', $url, [$controller, 'handle']);
+
+        return $this;
+    }
+
+    public function delete(string $url, string $controller): Router
+    {
+        $this->routeCollector->addRoute('DELETE', $url, [$controller, 'handle']);
 
         return $this;
     }
