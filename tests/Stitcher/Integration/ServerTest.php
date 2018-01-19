@@ -30,4 +30,14 @@ class ServerTest extends StitcherTest
         $body = (string) $this->get('/entries/a')->getBody();
         $this->assertContains('<html>', $body);
     }
+
+    /** @test */
+    public function it_serves_dynamic_pages()
+    {
+        $this->parseAll();
+
+        $body = (string) $this->get('/test/1/abc')->getBody();
+
+        $this->assertContains('test 1 abc', $body);
+    }
 }

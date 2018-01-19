@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Pageon\Config;
 use Stitcher\Application\DevelopmentServer;
 use Stitcher\Application\ProductionServer;
+use Stitcher\Application\Router;
 use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\Exception\InvalidPlugin;
 use Symfony\Component\Config\FileLocator;
@@ -59,6 +60,14 @@ class App
         } catch (ParameterNotFoundException $e) {
             throw InvalidConfiguration::missingParameter($e->getKey());
         }
+    }
+
+    public static function router(): Router
+    {
+        /** @var Router $router */
+        $router = self::get(Router::class);
+
+        return $router;
     }
 
     protected static function loadConfig(array $config): void

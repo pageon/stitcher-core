@@ -14,7 +14,8 @@
         "symfony/routing": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/config": "^4.0",
-        "leafo/scssphp": "^0.7.1"
+        "leafo/scssphp": "^0.7.1",
+        "nikic/fast-route": "^1.2"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",
@@ -31,7 +32,8 @@
     "autoload-dev" : {
         "psr-4" : {
             "Stitcher\\Test\\" : "tests",
-            "Stitcher\\Test\\Plugin\\" : "tests/test_project/src",
+            "Stitcher\\Test\\Plugin\\" : "tests/test_project/src/Plugin",
+            "Stitcher\\Test\\Controller\\" : "tests/test_project/src/Controller",
             "Pageon\\Test\\" : "tests"
         },
         "files": [

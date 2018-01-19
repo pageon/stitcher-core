@@ -39,7 +39,9 @@ abstract class StitcherTest extends TestCase
     protected function get(string $url): Response
     {
         $url = ltrim($url, '/');
+
         $client = new Client();
+
         $host = StitcherTestBootstrap::$host;
 
         return $client->request('GET', "{$host}/{$url}");
