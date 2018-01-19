@@ -2,8 +2,6 @@
 
 namespace Stitcher\Application;
 
-use Stitcher\Exception\Http;
-
 class ProductionServer extends Server
 {
     protected $rootDirectory;
@@ -18,19 +16,6 @@ class ProductionServer extends Server
     public static function make(string $rootDirectory, string $uri = null): ProductionServer
     {
         return new self($rootDirectory, $uri);
-    }
-
-    public function run(): string
-    {
-        if ($html = $this->handleStaticRoute()) {
-            return $html;
-        }
-
-        if ($response = $this->handleDynamicRoute()) {
-            return $response->getBody()->getContents();
-        }
-
-        throw Http::notFound($this->getRequest()->getUri());
     }
 
     protected function handleStaticRoute(): ?string

@@ -3,7 +3,6 @@
 namespace Stitcher\Application;
 
 use Stitcher\Task\PartialParse;
-use Stitcher\Exception\Http;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class DevelopmentServer extends Server
@@ -31,15 +30,6 @@ class DevelopmentServer extends Server
         return new self($rootDirectory, $partialParse, $path);
     }
 
-    public function run(): string
-    {
-        if ($response = $this->handleDynamicRoute()) {
-            return $response->getBody()->getContents();
-        }
-
-        return $this->handleStaticRoute();
-    }
-
     protected function handleStaticRoute(): ?string
     {
         $path = $this->path ?? $this->getCurrentPath();
@@ -53,7 +43,7 @@ class DevelopmentServer extends Server
 
             return (string) @file_get_contents("{$this->rootDirectory}/{$filename}");
         } catch (ResourceNotFoundException $e) {
-            throw Http::notFound($path);
+            return null;
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Stitcher\Application;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
+use Stitcher\Exception\Http;
 
 abstract class Server
 {
@@ -13,7 +14,18 @@ abstract class Server
     /** @var Request */
     protected $request;
 
-    abstract public function run(): string;
+    public function run(): string
+    {
+        if ($html = $this->handleStaticRoute()) {
+            return $html;
+        }
+
+        if ($response = $this->handleDynamicRoute()) {
+            return $response->getBody()->getContents();
+        }
+
+        throw Http::notFound($this->getCurrentPath());
+    }
 
     public function setRouter(Router $router): Server
     {
@@ -37,6 +49,8 @@ abstract class Server
 
         return $path === '' ? '/' : $path;
     }
+
+    abstract protected function handleStaticRoute(): ?string;
 
     protected function handleDynamicRoute(): ?Response
     {
