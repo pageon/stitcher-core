@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use Stitcher\Exception\Http;
+use Stitcher\Exception\StitcherException;
 
 abstract class Server
 {
@@ -24,17 +25,9 @@ abstract class Server
 
     public function run(): string
     {
-        $response = $this->handleStaticRoute();
+        $response = $this->createResponse();
 
-        if (!$response) {
-            $response = $this->handleDynamicRoute();
-        }
-
-        if (!$response) {
-            throw Http::notFound($this->getCurrentPath());
-        }
-
-        return $response->getBody()->getContents();
+        return $this->handleResponse($response);
     }
 
     protected function getRequest(): Request
@@ -62,5 +55,46 @@ abstract class Server
         }
 
         return $this->router->dispatch($this->getRequest());
+    }
+
+    protected function createResponse(): Response
+    {
+        try {
+            $response = $this->handleStaticRoute();
+
+            if (!$response) {
+                $response = $this->handleDynamicRoute();
+            }
+        } catch (StitcherException $e) {
+            $response = $this->responseFromException($e);
+        }
+
+        if (!$response) {
+            $response = $this->responseFromException(
+                Http::notFound(
+                    $this->getCurrentPath()
+                )
+            );
+        }
+
+        return $response;
+    }
+
+    protected function responseFromException(StitcherException $e): Response
+    {
+        $statusCode = 500;
+
+        if ($e instanceof Http) {
+            $statusCode = $e->statusCode();
+        }
+
+        return new Response($statusCode, [], $e->title());
+    }
+
+    protected function handleResponse(Response $response): string
+    {
+        http_response_code($response->getStatusCode());
+
+        return $response->getBody()->getContents();
     }
 }

@@ -14,6 +14,8 @@ class ProductionServerTest extends StitcherTest
     /** @test */
     public function get_index()
     {
+        $this->parseAll();
+
         $response = $this->getProductionPage('/');
 
         $this->assertEquals(200, $response->getStatusCode());
