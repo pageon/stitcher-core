@@ -58,10 +58,10 @@ class PartialParseTest extends StitcherTest
     /** @test */
     public function it_parses_a_paginated_page()
     {
-        $this->command->setFilter('/entries-paginated/page-1');
+        $this->command->setFilter('/entries/page-1');
 
         $this->command->execute();
 
-        $this->assertFileExists(File::path('public/entries-paginated/page-1.html'));
+        $this->assertFileExists(File::path('public/entries/page-1.html'));
     }
 }

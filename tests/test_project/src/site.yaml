@@ -1,13 +1,4 @@
-/entries/{id}:
-    template: detail.twig
-    variables:
-        entry: src/entries.yaml
-    config:
-        collection:
-            variable: entry
-            parameter: id
-
-/entries-paginated/{page}:
+/entries/page-{page}:
     template: overview.twig
     variables:
         entries: src/entries.yaml
@@ -16,6 +7,15 @@
             variable: entries
             perPage: 2
             parameter: page
+
+/entries/{id}:
+    template: detail.twig
+    variables:
+        entry: src/entries.yaml
+    config:
+        collection:
+            variable: entry
+            parameter: id
 
 /entries:
     template: overview.twig

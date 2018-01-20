@@ -61,21 +61,20 @@ class PaginationAdapterTest extends StitcherTest
     private function createPageConfiguration(): array
     {
         File::write('entries.yaml', <<<EOT
-entries:
-    a:
-        name: A
-        category: blog
-    b:
-        name: B
-        category: blog
-    c:
-        name: C
-        category: news
+a:
+    name: A
+    category: blog
+b:
+    name: B
+    category: blog
+c:
+    name: C
+    category: news
 EOT
         );
 
         $pageConfiguration = [
-            'id'        => '/{page}',
+            'id'        => '/page-{page}',
             'template'  => 'index.twig',
             'variables' => [
                 'entries' => 'entries.yaml',

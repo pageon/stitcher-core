@@ -34,7 +34,7 @@ class PaginatedMetaTest extends StitcherTest
     private function createConfiguration(): array
     {
         return Yaml::parse(<<<EOT
-id: test/{page}
+id: test/page-{page}
 template: index.twig
 variables:
     entries:

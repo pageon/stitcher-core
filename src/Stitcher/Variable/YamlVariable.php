@@ -28,7 +28,7 @@ class YamlVariable extends AbstractVariable
         $this->parsed = $this->parser->parse(File::read($this->unparsed));
 
         foreach ($this->parsed as $id => $parsedItem) {
-            if (isset($parsedItem['id'])) {
+            if (!is_array($parsedItem) || isset($parsedItem['id'])) {
                 continue;
             }
 

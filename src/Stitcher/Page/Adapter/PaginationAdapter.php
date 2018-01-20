@@ -128,6 +128,6 @@ class PaginationAdapter implements Adapter, Configureable
 
     protected function createPaginatedUrl(string $pageId, int $index): string
     {
-        return str_replace('{' .$this->parameter. '}', "page-{$index}", $pageId);
+        return str_replace('{' .$this->parameter. '}', $index, $pageId);
     }
 }
