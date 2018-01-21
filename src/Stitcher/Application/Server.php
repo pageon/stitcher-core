@@ -5,6 +5,7 @@ namespace Stitcher\Application;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
+use Parsedown;
 use Stitcher\Exception\Http;
 use Stitcher\Exception\StitcherException;
 
@@ -16,9 +17,19 @@ abstract class Server
     /** @var Request */
     protected $request;
 
+    /** @var Parsedown */
+    protected $markdownParser;
+
     public function setRouter(Router $router): Server
     {
         $this->router = $router;
+
+        return $this;
+    }
+
+    public function setMarkdownParser(Parsedown $markdownParser): Server
+    {
+        $this->markdownParser = $markdownParser;
 
         return $this;
     }
@@ -88,7 +99,21 @@ abstract class Server
             $statusCode = $e->statusCode();
         }
 
-        return new Response($statusCode, [], $e->title());
+        $responseBody = file_get_contents(__DIR__ . '/../../static/exception.html');
+
+        $responseBody = str_replace(
+            '{{ title }}',
+            $this->markdownParser->parse($e->title()),
+            $responseBody
+        );
+
+        $responseBody = str_replace(
+            '{{ body }}',
+            $this->markdownParser->parse($e->body()),
+            $responseBody
+        );
+
+        return new Response($statusCode, [], $responseBody);
     }
 
     protected function handleResponse(Response $response): string

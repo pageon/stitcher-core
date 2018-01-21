@@ -105,12 +105,14 @@ services:
             - '@parsePartial'
         calls:
             - ['setRouter', ['@router']]
+            - ['setMarkdownParser', ['@markdownParser']]
     productionServer:
         class: Stitcher\Application\ProductionServer
         arguments:
             - '%publicDirectory%'
         calls:
             - ['setRouter', ['@router']]
+            - ['setMarkdownParser', ['@markdownParser']]
 
     router:
         class: Stitcher\Application\Router

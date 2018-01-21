@@ -15,7 +15,31 @@ class Http extends StitcherException
 
     public static function notFound(string $uri): Http
     {
-        return new self("{$uri} was not found.", '', 404);
+        $body = <<<MD
+The URI `$uri` could not be find. 
+
+Please check in `site.yaml` or `routes.php`.
+
+```
+developmentServer:
+    class: Stitcher\Application\DevelopmentServer
+    arguments:
+        - '%publicDirectory%'
+        - '@parsePartial'
+    calls:
+        - ['setRouter', ['@router']]
+        - ['setMarkdownParser', ['@markdownParser']]
+productionServer:
+    class: Stitcher\Application\ProductionServer
+    arguments:
+        - '%publicDirectory%'
+    calls:
+        - ['setRouter', ['@router']]
+        - ['setMarkdownParser', ['@markdownParser']]
+```
+MD;
+
+        return new self("`{$uri}` was not found.", $body, 404);
     }
 
     public function statusCode(): int
