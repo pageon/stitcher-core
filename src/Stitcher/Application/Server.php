@@ -43,7 +43,7 @@ abstract class Server
 
     protected function getRequest(): Request
     {
-        if (!$this->request) {
+        if (! $this->request) {
             $this->request = ServerRequest::fromGlobals();
         }
 
@@ -73,31 +73,23 @@ abstract class Server
         try {
             $response = $this->handleStaticRoute();
 
-            if (!$response) {
+            if (! $response) {
                 $response = $this->handleDynamicRoute();
             }
         } catch (StitcherException $e) {
             $response = $this->responseFromException($e);
         }
 
-        if (!$response) {
-            $response = $this->responseFromException(
+        return $response ?? $this->responseFromException(
                 Http::notFound(
                     $this->getCurrentPath()
                 )
             );
-        }
-
-        return $response;
     }
 
     protected function responseFromException(StitcherException $e): Response
     {
-        $statusCode = 500;
-
-        if ($e instanceof Http) {
-            $statusCode = $e->statusCode();
-        }
+        $statusCode = $e instanceof Http ? $e->statusCode() : 500;
 
         $responseBody = file_get_contents(__DIR__ . '/../../static/exception.html');
 
