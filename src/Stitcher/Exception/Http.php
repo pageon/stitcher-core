@@ -2,6 +2,9 @@
 
 namespace Stitcher\Exception;
 
+use Pageon\Config;
+use Stitcher\File;
+
 class Http extends StitcherException
 {
     protected $statusCode;
@@ -15,27 +18,20 @@ class Http extends StitcherException
 
     public static function notFound(string $uri): Http
     {
+        $siteConfigurationFile = File::relativePath(Config::get('configurationFile'));
+
         $body = <<<MD
 The URI `$uri` could not be find. 
 
-Please check in `site.yaml` or `routes.php`.
+Please check in `$siteConfigurationFile` for static pages or `./src/routes.php` for dynamic routes.
 
 ```
-developmentServer:
-    class: Stitcher\Application\DevelopmentServer
-    arguments:
-        - '%publicDirectory%'
-        - '@parsePartial'
-    calls:
-        - ['setRouter', ['@router']]
-        - ['setMarkdownParser', ['@markdownParser']]
-productionServer:
-    class: Stitcher\Application\ProductionServer
-    arguments:
-        - '%publicDirectory%'
-    calls:
-        - ['setRouter', ['@router']]
-        - ['setMarkdownParser', ['@markdownParser']]
+$uri:
+    template: # ...
+    variables: 
+        # ...
+    config:
+        # ...
 ```
 MD;
 

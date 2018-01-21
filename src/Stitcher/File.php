@@ -23,6 +23,13 @@ class File
         return self::$base . $path;
     }
 
+    public static function relativePath(string $path): string
+    {
+        $path = str_replace(self::$base, '', $path);
+
+        return ".{$path}";
+    }
+
     public static function read(string $path): ?string
     {
         $path = self::path($path);

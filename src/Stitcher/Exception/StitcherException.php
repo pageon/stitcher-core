@@ -22,7 +22,7 @@ class StitcherException extends Exception
         return $this->title;
     }
 
-    public function body(): string
+    public function body(): ?string
     {
         return $this->body;
     }

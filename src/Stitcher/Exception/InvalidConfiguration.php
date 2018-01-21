@@ -2,11 +2,74 @@
 
 namespace Stitcher\Exception;
 
-class InvalidConfiguration extends \Exception
+use Pageon\Config;
+use Stitcher\File;
+
+class InvalidConfiguration extends StitcherException
 {
-    public static function pageIdAndTemplateRequired(): InvalidConfiguration
+    public static function siteConfigurationFileNotFound(): InvalidConfiguration
     {
-        return new self('To create a page, both the `id` and `template` keys are required.');
+        return new self(
+            'No site configuration file was found.',
+            <<<MD
+All static pages should be configured in a site configuration file.
+The path to this file can be configured in `./config/config.php`
+
+```php
+return [
+    // ...
+
+    'configurationFile' => File::path('src/site.yaml'),
+];
+```
+
+This `site.yaml` file contains a list of routes and their configuration.
+
+```yaml
+/:
+    template: home.twig
+    # ...
+
+/blog/page-{page}:
+    template: blog/overview.twig
+    # ...
+
+/blog/{id}:
+    template: blog/detail.twig
+    # ...
+```
+MD
+
+        );
+    }
+
+    public static function pageTemplateRequired(string $pageId): InvalidConfiguration
+    {
+        $templateDirectory = File::relativePath(Config::get('templateDirectory'));
+
+        return new self(
+            'A page requires a `template` value.',
+            <<<MD
+A template file should be saved in the `$templateDirectory` folder. 
+Its path is relative to this template direcotry path. 
+
+```yaml
+$pageId:
+    template: template.twig
+```
+
+The `templateDirectory` path can be overridden in a `php` config file which lives in the `./config` directory.
+
+```php
+return [
+    // ...
+    
+    'templateDirectory' => File::path('resources/view'),
+];
+```
+MD
+
+        );
     }
 
     public static function fileNotFound(string $path): InvalidConfiguration

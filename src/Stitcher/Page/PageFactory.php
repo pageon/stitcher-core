@@ -25,8 +25,8 @@ class PageFactory
         $template = $value['template'] ?? null;
         $variables = $value['variables'] ?? [];
 
-        if (! $id || ! $template) {
-            throw InvalidConfiguration::pageIdAndTemplateRequired();
+        if (! $template) {
+            throw InvalidConfiguration::pageTemplateRequired($id);
         }
 
         foreach ($variables as $key => $variable) {

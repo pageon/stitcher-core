@@ -2,6 +2,7 @@
 
 namespace Stitcher\Task;
 
+use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\File;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -22,7 +23,7 @@ class PartialParse extends AbstractParse
 
     public function execute(): void
     {
-        $parsedConfiguration = (array) Yaml::parse(File::read($this->configurationFile));
+        $parsedConfiguration = $this->getParsedConfiguration();
 
         $routeCollection = $this->createRouteCollection($parsedConfiguration);
         $matcher = new UrlMatcher($routeCollection, new RequestContext());
@@ -48,5 +49,18 @@ class PartialParse extends AbstractParse
         }
 
         return $routeCollection;
+    }
+
+    private function getParsedConfiguration(): array
+    {
+        $configurationFile = File::read($this->configurationFile);
+
+        if (!$configurationFile) {
+            throw InvalidConfiguration::siteConfigurationFileNotFound();
+        }
+
+        $parsedConfiguration = (array) Yaml::parse($configurationFile);
+
+        return $parsedConfiguration;
     }
 }
