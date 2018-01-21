@@ -43,7 +43,7 @@ MD
         );
     }
 
-    public static function pageTemplateRequired(string $pageId): InvalidConfiguration
+    public static function pageTemplateMissing(string $pageId): InvalidConfiguration
     {
         $templateDirectory = File::relativePath(Config::get('templateDirectory'));
 
@@ -70,6 +70,11 @@ return [
 MD
 
         );
+    }
+
+    public static function pageIdMissing(): InvalidConfiguration
+    {
+        return new self('A page requires an `id` value.');
     }
 
     public static function fileNotFound(string $path): InvalidConfiguration

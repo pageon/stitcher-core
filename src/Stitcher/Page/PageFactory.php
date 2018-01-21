@@ -22,11 +22,16 @@ class PageFactory
     public function create($value): Page
     {
         $id = $value['id'] ?? null;
+
+        if (! $id) {
+            throw InvalidConfiguration::pageIdMissing();
+        }
+
         $template = $value['template'] ?? null;
         $variables = $value['variables'] ?? [];
 
         if (! $template) {
-            throw InvalidConfiguration::pageTemplateRequired($id);
+            throw InvalidConfiguration::pageTemplateMissing($id);
         }
 
         foreach ($variables as $key => $variable) {

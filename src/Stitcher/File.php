@@ -23,7 +23,7 @@ class File
         return self::$base . $path;
     }
 
-    public static function relativePath(string $path): string
+    public static function relativePath(?string $path): string
     {
         $path = str_replace(self::$base, '', $path);
 
