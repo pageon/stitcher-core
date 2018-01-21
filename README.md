@@ -1,4 +1,5 @@
-# Stitcher [![Build Status](https://scrutinizer-ci.com/g/pageon/stitcher-core/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/pageon/stitcher-core/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pageon/stitcher-core/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/pageon/stitcher-core/?branch=develop)
+# Stitcher [![Build Status](https://scrutinizer-ci.com/g/pageon/stitcher-core/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/pageon/stitcher-core/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pageon/stitcher-core/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/pageon/stitcher-core/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/pageon/stitcher-core/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/pageon/stitcher-core/?branch=develop)
+
 
 High performance, static websites for PHP developers.
 
