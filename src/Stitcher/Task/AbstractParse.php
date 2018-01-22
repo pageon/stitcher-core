@@ -14,6 +14,7 @@ abstract class AbstractParse implements Task
     protected $configurationFile;
     protected $pageParser;
     protected $pageRenderer;
+
     /** @var Task[] */
     protected $tasks = [];
 
@@ -29,20 +30,12 @@ abstract class AbstractParse implements Task
         $this->pageRenderer = $pageRenderer;
     }
 
-    /**
-     * @param string                         $publicDirectory
-     * @param string                         $configurationFile
-     * @param \Stitcher\Page\PageParser      $pageParser
-     * @param \Stitcher\Page\PageRenderer    $pageRenderer
-     *
-     * @return static
-     */
     public static function make(
         string $publicDirectory,
         string $configurationFile,
         PageParser $pageParser,
         PageRenderer $pageRenderer
-    ) {
+    ) : self {
         return new static(
             $publicDirectory,
             $configurationFile,
