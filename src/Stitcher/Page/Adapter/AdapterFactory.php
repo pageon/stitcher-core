@@ -27,7 +27,7 @@ class AdapterFactory extends DynamicFactory
     public function create($adapterType, $adapterConfiguration): ?Adapter
     {
         foreach ($this->getRules() as $rule) {
-            $adapter = $rule($adapterType, $adapterConfiguration);
+            $adapter = $rule($adapterType, (array) $adapterConfiguration);
 
             if ($adapter) {
                 return $adapter;

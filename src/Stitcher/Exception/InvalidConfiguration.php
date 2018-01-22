@@ -84,7 +84,7 @@ MD
 
     public static function invalidAdapterConfiguration(string $adapter, string $fields): InvalidConfiguration
     {
-        return new self("The {$adapter} adapter requires following configuration: {$fields}");
+        return new self("The `{$adapter}` adapter requires following configuration: {$fields}");
     }
 
     public static function dotEnvNotFound(string $directory): InvalidConfiguration

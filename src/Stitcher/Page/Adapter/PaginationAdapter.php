@@ -2,8 +2,8 @@
 
 namespace Stitcher\Page\Adapter;
 
+use Stitcher\Exception\InvalidPaginationAdapter;
 use Stitcher\Page\Adapter;
-use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\Configureable;
 use Stitcher\Variable\VariableParser;
 
@@ -17,7 +17,7 @@ class PaginationAdapter implements Adapter, Configureable
     public function __construct(array $adapterConfiguration, VariableParser $variableParser)
     {
         if (! $this->isValidConfiguration($adapterConfiguration)) {
-            throw InvalidConfiguration::invalidAdapterConfiguration('pagination', '`variable`, `parameter`, `perPage`');
+            throw InvalidPaginationAdapter::create();
         }
 
         $this->variable = $adapterConfiguration['variable'];
