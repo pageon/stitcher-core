@@ -3,6 +3,7 @@
 namespace Stitcher\Renderer\Extension;
 
 use Pageon\Html\Source;
+use Stitcher\Exception\StitcherException;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;
@@ -72,6 +73,10 @@ class Js implements Extension
         ['dirname' => $dirname, 'filename' => $filename, 'extension' => $extension] = pathinfo($src);
 
         $content = File::read($src);
+
+        if (!$content) {
+            throw StitcherException::fileNotFound(File::path($src));
+        }
 
         $path = "{$dirname}/{$filename}.{$extension}";
 

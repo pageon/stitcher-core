@@ -9,6 +9,9 @@ use Stitcher\Variable\VariableParser;
 
 class CollectionAdapter implements Adapter, Configureable
 {
+    private static $filterId = null;
+
+    private $entries = [];
     private $parameter;
     private $variable;
     private $variableParser;
@@ -29,15 +32,31 @@ class CollectionAdapter implements Adapter, Configureable
         return new self($adapterConfiguration, $variableParser);
     }
 
+    public static function setFilterId(?string $filterId)
+    {
+        self::$filterId = $filterId;
+    }
+
     public function transform(array $pageConfiguration): array
     {
-        $entries = $this->getEntries($pageConfiguration);
+        $this->entries = $this->getEntries($pageConfiguration);
+
         $collectionPageConfiguration = [];
 
-        foreach ($entries as $entryId => $entry) {
+        while ($entry = current($this->entries)) {
+            $entryId = key($this->entries);
+
+            if (self::$filterId !== null && self::$filterId !== $entryId) {
+                next($this->entries);
+
+                continue;
+            }
+
             $entryConfiguration = $this->createEntryConfiguration($pageConfiguration, $entryId, $entry);
 
             $collectionPageConfiguration[$entryConfiguration['id']] = $entryConfiguration;
+
+            next($this->entries);
         }
 
         return $collectionPageConfiguration;
@@ -60,13 +79,21 @@ class CollectionAdapter implements Adapter, Configureable
     protected function createEntryConfiguration(array $pageConfiguration, $entryId, $entry): array
     {
         $entryConfiguration = $pageConfiguration;
+
         $parsedEntryId = str_replace('{' . $this->parameter . '}', $entryId, $pageConfiguration['id']);
+
         $entryConfiguration['id'] = $parsedEntryId;
+
         $entryConfiguration['variables'][$this->variable] = $entry;
+
         $entryConfiguration['variables']['meta'] = array_merge(
             $entryConfiguration['variables']['meta'] ?? [],
             $this->createMetaVariable($entryConfiguration)
         );
+
+        $entryConfiguration['variables']['browse'] =
+            $entryConfiguration['variables']['browse']
+            ?? $this->createBrowseData();
 
         unset($entryConfiguration['config']['collection']);
 
@@ -104,5 +131,30 @@ class CollectionAdapter implements Adapter, Configureable
             ?? null;
 
         return $description;
+    }
+
+    protected function createBrowseData(): array
+    {
+        $browse = [];
+
+        $prev = prev($this->entries);
+
+        if (! $prev) {
+            reset($this->entries);
+        } else {
+            $browse['prev'] = $prev;
+
+            next($this->entries);
+        }
+
+        $next = next($this->entries);
+
+        if ($next) {
+            $browse['next'] = $next;
+        }
+
+        prev($this->entries);
+
+        return $browse;
     }
 }

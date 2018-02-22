@@ -26,4 +26,9 @@ class StitcherException extends Exception
     {
         return $this->body;
     }
+
+    public static function fileNotFound(string $path): StitcherException
+    {
+        return new self("File not found: {$path}");
+    }
 }

@@ -40,4 +40,14 @@ class DevelopmentServerTest extends StitcherTest
 
         $this->assertContains('test 1 abc', $body);
     }
+
+    /** @test */
+    public function it_can_redirect()
+    {
+        $this->parseAll();
+
+        $response = $this->getDevelopmentPage('/redirect');
+
+        $this->assertContains('<h1>A</h1>', (string) $response->getBody());
+    }
 }

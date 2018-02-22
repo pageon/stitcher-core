@@ -70,6 +70,13 @@ abstract class Server
 
     protected function createResponse(): Response
     {
+        if (
+            $this->router
+            && $redirectTo = $this->router->getRedirectForUrl($this->getCurrentPath())
+        ) {
+            return $this->redirectResponse($redirectTo);
+        }
+
         try {
             $response = $this->handleStaticRoute();
 
@@ -85,6 +92,11 @@ abstract class Server
                     $this->getCurrentPath()
                 )
             );
+    }
+
+    protected function redirectResponse(string $targetUrl): Response
+    {
+        return new Response(301, ["Location: {$targetUrl}"]);
     }
 
     protected function responseFromException(StitcherException $e): Response
@@ -110,6 +122,10 @@ abstract class Server
 
     protected function handleResponse(Response $response): string
     {
+        foreach ($response->getHeaders() as $headers) {
+            header(implode(', ', $headers));
+        }
+
         http_response_code($response->getStatusCode());
 
         return $response->getBody()->getContents();

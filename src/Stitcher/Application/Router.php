@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 class Router
 {
     protected $routeCollector;
+    protected $redirects = [];
 
     public function __construct(RouteCollector $routeCollector)
     {
@@ -52,6 +53,18 @@ class Router
         $this->routeCollector->addRoute('DELETE', $url, [$controller, 'handle']);
 
         return $this;
+    }
+
+    public function redirect(string $url, string $targetUrl): Router
+    {
+        $this->redirects[$url] = $targetUrl;
+
+        return $this;
+    }
+
+    public function getRedirectForUrl(string $url): ?string
+    {
+        return $this->redirects[$url] ?? null;
     }
 
     public function dispatch(Request $request): ?Response
