@@ -9,6 +9,7 @@ class PageParser
 {
     private $pageFactory;
     private $adapterFactory;
+    private $currentPage;
 
     public function __construct(PageFactory $pageFactory, AdapterFactory $adapterFactory)
     {
@@ -30,17 +31,34 @@ class PageParser
         foreach ($pageEntries as $pageEntry) {
             $page = $this->parsePage($pageEntry);
 
+            $this->setCurrentPage($page);
+
             $result[$page->id()] = $page;
         }
 
         return collect($result);
     }
 
+    public function getCurrentPage(): ?Page
+    {
+        return $this->currentPage;
+    }
+
+    private function setCurrentPage(Page $page): PageParser
+    {
+        $this->currentPage = $page;
+
+        return $this;
+    }
+
     private function parseAdapterConfiguration(array $pageConfiguration): array
     {
         $pageEntries = [$pageConfiguration];
 
-        $adapterConfigurations = $pageConfiguration['config'] ?? $pageConfiguration['adapters'] ?? [];
+        $adapterConfigurations =
+            $pageConfiguration['config']
+            ?? $pageConfiguration['adapters']
+            ?? [];
 
         foreach ($adapterConfigurations as $adapterType => $adapterConfiguration) {
             $adapter = $this->adapterFactory->create($adapterType, $adapterConfiguration);
@@ -48,7 +66,10 @@ class PageParser
             $adaptedPageEntries = [];
 
             foreach ($pageEntries as $pageToTransform) {
-                $adaptedPageEntries = array_merge($adaptedPageEntries, $adapter->transform($pageToTransform));
+                $adaptedPageEntries = array_merge(
+                    $adaptedPageEntries,
+                    $adapter->transform($pageToTransform)
+                );
             }
 
             $pageEntries = $adaptedPageEntries;

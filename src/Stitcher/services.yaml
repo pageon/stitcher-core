@@ -45,6 +45,10 @@ services:
         class: Stitcher\Renderer\Extension\Js
         arguments:
             - '%publicDirectory%'
+    pageExtension:
+        class: Stitcher\Renderer\Extension\Page
+        arguments:
+            - '@pageParser'
     rendererFactory:
         class: Stitcher\Renderer\RendererFactory
         arguments:
@@ -53,6 +57,7 @@ services:
         calls:
             - ['addExtension', ['@cssExtension']]
             - ['addExtension', ['@jsExtension']]
+            - ['addExtension', ['@pageExtension']]
     renderer:
         factory: 'Stitcher\Renderer\RendererFactory:create'
         arguments:

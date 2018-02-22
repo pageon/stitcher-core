@@ -82,6 +82,11 @@ MD
         return new self("File with path `{$path}` could not be found.");
     }
 
+    public static function templateNotFound(string $path): InvalidConfiguration
+    {
+        return new self("Template with path `{$path}` could not be found.");
+    }
+
     public static function invalidAdapterConfiguration(string $adapter, string $fields): InvalidConfiguration
     {
         return new self("The `{$adapter}` adapter requires following configuration: {$fields}");

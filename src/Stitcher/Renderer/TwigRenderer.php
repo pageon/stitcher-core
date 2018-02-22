@@ -2,8 +2,10 @@
 
 namespace Stitcher\Renderer;
 
+use Stitcher\Exception\InvalidConfiguration;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig_Environment;
+use Twig_Error_Loader;
 
 class TwigRenderer extends Twig_Environment implements Renderer
 {
@@ -27,7 +29,11 @@ class TwigRenderer extends Twig_Environment implements Renderer
 
     public function renderTemplate(string $path, array $variables): string
     {
-        return $this->render($path, $variables);
+        try {
+            return $this->render($path, $variables);
+        } catch (Twig_Error_Loader $e) {
+            throw InvalidConfiguration::templateNotFound($path);
+        }
     }
 
     public function customExtension(Extension $extension): void
