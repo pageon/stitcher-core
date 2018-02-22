@@ -3,6 +3,7 @@
 namespace Stitcher\Renderer\Extension;
 
 use Pageon\Html\Source;
+use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\Exception\StitcherException;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
@@ -75,7 +76,7 @@ class Js implements Extension
         $content = File::read($src);
 
         if (!$content) {
-            throw StitcherException::fileNotFound(File::path($src));
+            throw InvalidConfiguration::fileNotFound(File::path($src));
         }
 
         $path = "{$dirname}/{$filename}.{$extension}";
