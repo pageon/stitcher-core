@@ -3,7 +3,9 @@ services:
     yamlParser:
         class: Symfony\Component\Yaml\Yaml
     markdownParser:
-        class: \Parsedown
+        class: Pageon\Lib\Parsedown
+        arguments:
+            - '@imageFactory'
     sassParser:
         class: Leafo\ScssPhp\Compiler
         calls:
