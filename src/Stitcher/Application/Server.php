@@ -5,6 +5,7 @@ namespace Stitcher\Application;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
+use Pageon\Http\HeaderContainer;
 use Parsedown;
 use Stitcher\Exception\Http;
 use Stitcher\Exception\StitcherException;
@@ -20,11 +21,21 @@ abstract class Server
     /** @var Parsedown */
     protected $markdownParser;
 
+    /** @var HeaderContainer */
+    protected $headerContainer;
+
     abstract protected function handleStaticRoute(): ?Response;
 
     public function setRouter(Router $router): Server
     {
         $this->router = $router;
+
+        return $this;
+    }
+
+    public function setHeaderContainer(HeaderContainer $headerContainer): Server
+    {
+        $this->headerContainer = $headerContainer;
 
         return $this;
     }
@@ -124,6 +135,12 @@ abstract class Server
     {
         foreach ($response->getHeaders() as $headers) {
             header(implode(', ', $headers));
+        }
+
+        if ($this->headerContainer) {
+            foreach ($this->headerContainer as $header) {
+                header((string) $header);
+            }
         }
 
         http_response_code($response->getStatusCode());
