@@ -43,5 +43,11 @@ EOT
         $this->assertEquals('A', $result['/a']['variables']['entry']['name']);
         $this->assertArrayHasKey('/b', $result);
         $this->assertEquals('B', $result['/b']['variables']['entry']['name']);
+
+        $this->assertNull($result['/a']['variables']['_browse']['prev'] ?? null);
+        $this->assertNotNull($result['/a']['variables']['_browse']['next'] ?? null);
+
+        $this->assertNotNull($result['/b']['variables']['_browse']['prev'] ?? null);
+        $this->assertNull($result['/b']['variables']['_browse']['next'] ?? null);
     }
 }
