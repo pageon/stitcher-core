@@ -8,7 +8,7 @@ class FilesizeScaler implements Scaler
 {
     private $stepModifier = 0.2;
 
-    public function __construct(float $stopModifier)
+    public function __construct(float $stopModifier = 0.2)
     {
         $this->stepModifier = $stopModifier;
     }

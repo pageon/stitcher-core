@@ -57,6 +57,7 @@ class Config
             'templateRenderer' => 'twig',
             'staticFiles' => [],
             'cacheStaticFiles' => false,
+            'cacheImages' => true,
         ];
     }
 

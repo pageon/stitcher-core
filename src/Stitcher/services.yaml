@@ -12,15 +12,15 @@ services:
             - [addImportPath, ['%rootDirectory%']]
 
     imageScaler:
-        class: Pageon\Html\Image\FixedWidthScaler
-        arguments:
-            - [200]
+        class: Pageon\Html\Image\FilesizeScaler
     imageFactory:
         class: Pageon\Html\Image\ImageFactory
         arguments:
             - '%sourceDirectory%'
             - '%publicDirectory%'
             - '@imageScaler'
+        calls:
+            - ['enableCaching', ['%cacheImages%']]
 
     variableFactory:
         class: Stitcher\Variable\VariableFactory

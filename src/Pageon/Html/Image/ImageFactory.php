@@ -9,10 +9,20 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ImageFactory
 {
+    /** @var \Pageon\Html\Image\Scaler */
     private $scaler;
+
+    /** @var string */
     private $sourceDirectory;
+
+    /** @var string */
     private $publicDirectory;
+
+    /** @var \Intervention\Image\ImageManager */
     private $imageManager;
+
+    /** @var bool */
+    private $cache = false;
 
     public function __construct(
         string $sourceDirectory,
@@ -36,6 +46,13 @@ class ImageFactory
         return new self($sourceDirectory, $publicDirectory, $scaler);
     }
 
+    public function enableCaching(bool $cache): ImageFactory
+    {
+        $this->cache = $cache;
+
+        return $this;
+    }
+
     public function create($src): Image
     {
         $srcPath = ltrim($src, '/');
@@ -48,6 +65,10 @@ class ImageFactory
         $image->addSrcset($image->src(), $scaleableImage->getWidth());
 
         foreach ($variations as $width => $height) {
+            if (!$width) {
+                continue;
+            }
+
             $this->createScaledImage($image, $width, $height, $scaleableImage);
         }
 
@@ -59,15 +80,20 @@ class ImageFactory
         int $width,
         int $height,
         ScaleableImage $scaleableImage
-    ) {
+    ): void {
         $scaleableImageClone = clone $scaleableImage;
+
         $scaledFileName = $this->createScaledFileName($image, $width, $height);
+
+        $image->addSrcset($scaledFileName, $width);
+
+        if ($this->cache && file_exists("{$this->publicDirectory}/{$scaledFileName}")) {
+            return;
+        }
 
         $scaleableImageClone
             ->resize($width, $height)
             ->save("{$this->publicDirectory}/{$scaledFileName}");
-
-        $image->addSrcset($scaledFileName, $width);
     }
 
     private function createScaledFileName(Image $image, int $width, int $height): string
