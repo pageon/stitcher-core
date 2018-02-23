@@ -107,8 +107,8 @@ class CollectionAdapter implements Adapter, Configureable
             $this->createMetaVariable($entryConfiguration)
         );
 
-        $entryConfiguration['variables']['browse'] =
-            $entryConfiguration['variables']['browse']
+        $entryConfiguration['variables']['_browse'] =
+            $entryConfiguration['variables']['_browse']
             ?? $this->createBrowseData();
 
         unset($entryConfiguration['config']['collection']);

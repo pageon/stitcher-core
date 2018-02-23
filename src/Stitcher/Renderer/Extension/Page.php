@@ -17,7 +17,7 @@ class Page implements Extension
 
     public function name(): string
     {
-        return 'page';
+        return '_page';
     }
 
     public function isActive(string $part): bool

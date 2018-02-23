@@ -4,6 +4,7 @@ namespace Stitcher\Exception;
 
 use Pageon\Config;
 use Stitcher\File;
+use Symfony\Component\Yaml\Yaml;
 
 class InvalidConfiguration extends StitcherException
 {
@@ -72,9 +73,18 @@ MD
         );
     }
 
-    public static function pageIdMissing(): InvalidConfiguration
+    public static function pageIdMissing($pageConfiguration): InvalidConfiguration
     {
-        return new self('A page requires an `id` value.');
+        $yaml = Yaml::dump($pageConfiguration);
+
+        return new self('A page requires an `id` value.', <<<MD
+Instead got this:
+
+```yaml
+$yaml
+```
+MD
+);
     }
 
     public static function fileNotFound(string $path): InvalidConfiguration

@@ -9,7 +9,7 @@ use Stitcher\Variable\VariableParser;
 class AdapterFactory extends DynamicFactory
 {
     /** @var \Stitcher\Variable\VariableParser */
-    private $variableParser;
+    protected $variableParser;
 
     public function __construct(VariableParser $variableParser)
     {

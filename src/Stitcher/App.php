@@ -35,6 +35,12 @@ class App
         self::loadRoutes();
     }
 
+    /**
+     * @param string $id
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public static function get(string $id)
     {
         return self::$container->get($id);
@@ -149,6 +155,8 @@ class App
         $definition->setAutowired(true);
 
         self::$container->setDefinition($pluginClass, $definition);
+
+        forward_static_call([$pluginClass, 'boot']);
     }
 
     protected static function loadRoutes(): void

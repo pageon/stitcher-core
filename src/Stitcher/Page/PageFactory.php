@@ -24,7 +24,7 @@ class PageFactory
         $id = $value['id'] ?? null;
 
         if (! $id) {
-            throw InvalidConfiguration::pageIdMissing();
+            throw InvalidConfiguration::pageIdMissing($value);
         }
 
         $template = $value['template'] ?? null;

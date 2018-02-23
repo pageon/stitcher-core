@@ -15,4 +15,9 @@ class TestPlugin implements Plugin
     {
         return __DIR__ . '/../../config/testPlugin/services.yaml';
     }
+
+    public static function boot(): void
+    {
+        return;
+    }
 }
