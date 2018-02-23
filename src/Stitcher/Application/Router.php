@@ -12,7 +12,10 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class Router
 {
+    /** @var \FastRoute\RouteCollector */
     protected $routeCollector;
+
+    /** @var array */
     protected $redirects = [];
 
     public function __construct(RouteCollector $routeCollector)

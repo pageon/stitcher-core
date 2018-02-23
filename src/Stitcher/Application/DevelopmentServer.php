@@ -8,8 +8,13 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class DevelopmentServer extends Server
 {
+    /** @var string */
     protected $rootDirectory;
+
+    /** @var null|string */
     protected $path = null;
+
+    /** @var \Stitcher\Task\PartialParse */
     protected $partialParse;
 
     public function __construct(

@@ -9,11 +9,16 @@ use Stitcher\Variable\VariableParser;
 
 class FilterAdapter implements Adapter, Configureable
 {
+    /** @var array */
     private $filters;
+
+    /** @var \Stitcher\Variable\VariableParser */
     private $variableParser;
 
-    public function __construct(array $adapterConfiguration, VariableParser $variableParser)
-    {
+    public function __construct(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ) {
         if (! $this->isValidConfiguration($adapterConfiguration)) {
             throw InvalidConfiguration::invalidAdapterConfiguration('filter', '`field`: `filter`');
         }
@@ -22,8 +27,10 @@ class FilterAdapter implements Adapter, Configureable
         $this->variableParser = $variableParser;
     }
 
-    public static function make(array $adapterConfiguration, VariableParser $variableParser): FilterAdapter
-    {
+    public static function make(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ): FilterAdapter {
         return new self($adapterConfiguration, $variableParser);
     }
 
@@ -31,7 +38,9 @@ class FilterAdapter implements Adapter, Configureable
     {
         foreach ($this->filters as $variableName => $filterConfiguration) {
             $variable = $pageConfiguration['variables'][$variableName] ?? null;
+
             $entries = $this->variableParser->parse($variable)['entries'] ?? [];
+
             $filteredEntries = $this->filterEntries($filterConfiguration, $entries);
 
             $pageConfiguration['variables'][$variableName] = $filteredEntries;

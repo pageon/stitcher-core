@@ -9,15 +9,25 @@ use Stitcher\Variable\VariableParser;
 
 class CollectionAdapter implements Adapter, Configureable
 {
+    /** @var null */
     private static $filterId = null;
 
+    /** @var array */
     private $entries = [];
+
+    /** @var mixed */
     private $parameter;
+
+    /** @var mixed */
     private $variable;
+
+    /** @var \Stitcher\Variable\VariableParser */
     private $variableParser;
 
-    public function __construct(array $adapterConfiguration, VariableParser $variableParser)
-    {
+    public function __construct(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ) {
         if (! $this->isValidConfiguration($adapterConfiguration)) {
             throw InvalidCollectionAdapter::create();
         }
@@ -27,8 +37,10 @@ class CollectionAdapter implements Adapter, Configureable
         $this->variableParser = $variableParser;
     }
 
-    public static function make(array $adapterConfiguration, VariableParser $variableParser)
-    {
+    public static function make(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ): CollectionAdapter {
         return new self($adapterConfiguration, $variableParser);
     }
 
@@ -52,7 +64,11 @@ class CollectionAdapter implements Adapter, Configureable
                 continue;
             }
 
-            $entryConfiguration = $this->createEntryConfiguration($pageConfiguration, $entryId, $entry);
+            $entryConfiguration = $this->createEntryConfiguration(
+                $pageConfiguration,
+                $entryId,
+                $entry
+            );
 
             $collectionPageConfiguration[$entryConfiguration['id']] = $entryConfiguration;
 
@@ -117,7 +133,8 @@ class CollectionAdapter implements Adapter, Configureable
 
     protected function getTitleMeta(array $entryConfiguration): ?string
     {
-        $title = $entryConfiguration['variables'][$this->variable]['meta']['title']
+        $title =
+            $entryConfiguration['variables'][$this->variable]['meta']['title']
             ?? $entryConfiguration['variables'][$this->variable]['title']
             ?? null;
 
@@ -126,7 +143,8 @@ class CollectionAdapter implements Adapter, Configureable
 
     protected function getDescriptionMeta(array $entryConfiguration): ?string
     {
-        $description = $entryConfiguration['variables'][$this->variable]['meta']['description']
+        $description =
+            $entryConfiguration['variables'][$this->variable]['meta']['description']
             ?? $entryConfiguration['variables'][$this->variable]['description']
             ?? null;
 

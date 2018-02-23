@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 
 class ProductionServer extends Server
 {
+    /** @var string */
     protected $rootDirectory;
 
     public function __construct(string $rootDirectory)

@@ -8,6 +8,7 @@ use Stitcher\Variable\VariableParser;
 
 class AdapterFactory extends DynamicFactory
 {
+    /** @var \Stitcher\Variable\VariableParser */
     private $variableParser;
 
     public function __construct(VariableParser $variableParser)
@@ -39,34 +40,43 @@ class AdapterFactory extends DynamicFactory
 
     private function setCollectionRule(): void
     {
-        $this->setRule(CollectionAdapter::class, function (string $adapterType, array $adapterConfiguration) {
-            if ($adapterType === 'collection') {
+        $this->setRule(
+            CollectionAdapter::class,
+            function (string $adapterType, array $adapterConfiguration) {
+                if ($adapterType !== 'collection') {
+                    return null;
+                }
+
                 return CollectionAdapter::make($adapterConfiguration, $this->variableParser);
             }
-
-            return null;
-        });
+        );
     }
 
     private function setFilterRule(): void
     {
-        $this->setRule(FilterAdapter::class, function (string $adapterType, array $adapterConfiguration) {
-            if ($adapterType === 'filter') {
+        $this->setRule(
+            FilterAdapter::class,
+            function (string $adapterType, array $adapterConfiguration) {
+                if ($adapterType !== 'filter') {
+                    return null;
+                }
+
                 return FilterAdapter::make($adapterConfiguration, $this->variableParser);
             }
-
-            return null;
-        });
+        );
     }
 
     private function setPaginationRule(): void
     {
-        $this->setRule(PaginationAdapter::class, function (string $adapterType, array $adapterConfiguration) {
-            if ($adapterType === 'pagination') {
+        $this->setRule(
+            PaginationAdapter::class,
+            function (string $adapterType, array $adapterConfiguration) {
+                if ($adapterType !== 'pagination') {
+                    return null;
+                }
+
                 return PaginationAdapter::make($adapterConfiguration, $this->variableParser);
             }
-
-            return null;
-        });
+        );
     }
 }

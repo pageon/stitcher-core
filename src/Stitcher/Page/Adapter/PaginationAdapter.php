@@ -9,13 +9,22 @@ use Stitcher\Variable\VariableParser;
 
 class PaginationAdapter implements Adapter, Configureable
 {
-    protected $variableParser;
-    protected $variable;
-    protected $perPage;
-    protected $parameter;
+    /** @var \Stitcher\Variable\VariableParser */
+    private $variableParser;
 
-    public function __construct(array $adapterConfiguration, VariableParser $variableParser)
-    {
+    /** @var mixed */
+    private $variable;
+
+    /** @var int */
+    private $perPage;
+
+    /** @var string */
+    private $parameter;
+
+    public function __construct(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ) {
         if (! $this->isValidConfiguration($adapterConfiguration)) {
             throw InvalidPaginationAdapter::create();
         }
@@ -26,8 +35,10 @@ class PaginationAdapter implements Adapter, Configureable
         $this->variableParser = $variableParser;
     }
 
-    public static function make(array $adapterConfiguration, VariableParser $variableParser): PaginationAdapter
-    {
+    public static function make(
+        array $adapterConfiguration,
+        VariableParser $variableParser
+    ): PaginationAdapter {
         return new self($adapterConfiguration, $variableParser);
     }
 
@@ -55,7 +66,10 @@ class PaginationAdapter implements Adapter, Configureable
 
     public function isValidConfiguration($subject): bool
     {
-        return is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
+        return
+            is_array($subject)
+            && isset($subject['variable'])
+            && isset($subject['parameter']);
     }
 
     protected function getEntries(array $pageConfiguration): ?array
@@ -88,8 +102,11 @@ class PaginationAdapter implements Adapter, Configureable
         return $entryConfiguration;
     }
 
-    protected function createPaginationVariable(string $pageId, int $pageIndex, int $pageCount): array
-    {
+    protected function createPaginationVariable(
+        string $pageId,
+        int $pageIndex,
+        int $pageCount
+    ): array {
         return [
             'current'  => $pageIndex,
             'previous' => $this->createPreviousPagination($pageId, $pageIndex),
@@ -98,8 +115,10 @@ class PaginationAdapter implements Adapter, Configureable
         ];
     }
 
-    protected function createPreviousPagination(string $pageId, int $pageIndex): ?array
-    {
+    protected function createPreviousPagination(
+        string $pageId,
+        int $pageIndex
+    ): ?array {
         if ($pageIndex <= 1) {
             return null;
         }
@@ -112,8 +131,11 @@ class PaginationAdapter implements Adapter, Configureable
         ];
     }
 
-    protected function createNextPagination(string $pageId, int $pageIndex, int $pageCount): ?array
-    {
+    protected function createNextPagination(
+        string $pageId,
+        int $pageIndex,
+        int $pageCount
+    ): ?array {
         if ($pageIndex >= $pageCount) {
             return null;
         }
