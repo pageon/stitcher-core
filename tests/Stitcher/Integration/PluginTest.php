@@ -38,4 +38,15 @@ class PluginTest extends StitcherTest
         $this->assertInstanceOf(TestPluginService::class, $testPluginService);
         $this->assertEquals(1, $testPluginService->item);
     }
+
+    /** @test */
+    public function a_plugin_can_be_booted()
+    {
+        App::init();
+
+        /** @var TestPlugin $testPlugin */
+        $testPlugin = App::get(TestPlugin::class);
+
+        $this->assertInstanceOf(TestPluginService::class, $testPlugin::$service);
+    }
 }
