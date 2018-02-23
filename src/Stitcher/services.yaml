@@ -110,6 +110,7 @@ services:
             - '@parsePartial'
         calls:
             - ['setRouter', ['@router']]
+            - ['setHeaderContainer', ['@headerContainer']]
             - ['setMarkdownParser', ['@markdownParser']]
     productionServer:
         class: Stitcher\Application\ProductionServer
@@ -117,6 +118,7 @@ services:
             - '%publicDirectory%'
         calls:
             - ['setRouter', ['@router']]
+            - ['setHeaderContainer', ['@headerContainer']]
             - ['setMarkdownParser', ['@markdownParser']]
 
     router:
@@ -130,3 +132,6 @@ services:
     routeCollector:
         class: FastRoute\RouteCollector
         arguments: ['@routeParser', '@routeDataGenerator']
+
+    headerContainer:
+        class: Pageon\Http\HeaderContainer
