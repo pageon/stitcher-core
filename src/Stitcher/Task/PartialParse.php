@@ -5,7 +5,6 @@ namespace Stitcher\Task;
 use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\File;
 use Stitcher\Page\Adapter\CollectionAdapter;
-use Stitcher\Page\Adapter\CollectionFilter;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
@@ -28,14 +27,19 @@ class PartialParse extends AbstractParse
         $parsedConfiguration = $this->getParsedConfiguration();
 
         $routeCollection = $this->createRouteCollection($parsedConfiguration);
+
         $matcher = new UrlMatcher($routeCollection, new RequestContext());
+
         $matchingRoute = $matcher->match($this->filter);
 
         CollectionAdapter::setFilterId($matchingRoute['id'] ?? null);
 
-        $filteredConfiguration = array_filter($parsedConfiguration, function ($key) use ($matchingRoute) {
-            return $key === $matchingRoute['_route'];
-        }, ARRAY_FILTER_USE_KEY);
+        $filteredConfiguration = array_filter(
+            $parsedConfiguration,
+            function ($key) use ($matchingRoute) {
+                return $key === $matchingRoute['_route'];
+            }, ARRAY_FILTER_USE_KEY
+        );
 
         $pages = $this->parsePageConfiguration($filteredConfiguration);
 
@@ -59,7 +63,7 @@ class PartialParse extends AbstractParse
     {
         $configurationFile = File::read($this->configurationFile);
 
-        if (!$configurationFile) {
+        if (! $configurationFile) {
             throw InvalidConfiguration::siteConfigurationFileNotFound();
         }
 

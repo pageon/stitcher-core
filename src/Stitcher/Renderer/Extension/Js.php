@@ -4,7 +4,6 @@ namespace Stitcher\Renderer\Extension;
 
 use Pageon\Html\Source;
 use Stitcher\Exception\InvalidConfiguration;
-use Stitcher\Exception\StitcherException;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;

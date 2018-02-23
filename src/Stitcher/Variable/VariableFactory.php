@@ -10,9 +10,16 @@ use TypeError;
 
 class VariableFactory extends DynamicFactory
 {
+    /** @var \Symfony\Component\Yaml\Yaml */
     private $yamlParser = null;
+
+    /** @var \Parsedown */
     private $markdownParser = null;
+
+    /** @var \Pageon\Html\Image\ImageFactory */
     private $imageParser = null;
+
+    /** @var \Stitcher\Variable\VariableParser */
     private $variableParser = null;
 
     public function __construct()
@@ -76,11 +83,11 @@ class VariableFactory extends DynamicFactory
     private function setJsonRule(): DynamicFactory
     {
         return $this->setRule(JsonVariable::class, function (string $value) {
-            if (is_string($value) && pathinfo($value, PATHINFO_EXTENSION) === 'json') {
-                return JsonVariable::make($value);
+            if (pathinfo($value, PATHINFO_EXTENSION) !== 'json') {
+                return null;
             }
 
-            return null;
+            return JsonVariable::make($value);
         });
     }
 
@@ -93,22 +100,26 @@ class VariableFactory extends DynamicFactory
 
             $extension = pathinfo($value, PATHINFO_EXTENSION);
 
-            if (in_array($extension, ['yaml', 'yml'])) {
-                return YamlVariable::make($value, $this->yamlParser, $this->variableParser);
+            if (!in_array($extension, ['yaml', 'yml'])) {
+                return null;
             }
 
-            return null;
+            return YamlVariable::make($value, $this->yamlParser, $this->variableParser);
         });
     }
 
     private function setMarkdownRule(): void
     {
         $this->setRule(MarkdownVariable::class, function (string $value) {
-            if ($this->markdownParser && pathinfo($value, PATHINFO_EXTENSION) === 'md') {
-                return MarkdownVariable::make($value, $this->markdownParser);
+            if (! $this->markdownParser) {
+                return null;
             }
 
-            return null;
+            if (pathinfo($value, PATHINFO_EXTENSION) !== 'md') {
+                return null;
+            }
+
+            return MarkdownVariable::make($value, $this->markdownParser);
         });
     }
 
@@ -123,11 +134,11 @@ class VariableFactory extends DynamicFactory
 
             $extension = pathinfo($srcPath, PATHINFO_EXTENSION);
 
-            if (in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
-                return ImageVariable::make($value, $this->imageParser);
+            if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+                return null;
             }
 
-            return null;
+            return ImageVariable::make($value, $this->imageParser);
         });
     }
 }

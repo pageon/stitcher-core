@@ -20,6 +20,8 @@ abstract class Server
     /** @var Parsedown */
     protected $markdownParser;
 
+    abstract protected function handleStaticRoute(): ?Response;
+
     public function setRouter(Router $router): Server
     {
         $this->router = $router;
@@ -56,8 +58,6 @@ abstract class Server
 
         return $path === '' ? '/' : $path;
     }
-
-    abstract protected function handleStaticRoute(): ?Response;
 
     protected function handleDynamicRoute(): ?Response
     {

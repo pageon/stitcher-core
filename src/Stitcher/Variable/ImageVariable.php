@@ -15,8 +15,10 @@ class ImageVariable extends AbstractVariable
         $this->imageFactory = $imageFactory;
     }
 
-    public static function make($attributes, ImageFactory $imageFactory) : ImageVariable
-    {
+    public static function make(
+        $attributes,
+        ImageFactory $imageFactory
+    ) : ImageVariable {
         return new self($attributes, $imageFactory);
     }
 

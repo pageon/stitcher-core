@@ -71,7 +71,10 @@ class Router
     {
         $dispatcher = new GroupCountBased($this->routeCollector->getData());
 
-        $routeInfo = $dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
+        $routeInfo = $dispatcher->dispatch(
+            $request->getMethod(),
+            $request->getUri()->getPath()
+        );
 
         if ($routeInfo[0] !== Dispatcher::FOUND) {
             return null;

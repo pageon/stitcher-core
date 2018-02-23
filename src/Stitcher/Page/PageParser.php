@@ -55,25 +55,35 @@ class PageParser
     {
         $pageEntries = [$pageConfiguration];
 
-        $adapterConfigurations =
+        $adapters =
             $pageConfiguration['config']
             ?? $pageConfiguration['adapters']
             ?? [];
 
-        foreach ($adapterConfigurations as $adapterType => $adapterConfiguration) {
-            $adapter = $this->adapterFactory->create($adapterType, $adapterConfiguration);
+        foreach ($adapters as $adapterType => $adapterConfiguration) {
+            $adapter = $this->adapterFactory->create(
+                $adapterType,
+                $adapterConfiguration
+            );
 
-            $adaptedPageEntries = [];
-
-            foreach ($pageEntries as $pageToTransform) {
-                $adaptedPageEntries = array_merge(
-                    $adaptedPageEntries,
-                    $adapter->transform($pageToTransform)
-                );
-            }
-
-            $pageEntries = $adaptedPageEntries;
+            $pageEntries = $this->adaptPageEntries($pageEntries, $adapter);
         }
+
+        return $pageEntries;
+    }
+
+    private function adaptPageEntries(array $pageEntries, Adapter $adapter): array
+    {
+        $adaptedPageEntries = [];
+
+        foreach ($pageEntries as $pageToTransform) {
+            $adaptedPageEntries = array_merge(
+                $adaptedPageEntries,
+                $adapter->transform($pageToTransform)
+            );
+        }
+
+        $pageEntries = $adaptedPageEntries;
 
         return $pageEntries;
     }

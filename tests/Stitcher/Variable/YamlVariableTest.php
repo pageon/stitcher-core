@@ -26,9 +26,9 @@ EOT
 
         $variable = YamlVariable::make($path, new Yaml(), $this->createVariableParser())->parse();
 
-        $this->assertTrue(is_array($variable->parsed()));
-        $this->assertTrue(isset($variable->parsed()['root']['entry']));
-        $this->assertTrue(isset($variable->parsed()['root']['id']));
-        $this->assertEquals('root', $variable->parsed()['root']['id']);
+        $this->assertTrue(is_array($variable->getParsed()));
+        $this->assertTrue(isset($variable->getParsed()['root']['entry']));
+        $this->assertTrue(isset($variable->getParsed()['root']['id']));
+        $this->assertEquals('root', $variable->getParsed()['root']['id']);
     }
 }

@@ -18,7 +18,7 @@ class ImageVariableTest extends StitcherTest
             $this->createImageFactory()
         )->parse();
 
-        $parsed = $variable->parsed();
+        $parsed = $variable->getParsed();
         $this->assertArrayHasKey('src', $parsed, '`src` not found in parsed image.');
         $this->assertArrayHasKey('srcset', $parsed, '`srcset not found in parsed image.`');
         $this->assertEquals('/resources/images/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');
@@ -35,7 +35,7 @@ class ImageVariableTest extends StitcherTest
             $this->createImageFactory()
         )->parse();
 
-        $parsed = $variable->parsed();
+        $parsed = $variable->getParsed();
         $this->assertArrayHasKey('alt', $parsed, '`alt not found in parsed image.`');
         $this->assertEquals('test', $parsed['alt'], '`alt` does not match expected value in parsed image.');
         $this->assertEquals('/resources/images/green.jpg', $parsed['src'], '`src` does not match expected value in parsed image.');

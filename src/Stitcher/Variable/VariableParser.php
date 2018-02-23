@@ -22,7 +22,7 @@ class VariableParser
         $variable = $this->factory->create($unparsedValue);
 
         if ($variable) {
-            $parsedValue = $variable->parsed();
+            $parsedValue = $variable->getParsed();
         } else {
             $parsedValue = $unparsedValue;
         }

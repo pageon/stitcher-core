@@ -17,8 +17,10 @@ class MarkdownVariable extends AbstractVariable
         $this->parser = $parser;
     }
 
-    public static function make(string $value, Parsedown $parser): MarkdownVariable
-    {
+    public static function make(
+        string $value,
+        Parsedown $parser
+    ): MarkdownVariable {
         return new self($value, $parser);
     }
 

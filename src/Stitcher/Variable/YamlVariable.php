@@ -10,16 +10,22 @@ class YamlVariable extends AbstractVariable
     private $parser;
     private $variableParser;
 
-    public function __construct(string $unparsed, Yaml $parser, VariableParser $variableParser)
-    {
+    public function __construct(
+        string $unparsed,
+        Yaml $parser,
+        VariableParser $variableParser
+    ) {
         parent::__construct($unparsed);
 
         $this->parser = $parser;
         $this->variableParser = $variableParser;
     }
 
-    public static function make(string $value, Yaml $parser, VariableParser $variableParser): YamlVariable
-    {
+    public static function make(
+        string $value,
+        Yaml $parser,
+        VariableParser $variableParser
+    ): YamlVariable {
         return new self($value, $parser, $variableParser);
     }
 
@@ -47,7 +53,7 @@ class YamlVariable extends AbstractVariable
         $unparsedValue = $this->variableParser->getVariable($unparsedValue);
 
         if ($unparsedValue instanceof DefaultVariable) {
-            $parsedValue = $unparsedValue->parsed();
+            $parsedValue = $unparsedValue->getParsed();
 
             if (is_array($parsedValue)) {
                 foreach ($parsedValue as $key => &$property) {
@@ -55,7 +61,7 @@ class YamlVariable extends AbstractVariable
                 }
             }
         } else {
-            $parsedValue = $unparsedValue->parsed();
+            $parsedValue = $unparsedValue->getParsed();
         }
 
         return $parsedValue;

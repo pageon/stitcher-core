@@ -17,7 +17,7 @@ abstract class AbstractVariable
     /**
      * @return mixed
      */
-    public function unparsed()
+    public function getUnparsed()
     {
         return $this->unparsed;
     }
@@ -25,7 +25,7 @@ abstract class AbstractVariable
     /**
      * @return mixed
      */
-    public function parsed()
+    public function getParsed()
     {
         if (! $this->parsed) {
             $this->parse();

@@ -8,13 +8,23 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyStaticFiles implements Task
 {
+    /** @var \Symfony\Component\Filesystem\Filesystem */
     private $fs;
+
+    /** @var array */
     private $staticFiles;
+
+    /** @var bool */
     private $cacheStaticFiles;
+
+    /** @var string */
     private $publicDirectory;
 
-    public function __construct(string $publicDirectory, array $staticFiles, bool $cacheStaticFiles)
-    {
+    public function __construct(
+        string $publicDirectory,
+        array $staticFiles,
+        bool $cacheStaticFiles
+    ) {
         $this->fs = new Filesystem();
         $this->publicDirectory = $publicDirectory;
         $this->staticFiles = $staticFiles;
@@ -38,8 +48,10 @@ class CopyStaticFiles implements Task
         }
     }
 
-    private function copyStaticFile(string $sourcePath, string $publicPath): void
-    {
+    private function copyStaticFile(
+        string $sourcePath,
+        string $publicPath
+    ): void {
         if (is_dir($sourcePath)) {
             $this->fs->mirror($sourcePath, $publicPath);
 

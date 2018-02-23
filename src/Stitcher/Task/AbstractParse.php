@@ -10,9 +10,16 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractParse implements Task
 {
+    /** @var string */
     protected $publicDirectory;
+
+    /** @var string */
     protected $configurationFile;
+
+    /** @var \Stitcher\Page\PageParser  */
     protected $pageParser;
+
+    /** @var \Stitcher\Page\PageRenderer */
     protected $pageRenderer;
 
     /** @var Task[] */
@@ -77,7 +84,10 @@ abstract class AbstractParse implements Task
 
             $renderedPage = $this->pageRenderer->render($page);
 
-            $fs->dumpFile("{$this->publicDirectory}/{$fileName}.html", $renderedPage);
+            $fs->dumpFile(
+                "{$this->publicDirectory}/{$fileName}.html",
+                $renderedPage
+            );
         }
     }
 

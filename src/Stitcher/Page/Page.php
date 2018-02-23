@@ -11,16 +11,22 @@ class Page
     private $variables = [];
     private $meta = null;
 
-    public function __construct(string $id, string $template, array $variables = [])
-    {
+    public function __construct(
+        string $id,
+        string $template,
+        array $variables = []
+    ) {
         $this->id = $id;
         $this->template = $template;
         $this->variables = $variables;
         $this->setMeta();
     }
 
-    public static function make(string $id, string $template, array $variables = []): Page
-    {
+    public static function make(
+        string $id,
+        string $template,
+        array $variables = []
+    ): Page {
         return new self($id, $template, $variables);
     }
 
@@ -52,10 +58,23 @@ class Page
     private function setMeta()
     {
         $this->meta = Meta::create()
-            ->title($this->variables['meta']['title'] ?? $this->variables['title'] ?? null)
-            ->description($this->variables['meta']['description'] ?? $this->variables['description'] ?? null)
-            ->link('next', $this->variables['_pagination']['next']['url'] ?? null)
-            ->link('prev', $this->variables['_pagination']['previous']['url'] ?? null)
-        ;
+            ->title(
+                $this->variables['meta']['title']
+                ?? $this->variables['title']
+                ?? null
+            )
+            ->description(
+                $this->variables['meta']['description']
+                ?? $this->variables['description']
+                ?? null
+            )
+            ->link('next',
+                $this->variables['_pagination']['next']['url']
+                ?? null
+            )
+            ->link('prev',
+                $this->variables['_pagination']['previous']['url']
+                ?? null
+            );
     }
 }

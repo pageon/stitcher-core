@@ -10,16 +10,20 @@ class RendererFactory extends DynamicFactory
     protected $rendererConfiguration;
     protected $extensions = [];
 
-    public function __construct(string $templateDirectory, ?string $rendererConfiguration = 'twig')
-    {
+    public function __construct(
+        string $templateDirectory,
+        ?string $rendererConfiguration = 'twig'
+    ) {
         $this->templateDirectory = $templateDirectory;
         $this->rendererConfiguration = $rendererConfiguration;
 
         $this->setTwigRule();
     }
 
-    public static function make(string $templateDirectory, ?string $renderer = 'twig'): RendererFactory
-    {
+    public static function make(
+        string $templateDirectory,
+        ?string $renderer = 'twig'
+    ): RendererFactory {
         return new self($templateDirectory, $renderer);
     }
 
