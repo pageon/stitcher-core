@@ -35,7 +35,7 @@ class PartialParseTest extends StitcherTest
     }
 
     /** @test */
-    public function it_parses_only_one_page()
+    public function it_parses_only_one_page(): void
     {
         $this->command->setFilter('/entries');
 
@@ -46,7 +46,7 @@ class PartialParseTest extends StitcherTest
     }
 
     /** @test */
-    public function it_parses_a_collection()
+    public function it_parses_a_collection(): void
     {
         $this->command->setFilter('/entries/a');
 
@@ -56,7 +56,7 @@ class PartialParseTest extends StitcherTest
     }
 
     /** @test */
-    public function it_parses_a_paginated_page()
+    public function it_parses_a_paginated_page(): void
     {
         $this->command->setFilter('/entries/page-1');
 

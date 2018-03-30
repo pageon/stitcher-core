@@ -10,7 +10,8 @@ class LinkMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created() {
+    public function it_can_be_created(): void
+    {
         $meta = LinkMeta::create('next', '/?page=3');
 
         $this->assertNotNull($meta);
@@ -19,7 +20,8 @@ class LinkMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_rendered() {
+    public function it_can_be_rendered(): void
+    {
         $meta = LinkMeta::create('next', '/?page=3');
         $tag = $meta->render();
 

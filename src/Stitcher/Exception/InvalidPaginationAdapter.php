@@ -7,7 +7,7 @@ class InvalidPaginationAdapter extends StitcherException
     public static function create(): InvalidPaginationAdapter
     {
         return new self(
-            "The `pagination` adapter requires following configuration: `variable`, `parameter` and `perPage`",
+            'The `pagination` adapter requires following configuration: `variable`, `parameter` and `perPage`',
             <<<MD
 Take a look at the following example.
 

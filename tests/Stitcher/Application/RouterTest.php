@@ -10,7 +10,7 @@ use Stitcher\Test\StitcherTest;
 class RouterTest extends StitcherTest
 {
     /** @test */
-    public function a_route_can_be_dispatched()
+    public function a_route_can_be_dispatched(): void
     {
         App::init();
 

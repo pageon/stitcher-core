@@ -6,7 +6,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class File
 {
+    /** @var Filesystem */
     private static $fs;
+
+    /** @var string */
     private static $base;
 
     public static function base(?string $base): void

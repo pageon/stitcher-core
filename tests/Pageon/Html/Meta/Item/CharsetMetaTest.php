@@ -10,7 +10,8 @@ class CharsetMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created() {
+    public function it_can_be_created(): void
+    {
         $meta = CharsetMeta::create('UTF-16');
 
         $this->assertNotNull($meta);
@@ -19,7 +20,8 @@ class CharsetMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_rendered() {
+    public function it_can_be_rendered(): void
+    {
         $meta = CharsetMeta::create('UTF-16');
         $tag = $meta->render();
 

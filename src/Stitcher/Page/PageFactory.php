@@ -38,8 +38,6 @@ class PageFactory
             $variables[$key] = $this->variableParser->parse($variable);
         }
 
-        $page = Page::make($id, $template, $variables);
-
-        return $page;
+        return Page::make($id, $template, $variables);
     }
 }

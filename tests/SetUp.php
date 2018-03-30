@@ -7,9 +7,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class SetUp
 {
-    const TEST_PROJECT = 'test_project';
+    private const TEST_PROJECT = 'test_project';
 
-    public static function run()
+    public static function run(): void
     {
         $fs = new Filesystem();
 

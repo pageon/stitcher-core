@@ -67,8 +67,6 @@ class PartialParse extends AbstractParse
             throw InvalidConfiguration::siteConfigurationFileNotFound();
         }
 
-        $parsedConfiguration = (array) Yaml::parse($configurationFile);
-
-        return $parsedConfiguration;
+        return (array) Yaml::parse($configurationFile);
     }
 }

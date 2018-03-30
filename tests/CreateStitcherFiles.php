@@ -15,11 +15,11 @@ trait CreateStitcherFiles
     {
     }
 
-    protected function createDataFile()
+    protected function createDataFile(): void
     {
     }
 
-    protected function createImageFiles()
+    protected function createImageFiles(): void
     {
     }
 

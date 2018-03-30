@@ -40,7 +40,7 @@ class Js implements Extension
             $script .= ' async';
         }
 
-        $script .= "></script>";
+        $script .= '></script>';
 
         return $script;
     }

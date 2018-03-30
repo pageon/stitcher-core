@@ -13,7 +13,7 @@ class ProductionServerTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_serves_static_html()
+    public function it_serves_static_html(): void
     {
         $this->parseAll();
 
@@ -25,7 +25,7 @@ class ProductionServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_static_html_from_index()
+    public function it_serves_static_html_from_index(): void
     {
         $this->parseAll();
 

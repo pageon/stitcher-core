@@ -11,41 +11,41 @@ class ConfigTest extends StitcherTest
     {
         parent::setUp();
 
-        Config::init(__DIR__.'/../../resources');
+        Config::init();
     }
 
     /** @test */
-    public function known_property_returns_value()
+    public function known_property_returns_value(): void
     {
         $this->assertEquals('bar', Config::get('nested.item'));
     }
 
     /** @test */
-    public function nested_properties_can_be_get_as_array()
+    public function nested_properties_can_be_get_as_array(): void
     {
         $this->assertTrue(is_array(Config::get('nested')));
     }
 
     /** @test */
-    public function unknown_property_returns_null()
+    public function unknown_property_returns_null(): void
     {
         $this->assertNull(Config::get('not.known'));
     }
 
     /** @test */
-    public function env_function_used_in_config()
+    public function env_function_used_in_config(): void
     {
         $this->assertEquals('foo', Config::get('with.env'));
     }
 
     /** @test */
-    public function env_function()
+    public function env_function(): void
     {
         $this->assertEquals('foo', env('TEST_KEY'));
     }
 
     /** @test */
-    public function config_function()
+    public function config_function(): void
     {
         $this->assertEquals('test', config('public'));
     }

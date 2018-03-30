@@ -11,7 +11,7 @@ class ImageVariableTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_be_parsed()
+    public function it_can_be_parsed(): void
     {
         $variable = ImageVariable::make(
             '/resources/images/green.jpg',
@@ -25,7 +25,7 @@ class ImageVariableTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_be_parsed_with_alt()
+    public function it_can_be_parsed_with_alt(): void
     {
         $variable = ImageVariable::make(
             [

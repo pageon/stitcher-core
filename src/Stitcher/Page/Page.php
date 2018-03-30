@@ -50,12 +50,12 @@ class Page
         return $this->variables[$name] ?? null;
     }
 
-    public function meta()
+    public function meta(): Meta
     {
         return $this->meta;
     }
 
-    private function setMeta()
+    private function setMeta(): void
     {
         $this->meta = Meta::create()
             ->title(

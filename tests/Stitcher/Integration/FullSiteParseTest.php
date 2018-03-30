@@ -74,7 +74,7 @@ class FullSiteParseTest extends StitcherTest
         $this->assertContains('<h1>A</h1>', $detail);
     }
 
-    private function assertImageParsed()
+    private function assertImageParsed(): void
     {
         $detail = File::read('public/entries/a.html');
 
@@ -84,7 +84,7 @@ class FullSiteParseTest extends StitcherTest
         $this->assertContains('alt="test"', $detail);
     }
 
-    private function assertCss()
+    private function assertCss(): void
     {
         $detail = File::read('public/index.html');
 
@@ -94,7 +94,7 @@ class FullSiteParseTest extends StitcherTest
         $this->assertContains('body {', $detail);
     }
 
-    private function assertJs()
+    private function assertJs(): void
     {
         $detail = File::read('public/index.html');
 

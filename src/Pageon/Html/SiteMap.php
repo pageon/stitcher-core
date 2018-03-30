@@ -9,7 +9,7 @@ class SiteMap
 
     public function __construct(string $hostname)
     {
-        $this->hostname = trim((string) $hostname, '/');
+        $this->hostname = trim($hostname, '/');
     }
 
     public static function make(string $hostname): SiteMap

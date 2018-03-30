@@ -8,7 +8,8 @@ use Stitcher\Test\StitcherTest;
 class MarkdownVariableTest extends StitcherTest
 {
     /** @test */
-    public function it_can_be_parsed() {
+    public function it_can_be_parsed(): void
+    {
         $path = File::path('/MarkdownVariableTest_test.md');
         File::write($path, $this->getMarkdown());
 

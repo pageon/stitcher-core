@@ -8,7 +8,7 @@ use Stitcher\Test\StitcherTest;
 class JsTest extends StitcherTest
 {
     /** @test */
-    public function it_moves_a_js_file()
+    public function it_moves_a_js_file(): void
     {
         $js = $this->createExtension();
 
@@ -19,7 +19,7 @@ class JsTest extends StitcherTest
     }
 
     /** @test */
-    public function test_inline()
+    public function test_inline(): void
     {
         $js = $this->createExtension();
 
@@ -30,7 +30,7 @@ class JsTest extends StitcherTest
     }
 
     /** @test */
-    public function test_link()
+    public function test_link(): void
     {
         $js = $this->createExtension();
 
@@ -42,7 +42,7 @@ class JsTest extends StitcherTest
     }
 
     /** @test */
-    public function test_defer()
+    public function test_defer(): void
     {
         $js = $this->createExtension();
 
@@ -52,7 +52,7 @@ class JsTest extends StitcherTest
     }
 
     /** @test */
-    public function test_async()
+    public function test_async(): void
     {
         $js = $this->createExtension();
 

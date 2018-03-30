@@ -10,7 +10,8 @@ class HttpEquivMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created() {
+    public function it_can_be_created(): void
+    {
         $meta = HttpEquivMeta::create('Expires', '3000');
 
         $this->assertNotNull($meta);
@@ -19,7 +20,8 @@ class HttpEquivMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_rendered() {
+    public function it_can_be_rendered(): void
+    {
         $meta = HttpEquivMeta::create('Expires', '3000');
         $tag = $meta->render();
 

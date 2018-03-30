@@ -22,7 +22,8 @@ class TwitterMetaTest extends TestCase
     }
 
     /** @test */
-    public function it_can_render_the_title() {
+    public function it_can_render_the_title(): void
+    {
         $social = $this->createSocialMeta();
 
         $social->title('hello');
@@ -32,7 +33,8 @@ class TwitterMetaTest extends TestCase
     }
 
     /** @test */
-    public function it_can_render_the_description() {
+    public function it_can_render_the_description(): void
+    {
         $social = $this->createSocialMeta();
 
         $social->description('hello');
@@ -41,7 +43,8 @@ class TwitterMetaTest extends TestCase
     }
 
     /** @test */
-    public function it_can_render_the_image() {
+    public function it_can_render_the_image(): void
+    {
         $social = $this->createSocialMeta();
 
         $social->image('hello');

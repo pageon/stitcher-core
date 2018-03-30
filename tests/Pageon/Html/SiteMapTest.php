@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class SiteMapTest extends TestCase
 {
     /** @test */
-    public function it_can_be_rendered()
+    public function it_can_be_rendered(): void
     {
         $siteMap = new SiteMap('stitcher.io');
 

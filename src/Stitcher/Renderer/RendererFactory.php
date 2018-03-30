@@ -27,7 +27,7 @@ class RendererFactory extends DynamicFactory
         return new self($templateDirectory, $renderer);
     }
 
-    public function addExtension(Extension $extension)
+    public function addExtension(Extension $extension): void
     {
         $this->extensions[$extension->name()] = $extension;
     }
@@ -47,7 +47,7 @@ class RendererFactory extends DynamicFactory
         return null;
     }
 
-    protected function loadExtensions(Renderer $renderer)
+    protected function loadExtensions(Renderer $renderer): void
     {
         foreach ($this->extensions as $extension) {
             $renderer->customExtension($extension);

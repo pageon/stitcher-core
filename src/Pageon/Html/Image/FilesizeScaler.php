@@ -29,7 +29,7 @@ class FilesizeScaler implements Scaler
         do {
             $newWidth = (int) floor(sqrt(($fileSize / $pixelPrice) / $ratio));
 
-            $variations[$newWidth] = (int) $newWidth * $ratio;
+            $variations[$newWidth] = $newWidth * $ratio;
 
             $fileSize -= $stepAmount;
         } while ($fileSize > 0);

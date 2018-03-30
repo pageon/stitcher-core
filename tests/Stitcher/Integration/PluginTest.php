@@ -11,7 +11,7 @@ use Stitcher\Test\StitcherTest;
 class PluginTest extends StitcherTest
 {
     /** @test */
-    public function a_plugin_can_be_registered()
+    public function a_plugin_can_be_registered(): void
     {
         App::init();
 
@@ -21,7 +21,7 @@ class PluginTest extends StitcherTest
     }
 
     /** @test */
-    public function a_plugin_can_register_configuration()
+    public function a_plugin_can_register_configuration(): void
     {
         App::init();
 
@@ -29,7 +29,7 @@ class PluginTest extends StitcherTest
     }
 
     /** @test */
-    public function a_plugin_can_register_services()
+    public function a_plugin_can_register_services(): void
     {
         App::init();
 
@@ -40,7 +40,7 @@ class PluginTest extends StitcherTest
     }
 
     /** @test */
-    public function a_plugin_can_be_booted()
+    public function a_plugin_can_be_booted(): void
     {
         App::init();
 

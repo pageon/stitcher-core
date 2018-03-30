@@ -10,7 +10,8 @@ class PropertyMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created() {
+    public function it_can_be_created(): void
+    {
         $meta = PropertyMeta::create('title', 'Hello World');
 
         $this->assertNotNull($meta);
@@ -19,7 +20,8 @@ class PropertyMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_rendered() {
+    public function it_can_be_rendered(): void
+    {
         $meta = PropertyMeta::create('title', 'Hello World');
         $tag = $meta->render();
 
@@ -29,7 +31,8 @@ class PropertyMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_escapes_special_characters() {
+    public function it_escapes_special_characters(): void
+    {
         $meta = PropertyMeta::create('title', '<script></script>""');
         $tag = $meta->render();
 

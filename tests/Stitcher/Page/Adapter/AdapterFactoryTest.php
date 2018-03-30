@@ -10,7 +10,7 @@ class AdapterFactoryTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_creates_the_correct_adapter()
+    public function it_creates_the_correct_adapter(): void
     {
         $factory = AdapterFactory::make($this->createVariableParser());
 

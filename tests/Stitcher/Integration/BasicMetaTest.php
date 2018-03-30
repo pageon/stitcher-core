@@ -11,7 +11,7 @@ class BasicMetaTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function basic_meta_test()
+    public function basic_meta_test(): void
     {
         $pageParser = $this->createPageParser();
 

@@ -28,19 +28,19 @@ class StitcherTestBootstrap
         $this->startServer();
     }
 
-    protected function startServer()
+    protected function startServer(): void
     {
         $this->startProductionServer();
         $this->startDevelopmentServer();
     }
 
-    protected function stopServer()
+    protected function stopServer(): void
     {
         $this->stopProductionServer();
         $this->stopDevelopmentServer();
     }
 
-    protected function startProductionServer()
+    protected function startProductionServer(): void
     {
         if (self::$productionServerProcess) {
             self::$productionServerProcess->stop();
@@ -54,7 +54,7 @@ class StitcherTestBootstrap
         self::$productionServerProcess->start();
     }
 
-    protected function startDevelopmentServer()
+    protected function startDevelopmentServer(): void
     {
         if (self::$developmentServerProcess) {
             self::$developmentServerProcess->stop();
@@ -68,7 +68,7 @@ class StitcherTestBootstrap
         self::$developmentServerProcess->start();
     }
 
-    protected function stopProductionServer()
+    protected function stopProductionServer(): void
     {
         if (! self::$productionServerProcess) {
             return;
@@ -78,7 +78,7 @@ class StitcherTestBootstrap
         self::$productionServerProcess = null;
     }
 
-    protected function stopDevelopmentServer()
+    protected function stopDevelopmentServer(): void
     {
         if (! self::$developmentServerProcess) {
             return;

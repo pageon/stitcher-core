@@ -25,9 +25,9 @@ class AppTest extends StitcherTest
     use CreateStitcherFiles;
 
     /** @test */
-    public function test_init()
+    public function initialise_test(): void
     {
-        App::init(__DIR__ . '/../resources');
+        App::init();
 
         $servicesToTest = [
             VariableFactory::class,
@@ -52,7 +52,7 @@ class AppTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_get_the_development_server()
+    public function it_can_get_the_development_server(): void
     {
         App::init();
 
@@ -60,14 +60,14 @@ class AppTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_get_the_production_server()
+    public function it_can_get_the_production_server(): void
     {
         App::init();
 
         $this->assertInstanceOf(ProductionServer::class, App::productionServer());
     }
 
-    private function assertServiceRegistered(string $class)
+    private function assertServiceRegistered(string $class): void
     {
         $this->assertInstanceOf($class, App::get($class));
     }

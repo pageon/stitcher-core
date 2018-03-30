@@ -11,7 +11,7 @@ class FilterAdapterTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_filter_values()
+    public function it_can_filter_values(): void
     {
         File::write('entries.yaml', <<<EOT
 entries:

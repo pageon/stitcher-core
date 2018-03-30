@@ -9,7 +9,7 @@ use Stitcher\Test\StitcherTest;
 class CssTest extends StitcherTest
 {
     /** @test */
-    public function it_moves_a_css_file()
+    public function it_moves_a_css_file(): void
     {
         $css = $this->createExtension();
 
@@ -20,7 +20,7 @@ class CssTest extends StitcherTest
     }
 
     /** @test */
-    public function it_moves_and_parses_a_scss_file()
+    public function it_moves_and_parses_a_scss_file(): void
     {
         $css = $this->createExtension();
 
@@ -31,7 +31,7 @@ class CssTest extends StitcherTest
     }
 
     /** @test */
-    public function test_inline()
+    public function test_inline(): void
     {
         $css = $this->createExtension();
 
@@ -42,7 +42,7 @@ class CssTest extends StitcherTest
     }
 
     /** @test */
-    public function test_link()
+    public function test_link(): void
     {
         $css = $this->createExtension();
 

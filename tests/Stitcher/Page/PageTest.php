@@ -7,7 +7,7 @@ use Stitcher\Test\StitcherTest;
 class PageTest extends StitcherTest
 {
     /** @test */
-    public function it_can_be_created()
+    public function it_can_be_created(): void
     {
         $page = Page::make('/home', 'index.twig');
 
@@ -15,7 +15,7 @@ class PageTest extends StitcherTest
     }
 
     /** @test */
-    public function it_sets_default_meta_from_variables()
+    public function it_sets_default_meta_from_variables(): void
     {
         $page = Page::make('/home', 'index.twig', [
             'title' => 'title',
@@ -28,7 +28,7 @@ class PageTest extends StitcherTest
     }
 
     /** @test */
-    public function it_sets_default_meta_from_meta_variables()
+    public function it_sets_default_meta_from_meta_variables(): void
     {
         $page = Page::make('/home', 'index.twig', [
             'title' => 'title',

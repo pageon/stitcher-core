@@ -20,7 +20,7 @@ class App
     /** @var ContainerBuilder */
     protected static $container;
 
-    public static function init()
+    public static function init(): void
     {
         Config::init();
 
@@ -49,10 +49,7 @@ class App
     public static function developmentServer(): DevelopmentServer
     {
         try {
-            /** @var DevelopmentServer $server */
-            $server = self::get(DevelopmentServer::class);
-
-            return $server;
+            return self::get(DevelopmentServer::class);
         } catch (ParameterNotFoundException $e) {
             throw InvalidConfiguration::missingParameter($e->getKey());
         }
@@ -61,10 +58,7 @@ class App
     public static function productionServer(): ProductionServer
     {
         try {
-            /** @var ProductionServer $server */
-            $server = self::get(ProductionServer::class);
-
-            return $server;
+            return self::get(ProductionServer::class);
         } catch (ParameterNotFoundException $e) {
             throw InvalidConfiguration::missingParameter($e->getKey());
         }
@@ -72,10 +66,7 @@ class App
 
     public static function router(): Router
     {
-        /** @var Router $router */
-        $router = self::get(Router::class);
-
-        return $router;
+        return self::get(Router::class);
     }
 
     protected static function loadConfig(array $config): void

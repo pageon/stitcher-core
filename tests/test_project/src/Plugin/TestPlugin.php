@@ -22,7 +22,5 @@ class TestPlugin implements Plugin
     public static function boot(): void
     {
         self::$service = App::get(TestPluginService::class);
-
-        return;
     }
 }

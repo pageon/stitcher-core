@@ -11,7 +11,7 @@ class CollectionAdapterTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_transform_a_single_collection_into_multiple()
+    public function it_can_transform_a_single_collection_into_multiple(): void
     {
         File::write('entries.yaml', <<<EOT
 a:

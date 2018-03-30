@@ -11,7 +11,7 @@ class CollectionMetaTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function collection_meta_test()
+    public function collection_meta_test(): void
     {
         $pageParser = $this->createPageParser();
 

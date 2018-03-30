@@ -14,7 +14,7 @@ class ParseTest extends StitcherTest
     use CreateStitcherFiles;
 
     /** @test */
-    public function test_parse()
+    public function test_parse(): void
     {
         $this->createAllTemplates();
         $this->createConfigurationFile();
@@ -32,7 +32,7 @@ class ParseTest extends StitcherTest
         $this->assertFileExists(File::path('public/test.html'));
     }
 
-    private function createConfigurationFile()
+    private function createConfigurationFile(): void
     {
         File::write('site.yaml', <<<EOT
 /:

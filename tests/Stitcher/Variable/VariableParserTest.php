@@ -11,7 +11,7 @@ class VariableParserTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_parse_a_single_variable()
+    public function it_can_parse_a_single_variable(): void
     {
         $path = File::path('/YamlVariableTest_test_recursive_parent.yaml');
         File::write($path, <<<EOT
@@ -28,7 +28,7 @@ EOT
     }
 
     /** @test */
-    public function it_can_be_parsed_recursively()
+    public function it_can_be_parsed_recursively(): void
     {
         $path = File::path('YamlVariableTest_test_recursive_parent.yaml');
         $this->createRecursiveFiles($path);
@@ -39,7 +39,7 @@ EOT
         $this->assertTrue(isset($parsed['entry']['child']['title']));
     }
 
-    private function createRecursiveFiles(string $path)
+    private function createRecursiveFiles(string $path): void
     {
         $parentPath = File::path($path);
         File::write($parentPath, <<<EOT

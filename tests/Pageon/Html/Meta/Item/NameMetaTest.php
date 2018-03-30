@@ -10,7 +10,8 @@ class NameMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created() {
+    public function it_can_be_created(): void
+    {
         $meta = NameMeta::create('title', 'Hello World');
 
         $this->assertNotNull($meta);
@@ -19,7 +20,8 @@ class NameMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_rendered() {
+    public function it_can_be_rendered(): void
+    {
         $meta = NameMeta::create('title', 'Hello World');
         $tag = $meta->render();
 
@@ -29,7 +31,8 @@ class NameMetaTest extends TestCase
     /**
      * @test
      */
-    public function it_escapes_special_characters() {
+    public function it_escapes_special_characters(): void
+    {
         $meta = NameMeta::create('title', '<script></script>""');
         $tag = $meta->render();
 

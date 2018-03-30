@@ -10,7 +10,7 @@ use Stitcher\Test\StitcherTest;
 class ImageFactoryTest extends StitcherTest
 {
     /** @test */
-    public function it_creates_multiple_variations_of_one_source()
+    public function it_creates_multiple_variations_of_one_source(): void
     {
         $public = File::path('public');
 
@@ -26,7 +26,7 @@ class ImageFactoryTest extends StitcherTest
     }
 
     /** @test */
-    public function it_adds_the_srcset()
+    public function it_adds_the_srcset(): void
     {
         $public = File::path('public');
 

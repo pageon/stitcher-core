@@ -11,7 +11,7 @@ class PageParserTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_parse_a_page_config()
+    public function it_can_parse_a_page_config(): void
     {
         $variableParser = $this->createVariableParser();
         $parser = PageParser::make($this->createPageFactory($variableParser), $this->createAdapterFactory($variableParser));
@@ -25,7 +25,7 @@ class PageParserTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_parse_variables()
+    public function it_can_parse_variables(): void
     {
         $markdownPath = File::path('test.md');
         File::write($markdownPath, <<<EOT
@@ -49,7 +49,7 @@ EOT
     }
 
     /** @test */
-    public function it_can_parse_a_collection_of_pages()
+    public function it_can_parse_a_collection_of_pages(): void
     {
         File::write('entries.yaml', <<<EOT
 a:

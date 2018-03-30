@@ -10,13 +10,15 @@ class MetaTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_constructed() {
+    public function it_can_be_constructed(): void
+    {
         $meta = Meta::create();
 
         $this->assertNotNull($meta);
     }
 
-    public function test_social_meta_title() {
+    public function test_social_meta_title(): void
+    {
         $meta = Meta::create();
         $meta->title('test');
         $html = $meta->render();
@@ -26,7 +28,8 @@ class MetaTest extends TestCase
         $this->assertContains('<meta name="title', $html);
     }
 
-    public function test_social_meta_description() {
+    public function test_social_meta_description(): void
+    {
         $meta = Meta::create();
         $meta->description('test');
         $html = $meta->render();
@@ -36,7 +39,8 @@ class MetaTest extends TestCase
         $this->assertContains('<meta name="description', $html);
     }
 
-    public function test_social_meta_image() {
+    public function test_social_meta_image(): void
+    {
         $meta = Meta::create();
         $meta->image('test');
         $html = $meta->render();

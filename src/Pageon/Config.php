@@ -16,7 +16,7 @@ class Config
     protected static $loadedConfiguration = [];
     protected static $plugins = [];
 
-    public static function init()
+    public static function init(): void
     {
         self::$env = new Dotenv(File::path());
 

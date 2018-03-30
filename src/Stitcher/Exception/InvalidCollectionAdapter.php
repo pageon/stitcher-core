@@ -7,7 +7,7 @@ class InvalidCollectionAdapter extends StitcherException
     public static function create(): InvalidCollectionAdapter
     {
         return new self(
-            "The `collection` adapter requires following configuration: `variable` and `parameter`",
+            'The `collection` adapter requires following configuration: `variable` and `parameter`',
             <<<MD
 Take a look at the following example.
 

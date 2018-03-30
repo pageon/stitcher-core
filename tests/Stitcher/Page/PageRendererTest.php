@@ -12,7 +12,7 @@ class PageRendererTest extends StitcherTest
     use CreateStitcherFiles;
 
     /** @test */
-    public function it_can_render_a_page_as_html()
+    public function it_can_render_a_page_as_html(): void
     {
         $this->createAllTemplates();
 

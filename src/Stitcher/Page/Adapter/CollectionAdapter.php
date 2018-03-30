@@ -87,9 +87,7 @@ class CollectionAdapter implements Adapter, Configureable
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
-        $entries = $this->variableParser->parse($variable) ?? $variable;
-
-        return $entries;
+        return $this->variableParser->parse($variable) ?? $variable;
     }
 
     protected function createEntryConfiguration(array $pageConfiguration, $entryId, $entry): array

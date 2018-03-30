@@ -10,7 +10,7 @@ use Stitcher\Variable\VariableParser;
 class PageFactoryTest extends StitcherTest
 {
     /** @test */
-    public function it_can_create_a_page()
+    public function it_can_create_a_page(): void
     {
         $factory = new PageFactory(
             VariableParser::make(
@@ -27,7 +27,7 @@ class PageFactoryTest extends StitcherTest
     }
 
     /** @test */
-    public function it_throws_an_exception_when_id_is_missing()
+    public function it_throws_an_exception_when_id_is_missing(): void
     {
         $this->expectException(InvalidConfiguration::class);
 
@@ -43,7 +43,7 @@ class PageFactoryTest extends StitcherTest
     }
 
     /** @test */
-    public function it_throws_an_exception_when_template_is_missing()
+    public function it_throws_an_exception_when_template_is_missing(): void
     {
         $this->expectException(InvalidConfiguration::class);
 

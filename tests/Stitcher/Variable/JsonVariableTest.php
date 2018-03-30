@@ -8,7 +8,7 @@ use Stitcher\Test\StitcherTest;
 class JsonVariableTest extends StitcherTest
 {
     /** @test */
-    public function it_can_be_parsed()
+    public function it_can_be_parsed(): void
     {
         $path = File::path('/JsonVariableTest_test.json');
         File::write($path, json_encode([

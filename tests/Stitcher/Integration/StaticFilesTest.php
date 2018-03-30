@@ -11,7 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class StaticFilesTest extends StitcherTest
 {
     /** @test */
-    public function it_moves_static_files_and_directories_to_the_public_directory()
+    public function it_moves_static_files_and_directories_to_the_public_directory(): void
     {
         App::init();
 

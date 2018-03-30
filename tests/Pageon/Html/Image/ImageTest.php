@@ -8,7 +8,7 @@ use Stitcher\Test\StitcherTest;
 class ImageTest extends StitcherTest
 {
     /** @test */
-    public function it_can_be_made()
+    public function it_can_be_made(): void
     {
         $image = Image::make('resources/green.jpg');
 
@@ -16,7 +16,7 @@ class ImageTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_be_made_with_sizes()
+    public function it_can_be_made_with_sizes(): void
     {
         $image = Image::make('resources/green.jpg', '100vw');
 
@@ -24,7 +24,7 @@ class ImageTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_be_made_with_alt()
+    public function it_can_be_made_with_alt(): void
     {
         $image = Image::make('resources/green.jpg', null, 'alt');
 

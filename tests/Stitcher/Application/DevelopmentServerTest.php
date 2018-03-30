@@ -36,7 +36,7 @@ class DevelopmentServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_static_html()
+    public function it_serves_static_html(): void
     {
         $server = DevelopmentServer::make(File::path('public'), $this->command, '/entries');
 
@@ -46,7 +46,7 @@ class DevelopmentServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_static_html_from_index()
+    public function it_serves_static_html_from_index(): void
     {
         $server = DevelopmentServer::make(File::path('public'), $this->command, '/');
 

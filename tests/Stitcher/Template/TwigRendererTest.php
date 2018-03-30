@@ -11,7 +11,7 @@ class TwigRendererTest extends StitcherTest
     use CreateStitcherFiles;
 
     /** @test */
-    public function it_can_render_a_template()
+    public function it_can_render_a_template(): void
     {
         $renderer = TwigRenderer::make(File::path('resources/view'));
         $this->createAllTemplates();

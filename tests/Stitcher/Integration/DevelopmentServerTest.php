@@ -12,7 +12,7 @@ class DevelopmentServerTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function get_index()
+    public function get_index(): void
     {
         $response = $this->getDevelopmentPage('/');
 
@@ -20,7 +20,7 @@ class DevelopmentServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_static_html_pages_on_the_development_server()
+    public function it_serves_static_html_pages_on_the_development_server(): void
     {
         $this->parseAll();
 
@@ -32,7 +32,7 @@ class DevelopmentServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_serves_dynamic_pages_on_the_development_server()
+    public function it_serves_dynamic_pages_on_the_development_server(): void
     {
         $this->parseAll();
 
@@ -42,7 +42,7 @@ class DevelopmentServerTest extends StitcherTest
     }
 
     /** @test */
-    public function it_can_redirect()
+    public function it_can_redirect(): void
     {
         $this->parseAll();
 

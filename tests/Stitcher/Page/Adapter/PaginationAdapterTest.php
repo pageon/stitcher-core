@@ -11,7 +11,7 @@ class PaginationAdapterTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_transform_a_collection_of_entries_into_multiple_pages()
+    public function it_can_transform_a_collection_of_entries_into_multiple_pages(): void
     {
         $pageConfiguration = $this->createPageConfiguration();
 
@@ -31,7 +31,7 @@ class PaginationAdapterTest extends StitcherTest
     }
 
     /** @test */
-    public function it_sets_the_pagination_variable()
+    public function it_sets_the_pagination_variable(): void
     {
         $pageConfiguration = $this->createPageConfiguration();
 

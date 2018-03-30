@@ -16,7 +16,7 @@ class VariableFactoryTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_creates_the_right_variable()
+    public function it_creates_the_right_variable(): void
     {
         $factory = VariableFactory::make()
             ->setYamlParser(new Yaml())

@@ -12,7 +12,7 @@ class YamlVariableTest extends StitcherTest
     use CreateStitcherObjects;
 
     /** @test */
-    public function it_can_be_parsed()
+    public function it_can_be_parsed(): void
     {
         $path = File::path('/YamlVariableTest_test.yaml');
         File::write($path, <<<EOT

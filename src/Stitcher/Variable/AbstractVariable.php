@@ -5,9 +5,9 @@ namespace Stitcher\Variable;
 abstract class AbstractVariable
 {
     protected $unparsed;
-    protected $parsed = null;
+    protected $parsed;
 
-    public abstract function parse(): AbstractVariable;
+    abstract public function parse(): AbstractVariable;
 
     public function __construct($unparsed)
     {
