@@ -102,6 +102,11 @@ MD
         return new self("The `{$adapter}` adapter requires following configuration: {$fields}");
     }
 
+    public static function adapterNotFound(string $adapter): InvalidConfiguration
+    {
+        return new self("The adapter `{$adapter}` does not exist.");
+    }
+
     public static function dotEnvNotFound(string $directory): InvalidConfiguration
     {
         return new self("Could not find `.env` file. Looked in {$directory}");

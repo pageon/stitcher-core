@@ -8,10 +8,10 @@ use Symfony\Component\Process\Process;
 class StitcherTestBootstrap
 {
     /** @var Process */
-    protected static $productionServerProcess = null;
+    protected static $productionServerProcess;
 
     /** @var Process */
-    protected static $developmentServerProcess = null;
+    protected static $developmentServerProcess;
 
     public static $productionHost = 'localhost:8181';
 

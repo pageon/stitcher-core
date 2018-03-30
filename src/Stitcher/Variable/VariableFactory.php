@@ -11,16 +11,16 @@ use TypeError;
 class VariableFactory extends DynamicFactory
 {
     /** @var \Symfony\Component\Yaml\Yaml */
-    private $yamlParser = null;
+    private $yamlParser;
 
     /** @var \Parsedown */
-    private $markdownParser = null;
+    private $markdownParser;
 
     /** @var \Pageon\Html\Image\ImageFactory */
-    private $imageParser = null;
+    private $imageParser;
 
     /** @var \Stitcher\Variable\VariableParser */
-    private $variableParser = null;
+    private $variableParser;
 
     public function __construct()
     {
@@ -100,7 +100,7 @@ class VariableFactory extends DynamicFactory
 
             $extension = pathinfo($value, PATHINFO_EXTENSION);
 
-            if (!in_array($extension, ['yaml', 'yml'])) {
+            if (! \in_array($extension, ['yaml', 'yml'])) {
                 return null;
             }
 
@@ -130,11 +130,11 @@ class VariableFactory extends DynamicFactory
                 return null;
             }
 
-            $srcPath = is_array($value) ? $value['src'] ?? null : $value;
+            $srcPath = \is_array($value) ? $value['src'] ?? null : $value;
 
             $extension = pathinfo($srcPath, PATHINFO_EXTENSION);
 
-            if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+            if (! \in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
                 return null;
             }
 

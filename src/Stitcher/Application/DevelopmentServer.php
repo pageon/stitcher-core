@@ -12,7 +12,7 @@ class DevelopmentServer extends Server
     protected $rootDirectory;
 
     /** @var null|string */
-    protected $path = null;
+    protected $path;
 
     /** @var \Stitcher\Task\PartialParse */
     protected $partialParse;

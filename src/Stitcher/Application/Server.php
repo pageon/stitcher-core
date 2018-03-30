@@ -117,14 +117,8 @@ abstract class Server
         $responseBody = file_get_contents(__DIR__ . '/../../static/exception.html');
 
         $responseBody = str_replace(
-            '{{ title }}',
-            $this->markdownParser->parse($e->title()),
-            $responseBody
-        );
-
-        $responseBody = str_replace(
-            '{{ body }}',
-            $this->markdownParser->parse($e->body()),
+            ['{{ title }}', '{{ body }}'],
+            [$this->markdownParser->parse($e->title()), $this->markdownParser->parse($e->body())],
             $responseBody
         );
 

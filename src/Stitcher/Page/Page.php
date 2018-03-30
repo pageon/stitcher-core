@@ -6,10 +6,10 @@ use Pageon\Html\Meta\Meta;
 
 class Page
 {
-    private $id = null;
-    private $template = null;
-    private $variables = [];
-    private $meta = null;
+    private $id;
+    private $template;
+    private $variables;
+    private $meta;
 
     public function __construct(
         string $id,

@@ -23,7 +23,7 @@ class ConfigTest extends StitcherTest
     /** @test */
     public function nested_properties_can_be_get_as_array(): void
     {
-        $this->assertTrue(is_array(Config::get('nested')));
+        $this->assertTrue(\is_array(Config::get('nested')));
     }
 
     /** @test */

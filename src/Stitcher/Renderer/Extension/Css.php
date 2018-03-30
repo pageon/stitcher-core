@@ -48,7 +48,7 @@ class Css implements Extension
 
         $content = File::read($src);
 
-        if (in_array($extension, ['scss', 'sass'])) {
+        if (\in_array($extension, ['scss', 'sass'])) {
             $content = $this->sass->compile($content);
             $extension = 'css';
         }

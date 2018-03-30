@@ -68,7 +68,7 @@ class Config
         foreach ($configurationFiles as $configurationFile) {
             $loadedFileConfiguration = require $configurationFile;
 
-            if (! is_array($loadedFileConfiguration)) {
+            if (! \is_array($loadedFileConfiguration)) {
                 continue;
             }
 

@@ -17,7 +17,7 @@ class Meta
     /** @var MetaItem[] */
     private $meta = [];
     /** @var SocialMeta[] */
-    private $socialMeta = [];
+    private $socialMeta;
 
     final public function __construct(string $charset = 'UTF-8') {
         $this->charset($charset);

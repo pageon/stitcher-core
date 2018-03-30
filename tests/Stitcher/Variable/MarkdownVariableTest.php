@@ -15,7 +15,7 @@ class MarkdownVariableTest extends StitcherTest
 
         $variable = MarkdownVariable::make($path, new \Parsedown())->parse();
 
-        $this->assertTrue(is_string($variable->getParsed()));
+        $this->assertTrue(\is_string($variable->getParsed()));
         $this->assertContains('<h1>', $variable->getParsed());
     }
 

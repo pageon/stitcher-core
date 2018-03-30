@@ -6,7 +6,7 @@ use Intervention\Image\Image as ScaleableImage;
 
 class FilesizeScaler implements Scaler
 {
-    private $stepModifier = 0.2;
+    private $stepModifier;
 
     public function __construct(float $stopModifier = 0.2)
     {

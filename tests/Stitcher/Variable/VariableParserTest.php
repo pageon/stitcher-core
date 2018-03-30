@@ -23,7 +23,7 @@ EOT
         $variableParser = $this->createVariableParser();
         $parsed = $variableParser->parse($path);
 
-        $this->assertTrue(is_array($parsed));
+        $this->assertTrue(\is_array($parsed));
         $this->assertTrue(isset($parsed['entry']['title']));
     }
 

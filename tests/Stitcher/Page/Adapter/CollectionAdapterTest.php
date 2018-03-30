@@ -38,7 +38,7 @@ EOT
         $adapter = CollectionAdapter::make($pageConfiguration['config']['collection'], $this->createVariableParser());
         $result = $adapter->transform($pageConfiguration);
 
-        $this->assertTrue(is_array($result));
+        $this->assertTrue(\is_array($result));
         $this->assertArrayHasKey('/a', $result);
         $this->assertEquals('A', $result['/a']['variables']['entry']['name']);
         $this->assertArrayHasKey('/b', $result);

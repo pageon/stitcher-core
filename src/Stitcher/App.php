@@ -117,7 +117,7 @@ class App
 
         $pluginConfiguration = require $configurationPath;
 
-        if (!is_array($pluginConfiguration)) {
+        if (! \is_array($pluginConfiguration)) {
             throw InvalidPlugin::configurationMustBeArray($pluginClass, $configurationPath);
         }
 

@@ -3,6 +3,7 @@
 namespace Stitcher\Page;
 
 use Illuminate\Support\Collection;
+use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\Page\Adapter\AdapterFactory;
 
 class PageParser
@@ -65,6 +66,10 @@ class PageParser
                 $adapterType,
                 $adapterConfiguration
             );
+
+            if (! $adapter) {
+                throw InvalidConfiguration::adapterNotFound($adapterType);
+            }
 
             $pageEntries = $this->adaptPageEntries($pageEntries, $adapter);
         }

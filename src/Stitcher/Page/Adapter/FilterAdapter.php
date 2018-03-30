@@ -53,7 +53,7 @@ class FilterAdapter implements Adapter, Configureable
 
     public function isValidConfiguration($subject): bool
     {
-        return is_array($subject);
+        return \is_array($subject);
     }
 
     private function filterEntries($filterConfiguration, $entries): array

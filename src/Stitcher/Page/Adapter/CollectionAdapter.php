@@ -10,7 +10,7 @@ use Stitcher\Variable\VariableParser;
 class CollectionAdapter implements Adapter, Configureable
 {
     /** @var null */
-    private static $filterId = null;
+    private static $filterId;
 
     /** @var array */
     private $entries = [];
@@ -80,7 +80,7 @@ class CollectionAdapter implements Adapter, Configureable
 
     public function isValidConfiguration($subject): bool
     {
-        return is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
+        return \is_array($subject) && isset($subject['variable']) && isset($subject['parameter']);
     }
 
     protected function getEntries($pageConfiguration): ?array

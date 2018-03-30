@@ -46,7 +46,7 @@ class PaginationAdapter implements Adapter, Configureable
     {
         $paginationPageConfiguration = [];
         $entries = $this->getEntries($pageConfiguration);
-        $pageCount = (int) ceil(count($entries) / $this->perPage);
+        $pageCount = (int) ceil(\count($entries) / $this->perPage);
 
         for ($pageIndex = 1; $pageIndex <= $pageCount; $pageIndex++) {
             $entriesForPage = array_splice($entries, 0, $this->perPage);
@@ -67,7 +67,7 @@ class PaginationAdapter implements Adapter, Configureable
     public function isValidConfiguration($subject): bool
     {
         return
-            is_array($subject)
+            \is_array($subject)
             && isset($subject['variable'])
             && isset($subject['parameter']);
     }

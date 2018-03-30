@@ -86,7 +86,7 @@ class Router
         $handler = $this->resolveHandler($routeInfo[1]);
         $parameters = $routeInfo[2];
 
-        return call_user_func_array(
+        return \call_user_func_array(
             $handler,
             array_merge($parameters, [$request])
         );

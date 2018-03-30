@@ -5,7 +5,7 @@ namespace Pageon\Html;
 class SiteMap
 {
     private $urls = [];
-    private $hostname = '';
+    private $hostname;
 
     public function __construct(string $hostname)
     {
