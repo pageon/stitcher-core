@@ -6,6 +6,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Image as ScaleableImage;
 use Stitcher\File;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class ImageFactory
 {
@@ -56,12 +57,19 @@ class ImageFactory
     public function create($src): Image
     {
         $srcPath = ltrim($src, '/');
+
+        if ($this->cache && file_exists("{$this->publicDirectory}/{$srcPath}")) {
+            return $this->createCachedImage($srcPath);
+        }
+
         $image = Image::make($srcPath);
 
         $this->copySourceImageToDestination($srcPath);
+
         $scaleableImage = $this->imageManager->make("{$this->publicDirectory}/{$srcPath}");
 
         $variations = $this->scaler->getVariations($scaleableImage);
+
         $image->addSrcset($image->src(), $scaleableImage->getWidth());
 
         foreach ($variations as $width => $height) {
@@ -99,6 +107,7 @@ class ImageFactory
     private function createScaledFileName(Image $image, int $width, int $height): string
     {
         $srcPath = ltrim($image->src(), '/');
+
         $extension = pathinfo($srcPath, PATHINFO_EXTENSION);
 
         return str_replace(".{$extension}", "-{$width}x{$height}.{$extension}", $srcPath);
@@ -109,5 +118,30 @@ class ImageFactory
         $fs = new Filesystem();
 
         $fs->copy(File::path($srcPath), "{$this->publicDirectory}/{$srcPath}");
+    }
+
+    private function createCachedImage(string $path): Image
+    {
+        $image = Image::make($path);
+
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        $imageFilePath = pathinfo($image->src(), PATHINFO_DIRNAME);
+
+        $imageFileName = pathinfo($image->src(), PATHINFO_FILENAME);
+
+        $srcsetFiles = Finder::create()->files()
+            ->in($this->publicDirectory . $imageFilePath)
+            ->name("{$imageFileName}-*.{$extension}");
+
+        foreach ($srcsetFiles->getIterator() as $srcsetFile) {
+            $cachedFilename = $srcsetFile->getFilename();
+
+            $size = (int) str_replace(".{$extension}", '', str_replace("{$imageFileName}-", '', $cachedFilename));
+
+            $image->addSrcset("{$imageFilePath}/{$cachedFilename}", $size);
+        }
+
+        return $image;
     }
 }

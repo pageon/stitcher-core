@@ -79,7 +79,8 @@ class FullSiteParseTest extends StitcherTest
         $detail = File::read('public/entries/a.html');
 
         $this->assertContains('<img src="/resources/images/green.jpg"', $detail);
-        $this->assertContains('srcset="/resources/images/green.jpg 250w', $detail);
+        $this->assertContains('srcset="/resources/images/green-', $detail);
+        $this->assertContains('/resources/images/green-250x250.jpg', $detail);
         $this->assertContains('alt="test"', $detail);
     }
 

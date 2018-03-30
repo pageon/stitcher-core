@@ -2,6 +2,7 @@
 
 namespace Stitcher;
 
+use Pageon\Html\Image\FilesizeScaler;
 use Pageon\Html\Image\FixedWidthScaler;
 use Pageon\Html\Image\ImageFactory;
 use Stitcher\Application\DevelopmentServer;
@@ -31,7 +32,7 @@ class AppTest extends StitcherTest
         $servicesToTest = [
             VariableFactory::class,
             VariableParser::class,
-            FixedWidthScaler::class,
+            FilesizeScaler::class,
             ImageFactory::class,
             AdapterFactory::class,
             PageFactory::class,
