@@ -9,7 +9,7 @@ use Stitcher\Test\StitcherTest;
 class FullSiteParseTest extends StitcherTest
 {
     /** @test */
-    public function parse_test()
+    public function parse_test(): void
     {
         App::init();
 
