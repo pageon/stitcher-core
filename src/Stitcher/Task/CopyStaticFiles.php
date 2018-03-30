@@ -2,8 +2,10 @@
 
 namespace Stitcher\Task;
 
+use Stitcher\Exception\FileNotFound;
 use Stitcher\File;
 use Stitcher\Task;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CopyStaticFiles implements Task
@@ -44,7 +46,11 @@ class CopyStaticFiles implements Task
 
             $sourcePath = File::path($staticFile);
 
-            $this->copyStaticFile($sourcePath, $publicPath);
+            try {
+                $this->copyStaticFile($sourcePath, $publicPath);
+            } catch (FileNotFoundException $exception) {
+                throw FileNotFound::staticFile($sourcePath);
+            }
         }
     }
 
