@@ -26,9 +26,19 @@ class Config
             throw InvalidConfiguration::dotEnvNotFound(File::path());
         }
 
-        $configurationFiles = Finder::create()->files()->in(File::path('config'))->name('*.php')->getIterator();
+        $loadedConfiguration = [];
 
-        $loadedConfiguration = self::load($configurationFiles);
+        if (is_dir(File::path('config'))) {
+            $configurationFiles = Finder::create()->files()->in(File::path('config'))->name('*.php')->getIterator();
+
+            $loadedConfiguration = array_merge($loadedConfiguration, self::load($configurationFiles));
+        }
+
+        if (file_exists(File::path('src/config.php'))) {
+            $sourceConfigurationFile = Finder::create()->files()->in(File::path('src'))->name('config.php')->getIterator();
+
+            $loadedConfiguration = array_merge($loadedConfiguration, self::load($sourceConfigurationFile));
+        }
 
         self::registerPlugins($loadedConfiguration);
 
