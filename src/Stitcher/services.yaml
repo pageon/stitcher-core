@@ -10,6 +10,7 @@ services:
         class: Leafo\ScssPhp\Compiler
         calls:
             - [addImportPath, ['%rootDirectory%']]
+            - [addImportPath, ['%resourcesPath%']]
 
     imageScaler:
         class: Pageon\Html\Image\FilesizeScaler

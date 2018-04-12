@@ -64,6 +64,7 @@ class Config
     {
         return [
             'rootDirectory' => File::path(),
+            'resourcesPath' => File::path('resources'),
             'templateRenderer' => 'twig',
             'staticFiles' => [],
             'cacheStaticFiles' => false,
