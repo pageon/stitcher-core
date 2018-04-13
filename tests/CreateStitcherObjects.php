@@ -5,6 +5,7 @@ namespace Stitcher\Test;
 use Leafo\ScssPhp\Compiler;
 use Pageon\Html\Image\FixedWidthScaler;
 use Pageon\Html\Image\ImageFactory;
+use Pageon\Html\SiteMap;
 use Parsedown;
 use Stitcher\File;
 use Stitcher\Page\Adapter\AdapterFactory;
@@ -80,5 +81,10 @@ trait CreateStitcherObjects
             ->setImageParser($this->createImageFactory());
 
         return $factory;
+    }
+
+    protected function createSiteMap(): SiteMap
+    {
+        return new SiteMap('https://www.stitcher.io');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Stitcher\Task;
 
+use Pageon\Html\SiteMap;
 use Stitcher\Page\Page;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
@@ -25,29 +26,36 @@ abstract class AbstractParse implements Task
     /** @var Task[] */
     protected $tasks = [];
 
+    /** @var \Pageon\Html\SiteMap */
+    protected $siteMap;
+
     public function __construct(
         string $publicDirectory,
         string $configurationFile,
         PageParser $pageParser,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
+        SiteMap $siteMap
     ) {
         $this->publicDirectory = rtrim($publicDirectory, '/');
         $this->configurationFile = $configurationFile;
         $this->pageParser = $pageParser;
         $this->pageRenderer = $pageRenderer;
+        $this->siteMap = $siteMap;
     }
 
     public static function make(
         string $publicDirectory,
         string $configurationFile,
         PageParser $pageParser,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
+        SiteMap $siteMap
     ) : self {
         return new static(
             $publicDirectory,
             $configurationFile,
             $pageParser,
-            $pageRenderer
+            $pageRenderer,
+            $siteMap
         );
     }
 
@@ -83,6 +91,8 @@ abstract class AbstractParse implements Task
             $fileName = $pageId === '/' ? 'index' : $pageId;
 
             $renderedPage = $this->pageRenderer->render($page);
+
+            $this->siteMap->addPath($pageId);
 
             $fs->dumpFile(
                 "{$this->publicDirectory}/{$fileName}.html",

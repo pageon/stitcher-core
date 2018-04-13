@@ -69,6 +69,7 @@ class Config
             'staticFiles' => [],
             'cacheStaticFiles' => false,
             'cacheImages' => true,
+            'siteUrl' => '',
         ];
     }
 

@@ -87,8 +87,10 @@ services:
             - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
+            - '@siteMap'
         calls:
             - ['addSubTask', ['@copyStaticFiles']]
+            - ['addSubTask', ['@renderSiteMap']]
     parsePartial:
         class: Stitcher\Task\PartialParse
         arguments:
@@ -96,15 +98,21 @@ services:
             - '%configurationFile%'
             - '@pageParser'
             - '@pageRenderer'
-            - '@copyStaticFiles'
+            - '@siteMap'
         calls:
             - ['addSubTask', ['@copyStaticFiles']]
+            - ['addSubTask', ['@renderSiteMap']]
     copyStaticFiles:
         class: Stitcher\Task\CopyStaticFiles
         arguments:
             - '%publicDirectory%'
             - '%staticFiles%'
             - '%cacheStaticFiles%'
+    renderSiteMap:
+        class: Stitcher\Task\RenderSiteMap
+        arguments:
+            - '%publicDirectory%'
+            - '@siteMap'
 
     developmentServer:
         class: Stitcher\Application\DevelopmentServer
@@ -138,3 +146,6 @@ services:
 
     headerContainer:
         class: Pageon\Http\HeaderContainer
+    siteMap:
+        class: Pageon\Html\SiteMap
+        arguments: ['%siteUrl%']

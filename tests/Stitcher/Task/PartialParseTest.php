@@ -30,7 +30,8 @@ class PartialParseTest extends StitcherTest
             File::path('public'),
             $configurationFile,
             $this->createPageParser(),
-            $this->createPageRenderer()
+            $this->createPageRenderer(),
+            $this->createSiteMap()
         );
     }
 
