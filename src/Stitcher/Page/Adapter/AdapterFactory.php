@@ -16,6 +16,7 @@ class AdapterFactory extends DynamicFactory
         $this->setCollectionRule();
         $this->setFilterRule();
         $this->setPaginationRule();
+        $this->setOrderRule();
 
         $this->variableParser = $variableParser;
     }
@@ -76,6 +77,20 @@ class AdapterFactory extends DynamicFactory
                 }
 
                 return PaginationAdapter::make($adapterConfiguration, $this->variableParser);
+            }
+        );
+    }
+
+    private function setOrderRule(): void
+    {
+        $this->setRule(
+            OrderAdapter::class,
+            function (string $adapterType, array $adapterConfiguration) {
+                if ($adapterType !== 'order') {
+                    return null;
+                }
+
+                return OrderAdapter::make($adapterConfiguration, $this->variableParser);
             }
         );
     }
