@@ -82,7 +82,7 @@ class OrderAdapter implements Adapter, Configureable
             return strcmp($a[$this->field] ?? '', $b[$this->field] ?? '');
         });
 
-        if (!in_array($this->direction, self::REVERSE)) {
+        if (in_array($this->direction, self::REVERSE)) {
             $entries = array_reverse($entries, true);
         }
 
