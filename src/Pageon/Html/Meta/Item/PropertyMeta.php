@@ -29,8 +29,14 @@ final class PropertyMeta implements MetaItem
     /**
      * @return string
      */
-    public function render() : string {
-        return "<meta property=\"{$this->name}\" content=\"{$this->content}\">";
+    public function render(array $extra = []) : string {
+        $content = $this->content;
+
+        if ($this->isTitle() && isset($extra['title']['suffix'])) {
+            $content = "{$content}{$extra['title']['suffix']}";
+        }
+
+        return "<meta property=\"{$this->name}\" content=\"{$content}\">";
     }
 
     /**
@@ -44,4 +50,8 @@ final class PropertyMeta implements MetaItem
         $this->content = htmlentities($content);
     }
 
+    private function isTitle(): bool
+    {
+        return str_contains($this->name, 'title');
+    }
 }

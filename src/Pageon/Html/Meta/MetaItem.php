@@ -7,5 +7,5 @@ interface MetaItem
     /**
      * @return string
      */
-    public function render() : string;
+    public function render(array $extra = []) : string;
 }

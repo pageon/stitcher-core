@@ -29,7 +29,7 @@ final class HttpEquivMeta implements MetaItem
     /**
      * @return string
      */
-    public function render() : string {
+    public function render(array $extra = []) : string {
         return "<meta http-equiv=\"{$this->httpEquiv}\" content=\"{$this->content}\">";
     }
 

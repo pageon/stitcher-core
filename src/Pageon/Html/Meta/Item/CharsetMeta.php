@@ -23,7 +23,7 @@ final class CharsetMeta implements MetaItem
     /**
      * @return string
      */
-    public function render() : string {
+    public function render(array $extra = []) : string {
         return "<meta charset=\"{$this->charset}\">";
     }
 

@@ -29,7 +29,7 @@ final class LinkMeta implements MetaItem
     /**
      * @return string
      */
-    public function render() : string {
+    public function render(array $extra = []) : string {
         return "<link rel=\"{$this->rel}\" href=\"{$this->href}\">";
     }
 

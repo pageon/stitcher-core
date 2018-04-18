@@ -34,7 +34,7 @@ class Meta
         return new self($charset);
     }
 
-    public function render() : string {
+    public function render(array $extra = []) : string {
         $html = '';
 
         /**
@@ -43,7 +43,7 @@ class Meta
          */
         foreach ($this->meta as $type => $metaItems) {
             foreach ($metaItems as $metaItem) {
-                $html .= $metaItem->render() . "\n";
+                $html .= $metaItem->render($extra) . "\n";
             }
         }
 
