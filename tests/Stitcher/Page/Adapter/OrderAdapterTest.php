@@ -6,7 +6,7 @@ use Stitcher\File;
 use Stitcher\Test\CreateStitcherObjects;
 use Stitcher\Test\StitcherTest;
 
-class FilterAdapterTest extends StitcherTest
+class OrderAdapterTest extends StitcherTest
 {
     use CreateStitcherObjects;
 
