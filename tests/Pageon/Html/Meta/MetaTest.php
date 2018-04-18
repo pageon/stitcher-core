@@ -49,4 +49,20 @@ class MetaTest extends TestCase
         $this->assertContains('<meta name="twitter:image', $html);
         $this->assertContains('<meta name="image', $html);
     }
+
+    /** @test */
+    public function title_suffix()
+    {
+        $meta = Meta::create();
+
+        $meta->title('test');
+
+        $html = $meta->render([
+            'title' => [
+                'suffix' => 'test'
+            ]
+        ]);
+
+        $this->assertContains('testtest', $html);
+    }
 }
