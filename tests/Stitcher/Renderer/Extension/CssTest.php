@@ -3,6 +3,7 @@
 namespace Stitcher\Renderer\Extension;
 
 use Leafo\ScssPhp\Compiler as Sass;
+use Stitcher\App;
 use Stitcher\File;
 use Stitcher\Test\StitcherTest;
 
@@ -55,9 +56,8 @@ class CssTest extends StitcherTest
 
     private function createExtension(): Css
     {
-        return new Css(
-            File::path('public'),
-            new Sass()
-        );
+        App::init();
+
+        return App::get('cssExtension');
     }
 }

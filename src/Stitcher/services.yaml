@@ -44,10 +44,16 @@ services:
         arguments:
             - '%publicDirectory%'
             - '@sassParser'
+            - '@cssMinifier'
+        calls:
+            - ['setMinify', ['%minify%']]
     jsExtension:
         class: Stitcher\Renderer\Extension\Js
         arguments:
             - '%publicDirectory%'
+        calls:
+            - ['setMinify', ['%minify%']]
+
     pageExtension:
         class: Stitcher\Renderer\Extension\Page
         arguments:
@@ -156,3 +162,6 @@ services:
             - '@rendererFactory'
             - '@markdownParser'
             - '%errorPages%'
+
+    cssMinifier:
+        class: tubalmartin\CssMin\Minifier

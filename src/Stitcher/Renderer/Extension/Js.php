@@ -2,6 +2,7 @@
 
 namespace Stitcher\Renderer\Extension;
 
+use JSMin\JSMin;
 use Pageon\Html\Source;
 use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\File;
@@ -10,15 +11,29 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Js implements Extension
 {
+    /** @var string */
     protected $publicDirectory;
 
+    /** @var bool */
     protected $defer = false;
+
+    /** @var bool */
     protected $async = false;
+
+    /** @var bool */
+    protected $minify = false;
 
     public function __construct(
         string $publicDirectory
     ) {
         $this->publicDirectory = $publicDirectory;
+    }
+
+    public function setMinify(bool $minify): self
+    {
+        $this->minify = $minify;
+
+        return $this;
     }
 
     public function name(): string
@@ -76,6 +91,10 @@ class Js implements Extension
 
         if (!$content) {
             throw InvalidConfiguration::fileNotFound(File::path($src));
+        }
+
+        if ($this->minify) {
+            $content = JSMin::minify($content);
         }
 
         $path = "{$dirname}/{$filename}.{$extension}";

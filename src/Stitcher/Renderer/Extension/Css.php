@@ -7,18 +7,37 @@ use Pageon\Html\Source;
 use Stitcher\File;
 use Stitcher\Renderer\Extension;
 use Symfony\Component\Filesystem\Filesystem;
+use tubalmartin\CssMin\Minifier;
 
 class Css implements Extension
 {
+    /** @var string */
     protected $publicDirectory;
+
+    /** @var \Leafo\ScssPhp\Compiler */
     protected $sass;
+
+    /** @var \tubalmartin\CssMin\Minifier */
+    private $minifier;
+
+    /** @var bool */
+    private $minify = false;
 
     public function __construct(
         string $publicDirectory,
-        Sass $sass
+        Sass $sass,
+        Minifier $minifier
     ) {
         $this->publicDirectory = $publicDirectory;
         $this->sass = $sass;
+        $this->minifier = $minifier;
+    }
+
+    public function setMinify(bool $minify): self
+    {
+        $this->minify = $minify;
+
+        return $this;
     }
 
     public function name(): string
@@ -51,6 +70,10 @@ class Css implements Extension
         if (\in_array($extension, ['scss', 'sass'])) {
             $content = $this->sass->compile($content);
             $extension = 'css';
+        }
+
+        if ($this->minify) {
+            $content = $this->minifier->run($content);
         }
 
         $path = "{$dirname}/{$filename}.{$extension}";

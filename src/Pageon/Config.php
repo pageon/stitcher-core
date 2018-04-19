@@ -71,6 +71,7 @@ class Config
             'cacheImages' => true,
             'siteUrl' => '',
             'errorPages' => [],
+            'minify' => false,
         ];
     }
 
