@@ -122,7 +122,7 @@ services:
         calls:
             - ['setRouter', ['@router']]
             - ['setHeaderContainer', ['@headerContainer']]
-            - ['setMarkdownParser', ['@markdownParser']]
+            - ['setErrorHandler', ['@errorHandler']]
     productionServer:
         class: Stitcher\Application\ProductionServer
         arguments:
@@ -130,7 +130,7 @@ services:
         calls:
             - ['setRouter', ['@router']]
             - ['setHeaderContainer', ['@headerContainer']]
-            - ['setMarkdownParser', ['@markdownParser']]
+            - ['setErrorHandler', ['@errorHandler']]
 
     router:
         class: Stitcher\Application\Router
@@ -149,3 +149,10 @@ services:
     siteMap:
         class: Pageon\Html\SiteMap
         arguments: ['%siteUrl%']
+
+    errorHandler:
+        class: Stitcher\Exception\ErrorHandler
+        arguments:
+            - '@rendererFactory'
+            - '@markdownParser'
+            - '%errorPages%'

@@ -70,6 +70,7 @@ class Config
             'cacheStaticFiles' => false,
             'cacheImages' => true,
             'siteUrl' => '',
+            'errorPages' => [],
         ];
     }
 

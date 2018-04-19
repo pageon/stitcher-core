@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use Pageon\Http\HeaderContainer;
-use Parsedown;
+use Stitcher\Exception\ErrorHandler;
 use Stitcher\Exception\Http;
 use Stitcher\Exception\StitcherException;
 
@@ -18,11 +18,11 @@ abstract class Server
     /** @var Request */
     protected $request;
 
-    /** @var Parsedown */
-    protected $markdownParser;
-
     /** @var HeaderContainer */
     protected $headerContainer;
+
+    /** @var \Stitcher\Exception\ErrorHandler */
+    protected $errorHandler;
 
     abstract protected function handleStaticRoute(): ?Response;
 
@@ -40,9 +40,9 @@ abstract class Server
         return $this;
     }
 
-    public function setMarkdownParser(Parsedown $markdownParser): Server
+    public function setErrorHandler(ErrorHandler $errorHandler): Server
     {
-        $this->markdownParser = $markdownParser;
+        $this->errorHandler = $errorHandler;
 
         return $this;
     }
@@ -85,7 +85,7 @@ abstract class Server
             $this->router
             && $redirectTo = $this->router->getRedirectForUrl($this->getCurrentPath())
         ) {
-            return $this->redirectResponse($redirectTo);
+            return $this->createRedirectResponse($redirectTo);
         }
 
         try {
@@ -95,32 +95,26 @@ abstract class Server
                 $response = $this->handleDynamicRoute();
             }
         } catch (StitcherException $e) {
-            $response = $this->responseFromException($e);
+            $response = $this->createErrorResponse($e);
         }
 
-        return $response ?? $this->responseFromException(
+        return $response ?? $this->createErrorResponse(
                 Http::notFound(
                     $this->getCurrentPath()
                 )
             );
     }
 
-    protected function redirectResponse(string $targetUrl): Response
+    protected function createRedirectResponse(string $targetUrl): Response
     {
         return new Response(301, ["Location: {$targetUrl}"]);
     }
 
-    protected function responseFromException(StitcherException $e): Response
+    protected function createErrorResponse(StitcherException $exception): Response
     {
-        $statusCode = $e instanceof Http ? $e->statusCode() : 500;
+        $statusCode = $exception instanceof Http ? $exception->statusCode() : 500;
 
-        $responseBody = file_get_contents(__DIR__ . '/../../static/exception.html');
-
-        $responseBody = str_replace(
-            ['{{ title }}', '{{ body }}'],
-            [$this->markdownParser->parse($e->title()), $this->markdownParser->parse($e->body())],
-            $responseBody
-        );
+        $responseBody = $this->errorHandler->handle($statusCode, $exception);
 
         return new Response($statusCode, [], $responseBody);
     }
