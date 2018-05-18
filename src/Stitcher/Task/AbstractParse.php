@@ -4,6 +4,7 @@ namespace Stitcher\Task;
 
 use Pageon\Html\SiteMap;
 use Stitcher\Page\Page;
+use Stitcher\Page\PageCollection;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
 use Stitcher\Task;
@@ -17,16 +18,16 @@ abstract class AbstractParse implements Task
     /** @var string */
     protected $configurationFile;
 
-    /** @var \Stitcher\Page\PageParser  */
+    /** @var PageParser */
     protected $pageParser;
 
-    /** @var \Stitcher\Page\PageRenderer */
+    /** @var PageRenderer */
     protected $pageRenderer;
 
     /** @var Task[] */
     protected $tasks = [];
 
-    /** @var \Pageon\Html\SiteMap */
+    /** @var SiteMap */
     protected $siteMap;
 
     public function __construct(
@@ -66,7 +67,7 @@ abstract class AbstractParse implements Task
         return $this;
     }
 
-    protected function parsePageConfiguration($config): array
+    protected function parsePageConfiguration($config): PageCollection
     {
         $pages = [];
 
@@ -76,18 +77,14 @@ abstract class AbstractParse implements Task
             $pages += $this->pageParser->parse($pageConfiguration)->toArray();
         }
 
-        return $pages;
+        return new PageCollection($pages);
     }
 
-    protected function renderPages($pages): void
+    protected function renderPages(PageCollection $pages): void
     {
         $fs = new Filesystem();
 
-        /**
-         * @var string $pageId
-         * @var Page   $page
-         */
-        foreach ($pages as $pageId => $page) {
+        $pages->each(function (Page $page, string $pageId) use ($fs) {
             $fileName = $pageId === '/' ? 'index' : $pageId;
 
             $renderedPage = $this->pageRenderer->render($page);
@@ -98,7 +95,7 @@ abstract class AbstractParse implements Task
                 "{$this->publicDirectory}/{$fileName}.html",
                 $renderedPage
             );
-        }
+        });
     }
 
     protected function executeSubTasks(): void

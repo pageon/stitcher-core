@@ -88,7 +88,7 @@ class Router
 
         return \call_user_func_array(
             $handler,
-            array_merge($parameters, [$request])
+            array_merge([$request], $parameters)
         );
     }
 

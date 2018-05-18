@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Response;
 
 class MyController
 {
-    public function handle($id, $name, Request $request): Response
+    public function handle(Request $request, $id, $name): Response
     {
         return new Response(200, [], "test $id $name");
     }

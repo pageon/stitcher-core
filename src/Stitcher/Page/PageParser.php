@@ -8,8 +8,13 @@ use Stitcher\Page\Adapter\AdapterFactory;
 
 class PageParser
 {
+    /** @var PageFactory */
     private $pageFactory;
+
+    /** @var AdapterFactory */
     private $adapterFactory;
+
+    /** @var Page */
     private $currentPage;
 
     public function __construct(PageFactory $pageFactory, AdapterFactory $adapterFactory)
@@ -23,9 +28,9 @@ class PageParser
         return new self($factory, $adapterFactory);
     }
 
-    public function parse($pageConfiguration): Collection
+    public function parse($pageConfiguration): PageCollection
     {
-        $result = [];
+        $result = new PageCollection();
 
         $pageEntries = $this->parseAdapterConfiguration($pageConfiguration);
 
@@ -37,7 +42,7 @@ class PageParser
             $result[$page->id()] = $page;
         }
 
-        return collect($result);
+        return $result;
     }
 
     public function getCurrentPage(): ?Page
