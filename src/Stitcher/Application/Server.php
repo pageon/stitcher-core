@@ -121,8 +121,8 @@ abstract class Server
 
     protected function handleResponse(Response $response): string
     {
-        foreach ($response->getHeaders() as $headers) {
-            header(implode(', ', $headers));
+        foreach ($response->getHeaders() as $name => $headers) {
+            header($name . ':'. implode(', ', $headers));
         }
 
         if ($this->headerContainer) {
