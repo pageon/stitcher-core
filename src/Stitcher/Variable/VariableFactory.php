@@ -28,6 +28,7 @@ class VariableFactory extends DynamicFactory
         $this->setYamlRule();
         $this->setMarkdownRule();
         $this->setImageRule();
+        $this->setDirectoryRule();
     }
 
     public static function make(): VariableFactory
@@ -139,6 +140,17 @@ class VariableFactory extends DynamicFactory
             }
 
             return ImageVariable::make($value, $this->imageParser);
+        });
+    }
+
+    private function setDirectoryRule(): void
+    {
+        $this->setRule(DirectoryVariable::class, function ($value) {
+            if (!is_string($value) || substr($value, -1) !== '/') {
+                return null;
+            }
+
+            return new DirectoryVariable($value, $this->variableParser);
         });
     }
 }

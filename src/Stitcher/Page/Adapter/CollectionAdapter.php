@@ -58,7 +58,7 @@ class CollectionAdapter implements Adapter, Configureable
         while ($entry = current($this->entries)) {
             $entryId = key($this->entries);
 
-            if (self::$filterId !== null && self::$filterId !== $entryId) {
+            if (self::$filterId !== null && self::$filterId != $entryId) {
                 next($this->entries);
 
                 continue;

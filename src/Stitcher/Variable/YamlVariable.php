@@ -8,6 +8,8 @@ use Symfony\Component\Yaml\Yaml;
 class YamlVariable extends AbstractVariable
 {
     private $parser;
+
+    /** @var \Stitcher\Variable\VariableParser */
     private $variableParser;
 
     public function __construct(
@@ -31,7 +33,7 @@ class YamlVariable extends AbstractVariable
 
     public function parse(): AbstractVariable
     {
-        $this->parsed = $this->parser::parse(File::read($this->unparsed));
+        $this->parsed = $this->parser->parse(File::read($this->unparsed));
 
         foreach ($this->parsed as $id => $parsedItem) {
             if (! \is_array($parsedItem) || isset($parsedItem['id'])) {
