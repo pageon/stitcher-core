@@ -16,7 +16,8 @@
         "symfony/config": "^4.0",
         "leafo/scssphp": "^0.7.1",
         "nikic/fast-route": "^1.2",
-        "mrclay/minify": "^3.0"
+        "mrclay/minify": "^3.0",
+        "spatie/image-optimizer": "^1.1"
     },
     "require-dev" : {
         "larapack/dd" : "^1.0",

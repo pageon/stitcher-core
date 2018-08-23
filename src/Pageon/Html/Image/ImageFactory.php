@@ -4,6 +4,7 @@ namespace Pageon\Html\Image;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Image as ScaleableImage;
+use Spatie\ImageOptimizer\OptimizerChain;
 use Stitcher\File;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -22,20 +23,27 @@ class ImageFactory
     /** @var \Intervention\Image\ImageManager */
     private $imageManager;
 
+    /** @var \Spatie\ImageOptimizer\OptimizerChain */
+    protected $optimizer;
+
     /** @var bool */
     private $cache = false;
 
     public function __construct(
         string $sourceDirectory,
         string $publicDirectory,
-        Scaler $scaler
+        Scaler $scaler,
+        OptimizerChain $optimizer = null
     ) {
         $this->sourceDirectory = rtrim($sourceDirectory, '/');
         $this->publicDirectory = rtrim($publicDirectory, '/');
         $this->scaler = $scaler;
+
         $this->imageManager = new ImageManager([
             'driver' => 'gd',
         ]);
+
+        $this->optimizer = $optimizer;
     }
 
     public static function make(
@@ -67,6 +75,8 @@ class ImageFactory
         $this->copySourceImageToDestination($srcPath);
 
         $scaleableImage = $this->imageManager->make("{$this->publicDirectory}/{$srcPath}");
+
+        $this->optimize($scaleableImage->basePath());
 
         $variations = $this->scaler->getVariations($scaleableImage);
 
@@ -102,6 +112,8 @@ class ImageFactory
         $scaleableImageClone
             ->resize($width, $height)
             ->save("{$this->publicDirectory}/{$scaledFileName}");
+
+        $this->optimize("{$this->publicDirectory}/{$scaledFileName}");
     }
 
     private function createScaledFileName(Image $image, int $width, int $height): string
@@ -143,5 +155,14 @@ class ImageFactory
         }
 
         return $image;
+    }
+
+    private function optimize(string $path): void
+    {
+        if (! $this->optimizer) {
+            return;
+        }
+
+        $this->optimizer->optimize($path);
     }
 }

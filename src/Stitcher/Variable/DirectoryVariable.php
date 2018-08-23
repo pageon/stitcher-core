@@ -20,7 +20,7 @@ class DirectoryVariable extends AbstractVariable
     {
         $path = File::path($this->unparsed);
 
-        $files = scandir($path);
+        $files = @scandir($path) ?: [];
 
         unset($files[0], $files[1]);
 

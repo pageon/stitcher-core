@@ -20,6 +20,7 @@ services:
             - '%sourceDirectory%'
             - '%publicDirectory%'
             - '@imageScaler'
+            - '@imageOptimizer'
         calls:
             - ['enableCaching', ['%cacheImages%']]
 
@@ -165,3 +166,37 @@ services:
 
     cssMinifier:
         class: tubalmartin\CssMin\Minifier
+
+    jpegOptim:
+        class: Spatie\ImageOptimizer\Optimizers\Jpegoptim
+        arguments:
+            - ['-m85','--strip-all','--all-progressive']
+
+    pngQuant:
+        class: Spatie\ImageOptimizer\Optimizers\Pngquant
+        arguments:
+            - ['--force']
+
+    optiPng:
+        class: Spatie\ImageOptimizer\Optimizers\Optipng
+        arguments:
+            - ['-i0','-o2','-quiet']
+
+    svgo:
+        class: Spatie\ImageOptimizer\Optimizers\Svgo
+        arguments:
+            - ['--disable=cleanupIDs']
+
+    gifsicle:
+        class: Spatie\ImageOptimizer\Optimizers\Gifsicle
+        arguments:
+            - ['-b','-O3']
+
+    imageOptimizer:
+        class: Spatie\ImageOptimizer\OptimizerChain
+        calls:
+            - ['addOptimizer', ['@jpegOptim']]
+            - ['addOptimizer', ['@pngQuant']]
+            - ['addOptimizer', ['@optiPng']]
+            - ['addOptimizer', ['@svgo']]
+            - ['addOptimizer', ['@gifsicle']]

@@ -150,6 +150,10 @@ class VariableFactory extends DynamicFactory
                 return null;
             }
 
+            if (strpos($value, 'http') !== null) {
+                return null;
+            }
+
             return new DirectoryVariable($value, $this->variableParser);
         });
     }
