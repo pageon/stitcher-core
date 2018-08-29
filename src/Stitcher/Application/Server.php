@@ -107,7 +107,7 @@ abstract class Server
 
     protected function createRedirectResponse(string $targetUrl): Response
     {
-        return new Response(301, ["Location: {$targetUrl}"]);
+        return new Response(301, ['Location' => $targetUrl]);
     }
 
     protected function createErrorResponse(StitcherException $exception): Response
