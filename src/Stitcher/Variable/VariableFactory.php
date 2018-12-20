@@ -29,6 +29,7 @@ class VariableFactory extends DynamicFactory
         $this->setMarkdownRule();
         $this->setImageRule();
         $this->setDirectoryRule();
+        $this->setHtmlRule();
     }
 
     public static function make(): VariableFactory
@@ -121,6 +122,17 @@ class VariableFactory extends DynamicFactory
             }
 
             return MarkdownVariable::make($value, $this->markdownParser);
+        });
+    }
+
+    private function setHtmlRule(): void
+    {
+        $this->setRule(HtmlVariable::class, function (string $value) {
+            if (pathinfo($value, PATHINFO_EXTENSION) !== 'html') {
+                return null;
+            }
+
+            return new HtmlVariable($value);
         });
     }
 
