@@ -2,7 +2,7 @@
 
 namespace Stitcher\Variable;
 
-use Parsedown;
+use Pageon\Lib\Markdown\MarkdownParser;
 use Stitcher\Exception\InvalidConfiguration;
 use Stitcher\File;
 
@@ -10,7 +10,7 @@ class MarkdownVariable extends AbstractVariable
 {
     private $parser;
 
-    public function __construct(string $unparsed, Parsedown $parser)
+    public function __construct(string $unparsed, MarkdownParser $parser)
     {
         parent::__construct($unparsed);
 
@@ -19,7 +19,7 @@ class MarkdownVariable extends AbstractVariable
 
     public static function make(
         string $value,
-        Parsedown $parser
+        MarkdownParser $parser
     ): MarkdownVariable {
         return new self($value, $parser);
     }

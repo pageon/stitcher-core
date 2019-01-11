@@ -3,7 +3,7 @@
 namespace Stitcher\Variable;
 
 use Pageon\Html\Image\ImageFactory;
-use Parsedown;
+use Pageon\Lib\Markdown\MarkdownParser;
 use Stitcher\DynamicFactory;
 use Symfony\Component\Yaml\Yaml;
 use TypeError;
@@ -13,7 +13,7 @@ class VariableFactory extends DynamicFactory
     /** @var \Symfony\Component\Yaml\Yaml */
     private $yamlParser;
 
-    /** @var \Parsedown */
+    /** @var \Pageon\Lib\Markdown\MarkdownParser */
     private $markdownParser;
 
     /** @var \Pageon\Html\Image\ImageFactory */
@@ -44,7 +44,7 @@ class VariableFactory extends DynamicFactory
         return $this;
     }
 
-    public function setMarkdownParser(Parsedown $markdownParser): VariableFactory
+    public function setMarkdownParser(MarkdownParser $markdownParser): VariableFactory
     {
         $this->markdownParser = $markdownParser;
 

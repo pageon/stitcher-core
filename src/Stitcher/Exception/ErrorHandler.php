@@ -2,7 +2,7 @@
 
 namespace Stitcher\Exception;
 
-use Pageon\Lib\Parsedown;
+use Pageon\Lib\Markdown\MarkdownParser;
 use Stitcher\Renderer\RendererFactory;
 
 class ErrorHandler
@@ -10,7 +10,7 @@ class ErrorHandler
     /** @var \Stitcher\Renderer\Renderer */
     private $renderer;
 
-    /** @var \Pageon\Lib\Parsedown */
+    /** @var \Pageon\Lib\Markdown\MarkdownParser */
     private $markdownParser;
 
     /** @var array */
@@ -21,7 +21,7 @@ class ErrorHandler
 
     public function __construct(
         RendererFactory $rendererFactory,
-        Parsedown $markdownParser,
+        MarkdownParser $markdownParser,
         array $errorPages = []
     ) {
         $this->renderer = $rendererFactory->create();

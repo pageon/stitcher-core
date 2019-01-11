@@ -2,18 +2,15 @@
 
 namespace Stitcher\Test;
 
-use Leafo\ScssPhp\Compiler;
 use Pageon\Html\Image\FixedWidthScaler;
 use Pageon\Html\Image\ImageFactory;
 use Pageon\Html\SiteMap;
-use Parsedown;
+use Pageon\Lib\Markdown\MarkdownParser;
 use Stitcher\File;
 use Stitcher\Page\Adapter\AdapterFactory;
 use Stitcher\Page\PageFactory;
 use Stitcher\Page\PageParser;
 use Stitcher\Page\PageRenderer;
-use Stitcher\Renderer\Extension\Css;
-use Stitcher\Renderer\Extension\Js;
 use Stitcher\Renderer\TwigRenderer;
 use Stitcher\Variable\VariableFactory;
 use Stitcher\Variable\VariableParser;
@@ -44,7 +41,7 @@ trait CreateStitcherObjects
     {
         return VariableParser::make(
             VariableFactory::make()
-                ->setMarkdownParser(new Parsedown())
+                ->setMarkdownParser($this->createMarkdownParser())
                 ->setYamlParser(new Yaml())
                 ->setImageParser($this->createImageFactory($sourceDirectory))
         );
@@ -76,11 +73,16 @@ trait CreateStitcherObjects
 
         $factory = VariableFactory::make()
             ->setVariableParser($variableParser)
-            ->setMarkdownParser(new Parsedown())
+            ->setMarkdownParser($this->createMarkdownParser())
             ->setYamlParser(new Yaml())
             ->setImageParser($this->createImageFactory());
 
         return $factory;
+    }
+
+    protected function createMarkdownParser(): MarkdownParser
+    {
+        return new MarkdownParser($this->createImageFactory());
     }
 
     protected function createSiteMap(): SiteMap

@@ -45,7 +45,7 @@ EOT
         ])->first();
 
         $this->assertEquals('Test', $page->variable('title'));
-        $this->assertEquals('<h1>Hello world</h1>', $page->variable('body'));
+        $this->assertEquals('<h1>Hello world</h1>', trim($page->variable('body')));
     }
 
     /** @test */

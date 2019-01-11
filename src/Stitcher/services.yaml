@@ -3,7 +3,7 @@ services:
     yamlParser:
         class: Symfony\Component\Yaml\Yaml
     markdownParser:
-        class: Pageon\Lib\Parsedown
+        class: Pageon\Lib\Markdown\MarkdownParser
         arguments:
             - '@imageFactory'
     sassParser:
