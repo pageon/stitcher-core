@@ -10,7 +10,7 @@
         "intervention/image" : "^2.4",
         "vlucas/phpdotenv" : "^2.4",
         "symfony/finder": "^4.0",
-        "illuminate/support": "^5.5",
+        "illuminate/support": "~5.7.0",
         "symfony/routing": "^4.0",
         "symfony/dependency-injection": "^4.0",
         "symfony/config": "^4.0",
