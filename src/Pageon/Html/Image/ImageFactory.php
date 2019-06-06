@@ -2,6 +2,7 @@
 
 namespace Pageon\Html\Image;
 
+use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Image as ScaleableImage;
 use Spatie\ImageOptimizer\OptimizerChain;
@@ -74,21 +75,26 @@ class ImageFactory
 
         $this->copySourceImageToDestination($srcPath);
 
-        $scaleableImage = $this->imageManager->make("{$this->publicDirectory}/{$srcPath}");
+        try {
+            $scaleableImage = $this->imageManager->make("{$this->publicDirectory}/{$srcPath}");
 
-        $this->optimize($scaleableImage->basePath());
+            $this->optimize($scaleableImage->basePath());
 
-        $variations = $this->scaler->getVariations($scaleableImage);
+            $variations = $this->scaler->getVariations($scaleableImage);
 
-        $image->addSrcset($image->src(), $scaleableImage->getWidth());
+            $image->addSrcset($image->src(), $scaleableImage->getWidth());
 
-        foreach ($variations as $width => $height) {
-            if (!$width) {
-                continue;
+            foreach ($variations as $width => $height) {
+                if (!$width) {
+                    continue;
+                }
+
+                $this->createScaledImage($image, $width, $height, $scaleableImage);
             }
-
-            $this->createScaledImage($image, $width, $height, $scaleableImage);
+        } catch (NotReadableException $exception) {
+            // don't scale if not supported
         }
+
 
         return $image;
     }
