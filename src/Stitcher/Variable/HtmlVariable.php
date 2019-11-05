@@ -10,6 +10,10 @@ class HtmlVariable extends AbstractVariable
     {
         $this->parsed = File::read($this->unparsed);
 
+        if ($this->parsed === null) {
+            $this->parsed = $this->unparsed;
+        }
+
         return $this;
     }
 }
