@@ -39,7 +39,7 @@ class FilterAdapter implements Adapter, Configureable
         foreach ($this->filters as $variableName => $filterConfiguration) {
             $variable = $pageConfiguration['variables'][$variableName] ?? null;
 
-            $entries = $this->variableParser->parse($variable)['entries'] ?? [];
+            $entries = $this->variableParser->parse($variable) ?? [];
 
             $filteredEntries = $this->filterEntries($filterConfiguration, $entries);
 
@@ -48,7 +48,7 @@ class FilterAdapter implements Adapter, Configureable
 
         unset($pageConfiguration['config']['filter']);
 
-        return $pageConfiguration;
+        return [$pageConfiguration];
     }
 
     public function isValidConfiguration($subject): bool
