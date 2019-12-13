@@ -84,6 +84,10 @@ class App
 
         /** @var Definition $definition */
         foreach (self::$container->getDefinitions() as $id => $definition) {
+            if (! $definition->getClass()) {
+                continue;
+            }
+
             self::$container->setAlias($definition->getClass(), $id);
         }
     }

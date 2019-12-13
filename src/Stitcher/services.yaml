@@ -69,7 +69,7 @@ services:
             - ['addExtension', ['@jsExtension']]
             - ['addExtension', ['@pageExtension']]
     renderer:
-        factory: 'Stitcher\Renderer\RendererFactory:create'
+        factory: ['@rendererFactory', 'create']
         arguments:
             - '%templateDirectory%'
 
