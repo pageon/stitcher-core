@@ -162,7 +162,7 @@ class VariableFactory extends DynamicFactory
                 return null;
             }
 
-            if (strpos($value, 'http') !== null) {
+            if (strpos($value, 'http') !== false) {
                 return null;
             }
 

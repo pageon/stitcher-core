@@ -17,7 +17,7 @@ use Pageon\Html\Image\ImageFactory;
 class MarkdownParser
 {
     /** @var \Closure[] */
-    private static $extensions;
+    private static $extensions = [];
 
     /** @var \League\CommonMark\CommonMarkConverter */
     private $converter;
