@@ -31,13 +31,13 @@ class MarkdownParser
     {
         $environment = Environment::createCommonMarkEnvironment();
 
-        foreach (self::$extensions as $closure) {
-            $environment = $closure($environment);
-        }
-
         $environment
             ->addInlineRenderer(Link::class, new ExternalLinkRenderer())
             ->addInlineRenderer(Image::class, new ImageRenderer($imageFactory));
+
+        foreach (self::$extensions as $closure) {
+            $environment = $closure($environment);
+        }
 
         $this->converter = new CommonMarkConverter([], $environment);
     }
