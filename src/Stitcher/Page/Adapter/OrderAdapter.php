@@ -3,9 +3,11 @@
 namespace Stitcher\Page\Adapter;
 
 use Stitcher\Exception\InvalidOrderAdapter;
+use Stitcher\File;
 use Stitcher\Page\Adapter;
 use Stitcher\Configureable;
 use Stitcher\Variable\VariableParser;
+use Symfony\Component\Yaml\Yaml;
 
 class OrderAdapter implements Adapter, Configureable
 {
@@ -73,7 +75,15 @@ class OrderAdapter implements Adapter, Configureable
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
-        return $this->variableParser->parse($variable) ?? $variable;
+        $entries = Yaml::parse(File::read($variable));
+
+        foreach ($entries as $id => $data) {
+            $data['id'] = $data['id'] ?? $id;
+
+            $entries[$id] = $data;
+        }
+
+        return $entries;
     }
 
     private function orderEntries(array $entries): array

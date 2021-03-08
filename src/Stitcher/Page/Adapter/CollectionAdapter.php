@@ -3,9 +3,11 @@
 namespace Stitcher\Page\Adapter;
 
 use Stitcher\Exception\InvalidCollectionAdapter;
+use Stitcher\File;
 use Stitcher\Page\Adapter;
 use Stitcher\Configureable;
 use Stitcher\Variable\VariableParser;
+use Symfony\Component\Yaml\Yaml;
 
 class CollectionAdapter implements Adapter, Configureable
 {
@@ -64,6 +66,10 @@ class CollectionAdapter implements Adapter, Configureable
                 continue;
             }
 
+            foreach ($entry as $field => $value) {
+                $entry[$field] = $this->variableParser->parse($value);
+            }
+
             $entryConfiguration = $this->createEntryConfiguration(
                 $pageConfiguration,
                 $entryId,
@@ -87,7 +93,7 @@ class CollectionAdapter implements Adapter, Configureable
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
-        return $this->variableParser->parse($variable) ?? $variable;
+        return Yaml::parse(File::read($variable));
     }
 
     protected function createEntryConfiguration(array $pageConfiguration, $entryId, $entry): array

@@ -45,7 +45,6 @@ services:
         arguments:
             - '%publicDirectory%'
             - '@sassParser'
-            - '@cssMinifier'
         calls:
             - ['setMinify', ['%minify%']]
     jsExtension:
@@ -163,9 +162,6 @@ services:
             - '@rendererFactory'
             - '@markdownParser'
             - '%errorPages%'
-
-    cssMinifier:
-        class: tubalmartin\CssMin\Minifier
 
     jpegOptim:
         class: Spatie\ImageOptimizer\Optimizers\Jpegoptim

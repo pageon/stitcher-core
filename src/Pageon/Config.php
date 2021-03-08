@@ -18,7 +18,8 @@ class Config
 
     public static function init(): void
     {
-        self::$env = new Dotenv(File::path());
+
+        self::$env = Dotenv::createImmutable(File::path());
 
         try {
             self::$env->load();

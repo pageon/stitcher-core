@@ -94,7 +94,7 @@ class Js implements Extension
         }
 
         if ($this->minify) {
-            $content = JSMin::minify($content);
+//            $content = JSMin::minify($content);
         }
 
         $path = "{$dirname}/{$filename}.{$extension}";
