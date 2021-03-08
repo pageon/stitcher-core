@@ -75,6 +75,10 @@ class OrderAdapter implements Adapter, Configureable
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
+        if (is_array($variable)) {
+            return $variable;
+        }
+
         $entries = Yaml::parse(File::read($variable));
 
         foreach ($entries as $id => $data) {
