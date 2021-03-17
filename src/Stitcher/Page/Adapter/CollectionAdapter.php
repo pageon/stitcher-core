@@ -93,7 +93,15 @@ class CollectionAdapter implements Adapter, Configureable
     {
         $variable = $pageConfiguration['variables'][$this->variable] ?? null;
 
-        return Yaml::parse(File::read($variable));
+        $entries = Yaml::parse(File::read($variable));
+
+        foreach ($entries as $id => $data) {
+            $data['id'] = $data['id'] ?? $id;
+
+            $entries[$id] = $data;
+        }
+
+        return $entries;
     }
 
     protected function createEntryConfiguration(array $pageConfiguration, $entryId, $entry): array
