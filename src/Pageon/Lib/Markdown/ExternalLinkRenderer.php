@@ -3,23 +3,23 @@
 namespace Pageon\Lib\Markdown;
 
 use InvalidArgumentException;
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
 
-class ExternalLinkRenderer implements InlineRendererInterface
+class ExternalLinkRenderer implements NodeRendererInterface
 {
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer): HtmlElement
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
-        if (! $inline instanceof Link) {
+        if (! $node instanceof Link) {
             throw new InvalidArgumentException('Inline must be instance of ' . Link::class);
         }
 
         $attributes = [];
 
-        $url = $inline->getUrl();
+        $url = $node->getUrl();
 
         if (strpos($url, '*') === 0) {
             $url = substr($url, 1);
@@ -32,7 +32,7 @@ class ExternalLinkRenderer implements InlineRendererInterface
         return new HtmlElement(
             'a',
             $attributes,
-            $htmlRenderer->renderInlines($inline->children())
+            $childRenderer->renderNodes($node->children())
         );
     }
 }

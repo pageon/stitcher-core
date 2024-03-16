@@ -3,17 +3,17 @@
 namespace Pageon\Lib\Markdown;
 
 use InvalidArgumentException;
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Element\Image;
-use League\CommonMark\Inline\Element\Text;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
+use League\CommonMark\Node\Inline\Text;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
 use Pageon\Html\Image\ImageFactory;
 use Stitcher\Exception\InvalidConfiguration;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class ImageRenderer implements InlineRendererInterface
+class ImageRenderer implements NodeRendererInterface
 {
     /** @var \Pageon\Html\Image\ImageFactory */
     private $imageFactory;
@@ -23,15 +23,15 @@ class ImageRenderer implements InlineRendererInterface
         $this->imageFactory = $imageFactory;
     }
 
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
-        if (! $inline instanceof Image) {
+        if (! $node instanceof Image) {
             throw new InvalidArgumentException('Inline must be instance of ' . Image::class);
         }
 
         $attributes = [];
 
-        $src = $inline->getUrl();
+        $src = $node->getUrl();
 
         try {
             $responsiveImage = $this->imageFactory->create($src);
@@ -39,19 +39,19 @@ class ImageRenderer implements InlineRendererInterface
             throw InvalidConfiguration::fileNotFound($src);
         }
 
-        $alt = $inline->firstChild();
+        $alt = $node->firstChild();
 
         $attributes['src'] = $src;
-        $attributes['srcset'] = $responsiveImage->srcset() ?? null;
-        $attributes['sizes'] = $responsiveImage->sizes() ?? null;
+        $attributes['srcset'] = $responsiveImage->srcset() ?? '';
+        $attributes['sizes'] = $responsiveImage->sizes() ?? '';
         $attributes['alt'] = $alt instanceof Text
-            ? $alt->getContent()
+            ? $alt->getLiteral()
             : '';
 
         return new HtmlElement(
             'img',
             $attributes,
-            $htmlRenderer->renderInlines($inline->children())
+            $childRenderer->renderNodes($node->children())
         );
     }
 }

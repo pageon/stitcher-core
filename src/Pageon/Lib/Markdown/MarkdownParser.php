@@ -4,9 +4,10 @@ namespace Pageon\Lib\Markdown;
 
 use Closure;
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
-use League\CommonMark\Inline\Element\Image;
-use League\CommonMark\Inline\Element\Link;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\MarkdownConverter;
+use Pageon\Html\Image\Image;
 use Pageon\Html\Image\ImageFactory;
 
 /**
@@ -32,14 +33,14 @@ class MarkdownParser
         $environment = Environment::createCommonMarkEnvironment();
 
         $environment
-            ->addInlineRenderer(Link::class, new ExternalLinkRenderer())
-            ->addInlineRenderer(Image::class, new ImageRenderer($imageFactory));
+            ->addRenderer(Link::class, new ExternalLinkRenderer())
+            ->addRenderer(Image::class, new ImageRenderer($imageFactory));
 
         foreach (self::$extensions as $closure) {
             $environment = $closure($environment);
         }
 
-        $this->converter = new CommonMarkConverter([], $environment);
+        $this->converter = new MarkdownConverter($environment);
     }
 
     public function parse(?string $markdown): ?string
