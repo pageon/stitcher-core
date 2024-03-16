@@ -18,7 +18,7 @@
         "leafo/scssphp": "^0.7.1",
         "nikic/fast-route": "^1.2",
         "spatie/image-optimizer": "^1.1",
-        "league/commonmark": "^1.0",
+        "league/commonmark": "^1.0|^2.0",
         "phpoption/phpoption": "^1.7",
         "matthiasmullie/minify": "^1.3"
     },
